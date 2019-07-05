@@ -21,6 +21,14 @@ public class TileFactory : MonoBehaviour
     {
 
     }
+    public GameObject getTile(Vector2Int coordinates)
+    {
+        return getTile(coordinates.x, coordinates.y);
+    }
+    public GameObject getTile(int col, int row)
+    {
+        return grid[col, row];
+    }
     GameObject[,] CreateGrid()
     {
         var lines = level.text.Split(new string[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries);
