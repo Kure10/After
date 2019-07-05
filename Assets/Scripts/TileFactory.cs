@@ -19,7 +19,7 @@ public class TileFactory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     GameObject[,] CreateGrid()
     {
@@ -27,12 +27,22 @@ public class TileFactory : MonoBehaviour
         var tempGrid = new List<List<GameObject>>();
         int x = 0;
         int z = 0;
+        int rows = 0;
+        foreach (var line in lines)
+        {
+            if (line[0] == '#') continue;
+            rows++;
+        }
+
         foreach (var line in lines)
         {
             if (line[0] == '#')
                 continue;
             var col = new List<GameObject>();
             tempGrid.Add(col);
+            x = 0;
+            z++;
+
             foreach (var type in line)
             {
                 GameObject go = null;
@@ -47,18 +57,17 @@ public class TileFactory : MonoBehaviour
                     default: Debug.Log($"Unknown object: {type}"); continue;
                 }
                 x++;
-                Vector2Int gridPoint = Geometry.GridPoint(x, z);
+                Vector2Int gridPoint = Geometry.GridPoint(x, rows - z);
                 col.Add(Instantiate(go, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform));
             }
-            x = 0;
-            z++;
+
         }
         var ret = new GameObject[tempGrid[0].Count, tempGrid.Count];
-        for(int i = 0; i < x; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < z; j++)
+            for (int j = 0; j < x; j++)
             {
-                ret[i, j] = tempGrid[i][j];
+                ret[j, i] = tempGrid[rows - i - 1][j];
             }
         }
         return ret;

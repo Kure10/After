@@ -149,13 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b2e1d3f72e54b1787501dff9fa4142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptyTile: {fileID: 5197859374459680727, guid: 7b0ab9746a47246b892eebf67a5efaa3,
+  emptyTile: {fileID: 2999636974324102669, guid: 7b0ab9746a47246b892eebf67a5efaa3,
     type: 3}
-  wallTile: {fileID: 3145585150990004227, guid: b63fe9ff77f514ab08372e4de8f083e8,
+  wallTile: {fileID: 6951631190369723748, guid: 99f3d90348f03e747810ff7edd5836c7,
     type: 3}
-  outsideTile: {fileID: 6745778352810852333, guid: 7abc08956179641e39748564f4594b53,
+  outsideTile: {fileID: 5341244171716241495, guid: 7abc08956179641e39748564f4594b53,
     type: 3}
-  debrisTile: {fileID: 8782388913171724286, guid: b94af754e84244dc6a7b5600c4384a71,
+  debrisTile: {fileID: 6303791500190270009, guid: b94af754e84244dc6a7b5600c4384a71,
     type: 3}
   level: {fileID: 4900000, guid: 59ebacdd6a6444ba9b0a22cb3213e79c, type: 3}
 --- !u!4 &653987655
@@ -248,13 +248,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101279361}
-  m_LocalRotation: {x: 0.53729963, y: 0, z: 0, w: 0.8433915}
-  m_LocalPosition: {x: 3, y: 7, z: 0}
+  m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
+  m_LocalPosition: {x: 9, y: 12, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 65, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
 --- !u!1 &1304516837
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,8 +282,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -292,7 +292,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.295
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
