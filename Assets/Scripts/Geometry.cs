@@ -18,8 +18,8 @@ public static class Geometry
 
     static public Vector2Int GridFromPoint(Vector3 point)
     {
-        int col = Mathf.FloorToInt(0.5f + point.x);
-        int row = Mathf.FloorToInt(0.5f + point.z);
+        int col = Mathf.RoundToInt(0.5f + point.x);
+        int row = Mathf.RoundToInt(0.5f + point.z);
         return new Vector2Int(col, row);
     }
 }
