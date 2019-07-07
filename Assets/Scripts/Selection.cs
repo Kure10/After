@@ -71,7 +71,7 @@ public class Selection : MonoBehaviour
                         {
                             //Move to target and if the targe tile has some default action, add it to stack of actions
                             //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
-                            path.Add(coord);
+                            
                             Move(character, path);
                             //TODO actions
                         }

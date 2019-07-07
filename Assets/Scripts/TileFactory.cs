@@ -10,7 +10,7 @@ public class TileFactory : MonoBehaviour
     public GameObject debrisTile;
     public GameObject character;
     public TextAsset level;
-    private Tile[,] grid;
+    private BaseTile[,] grid;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,19 +22,19 @@ public class TileFactory : MonoBehaviour
     {
 
     }
-    public Tile getTile(Vector2Int coordinates)
+    public BaseTile getTile(Vector2Int coordinates)
     {
         return getTile(coordinates.x, coordinates.y);
     }
-    public Tile getTile(int col, int row)
+    public BaseTile getTile(int col, int row)
     {
         return grid[col, row];
     }
-    Tile[,] CreateGrid()
+    BaseTile[,] CreateGrid()
     {
         var lines = level.text.Split(new string[] { System.Environment.NewLine }, System.StringSplitOptions.RemoveEmptyEntries);
         var checkedLines = new List<string>();
-        var tempGrid = new List<List<Tile>>();
+        var tempGrid = new List<List<BaseTile>>();
         int x = 0;
         int z = 0;
         int rows = 0;
@@ -46,33 +46,30 @@ public class TileFactory : MonoBehaviour
         checkedLines.Reverse();
         foreach (var line in checkedLines)
         {
-            var col = new List<Tile>();
+            var col = new List<BaseTile>();
             tempGrid.Add(col);
             foreach (var type in line)
             {
                 bool walkable = true;
-                GameObject go = null;
                 Vector2Int gridPoint = Geometry.GridPoint(x, z);
                 switch (char.ToLower(type))
                 {
                     case ' ': continue;
-                    case 'w': go = wallTile; walkable = false; break;
-                    case 'e': go = emptyTile; break;
-                    case 's': go = emptyTile;
-                              Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
-                              break;
-                    case 'd': go = debrisTile; walkable = false;  break;
-                    case '0': go = outsideTile; break;
+                    case 'w': col.Add(new WallTile(generateTilePrefab(wallTile, gridPoint), x, z)); break;
+                    case 'e': col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z)); break;
+                    case 's': Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+                              goto case 'e';
+                    case 'd': col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z)); break;
+                    case '0': col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z)); break;
                     default: Debug.Log($"Unknown object: {type} at {gridPoint.x} : {gridPoint.y}"); continue;
                 }
-                col.Add(new Tile(Instantiate(go, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform), x, z, walkable));
                 x++;
             }
             x = 0;
             z++;
 
         }
-        var ret = new Tile[tempGrid[0].Count, tempGrid.Count];
+        var ret = new BaseTile[tempGrid[0].Count, tempGrid.Count];
         foreach (var row in tempGrid)
         {
             foreach(var item in row)
@@ -82,21 +79,27 @@ public class TileFactory : MonoBehaviour
         }
         return ret;
     }
+    private GameObject generateTilePrefab(GameObject prefab, Vector2Int gridPoint)
+    {
+        return Instantiate(prefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform);
+    }
     public List<Vector2Int> FindPath(Vector2Int from, Vector2Int to)
     {
-        var start = grid[from.x, from.y];
-        var target = grid[to.x, to.y];
-        if (!start.walkable && !target.walkable)
+        var start = grid[from.x, from.y] as IWalkable;
+        var target = grid[to.x, to.y] as IWalkable;
+        if (start == null || target == null)
+        {
             return null;
+        }
         var path = new List<Vector2Int>();
         start.gCost = 100;
-        List<Tile> openSet = new List<Tile>();
-        HashSet<Tile> closedSet = new HashSet<Tile>();
+        List<IWalkable> openSet = new List<IWalkable>();
+        HashSet<IWalkable> closedSet = new HashSet<IWalkable>();
         openSet.Add(start);
 
         while (openSet.Count > 0)
         {
-            Tile node = openSet[0];
+            IWalkable node = openSet[0];
             for (int i = 1; i < openSet.Count; i++)
             {
                 if (openSet[i].fCost <= node.fCost)
@@ -118,7 +121,7 @@ public class TileFactory : MonoBehaviour
 
             foreach (var neighbour in GetNeighbours(node))
             {
-                if ((!neighbour.walkable && neighbour != target) || closedSet.Contains(neighbour))
+                if ((!neighbour.walkthrough && !node.walkthrough) || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
@@ -137,9 +140,9 @@ public class TileFactory : MonoBehaviour
         }
         return null;
     }
-    public List<Tile> GetNeighbours(Tile node)
+    private List<IWalkable> GetNeighbours(IWalkable node)
     {
-        List<Tile> neighbours = new List<Tile>();
+        List<IWalkable> neighbours = new List<IWalkable>();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -154,14 +157,15 @@ public class TileFactory : MonoBehaviour
                 int gridSizeY = grid.GetLength(1);
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    neighbours.Add(grid[checkX, checkY]);
+                    if (grid[checkX, checkY] is IWalkable g)
+                        neighbours.Add(g);
                 }
             }
         }
 
         return neighbours;
     }
-    int GetCost(Tile nodeA, Tile nodeB)
+    int GetCost(IWalkable nodeA, IWalkable nodeB)
     {
         int dstX = Mathf.Abs(nodeA.x - nodeB.x);
         int dstY = Mathf.Abs(nodeA.y - nodeB.y);
@@ -170,10 +174,10 @@ public class TileFactory : MonoBehaviour
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
     }
-    private List<Vector2Int> RetracePath(Tile start, Tile end)
+    private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
     {
         List<Vector2Int> path = new List<Vector2Int>();
-        Tile currentNode = end;
+        IWalkable currentNode = end;
 
         while (currentNode != start)
         {
