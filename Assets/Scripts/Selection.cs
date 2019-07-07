@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Selection : MonoBehaviour
+public class SelectionManager : MonoBehaviour
 {
     private TileFactory tileFactory;
     private List<GameObject> selectedObjects;
