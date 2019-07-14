@@ -150,7 +150,10 @@ public class TileFactory : MonoBehaviour
             {
                 if (x == 0 && y == 0)
                     continue;
-                
+                //disallow diagonal movement;
+                if (Mathf.Abs(x) == Mathf.Abs(y))
+                    continue;
+
                 int checkX = node.x + x;
                 int checkY = node.y + y;
                 int gridSizeX = grid.GetLength(0);
@@ -170,9 +173,12 @@ public class TileFactory : MonoBehaviour
         int dstX = Mathf.Abs(nodeA.x - nodeB.x);
         int dstY = Mathf.Abs(nodeA.y - nodeB.y);
 
+        return 10 * dstX + 10 * dstY;
+        /*
         if (dstX > dstY)
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
+        */
     }
     private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
     {
