@@ -22,6 +22,50 @@ public class ResourceControler : MonoBehaviour
 
     public Text[] text;
 
+
+   /*   Metody na nastaveni kazde surky zvlast */
+
+    public void SetPotraviny (int value)
+    {
+        potraviny += value;
+    }
+
+    public void SetVojenskyMaterialy(int value)
+    {
+        vojenskyMaterial += value;
+    }
+
+    public void SetTechnickyMaterial(int value)
+    {
+        technickyMaterial += value;
+    }
+
+    public void SetPohonneHmoty(int value)
+    {
+        pohonneHmoty += value;
+    }
+
+    public void SetCivilniMaterial(int value)
+    {
+        civilniMaterial += value;
+    }
+
+    public void SetEnergie(int value)
+    {
+        energie += value;
+    }
+
+    public void SetDeti(int value)
+    {
+        deti += value;
+    }
+
+    public void SetKarma(int value)
+    {
+        karma += value;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +78,13 @@ public class ResourceControler : MonoBehaviour
         UpdateText();
     }
 
+    /*
     public void SetValueOf(int value, int resourse)
     {
         resourse += value;
-    }
+    }*/
 
+        /*  Updatuje nase suroviny v gui */
     private void UpdateText ()
     {
         text[0].text = potraviny.ToString();
@@ -49,7 +95,8 @@ public class ResourceControler : MonoBehaviour
         text[5].text = energie.ToString();
         text[6].text = deti.ToString();
         text[7].text = karma.ToString();
-       // text[8].text = karma.ToString();
     }
+
+
 
 }

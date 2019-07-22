@@ -51,9 +51,9 @@ public class SelectionManager : MonoBehaviour
             {
                 Vector3 point = hit.point;
                 var coord = Geometry.GridFromPoint(point);
-              //  Debug.LogWarning($"Coord[x,y]: [{coord.x},{coord.y}]");
+                Debug.LogWarning($"Coord[x,y]: [{coord.x},{coord.y}]");
                 var tile = tileFactory.getTile(coord);
-              //  Debug.LogWarning($"Tile[x,y]: [{tile.x},{tile.y}]");
+                Debug.LogWarning($"Tile[x,y]: [{tile.x},{tile.y}]");
                 var highlightedObject = tile.tile.gameObject.transform.Find("Selection");
                 if (highlightedObject != null)
                 {
