@@ -25,6 +25,7 @@ public class TimeControl : MonoBehaviour
             DecreaseTime();
         }
     }
+
     public void IncreaseTime()
     {
         if (TimeStep != timePointsPerSecond.Count - 1)
@@ -58,5 +59,11 @@ public class TimeControl : MonoBehaviour
     public int TimePointMultiplier()
     {
         return timePointsPerSecond[TimeStep];
+    }
+
+    // pridal jsem funkci na vraceni TimeStep
+    public int GetTimeStep()
+    {
+        return TimeStep;
     }
 }

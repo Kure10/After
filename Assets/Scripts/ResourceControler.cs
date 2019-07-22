@@ -97,6 +97,16 @@ public class ResourceControler : MonoBehaviour
         text[7].text = karma.ToString();
     }
 
-
+    public void AddAll(int value)
+    {
+        potraviny += value;
+        vojenskyMaterial += value;
+        technickyMaterial += value;
+        pohonneHmoty += value;
+        civilniMaterial += value;
+        energie += value;
+        deti += value;
+        karma += value;
+    }
 
 }
