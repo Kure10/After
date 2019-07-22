@@ -13638,7 +13638,7 @@ PrefabInstance:
     - target: {fileID: 2791556986978099308, guid: 4bb6a66df15458747a93d1db8a7e6755,
         type: 3}
       propertyPath: m_Name
-      value: Ubykace_zaklad_vystavba
+      value: Ubikace_zaklad_vystavba
       objectReference: {fileID: 0}
     - target: {fileID: 6466135913402555733, guid: 4bb6a66df15458747a93d1db8a7e6755,
         type: 3}
@@ -32680,7 +32680,7 @@ PrefabInstance:
     - target: {fileID: 60489833092064453, guid: bd53ea48b5d160e4bb6a8c9ac33cfc09,
         type: 3}
       propertyPath: m_Name
-      value: Ubykace_zaklad
+      value: Ubikace_zaklad
       objectReference: {fileID: 0}
     - target: {fileID: 9182839283462931299, guid: bd53ea48b5d160e4bb6a8c9ac33cfc09,
         type: 3}
@@ -47054,7 +47054,7 @@ Transform:
   - {fileID: 627342255}
   - {fileID: 1456384597}
   - {fileID: 1423407329}
-  - {fileID: 182207237895211738}
+  - {fileID: 7424589743626825187}
   - {fileID: 2096610848}
   - {fileID: 419132930}
   - {fileID: 1465544552}
@@ -52179,12 +52179,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2143662641}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &182207237895211738 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2304576610627601438, guid: 7b0ab9746a47246b892eebf67a5efaa3,
-    type: 3}
-  m_PrefabInstance: {fileID: 7424589743626825186}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2051900521363693311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52261,11 +52255,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1968292941}
     m_Modifications:
-    - target: {fileID: 2999636974324102669, guid: 7b0ab9746a47246b892eebf67a5efaa3,
-        type: 3}
-      propertyPath: m_Name
-      value: After_podlaha_bunker_01 (264)
-      objectReference: {fileID: 0}
     - target: {fileID: 2304576610627601438, guid: 7b0ab9746a47246b892eebf67a5efaa3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -52331,8 +52320,18 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 2999636974324102669, guid: 7b0ab9746a47246b892eebf67a5efaa3,
+        type: 3}
+      propertyPath: m_Name
+      value: After_podlaha_bunker_01 (264)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b0ab9746a47246b892eebf67a5efaa3, type: 3}
+--- !u!4 &7424589743626825187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 7424589743626825186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8621310804248220420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4646642282454051281, guid: 99f3d90348f03e747810ff7edd5836c7,
