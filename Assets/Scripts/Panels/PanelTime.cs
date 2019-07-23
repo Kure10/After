@@ -6,97 +6,95 @@ using UnityEngine.UI;
 public class PanelTime : MonoBehaviour
 {
 
-    
-    private int multiplayer = 1;
-
     public TimeControl timeControler;
 
     public Text textTime , textDays;
     public Text speedStatus;
 
-    private float secs;
-    private int mins, hours, days;
+    private float gameTimer;
 
     private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
-    public int multiplier; 
+    private readonly List<int> listOfSpeed = new List<int>() { 5 , 30 , 60 , 600 , 3600 };
+    private int timeMultiplier;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
-        multiplier = timeControler.TimePointMultiplier();
+
+        ChangeMultiplier();
         DisplayStatus();
-        secs = 0;
-        days = 0;
+        gameTimer = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        Time.timeScale = multiplier;
+        // Time.timeScale = multiplier;
+        if(timeMultiplier <= 0)
+        {
+            timeMultiplier = 10;
+        }
 
-        secs = (secs + Time.deltaTime);
-
+        gameTimer = (gameTimer + Time.deltaTime * timeMultiplier);
+       
         DisplayTime();
-
     }
 
 
     public void DisplayTime()
     {
-        TimeCalculation();
+        int seconds = (int)(gameTimer % 60);
+        int minutes = (int)(gameTimer / 60) % 60;
+        int hours = (int)(gameTimer / 3600) % 24;
+        int days = (int)(gameTimer / 86400) % 365; // ToDo asi bude potreba vice dnu .. to pak musim poresit
 
-        string sec = secs.ToString("F0");
-        string min = mins.ToString();
+        string sec = seconds.ToString();
+        string min = minutes.ToString();
         string hour = hours.ToString();
+        string dayS = days.ToString();
 
-        if (secs < 9)
+
+        if (seconds <= 9)
         {
-            sec = 0 + secs.ToString("F0");
+            sec = 0 + gameTimer.ToString("F0");
         }
-        if (mins < 9)
+        if (minutes <= 9)
         {
-            min = 0 + mins.ToString();
+            min = 0 + minutes.ToString();
         }
-        if (hours < 9)
+        if (hours <= 9)
         {
             hour = 0 + hours.ToString();
         }
 
-        // time
-        textTime.text = hour + ":" + min + ":" + sec;
+        //time
+        if (seconds <= 9)
+        {
+            textTime.text = hour + ":" + min + ":" + 0 + seconds.ToString("F0");
+        }
+        else
+        {
+            textTime.text = hour + ":" + min + ":" + sec;
+        }
+
         // days
-        textDays.text = days.ToString();
-    }
+        textDays.text = dayS;
 
-    private void TimeCalculation()
-    {
-        if (secs > 59)
-        {
-            secs = 0;
-            mins++;
-        }
 
-        if (mins > 59)
-        {
-            mins = 0;
-            hours++;
-        }
-
-        if (hours > 59)
-        {
-            days++;
-        }
     }
 
     public void DisplayStatus()
     {
         speedStatus.text = listOfTimeStatus[timeControler.GetTimeStep()];
+        timeMultiplier = listOfSpeed[timeControler.GetTimeStep()];
     }
 
     public void ChangeMultiplier()
     {
-        multiplier = timeControler.TimePointMultiplier();
+        timeMultiplier = timeControler.TimePointMultiplier();
     }
+
 }

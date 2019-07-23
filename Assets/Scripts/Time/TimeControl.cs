@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TimeControl : MonoBehaviour
 {
-    private readonly List<int> timePointsPerSecond = new List<int>() {0, 1, 6, 12, 720};
-    private int TimeStep = 1;
+    private readonly List<int> timePointsPerSecond = new List<int>() {10, 60, 120, 1200, 7200};  //  0   1   6  12  720
+    private int TimeStep = 0;
 
     void Update()
     {
