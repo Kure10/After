@@ -6,32 +6,37 @@ using UnityEngine.UI;
 public class PanelTime : MonoBehaviour
 {
 
-    public int multiplayer = 1;
+    
+    private int multiplayer = 1;
 
     public TimeControl timeControler;
 
-    public Text textTime;
+    public Text textTime , textDays;
     public Text speedStatus;
 
     private float secs;
-    private int mins, hours;
+    private int mins, hours, days;
 
     private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
-    private int multiplier; 
+    public int multiplier; 
 
     // Start is called before the first frame update
     void Start()
     {
+        
         multiplier = timeControler.TimePointMultiplier();
         DisplayStatus();
         secs = 0;
+        days = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        secs = (secs + Time.deltaTime) * multiplier;
+        Time.timeScale = multiplier;
+
+        secs = (secs + Time.deltaTime);
 
         DisplayTime();
 
@@ -59,7 +64,10 @@ public class PanelTime : MonoBehaviour
             hour = 0 + hours.ToString();
         }
 
+        // time
         textTime.text = hour + ":" + min + ":" + sec;
+        // days
+        textDays.text = days.ToString();
     }
 
     private void TimeCalculation()
@@ -78,7 +86,7 @@ public class PanelTime : MonoBehaviour
 
         if (hours > 59)
         {
-            //TODO  pokud prekroci 24 hodin. Novy den a pak tyden ci mesic.. ?
+            days++;
         }
     }
 
