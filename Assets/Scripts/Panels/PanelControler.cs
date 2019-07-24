@@ -7,12 +7,12 @@ public class PanelControler : MonoBehaviour
 {
 
     public GameObject panel;
-    private bool isActive;
+    private bool isActive = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        isActive = false;
+        panel.SetActive(isActive);
     }
 
     // Update is called once per frame
@@ -24,17 +24,8 @@ public class PanelControler : MonoBehaviour
 
     public void TurnOn()
     {
-        if (isActive == false)
-        {
-            panel.SetActive(true);
-            isActive = !isActive;
-        }
-        else
-        {
-            panel.SetActive(false);
-            isActive = !isActive;
-        }
-
+        isActive = !isActive;
+        panel.SetActive(isActive);
     }
 
 }
