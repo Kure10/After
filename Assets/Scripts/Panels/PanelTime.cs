@@ -6,23 +6,22 @@ using UnityEngine.UI;
 public class PanelTime : MonoBehaviour
 {
 
+    //[Header("Setup")]
+    public Text textTime, textDays;
+    public Text speedStatus;
     public TimeControl timeControler;
 
-    public Text textTime , textDays;
-    public Text speedStatus;
+    private float timeScale;
+    private int timeMultiplier;
+    private bool isRunning = true;
 
     private float gameTimer;
-
+    private readonly List<float> listOfTimescale = new List<float>() { 0.5f, 1, 10, 25, 50 };
     private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
-    private readonly List<int> listOfSpeed = new List<int>() { 5 , 30 , 60 , 600 , 3600 };
-    private int timeMultiplier;
-
-
-
+   
     // Start is called before the first frame update
     void Start()
     {
-
         ChangeMultiplier();
         DisplayStatus();
         gameTimer = 0;
@@ -31,14 +30,18 @@ public class PanelTime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isRunning)
+        Time.timeScale = timeScale;
 
-        // Time.timeScale = multiplier;
-        if(timeMultiplier <= 0)
+        if (timeScale < 1)
         {
-            timeMultiplier = 10;
+            gameTimer = (gameTimer + Time.deltaTime * timeMultiplier);
         }
-
-        gameTimer = (gameTimer + Time.deltaTime * timeMultiplier);
+        else
+        {
+            gameTimer = (gameTimer + Time.deltaTime * (timeMultiplier / (2 * timeScale)));
+        }
+       
        
         DisplayTime();
     }
@@ -82,19 +85,30 @@ public class PanelTime : MonoBehaviour
 
         // days
         textDays.text = dayS;
-
-
     }
 
     public void DisplayStatus()
     {
         speedStatus.text = listOfTimeStatus[timeControler.GetTimeStep()];
-        timeMultiplier = listOfSpeed[timeControler.GetTimeStep()];
+        timeScale = listOfTimescale[timeControler.GetTimeStep()];
     }
 
     public void ChangeMultiplier()
     {
         timeMultiplier = timeControler.TimePointMultiplier();
+    }
+
+    public void PauseOrUnpause ()
+    {
+        if(Time.timeScale == 0)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+            Time.timeScale = 0;
+        } 
     }
 
 }
