@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     List<Vector2Int> target;
     private TimeControl tc;
-    private float speed = 1f;
+    private float speed = 10f;
     private float accumulatedTime;
     private Vector3 startingPoint;
     void Start()
@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     {
         accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
         //in case of more then one time point from last frame, skip rendering of previous actions
-        while (accumulatedTime > 1f)
+        while (accumulatedTime > speed)
         {
             Execute();
         }
@@ -41,7 +41,7 @@ public class Character : MonoBehaviour
     }
     void Step(Vector3 to)
     {
-        transform.position = Vector3.Lerp(startingPoint, to, accumulatedTime);
+        transform.position = Vector3.Lerp(startingPoint, to, accumulatedTime / speed);
     }
 
     private void Execute()
@@ -57,7 +57,7 @@ public class Character : MonoBehaviour
             }
         }
 
-        accumulatedTime -= 1f;
+        accumulatedTime -= speed;
         if (accumulatedTime < 0)
         {
             //float numbers overflow check

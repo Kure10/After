@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,42 +10,37 @@ public class PanelTime : MonoBehaviour
     //[Header("Setup")]
     public Text textTime, textDays;
     public Text speedStatus;
-    public TimeControl timeControler;
 
-    private float timeScale;
-    private int timeMultiplier;
-    private bool isRunning = true;
+    private UInt32 gameTimer;
+    private readonly List<string> listOfTimeStatus = new List<string>() { "Paused", "Very slow", "Slow", "Normal", "Fast", "Very fast" };
 
-    private float gameTimer;
-    private readonly List<float> listOfTimescale = new List<float>() { 0.5f, 1, 10, 25, 50 };
-    private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
-   
+    
     // Start is called before the first frame update
     void Start()
     {
-        ChangeMultiplier();
-        DisplayStatus();
+        TimeControl.OnTimeChanged += TimeChanged;
+        TimeControl.OnTimeSpeedChanged += DisplayStatus;
+        DisplayStatus(1);
         gameTimer = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDestroy()
     {
-        if(isRunning)
-        Time.timeScale = timeScale;
+        TimeControl.OnTimeChanged -= TimeChanged;
+        TimeControl.OnTimeSpeedChanged -= DisplayStatus;
 
-        if (timeScale < 1)
-        {
-            gameTimer = (gameTimer + Time.deltaTime * timeMultiplier);
-        }
-        else
-        {
-            gameTimer = (gameTimer + Time.deltaTime * (timeMultiplier / (2 * timeScale)));
-        }
-       
-       
+    }
+
+    private int timeRemain = 0;
+    private void TimeChanged(int timePoints)
+    {
+        //10 timePoints = 5s
+        var tpToAdd = timePoints + timeRemain;
+        gameTimer += (uint) (tpToAdd / 2);
+        timeRemain = tpToAdd % 2;
         DisplayTime();
     }
+
 
 
     public void DisplayTime()
@@ -52,63 +48,23 @@ public class PanelTime : MonoBehaviour
         int seconds = (int)(gameTimer % 60);
         int minutes = (int)(gameTimer / 60) % 60;
         int hours = (int)(gameTimer / 3600) % 24;
-        int days = (int)(gameTimer / 86400) % 365; // ToDo asi bude potreba vice dnu .. to pak musim poresit
+        int days = (int)(gameTimer / 86400); // ToDo asi bude potreba vice dnu .. to pak musim poresit
+                                             // -- bych neresil, klidne muzeme zobrazovat den 400 a neresit roky, Ashen
 
-        string sec = seconds.ToString();
-        string min = minutes.ToString();
-        string hour = hours.ToString();
+        string sec = seconds.ToString("D2");
+        string min = minutes.ToString("D2");
+        string hour = hours.ToString("D2");
         string dayS = days.ToString();
 
-
-        if (seconds <= 9)
-        {
-            sec = 0 + gameTimer.ToString("F0");
-        }
-        if (minutes <= 9)
-        {
-            min = 0 + minutes.ToString();
-        }
-        if (hours <= 9)
-        {
-            hour = 0 + hours.ToString();
-        }
-
-        //time
-        if (seconds <= 9)
-        {
-            textTime.text = hour + ":" + min + ":" + 0 + seconds.ToString("F0");
-        }
-        else
-        {
-            textTime.text = hour + ":" + min + ":" + sec;
-        }
-
+        
+        textTime.text = $"{hour}:{min}:{sec}";
         // days
         textDays.text = dayS;
     }
 
-    public void DisplayStatus()
+    private void DisplayStatus(int speed)
     {
-        speedStatus.text = listOfTimeStatus[timeControler.GetTimeStep()];
-        timeScale = listOfTimescale[timeControler.GetTimeStep()];
-    }
-
-    public void ChangeMultiplier()
-    {
-        timeMultiplier = timeControler.TimePointMultiplier();
-    }
-
-    public void PauseOrUnpause ()
-    {
-        if(Time.timeScale == 0)
-        {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
-            Time.timeScale = 0;
-        } 
+        speedStatus.text = listOfTimeStatus[speed];
     }
 
 }
