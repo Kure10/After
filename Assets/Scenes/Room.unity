@@ -2244,6 +2244,7 @@ GameObject:
   - component: {fileID: 653987655}
   - component: {fileID: 653987654}
   - component: {fileID: 653987656}
+  - component: {fileID: 653987657}
   m_Layer: 0
   m_Name: TileFactory
   m_TagString: TileFactory
@@ -2298,6 +2299,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 140caa019568c5d479f9874cd4bcd7f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &653987657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653987653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941787d763fbc4b43be3102aada6081f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &654820606
@@ -7391,7 +7404,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2124637023}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 653987657}
+        m_MethodName: CreateBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 60489833092064453, guid: bd53ea48b5d160e4bb6a8c9ac33cfc09,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2124637023
