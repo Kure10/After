@@ -17,11 +17,6 @@ public class TileFactory : MonoBehaviour
         grid = CreateGrid();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public BaseTile getTile(Vector2Int coordinates)
     {
         return getTile(coordinates.x, coordinates.y);
@@ -179,6 +174,28 @@ public class TileFactory : MonoBehaviour
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
         */
+    }
+    public bool Buildable(Vector2Int coord)
+    {
+        bool ret = false;
+        if (grid[coord.x, coord.y] is Tile tile)
+        {
+            if (tile.building == null)
+            {
+                ret = true;
+            }
+        }
+        return ret;
+    }
+    public void AddBuilding(List<Vector2Int> coords, GameObject building)
+    {
+        foreach(var coord in coords)
+        {
+            if (grid[coord.x, coord.y] is Tile t)
+            {
+                t.building = building;
+            }
+        }
     }
     private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
     {
