@@ -36,6 +36,15 @@ public class Character : MonoBehaviour
 
     public void Move(List<Vector2Int> path)
     {
+        //finish this move and then get new path
+        if (target.Count > 0)
+        {
+            var newList = new List<Vector2Int>();
+            newList.Add(target[0]);
+            newList.AddRange(path);
+            target = newList;
+            return;
+        }
         accumulatedTime = 0;
         target = path;
     }
