@@ -820,7 +820,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 133513716}
+      - m_Target: {fileID: 1813747942}
         m_MethodName: DecreaseTime
         m_Mode: 1
         m_Arguments:
@@ -4676,7 +4676,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 133513716}
+      - m_Target: {fileID: 1813747942}
         m_MethodName: IncreaseTime
         m_Mode: 1
         m_Arguments:
@@ -5210,7 +5210,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 148959897}
   m_HandleRect: {fileID: 1367248223}
   m_Direction: 3
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5728,7 +5728,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 133513716}
+      - m_Target: {fileID: 1813747942}
         m_MethodName: Pause
         m_Mode: 1
         m_Arguments:
@@ -5975,6 +5975,7 @@ MonoBehaviour:
   textTime: {fileID: 1498187980}
   textDays: {fileID: 30907965}
   speedStatus: {fileID: 1498041760}
+  pauseButton: {fileID: 1766580011}
 --- !u!114 &1813747943
 MonoBehaviour:
   m_ObjectHideFlags: 0
