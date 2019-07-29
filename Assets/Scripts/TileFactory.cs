@@ -178,7 +178,7 @@ public class TileFactory : MonoBehaviour
     public bool Buildable(Vector2Int coord)
     {
         bool ret = false;
-        if (grid[coord.x, coord.y] is Tile tile)
+        if (grid[coord.x, coord.y] is Tile tile && !(grid[coord.x, coord.y] is DebrisTile))
         {
             if (tile.building == null)
             {
