@@ -5,6 +5,9 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     public float CameraSpeed = 3f;
+    public float MinY = 10f;
+    public float MaxY = 40f;
+
     private float xAxis, yAxis, zAxis;
     private Vector3 movement;
     private static bool scrollEnabled = true;
@@ -18,32 +21,53 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         xAxis = 0;
-        yAxis = 0;
+        zAxis = 0;
+        var speed = CameraSpeed;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = CameraSpeed * 10f;
+        }
         if (Input.GetKey(KeyCode.A))
         {
-            xAxis = -CameraSpeed * Time.deltaTime;
+            xAxis = -speed * Time.deltaTime;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            xAxis = CameraSpeed * Time.deltaTime;
+            xAxis = speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            yAxis = CameraSpeed * Time.deltaTime;
+            zAxis = speed * Time.deltaTime;
         } 
         else if (Input.GetKey(KeyCode.S)) {
-            yAxis = -CameraSpeed * Time.deltaTime;
+            zAxis = -speed * Time.deltaTime;
         }
         movement.x = xAxis;
-        movement.y = yAxis;
+        movement.z = zAxis;
         if (scrollEnabled)
         {
-            movement.z = Input.mouseScrollDelta.y * Time.deltaTime * 10;
+            movement.y = Input.mouseScrollDelta.y * Time.deltaTime * speed * 3;
         } else
         {
-            movement.z = 0;
+            movement.y = 0;
         }
-        transform.Translate(movement);
+        var height = transform.parent.transform.position.y;
+        if (height > MaxY || height < MinY)
+        {
+            movement.y = 0;
+        }
+        
+        transform.parent.transform.Translate(movement);
+        //fix for fast scrolling on slow computer
+        var v = transform.parent.transform.position;
+
+        if (height < MinY)
+        {
+            transform.parent.transform.position = new Vector3(v.x, MinY + 0.01f, v.z);
+        } else if (height > MaxY)
+        {
+            transform.parent.transform.position = new Vector3(v.x, MaxY - 0.01f, v.z);
+        }
     }
     public static void ZoomByScrollEnabled(bool enabled)
     {
