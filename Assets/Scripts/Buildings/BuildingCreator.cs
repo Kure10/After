@@ -24,6 +24,7 @@ public class BuildingCreator : MonoBehaviour
     {
         if (building != null)
         {
+ 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
                 EndBuildingMode();
@@ -71,6 +72,7 @@ public class BuildingCreator : MonoBehaviour
 
     public void CreateBuilding(GameObject prefab)
     {
+        CameraMovement.ZoomByScrollEnabled(false);
         if (building != null)
         {
             Destroy(building);
@@ -82,6 +84,7 @@ public class BuildingCreator : MonoBehaviour
     }
     private void EndBuildingMode()
     {
+        CameraMovement.ZoomByScrollEnabled(true);
         Destroy(building);
         building = null;
     }
