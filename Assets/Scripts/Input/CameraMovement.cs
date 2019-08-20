@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float CameraSpeed = 3f;
+    public float CameraSpeed = 9f;
     public float MinY = 10f;
     public float MaxY = 40f;
 
@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour
         var speed = CameraSpeed;
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = CameraSpeed * 10f;
+            speed = CameraSpeed * 6f;
         }
         if (Input.GetKey(KeyCode.A))
         {
@@ -46,7 +46,7 @@ public class CameraMovement : MonoBehaviour
         movement.z = zAxis;
         if (scrollEnabled)
         {
-            movement.y = Input.mouseScrollDelta.y * Time.deltaTime * speed * 3;
+            movement.y = Input.mouseScrollDelta.y * Time.deltaTime * speed * -3;
         } else
         {
             movement.y = 0;
