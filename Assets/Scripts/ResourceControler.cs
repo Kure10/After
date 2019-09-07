@@ -15,6 +15,8 @@ public class ResourceControler : MonoBehaviour
     private int deti;
     private int karma;
 
+
+
     /*
     private int specialniMaterial;
     private int specialiste;
@@ -102,11 +104,23 @@ public class ResourceControler : MonoBehaviour
         potraviny += value;
         vojenskyMaterial += value;
         technickyMaterial += value;
-        pohonneHmoty += value;
+    //    pohonneHmoty += value;
         civilniMaterial += value;
-        energie += value;
-        deti += value;
-        karma += value;
+     //   energie += value;
+     //   deti += value;
+     //   karma += value;
+    }
+
+    public void SetToZero()
+    {
+        potraviny = 0;
+        vojenskyMaterial = 0;
+        technickyMaterial = 0;
+     //   pohonneHmoty = 0;
+        civilniMaterial = 0;
+     //   energie = 0;
+     //   deti = 0;
+      //  karma = 0;
     }
 
 }

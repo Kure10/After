@@ -58,7 +58,6 @@ public class PanelTime : MonoBehaviour
         else
         {
             pauseButton.GetComponent<Image>().CrossFadeAlpha(1, 0.2f, true);
-
         }
     }
     void OnDestroy()
