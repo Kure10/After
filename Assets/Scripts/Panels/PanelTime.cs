@@ -57,6 +57,7 @@ public class PanelTime : MonoBehaviour
         }
         else
         {
+            if(pauseButton != null) // Tohle jsem pridal jenom aby me to nehazelo error... V mojí scene.
             pauseButton.GetComponent<Image>().CrossFadeAlpha(1, 0.2f, true);
         }
     }
