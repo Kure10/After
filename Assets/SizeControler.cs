@@ -9,12 +9,61 @@ public class SizeControler : MonoBehaviour
 
     [Header("Size of Building")]
     public bool[] myArray = new bool[] { true, true, false, true, false, true };
+    [Header("Name of Building")]
+    [SerializeField] string name = "Default";
+    [Header("Resources")]
+    [SerializeField] int civilniMaterial = 0;
+    [SerializeField] int technickyMaterial = 0;
+    [SerializeField] int vojenskyMaterial = 0;
+    [Header("Images")]
+    [SerializeField] Sprite backGround;
+    [SerializeField] Sprite buildingImage;
 
     // Start is called before the first frame update
     void Start()
     {
-        images = GetComponentsInChildren<Image>();
-        UpdateSize();
+        
+       SetButtonName();
+       SetCost();
+       UpdateImage();
+       SetBuildingSize();
+
+    }
+
+    private void SetButtonName()
+    {
+        Transform go = this.gameObject.transform.GetChild(0);
+        Text text = go.GetComponent<Text>();
+        text.text = name;
+    }
+
+    private void SetCost()
+    {
+        // set civil material
+        Transform go = this.gameObject.transform.GetChild(1);
+        go = go.GetChild(0);
+        Text text = go.GetComponent<Text>();
+        text.text = civilniMaterial.ToString();
+        // set technicky material
+        go = this.gameObject.transform.GetChild(2);
+        go = go.GetChild(0);
+        text = go.GetComponent<Text>();
+        text.text = technickyMaterial.ToString();
+        // set vojencky material
+        go = this.gameObject.transform.GetChild(3);
+        go = go.GetChild(0);
+        text = go.GetComponent<Text>();
+        text.text = vojenskyMaterial.ToString();
+    }
+
+    private void SetBuildingSize()
+    {
+        Transform go = this.gameObject.transform.GetChild(5);
+        if (go != null)
+        {
+            images = go.GetComponentsInChildren<Image>();
+            UpdateSize();
+        }
     }
 
     private void UpdateSize()
@@ -23,6 +72,22 @@ public class SizeControler : MonoBehaviour
         {
             if (myArray[i] == true)
                 images[i].color = Color.black;
+        }
+    }
+
+    private void UpdateImage()
+    {
+        Image image;
+        if (backGround != null)
+        {
+            image = gameObject.GetComponent<Image>();
+            image.sprite = backGround;
+        }
+
+        if (buildingImage != null)
+        {
+            image = gameObject.transform.GetChild(4).GetComponent<Image>();
+            image.sprite = buildingImage;
         }
     }
 
