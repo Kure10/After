@@ -10,14 +10,14 @@ public class SizeControler : MonoBehaviour
     [Header("Size of Building")]
     public bool[] myArray = new bool[] { true, true, false, true, false, true };
     [Header("Name of Building")]
-    [SerializeField] string name = "Default";
+    [SerializeField] string title = "Default";
     [Header("Resources")]
     [SerializeField] int civilniMaterial = 0;
     [SerializeField] int technickyMaterial = 0;
     [SerializeField] int vojenskyMaterial = 0;
     [Header("Images")]
-    [SerializeField] Sprite backGround;
-    [SerializeField] Sprite buildingImage;
+    [SerializeField] Sprite backgroundImage;
+    [SerializeField] Sprite ilustrationImage;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +34,7 @@ public class SizeControler : MonoBehaviour
     {
         Transform go = this.gameObject.transform.GetChild(0);
         Text text = go.GetComponent<Text>();
-        text.text = name;
+        text.text = title;
     }
 
     private void SetCost()
@@ -78,16 +78,16 @@ public class SizeControler : MonoBehaviour
     private void UpdateImage()
     {
         Image image;
-        if (backGround != null)
+        if (backgroundImage != null)
         {
             image = gameObject.GetComponent<Image>();
-            image.sprite = backGround;
+            image.sprite = backgroundImage;
         }
 
-        if (buildingImage != null)
+        if (ilustrationImage != null)
         {
             image = gameObject.transform.GetChild(4).GetComponent<Image>();
-            image.sprite = buildingImage;
+            image.sprite = ilustrationImage;
         }
     }
 
