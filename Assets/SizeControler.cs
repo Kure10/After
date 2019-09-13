@@ -18,6 +18,9 @@ public class SizeControler : MonoBehaviour
     [Header("Images")]
     [SerializeField] Sprite backgroundImage;
     [SerializeField] Sprite ilustrationImage;
+    [Header("Info")]
+    [SerializeField] string infoText = "Lazy GameDesign";
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +30,7 @@ public class SizeControler : MonoBehaviour
        SetCost();
        UpdateImage();
        SetBuildingSize();
+       SetInfoText();
 
     }
 
@@ -89,6 +93,14 @@ public class SizeControler : MonoBehaviour
             image = gameObject.transform.GetChild(4).GetComponent<Image>();
             image.sprite = ilustrationImage;
         }
+    }
+
+    private void SetInfoText ()
+    {
+        Transform go = gameObject.transform.GetChild(6);
+        go = go.transform.GetChild(0);
+        Text text = go.GetComponent<Text>();
+        text.text = infoText;
     }
 
 }
