@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SizeControler : MonoBehaviour
+public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitHandler
 {
+    private GameObject infoPanel;
+    private Animator anim;
     private Image[] images;
+    private bool mouseOver = false;
 
     [Header("Size of Building")]
     public bool[] myArray = new bool[] { true, true, false, true, false, true };
@@ -19,7 +23,12 @@ public class SizeControler : MonoBehaviour
     [SerializeField] Sprite backgroundImage;
     [SerializeField] Sprite ilustrationImage;
     [Header("Info")]
-    [SerializeField] string infoText = "Lazy GameDesign";
+    [SerializeField] float timeForInfo = 2;
+    [SerializeField] Color fadeColor = Color.gray;
+    [TextArea(4, 10)]
+    [SerializeField] string textForInfo = "Lazy GameDesign";
+    
+
 
 
     // Start is called before the first frame update
@@ -32,6 +41,11 @@ public class SizeControler : MonoBehaviour
        SetBuildingSize();
        SetInfoText();
 
+    }
+
+    void Update()
+    {
+        ShowInfo();
     }
 
     private void SetButtonName()
@@ -97,10 +111,49 @@ public class SizeControler : MonoBehaviour
 
     private void SetInfoText ()
     {
-        Transform go = gameObject.transform.GetChild(6);
-        go = go.transform.GetChild(0);
+        infoPanel = gameObject.transform.GetChild(6).gameObject;
+        anim = infoPanel.GetComponent<Animator>();
+        Transform go = infoPanel.transform.GetChild(0);
         Text text = go.GetComponent<Text>();
-        text.text = infoText;
+        text.text = textForInfo;
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        mouseOver = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        mouseOver = false;
+    }
+
+   
+
+    private void ShowInfo()
+    {
+        if(mouseOver)
+        {
+            Invoke("ShowInfoWithDelay", timeForInfo);
+        }
+        else
+        {
+            CancelInvoke();
+            infoPanel.SetActive(false);
+           // anim.SetBool("Active", false);
+           // Invoke("DisableObject", 2);
+        }
+    }
+
+    private void ShowInfoWithDelay()
+    {
+        infoPanel.SetActive(true);
+       // anim.SetBool("Active", true);
+    }
+
+    //private void DisableObject()
+    //{
+    //    infoPanel.SetActive(false);
+    //}
 
 }
