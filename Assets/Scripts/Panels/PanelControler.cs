@@ -7,16 +7,13 @@ public class PanelControler : MonoBehaviour
 {
 
     [SerializeField] GameObject cheatPanel;
-    public GameObject panel; // ToDo Pridam vsechny panely a pak vymyslim lepsi mechanismus zavirani a vypinani.
-    public bool isActive = false;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
         AddToList();
-        panel.SetActive(isActive); // ToDo to souvisi stim prvnim
-        cheatPanel.SetActive(false);
+        SetActiveAll(false);
     }
 
     // Update is called once per frame
@@ -26,10 +23,18 @@ public class PanelControler : MonoBehaviour
     }
 
 
-    public void TurnOn()
+    public void TurnOn(int currentPanel)
     {
-        isActive = !isActive;
-        panel.SetActive(isActive);  // ToDo to souvisi stim prvnim
+        
+        if(panels[currentPanel].activeSelf == true)
+        {
+            panels[currentPanel].SetActive(false);
+        }
+        else
+        {
+            SetActiveAll(false);
+            panels[currentPanel].SetActive(true);
+        }
     }
 
 
@@ -44,8 +49,6 @@ public class PanelControler : MonoBehaviour
                     item.SetActive(false);
                 }
             }
-            if(isActive)
-            isActive = !isActive;
         }
     }
 
@@ -60,6 +63,15 @@ public class PanelControler : MonoBehaviour
     public void ShowCheats()
     {
         cheatPanel.SetActive(!cheatPanel.activeSelf);
+    }
+
+    public void SetActiveAll(bool status)
+    {
+        cheatPanel.SetActive(status);
+        foreach (var item in panels)
+        {
+            item.SetActive(status);
+        }
     }
 
 }
