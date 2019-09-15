@@ -26,9 +26,9 @@ public class PanelTime : MonoBehaviour
         }
     }
     private UInt32 gameTimer;
-    private readonly List<string> listOfTimeStatus = new List<string>() {"Very slow", "Slow", "Normal", "Fast", "Very fast" };
+    private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,16 +49,17 @@ public class PanelTime : MonoBehaviour
             if (blinkingTime < 0.5f)
             {
                 enabled = true;
-            } else if (blinkingTime > 1f)
+            }
+            else if (blinkingTime > 1f)
             {
                 blinkingTime = 0f;
             }
-            pauseButton.GetComponent<Image>().CrossFadeAlpha(enabled ? 0:1, 0.2f, true);
+            pauseButton.GetComponent<Image>().CrossFadeAlpha(enabled ? 0 : 1, 0.2f, true);
         }
         else
         {
-            if(pauseButton != null) // Tohle jsem pridal jenom aby me to nehazelo error... V mojí scene.
-            pauseButton.GetComponent<Image>().CrossFadeAlpha(1, 0.2f, true);
+            if (pauseButton != null) // Tohle jsem pridal jenom aby me to nehazelo error... V mojí scene.
+                pauseButton.GetComponent<Image>().CrossFadeAlpha(1, 0.2f, true);
         }
     }
     void OnDestroy()
@@ -111,7 +112,7 @@ public class PanelTime : MonoBehaviour
     {
         //10 timePoints = 5s
         var tpToAdd = timePoints + timeRemain;
-        gameTimer += (uint) (tpToAdd / 2);
+        gameTimer += (uint)(tpToAdd / 2);
         timeRemain = tpToAdd % 2;
         DisplayTime();
     }
@@ -131,7 +132,7 @@ public class PanelTime : MonoBehaviour
         string hour = hours.ToString("D2");
         string dayS = days.ToString();
 
-        
+
         textTime.text = $"{hour}:{min}:{sec}";
         // days
         textDays.text = dayS;
@@ -139,7 +140,7 @@ public class PanelTime : MonoBehaviour
 
     private void DisplayStatus(int speed)
     {
-        
+
         speedStatus.text = listOfTimeStatus[speed];
     }
     private void CheckInput()
