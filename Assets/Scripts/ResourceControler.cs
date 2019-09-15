@@ -14,8 +14,9 @@ public class ResourceControler : MonoBehaviour
     private int energie;
     private int deti;
     private int karma;
-
-
+    private List<GameObject> TechnickyMaterialBoxes;
+    private TileFactory tileFactory;
+    public GameObject TechnickyMaterialBox;
 
     /*
     private int specialniMaterial;
@@ -27,6 +28,9 @@ public class ResourceControler : MonoBehaviour
 
    /*   Metody na nastaveni kazde surky zvlast */
 
+   /*
+    * TODO: Nemelo by byt v nazvu Set (to by znamenalo nastavit napevno na novou hodnotu), ale nejake Inc nebo tak - at je jasne ze pricitas. Ashen
+   */
     public void SetPotraviny (int value)
     {
         potraviny += value;
@@ -40,6 +44,7 @@ public class ResourceControler : MonoBehaviour
     public void SetTechnickyMaterial(int value)
     {
         technickyMaterial += value;
+        SpawnTechnickyMaterial(value);
     }
 
     public void SetPohonneHmoty(int value)
@@ -71,7 +76,8 @@ public class ResourceControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
+        TechnickyMaterialBoxes = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -123,4 +129,26 @@ public class ResourceControler : MonoBehaviour
       //  karma = 0;
     }
 
+
+
+
+
+
+    //jakmile ziskas novou surku, mela by se objevit i na mape ve forme bedny
+    //aby se nerozhodil pocet surek a pocet beden, melo by se spawnovat jen z jednoho misto, ktere to bude hlidat
+    //tady test, zatim jen pro TechnickyMaterial, casem nejak univerzalneji
+    public void SpawnTechnickyMaterial(int amount, Vector2Int coord)
+    {
+        var box = Instantiate(TechnickyMaterialBox, Geometry.PointFromGrid(coord), Quaternion.identity);
+        TechnickyMaterialBoxes.Add(box);
+        tileFactory.AddBox(coord, box);
+    }
+
+    //nemame-li konkretni koordinaty, najdi nahodne volne misto a spawni to tam
+    public void SpawnTechnickyMaterial(int amount)
+    {
+        //Finds first emptyTile with no building and no resource box
+        var coord = tileFactory.FindFreeTile();
+        SpawnTechnickyMaterial(amount, coord);
+    }
 }

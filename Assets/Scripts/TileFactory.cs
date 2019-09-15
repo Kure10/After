@@ -51,11 +51,12 @@ public class TileFactory : MonoBehaviour
                 {
                     case ' ': continue;
                     case 'w': col.Add(new WallTile(generateTilePrefab(wallTile, gridPoint), x, z)); break;
-                    case 'e': col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z)); break;
-                    case 's': Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
-                              goto case 'e';
+                    case 'e': col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z) {inside = true}); break;
+                    case 's':
+                        Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+                        goto case 'e';
                     case 'd': col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z)); break;
-                    case '0': col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z)); break;
+                    case '0': col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z) {inside = false}); break;
                     default: Debug.Log($"Unknown object: {type} at {gridPoint.x} : {gridPoint.y}"); continue;
                 }
                 x++;
@@ -67,7 +68,7 @@ public class TileFactory : MonoBehaviour
         var ret = new BaseTile[tempGrid[0].Count, tempGrid.Count];
         foreach (var row in tempGrid)
         {
-            foreach(var item in row)
+            foreach (var item in row)
             {
                 ret[item.x, item.y] = item;
             }
@@ -111,7 +112,7 @@ public class TileFactory : MonoBehaviour
             if (node == target)
             {
                 //we found our path
-                return RetracePath(start,target);
+                return RetracePath(start, target);
             }
 
             foreach (var neighbour in GetNeighbours(node))
@@ -189,7 +190,7 @@ public class TileFactory : MonoBehaviour
     }
     public void AddBuilding(List<Vector2Int> coords, GameObject building)
     {
-        foreach(var coord in coords)
+        foreach (var coord in coords)
         {
             if (grid[coord.x, coord.y] is Tile t)
             {
@@ -197,6 +198,25 @@ public class TileFactory : MonoBehaviour
             }
         }
     }
+
+    public void AddBox(Vector2Int coords, GameObject box)
+    {
+        if (grid[coords.x, coords.y] is Tile t)
+        {
+            if (t.resourceBox != null)
+            {
+                Debug.LogWarning(
+                    $"There is already an resource box at {coords.x} : {coords.y}! This shouldn't happen'");
+            }
+            t.resourceBox = box;
+        }
+        else
+        {
+            Debug.LogWarning(
+                $"Tried to add resource box to non-Tile object at {coords.x} : {coords.y}! This shouldn't happen'");
+        }
+    }
+
     private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
     {
         List<Vector2Int> path = new List<Vector2Int>();
@@ -209,5 +229,23 @@ public class TileFactory : MonoBehaviour
         }
         path.Reverse();
         return path;
+    }
+
+
+    //Finds first emptyTile with no building and no resource box
+    public Vector2Int FindFreeTile()
+    {
+        foreach (var item in grid)
+        {
+            if (item is Tile t)
+            {
+                if (t.building == null && t.resourceBox == null && t.inside == true)
+                {
+                    return Geometry.GridFromPoint(t.tile.transform.position);
+                }
+            }
+        }
+        //TODO kdyz nic nenajde, vrat pole mimo bazi
+        return new Vector2Int();
     }
 }
