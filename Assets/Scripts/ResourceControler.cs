@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,5 +152,23 @@ public class ResourceControler : MonoBehaviour
         //Finds first emptyTile with no building and no resource box
         var coord = tileFactory.FindFreeTile();
         SpawnTechnickyMaterial(amount, coord);
+    }
+
+    //zatim jen proof of work, jen pro technicky material
+    //najdi nejblizsi bednu od pole 'from'
+    public GameObject Nearest(Vector2Int from)
+    {
+        var cheapest = TechnickyMaterialBoxes.First();
+        int smallestSteps = int.MaxValue;
+        foreach (var box in TechnickyMaterialBoxes)
+        {
+            var steps = tileFactory.FindPath(from, Geometry.GridFromPoint(box.transform.position)).Count;
+            if (steps < smallestSteps)
+            {
+                smallestSteps = steps;
+                cheapest = box;
+            }
+        }
+        return cheapest;
     }
 }
