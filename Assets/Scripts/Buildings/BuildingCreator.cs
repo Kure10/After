@@ -13,7 +13,7 @@ public class BuildingCreator : MonoBehaviour
     private int column = 2; //hardcoded for now
     private int row = 3; //TODO: create new class for buildings with column and row properties
     // Start is called before the first frame update
-
+    public GameObject testBuilding;
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
@@ -22,7 +22,15 @@ public class BuildingCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (building != null)
+        if (building == null)
+        {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+               CreateBuilding(testBuilding);
+            }
+
+        }
+        else 
         {
  
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
