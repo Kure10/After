@@ -25,8 +25,9 @@ public class PanelControler : MonoBehaviour
 
     public void TurnOn(int currentPanel)
     {
-        
-        if(panels[currentPanel].activeSelf == true)
+        //CameraMovement.scrollEnabled = true;
+
+        if (panels[currentPanel].activeSelf == true)
         {
             panels[currentPanel].SetActive(false);
         }
@@ -35,6 +36,20 @@ public class PanelControler : MonoBehaviour
             SetActiveAll(false);
             panels[currentPanel].SetActive(true);
         }
+
+
+        foreach (var item in panels)
+        {
+            if(item.activeSelf == true)
+            {
+                CameraMovement.scrollEnabled = false;
+                return;
+            }
+            else
+            {
+                CameraMovement.scrollEnabled = true;
+            }
+        }
     }
 
 
@@ -42,6 +57,8 @@ public class PanelControler : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            CameraMovement.scrollEnabled = true;
+
             foreach (var item in panels)
             {
                 if (item.activeSelf)

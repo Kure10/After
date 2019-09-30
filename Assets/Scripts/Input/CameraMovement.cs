@@ -10,7 +10,7 @@ public class CameraMovement : MonoBehaviour
 
     private float xAxis, yAxis, zAxis;
     private Vector3 movement;
-    private static bool scrollEnabled = true;
+    public static bool scrollEnabled = true;
     // Start is called before the first frame update
     void Start()
     {
