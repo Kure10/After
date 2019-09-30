@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitHandler
 {
-    private GameObject infoPanel;
+    public GameObject infoPanel;
     private Animator anim;
     private Image[] images;
     private bool mouseOver = false;
@@ -40,7 +40,6 @@ public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitH
        UpdateImage();
        SetBuildingSize();
        SetInfoText();
-
     }
 
     void Update()
@@ -150,10 +149,5 @@ public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitH
         infoPanel.SetActive(true);
        // anim.SetBool("Active", true);
     }
-
-    //private void DisableObject()
-    //{
-    //    infoPanel.SetActive(false);
-    //}
 
 }
