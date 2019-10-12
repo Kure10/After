@@ -10,11 +10,11 @@ public class Specialists : ScriptableObject
     private enum Povolani { Doktor, Vojak, Vojín, Vedec, ZdravotniSestra, Seržant, JadernýFyzik, SpecNaz, Kuchař, Stavitel, Programator };
 
     [Header("Identification")]
-    [SerializeField] private Image image = null;
+    [SerializeField] private Sprite sprite = null;
     [SerializeField] private string fullName = "Pavel";
     [SerializeField] Povolani povolani;
     [Header("Main attributes")]
-    [Range(0, 20)] [SerializeField] public int level = 0;
+    [Range(0, 20)] [SerializeField] private int level = 0;
     [Range(0,10)] [SerializeField] public int vojak = 0;
     [Range(0, 10)] [SerializeField] public int vedec = 0;
     [Range(0, 10)] [SerializeField] public int technik = 0;
@@ -25,9 +25,35 @@ public class Specialists : ScriptableObject
     [SerializeField] public int maxStamina;
     [SerializeField] public int maxZdravy;
     [Space]
-    [SerializeField] public int currentStamina = 1;
-    [SerializeField] public int currentZdravy = 1;
+    [SerializeField] private int currentStamina = 1;
+    [SerializeField] private int currentZdravy = 1;
 
+
+    public string FullName { get { return fullName; } }
+    public int Level { get { return level; } }
+
+    public int Mil { get { return vojak; } }
+    public int Scl { get { return vedec; } }
+    public int Tel { get { return technik; } }
+    public int Sol { get { return social; } }
+    public int Kar { get { return karma; } }
+
+
+    public float PercentHealt
+    {
+        get
+        {
+            return ( (float)currentZdravy / (float)maxZdravy ) * 100;
+        }
+    }
+
+    public float PercentStamina
+    {
+        get
+        {
+            return ( (float)currentStamina / (float)maxStamina ) * 100;
+        }
+    }
 
     // obnova zdravy a staminy neni dodelana v GameDe Doc. zatim
 
@@ -52,5 +78,9 @@ public class Specialists : ScriptableObject
         maxZdravy = 40 + lvl + 4 * mil + 2 * tel + scl + sol;
     }
 
-    
+    public Sprite GetSprite()
+    {
+        return sprite;
+    }
+
 }
