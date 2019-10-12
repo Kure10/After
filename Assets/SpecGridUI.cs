@@ -21,6 +21,8 @@ public class SpecGridUI : MonoBehaviour
     {
         AddToSpecialistsList(spec);
         AddToSpecialistsList(spec1);
+        AddToSpecialistsList(spec1);
+        AddToSpecialistsList(spec1);
     }
 
     // Update is called once per frame

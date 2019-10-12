@@ -79,7 +79,6 @@ public class SpecSetGui : MonoBehaviour
 
     public void SetAll(Specialists spec)
     {
-        Debug.Log(spec.FullName);
         SetImagePanel(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
