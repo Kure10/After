@@ -91,4 +91,9 @@ public class PanelControler : MonoBehaviour
         }
     }
 
+    public void ReverseActivity(GameObject panel)
+    {
+        panel.SetActive(!panel.activeSelf);
+    }
+
 }
