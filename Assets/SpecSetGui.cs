@@ -11,10 +11,6 @@ public class SpecSetGui : MonoBehaviour
 
     Transform panelStats;
 
-    //ToDo mozna bych mel zvazit o predani reference na specialistu (sriptbObject)
-    // možna to ulehči praci a bude vse snadší
-
-    
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +18,6 @@ public class SpecSetGui : MonoBehaviour
         firstPanel = transform.GetChild(0);
         panelImage = firstPanel.GetChild(0);
         panelStats = firstPanel.GetChild(1);
-
-
-        //SetAll(spec);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-  
     }
 
     private void SetImagePanel(Specialists spec)
