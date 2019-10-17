@@ -12,7 +12,6 @@ public class PanelControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddToList();
         SetActiveAll(false);
     }
 
@@ -66,14 +65,6 @@ public class PanelControler : MonoBehaviour
                     item.SetActive(false);
                 }
             }
-        }
-    }
-
-    public void AddToList()
-    {
-        foreach (GameObject items in GameObject.FindGameObjectsWithTag("ExtensionPanel"))
-        {
-            panels.Add(items);
         }
     }
 
