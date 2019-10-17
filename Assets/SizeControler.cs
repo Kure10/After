@@ -127,8 +127,6 @@ public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitH
         mouseOver = false;
     }
 
-   
-
     private void ShowInfo()
     {
         if(mouseOver)
@@ -139,15 +137,12 @@ public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitH
         {
             CancelInvoke();
             infoPanel.SetActive(false);
-           // anim.SetBool("Active", false);
-           // Invoke("DisableObject", 2);
         }
     }
 
     private void ShowInfoWithDelay()
     {
         infoPanel.SetActive(true);
-       // anim.SetBool("Active", true);
     }
 
 }

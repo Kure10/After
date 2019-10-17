@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[CreateAssetMenu (menuName = "Specialista", fileName = "No name!") ]
+[CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
 public class Specialists : ScriptableObject
 {
     private enum Povolani { Doktor, Vojak, Vojín, Vedec, ZdravotniSestra, Seržant, JadernýFyzik, SpecNaz, Kuchař, Stavitel, Programator };
