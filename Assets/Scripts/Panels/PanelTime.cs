@@ -9,7 +9,7 @@ public class PanelTime : MonoBehaviour
 {
 
     //[Header("Setup")]
-    public Text textTime, textDays;
+    public Text textTime, textDays, textTimeSmall , TextDaysSmall;
     public Text speedStatus;
     public Button pauseButton;
     private int _timeStatus;
@@ -124,8 +124,8 @@ public class PanelTime : MonoBehaviour
         int seconds = (int)(gameTimer % 60);
         int minutes = (int)(gameTimer / 60) % 60;
         int hours = (int)(gameTimer / 3600) % 24;
-        int days = (int)(gameTimer / 86400); // ToDo asi bude potreba vice dnu .. to pak musim poresit
-                                             // -- bych neresil, klidne muzeme zobrazovat den 400 a neresit roky, Ashen
+        int days = (int)(gameTimer / 86400); 
+                                             
 
         string sec = seconds.ToString("D2");
         string min = minutes.ToString("D2");
@@ -134,8 +134,10 @@ public class PanelTime : MonoBehaviour
 
 
         textTime.text = $"{hour}:{min}:{sec}";
+        textTimeSmall.text = $"{hour}:{min}:{sec}";
         // days
         textDays.text = dayS;
+        TextDaysSmall.text = dayS;
     }
 
     private void DisplayStatus(int speed)
