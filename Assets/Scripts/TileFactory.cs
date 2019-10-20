@@ -181,6 +181,8 @@ public class TileFactory : MonoBehaviour
         bool ret = false;
         if (grid[coord.x, coord.y] is Tile tile && !(grid[coord.x, coord.y] is DebrisTile))
         {
+            if (!tile.inside)
+                return false;
             if (tile.building == null)
             {
                 ret = true;
