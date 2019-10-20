@@ -156,7 +156,7 @@ public class TileFactory : MonoBehaviour
                 int gridSizeY = grid.GetLength(1);
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    if (grid[checkX, checkY] is IWalkable g)
+                    if (grid[checkX, checkY] is IWalkable g && !(grid[checkX, checkY] is DebrisTile ))
                         neighbours.Add(g);
                 }
             }

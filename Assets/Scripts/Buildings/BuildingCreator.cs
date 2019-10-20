@@ -69,7 +69,8 @@ public class BuildingCreator : MonoBehaviour
                   
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
-                    var newBuild = Instantiate(building, building.transform.position, building.transform.rotation); 
+                    float upDiff = 0.04f;
+                    var newBuild = Instantiate(building, building.transform.position + new Vector3(0,upDiff,0), building.transform.rotation); 
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
                 }
