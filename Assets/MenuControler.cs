@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class MenuControler : MonoBehaviour
 {
-    private GameObject hotkeys;
+    [SerializeField]
+    GameObject hotKeys; // jina možnost me nenapada
+   // private GameObject hotkeys;
     void Start()
     {
-        hotkeys = GameObject.FindGameObjectWithTag("hotkeys");
-        hotkeys.SetActive(false);
+        // hotkeys = GameObject.FindObjectOfType<Menu>().gameObject;
+        // menu = GameObject.FindGameObjectWithTag("hotkeys");
+        hotKeys.SetActive(false);
     }
     public void ReverseActivity(GameObject panel)
     {
@@ -23,13 +26,13 @@ public class MenuControler : MonoBehaviour
 
     public void OpenHotkeys ()
     {
-      hotkeys.SetActive(true);
+        hotKeys.SetActive(true);
 
     }
 
     public void CloseHotkeys()
     {
-        hotkeys.SetActive(false);
+        hotKeys.SetActive(false);
 
     }
 
