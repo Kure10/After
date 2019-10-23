@@ -28,18 +28,18 @@ public class BuildingBridge : MonoBehaviour
     public void AddBuildingHolder (Building building)
     {
         GameObject ga = Instantiate(buildingPrefab);
-        if(building.GetVariety() == Variety.dilna)
+        if(building.GetSector() == Sector.dilna)
         {
             ga.transform.parent = dilna.transform;
         }
-        else if (building.GetVariety() == Variety.ubykace)
+        else if (building.GetSector() == Sector.ubykace)
         {
             ga.transform.parent = ubikace.transform;
         }
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingBuilder bb = ga.GetComponent<BuildingBuilder>();
         bb.BuildingChangeStats(building);
-
+        bb.BroadcastMessage("SetBackgroundImage", bc);
     }
 
     public void AddAllBuildings()
