@@ -27,7 +27,6 @@ public class Building : ScriptableObject
     [SerializeField] int rawMaterial = 0;
     [Header("Images")]
     [SerializeField] Sprite ilustrationImage;
-    [SerializeField] Sprite backgroundImage;
     [Header("Text Information")]
     [TextArea(4, 10)]
     [SerializeField] string textForInfo = "Lazy GameDesign";
@@ -39,7 +38,6 @@ public class Building : ScriptableObject
     public int GetMilitary { get { return vojenskyMaterial; } }
     public int GetRawMaterial { get { return rawMaterial; } }
     public Sprite GetSprite { get { return ilustrationImage; } }
-    public Sprite GetBackgroundSprite { get { return backgroundImage; } }
     public int GetSize { get { return sizeOfBuilding; } }
     public string GetInfo { get { return textForInfo; } }
 

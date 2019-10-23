@@ -8,13 +8,15 @@ public class BuildingControler : MonoBehaviour
     [SerializeField]
     private List<Building> buildings = new List<Building>();
 
+    [Space]
+    [Header("Background Images For Buildings")]
     [SerializeField]
-    public List<Sprite> sprites = new List<Sprite>();
+    private List<Sprite> sprites = new List<Sprite>();
 
-    // zkouska
-    public Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
+    private Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
 
     // Tady bych asi vymyslel nejake ID budov. Aby se to nemuselo vybirat podle jmena. , Nebo nejaky jiny identifikator.
+    // podobnou metodu mas i v BuildingBuilderu. 
     public Building GetBuildingByName (string name)
     {
         foreach (var item in buildings)
@@ -33,11 +35,14 @@ public class BuildingControler : MonoBehaviour
         return buildings;
     }
 
-
-    // zkouska
-    public void FullFillDictionary()
+    private void Awake()
     {
-        Debug.Log(System.Enum.GetValues(typeof(Sector)).Length);
+        SetUpDictionary();
+    }
+
+    public void SetUpDictionary()
+    {
+       // Debug.Log(System.Enum.GetValues(typeof(Sector)).Length);
 
         backgroundImages.Add(Sector.agregat, sprites[0]);
         backgroundImages.Add(Sector.dilna, sprites[1]);
@@ -49,5 +54,13 @@ public class BuildingControler : MonoBehaviour
         backgroundImages.Add(Sector.ubykace, sprites[7]);
         backgroundImages.Add(Sector.vezeni, sprites[8]);
     }
+
+    public Sprite GetSprite (Sector sector)
+    {
+        Sprite sprite;
+        sprite = backgroundImages[sector];
+        return sprite;
+    }
+
 
 }

@@ -24,7 +24,7 @@ public class BuildingBuilder : MonoBehaviour
         BuildingSetUp();
     }
 
-    // Ashene 
+    // Asi si Ashene uprav tady co budes chtit. 
     public Building GetBuildingInformation()
     {
         return building;
@@ -40,14 +40,15 @@ public class BuildingBuilder : MonoBehaviour
         IlustrationImage = gameObject.transform.GetChild(4).GetComponent<Image>();
         Size = gameObject.transform.GetChild(5).GetComponentsInChildren<Image>();
         InfoPanelText = gameObject.transform.GetChild(6).GetChild(0).GetComponent<Text>();
-
-       // Correction();
     }
 
     public void BuildingChangeStats(Building build)
     {
         building = build;
-        BackgroundImage.sprite = building.GetBackgroundSprite;
+        if (building.GetSprite == null)
+        {
+            Debug.Log("Image errors on the building");
+        }
         NameText.text = building.GetName;
         CivilHolder.text = building.GetCivil.ToString();
         TechHolder.text = building.GetTech.ToString();
@@ -68,49 +69,11 @@ public class BuildingBuilder : MonoBehaviour
 
     public void SetBackgroundImage(BuildingControler bc)
     {
-        // BuildingControler bc = FindObjectOfType<BuildingControler>();
-
-        if(building == null || bc == null)
+        if (building == null || bc == null)
         {
             return;
         }
-
-        switch(building.GetSector())
-        {
-            case Sector.agregat:
-                BackgroundImage.sprite = bc.sprites[0];
-                break;
-            case Sector.dilna:
-                BackgroundImage.sprite = bc.sprites[1];
-                break;
-            case Sector.garaz:
-                BackgroundImage.sprite = bc.sprites[2];
-                break;
-            case Sector.kaple:
-                BackgroundImage.sprite = bc.sprites[3];
-                break;
-            case Sector.laborator:
-                BackgroundImage.sprite = bc.sprites[4];
-                break;
-            case Sector.sklad:
-                BackgroundImage.sprite = bc.sprites[5];
-                break;
-            case Sector.strilna:
-                BackgroundImage.sprite = bc.sprites[6];
-                break;
-            case Sector.ubykace:
-                BackgroundImage.sprite = bc.sprites[7];
-                break;
-            case Sector.vezeni:
-                BackgroundImage.sprite = bc.sprites[8];
-                break;
-            default:
-                Debug.Log("No Sprite on Building");
-                BackgroundImage.sprite = null;
-                break;
-
-        }
-
+        BackgroundImage.sprite = bc.GetSprite(building.GetSector());
     }
 
 }

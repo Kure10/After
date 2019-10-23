@@ -6,6 +6,12 @@ using UnityEngine.EventSystems;
 
 public class SizeControler : MonoBehaviour , IPointerEnterHandler, IPointerExitHandler
 {
+    // IMPORTNT !!!
+    /*
+     Tohle se už nepoužíva mam to tady jenom pro případ že by jeste mohlo
+    */
+
+
     public GameObject infoPanel;
     private Animator anim;
     private Image[] images;
