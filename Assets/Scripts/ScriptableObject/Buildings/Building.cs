@@ -8,7 +8,7 @@ public class Building : ScriptableObject
     [Header("Main Settings")]
     [SerializeField] string buildingName = "Default";
     [SerializeField]
-    Sector sector = Sector.ubykace;
+    Sector sector = Sector.ubikace;
     [SerializeField]
     TypeOfBuilding type = TypeOfBuilding.basis;
     [Tooltip("v sekundach")]
@@ -50,5 +50,5 @@ public class Building : ScriptableObject
 
 public enum TypeOfBuilding {basis , upgrade , extension};
 
-public enum Sector { ubykace, dilna, strilna, sklad, vezeni, laborator, agregat, garaz, kaple};
+public enum Sector { ubikace, dilna, strilna, sklad, vezeni, laborator, agregat, garaz, kaple};
 

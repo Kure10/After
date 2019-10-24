@@ -35,14 +35,6 @@ public class BuildingBridge : MonoBehaviour
 
         GameObject go = Instantiate(buildingPrefab);
         ChoiceBuildingHolder(sector,go);
-        //if (building.GetSector() == Sector.dilna)
-        //{
-        //    go.transform.parent = dilna.transform;
-        //}
-        //else if (building.GetSector() == Sector.ubykace)
-        //{
-        //    go.transform.parent = ubikace.transform;
-        //}
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingBuilder bb = go.GetComponent<BuildingBuilder>();
         bb.BuildingChangeStats(building);
@@ -82,7 +74,7 @@ public class BuildingBridge : MonoBehaviour
             case Sector.strilna:
                 go.transform.parent = strilna.transform;
                 break;
-            case Sector.ubykace:
+            case Sector.ubikace:
                 go.transform.parent = ubikace.transform;
                 break;
             case Sector.vezeni:

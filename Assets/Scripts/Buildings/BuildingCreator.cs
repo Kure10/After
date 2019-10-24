@@ -28,7 +28,6 @@ public class BuildingCreator : MonoBehaviour
             {
                CreateBuilding(testBuilding);
             }
-
         }
         else 
         {

@@ -51,7 +51,7 @@ public class BuildingControler : MonoBehaviour
         backgroundImages.Add(Sector.laborator, sprites[4]);
         backgroundImages.Add(Sector.sklad, sprites[5]);
         backgroundImages.Add(Sector.strilna, sprites[6]);
-        backgroundImages.Add(Sector.ubykace, sprites[7]);
+        backgroundImages.Add(Sector.ubikace, sprites[7]);
         backgroundImages.Add(Sector.vezeni, sprites[8]);
     }
 
