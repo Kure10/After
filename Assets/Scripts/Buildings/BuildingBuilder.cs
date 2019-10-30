@@ -45,20 +45,20 @@ public class BuildingBuilder : MonoBehaviour
     public void BuildingChangeStats(Building build)
     {
         building = build;
-        if (building.GetSprite == null)
+        if (building.Sprite == null)
         {
             Debug.Log("Image errors on the building");
         }
-        NameText.text = building.GetName;
-        CivilHolder.text = building.GetCivil.ToString();
-        TechHolder.text = building.GetTech.ToString();
-        MilitaryHolder.text = building.GetMilitary.ToString();
-        IlustrationImage.sprite = building.GetSprite;
-        for (int i = 0; i < building.GetSize; i++)
+        NameText.text = building.Name;
+        CivilHolder.text = building.Civil.ToString();
+        TechHolder.text = building.Tech.ToString();
+        MilitaryHolder.text = building.Military.ToString();
+        IlustrationImage.sprite = building.Sprite;
+        for (int i = 0; i < building.Size; i++)
         {
             Size[i].color = Color.black;
         }
-        InfoPanelText.text = building.GetInfo;
+        InfoPanelText.text = building.Info;
     }
 
     private void Correction()
