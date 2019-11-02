@@ -15,9 +15,8 @@ public class Building : ScriptableObject
     [SerializeField] float timeToBuild = 20f;
     
     [Header("Size of Building")]
-    [SerializeField]
-    [Range(1, 6)]
-    private int sizeOfBuilding = 1;
+    [SerializeField] [Range(1, 6)] private int sizeOfBuilding = 1;
+    [SerializeField] private float electricConsumption = 0;
 
     [Header("Resources cost")]
     [SerializeField] int civilniMaterial = 0;
@@ -43,6 +42,7 @@ public class Building : ScriptableObject
     public int Size { get { return sizeOfBuilding; } set { sizeOfBuilding = value; } }
     public string Info { get { return textForInfo; } set { textForInfo = value; } }
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
+    public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }
 
     public Sector GetSector()
     {

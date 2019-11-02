@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BuildingBuilder : MonoBehaviour
 {
-    public Building building;
+    public Building building; // tohle bude asi private a mozna to tu vubec nebude. Popremyslim co a jak predavat...
 
 
     private Text NameText { get; set; }
@@ -17,6 +17,7 @@ public class BuildingBuilder : MonoBehaviour
     private Text InfoPanelText { get; set; }
     private Image[] Size;
 
+    // vytvorit promene pro Raw material a ElectricConsumption // -> neni to udelane protoze Button Panel je nedodelany.
 
 
     private void Awake()
@@ -25,7 +26,7 @@ public class BuildingBuilder : MonoBehaviour
     }
 
     // Asi si Ashene uprav tady co budes chtit. 
-    public Building GetBuildingInformation()
+    public Building GetBuildingReferenc()
     {
         return building;
     }
@@ -40,11 +41,14 @@ public class BuildingBuilder : MonoBehaviour
         IlustrationImage = gameObject.transform.GetChild(4).GetComponent<Image>();
         Size = gameObject.transform.GetChild(5).GetComponentsInChildren<Image>();
         InfoPanelText = gameObject.transform.GetChild(6).GetChild(0).GetComponent<Text>();
+        // musim vytvořit promenou a nacachovat ElectricConsumption // To same se tyka Raw materials //
     }
 
     public void BuildingChangeStats(Building build)
     {
         building = build;
+        this.name = build.name;
+
         if (building.Sprite == null)
         {
             Debug.Log("Image errors on the building");
@@ -54,6 +58,7 @@ public class BuildingBuilder : MonoBehaviour
         TechHolder.text = building.Tech.ToString();
         MilitaryHolder.text = building.Military.ToString();
         IlustrationImage.sprite = building.Sprite;
+        // no a tady priradim odpovídající hodnotu co ma budova.ElectricConsumption // To same se tyka Raw materials //
         for (int i = 0; i < building.Size; i++)
         {
             Size[i].color = Color.black;
@@ -61,13 +66,15 @@ public class BuildingBuilder : MonoBehaviour
         InfoPanelText.text = building.Info;
     }
 
+    /*
     private void Correction()
     {
        GameObject go = InfoPanelText.gameObject.GetComponentInParent<GameObject>();
        go.SetActive(false);
     }
+    */
 
-    public void SetBackgroundImage(BuildingControler bc)
+    public void SetBackgroundImage(BuildingManager bc)
     {
         if (building == null || bc == null)
         {

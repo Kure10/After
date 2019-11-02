@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingControler : MonoBehaviour
+public class BuildingManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -40,10 +40,9 @@ public class BuildingControler : MonoBehaviour
         SetUpDictionary();
     }
 
+    
     public void SetUpDictionary()
     {
-       // Debug.Log(System.Enum.GetValues(typeof(Sector)).Length);
-
         backgroundImages.Add(Sector.agregat, sprites[0]);
         backgroundImages.Add(Sector.dilna, sprites[1]);
         backgroundImages.Add(Sector.garaz, sprites[2]);
