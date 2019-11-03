@@ -32,8 +32,9 @@ public class BuildingEditor : Editor
         sec = (Sector)EditorGUILayout.EnumPopup("Sector", sec);
         type = (TypeOfBuilding)EditorGUILayout.EnumPopup("Type", type);
         build.TimeToBuild = EditorGUILayout.FloatField("Time To Build", build.TimeToBuild);
-        GUILayout.Label("Size Of Building", EditorStyles.boldLabel);
+        GUILayout.Label("Building requirements ", EditorStyles.boldLabel);
         build.Size = (int)EditorGUILayout.Slider("Size Of Building", build.Size, 1, 6);
+        build.ElectricConsumption = EditorGUILayout.FloatField("Electric Consumption ",build.ElectricConsumption);
         GUILayout.Label("Resources Cost", EditorStyles.boldLabel);
         build.Civil = EditorGUILayout.IntField("Civilni Material", build.Civil);
         build.Tech = EditorGUILayout.IntField("Technicky Material", build.Tech);
@@ -158,6 +159,10 @@ public class BuildingEditor : Editor
         if(build.TimeToBuild < 0)
         {
             build.TimeToBuild = 0;
+        }
+        if (build.ElectricConsumption < 0)
+        {
+            build.ElectricConsumption = 0;
         }
     }
     #endregion 

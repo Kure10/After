@@ -15,13 +15,13 @@ public class BuildingBridge : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
-    private BuildingControler bc;
+    private BuildingManager bc;
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
 
     private void Awake()
     {
-        bc = FindObjectOfType<BuildingControler>();
+        bc = FindObjectOfType<BuildingManager>();
     }
 
     private void Start()
