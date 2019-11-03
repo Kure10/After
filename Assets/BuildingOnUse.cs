@@ -5,32 +5,22 @@ using UnityEngine.UI;
 
 public class BuildingOnUse : MonoBehaviour
 {
-    private Button button; // tohle mozna nepotrebuji. nemusim cachovat
+    private Building currentBuilding; 
 
-    private Building building; // reference a scriptAble Object odpovidajicí konkretni budove
 
     private void Awake()
     {
-       building = GetComponent<BuildingBuilder>().GetBuildingReferenc();
        SetButtonEvent();
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void CacheBuilding(Building building)
     {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentBuilding = building;
     }
 
     public void SetButtonEvent ()
     {
-        button = GetComponent<Button>();
+        Button button = GetComponent<Button>();
         button.onClick.AddListener(() => ButtonOnClick());
     }
 
@@ -38,5 +28,6 @@ public class BuildingOnUse : MonoBehaviour
     {
         Debug.Log("Button Executed !!!!  "  + this.name );
     }
+
 
 }

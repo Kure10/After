@@ -15,18 +15,22 @@ public class BuildingBridge : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
-    private BuildingManager bc;
+    private BuildingManager bm;
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
 
     private void Awake()
     {
-        bc = FindObjectOfType<BuildingManager>();
+        bm = FindObjectOfType<BuildingManager>();
+        AddAllBuildings();
     }
 
-    private void Start()
+    public void AddAllBuildings()
     {
-        AddAllBuildings();
+        foreach (var item in bm.GetBuildingList())
+        {
+            AddBuildingHolder(item);
+        }
     }
 
     public void AddBuildingHolder (Building building)
@@ -36,17 +40,9 @@ public class BuildingBridge : MonoBehaviour
         GameObject go = Instantiate(buildingPrefab);
         ChoiceBuildingHolder(sector,go);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
-        BuildingBuilder bb = go.GetComponent<BuildingBuilder>();
-        bb.BuildingChangeStats(building);
-        bb.BroadcastMessage("SetBackgroundImage", bc);
-    }
-
-    public void AddAllBuildings()
-    {
-        foreach (var item in bc.GetBuildingList())
-        {
-            AddBuildingHolder(item);
-        }
+        BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
+        bbb.BuildingChangeStats(building,bm);
+       // bbb.BroadcastMessage("SetBackgroundImage", bm);
     }
 
     private void ChoiceBuildingHolder (Sector sector, GameObject go)

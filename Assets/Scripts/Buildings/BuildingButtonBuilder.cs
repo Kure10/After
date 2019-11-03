@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingBuilder : MonoBehaviour
+public class BuildingButtonBuilder : MonoBehaviour
 {
-    public Building building; // tohle bude asi private a mozna to tu vubec nebude. Popremyslim co a jak predavat...
-
 
     private Text NameText { get; set; }
     private Text CivilHolder { get; set; }
@@ -25,11 +23,6 @@ public class BuildingBuilder : MonoBehaviour
         BuildingSetUp();
     }
 
-    // Asi si Ashene uprav tady co budes chtit. 
-    public Building GetBuildingReferenc()
-    {
-        return building;
-    }
 
     public void BuildingSetUp()
     {
@@ -44,10 +37,9 @@ public class BuildingBuilder : MonoBehaviour
         // musim vytvořit promenou a nacachovat ElectricConsumption // To same se tyka Raw materials //
     }
 
-    public void BuildingChangeStats(Building build)
+    public void BuildingChangeStats(Building building, BuildingManager bm)
     {
-        building = build;
-        this.name = build.name;
+        this.name = building.name;
 
         if (building.Sprite == null)
         {
@@ -64,23 +56,14 @@ public class BuildingBuilder : MonoBehaviour
             Size[i].color = Color.black;
         }
         InfoPanelText.text = building.Info;
-    }
 
-    /*
-    private void Correction()
-    {
-       GameObject go = InfoPanelText.gameObject.GetComponentInParent<GameObject>();
-       go.SetActive(false);
-    }
-    */
-
-    public void SetBackgroundImage(BuildingManager bc)
-    {
-        if (building == null || bc == null)
+        if (building == null || bm == null)
         {
             return;
         }
-        BackgroundImage.sprite = bc.GetSprite(building.GetSector());
+        BackgroundImage.sprite = bm.GetSprite(building.GetSector());
+
+        BroadcastMessage("CacheBuilding", building);
     }
 
 }
