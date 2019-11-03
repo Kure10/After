@@ -14,9 +14,10 @@ public class Building : ScriptableObject
     [Tooltip("v sekundach")]
     [SerializeField] float timeToBuild = 20f;
     
-    [Header("Size of Building")]
+    [Header("Building requirements")]
     [SerializeField] [Range(1, 6)] private int sizeOfBuilding = 1;
     [SerializeField] private float electricConsumption = 0;
+    [SerializeField] private GameObject prefab;
 
     [Header("Resources cost")]
     [SerializeField] int civilniMaterial = 0;
@@ -43,6 +44,7 @@ public class Building : ScriptableObject
     public string Info { get { return textForInfo; } set { textForInfo = value; } }
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
     public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }
+    public GameObject Prefab { get { return prefab; } set { prefab = value; } }
 
     public Sector GetSector()
     {

@@ -26,7 +26,7 @@ public class BuildingOnUse : MonoBehaviour
 
     public void ButtonOnClick ()
     {
-        Debug.Log("Button Executed !!!!  "  + this.name );
+        Debug.Log("Button Executed !!!!  " + this.name);
     }
 
 

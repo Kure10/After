@@ -23,8 +23,6 @@ public class BuildingEditor : Editor
       //  base.OnInspectorGUI();
         Building build = (Building)target;
 
-        GUILayout.Label("TESTING", EditorStyles.boldLabel);
-
         EditorGUILayout.Space();
 
         GUILayout.Label("Main Settings", EditorStyles.boldLabel);
@@ -32,6 +30,7 @@ public class BuildingEditor : Editor
         sec = (Sector)EditorGUILayout.EnumPopup("Sector", sec);
         type = (TypeOfBuilding)EditorGUILayout.EnumPopup("Type", type);
         build.TimeToBuild = EditorGUILayout.FloatField("Time To Build", build.TimeToBuild);
+        build.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab",build.Prefab, typeof(GameObject), allowSceneObjects: false);
         GUILayout.Label("Building requirements ", EditorStyles.boldLabel);
         build.Size = (int)EditorGUILayout.Slider("Size Of Building", build.Size, 1, 6);
         build.ElectricConsumption = EditorGUILayout.FloatField("Electric Consumption ",build.ElectricConsumption);
