@@ -10,10 +10,12 @@ public class BuildingButtonBuilder : MonoBehaviour
     private Text CivilHolder { get; set; }
     private Text TechHolder { get; set; }
     private Text MilitaryHolder { get; set; }
+    private Text ElectricHolder { get; set; }
     private Image IlustrationImage { get; set; }
     private Image BackgroundImage { get; set; }
     private Text InfoPanelText { get; set; }
     private Image[] Size;
+    private Image[] RawMaterials;
 
     // vytvorit promene pro Raw material a ElectricConsumption // -> neni to udelane protoze Button Panel je nedodelany.
 
@@ -31,10 +33,11 @@ public class BuildingButtonBuilder : MonoBehaviour
         CivilHolder = gameObject.transform.GetChild(1).GetChild(0).GetComponent<Text>();
         TechHolder = gameObject.transform.GetChild(2).GetChild(0).GetComponent<Text>();
         MilitaryHolder = gameObject.transform.GetChild(3).GetChild(0).GetComponent<Text>();
-        IlustrationImage = gameObject.transform.GetChild(4).GetComponent<Image>();
-        Size = gameObject.transform.GetChild(5).GetComponentsInChildren<Image>();
-        InfoPanelText = gameObject.transform.GetChild(6).GetChild(0).GetComponent<Text>();
-        // musim vytvořit promenou a nacachovat ElectricConsumption // To same se tyka Raw materials //
+        ElectricHolder = gameObject.transform.GetChild(4).GetChild(0).GetComponent<Text>();
+        IlustrationImage = gameObject.transform.GetChild(5).GetComponent<Image>();
+        Size = gameObject.transform.GetChild(6).GetComponentsInChildren<Image>();
+        InfoPanelText = gameObject.transform.GetChild(7).GetChild(0).GetComponent<Text>();
+        RawMaterials = gameObject.transform.GetChild(8).GetComponentsInChildren<Image>();
     }
 
     public void BuildingChangeStats(Building building, BuildingManager bm)
@@ -49,8 +52,16 @@ public class BuildingButtonBuilder : MonoBehaviour
         CivilHolder.text = building.Civil.ToString();
         TechHolder.text = building.Tech.ToString();
         MilitaryHolder.text = building.Military.ToString();
+        ElectricHolder.text = building.ElectricConsumption.ToString();
         IlustrationImage.sprite = building.Sprite;
-        // no a tady priradim odpovídající hodnotu co ma budova.ElectricConsumption // To same se tyka Raw materials //
+
+ 
+        for (int i = 0; i < building.RawMaterial; i++)
+        {
+           // RawMaterials[i].SetActive(true);
+            RawMaterials[i].color = Color.yellow;
+        }
+
         for (int i = 0; i < building.Size; i++)
         {
             Size[i].color = Color.black;

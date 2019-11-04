@@ -31,7 +31,7 @@ public class Building : ScriptableObject
     [TextArea(4, 10)]
     [SerializeField] string textForInfo = "Lazy GameDesign";
 
-    public List<RawMaterials> myList = new List<RawMaterials>();
+    public List<RawMaterials> listRawMaterials = new List<RawMaterials>();
 
 
     public string Name { get { return buildingName; } set { buildingName = value; } }
@@ -45,6 +45,16 @@ public class Building : ScriptableObject
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
     public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }
     public GameObject Prefab { get { return prefab; } set { prefab = value; } }
+
+    public List<RawMaterials> GetĹistRawMaterials()
+    {
+        return listRawMaterials;
+    }
+
+    public void SynchronizedList (List<RawMaterials> myList)
+    {
+        listRawMaterials = myList;
+    }
 
     public Sector GetSector()
     {

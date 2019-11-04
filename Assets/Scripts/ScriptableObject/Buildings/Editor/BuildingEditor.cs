@@ -8,6 +8,8 @@ public class BuildingEditor : Editor
 {
 
     //RawMaterials rawMat = RawMaterials.dynamit;
+    
+    private List<RawMaterials> listRawMaterials = new List<RawMaterials>();
 
     Sector sec = Sector.agregat;
     TypeOfBuilding type = TypeOfBuilding.basis;
@@ -40,96 +42,93 @@ public class BuildingEditor : Editor
         build.Military = EditorGUILayout.IntField("Vojensky Material", build.Military);
         EditorGUILayout.Space();
         build.RawMaterial = (int)EditorGUILayout.Slider("Number of Raw Material", build.RawMaterial,0,5);
-        OnRawMaterials(build.RawMaterial, build);
-
+        OnRawMaterials(build.RawMaterial, build, listRawMaterials);
         GUILayout.Label("Ilustration Image", EditorStyles.boldLabel);
         build.Sprite = (Sprite)EditorGUILayout.ObjectField(build.Sprite, typeof(Sprite), allowSceneObjects: false);
         GUILayout.Label("Text Information", EditorStyles.boldLabel);
         build.Info = EditorGUILayout.TextArea(build.Info, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
-
         ProperytyLimits(build);
 
         build.SetSector(sec);
         build.SetTypeOfBuilding(type);
 
-
+        build.SynchronizedList(listRawMaterials);
     }
 
-    private void OnRawMaterials (int size, Building building)
+    private void OnRawMaterials (int size, Building building, List<RawMaterials> listRawMaterials)
     {
-        if(building.myList.Count == 0)
+        if(listRawMaterials.Count == 0)
         {
             for (int i = 0; i < 5; i++)
             {
-                building.myList.Add(RawMaterials.None);
+                listRawMaterials.Add(RawMaterials.None);
             }
         }
 
         switch (size)
         {
             case 0:
-                for (int i = 0; i < building.myList.Count; i++)
+                for (int i = 0; i <listRawMaterials.Count; i++)
                 {
-                    building.myList[i] = RawMaterials.None;
+                    listRawMaterials[i] = RawMaterials.None;
                 }
                 break;
             case 1:
                 mat1 = (RawMaterials)EditorGUILayout.EnumPopup("Material 1:", mat1);
-                building.myList[0] = mat1;
-                for (int i = 1; i < building.myList.Count; i++)
+                listRawMaterials[0] = mat1;
+                for (int i = 1; i < listRawMaterials.Count; i++)
                 {
-                    building.myList[i] = RawMaterials.None;
+                    listRawMaterials[i] = RawMaterials.None;
                 }
                 break;
             case 2:
                 mat1 = (RawMaterials)EditorGUILayout.EnumPopup("Material 1:", mat1);
-                building.myList[0] = mat1;
+                listRawMaterials[0] = mat1;
                 mat2 = (RawMaterials)EditorGUILayout.EnumPopup("Material 2:", mat2);
-                building.myList[1] = mat2;
-                for (int i = 2; i < building.myList.Count; i++)
+                listRawMaterials[1] = mat2;
+                for (int i = 2; i < listRawMaterials.Count; i++)
                 {
-                    building.myList[i] = RawMaterials.None;
+                    listRawMaterials[i] = RawMaterials.None;
                 }
                 break;
             case 3:
                 mat1 = (RawMaterials)EditorGUILayout.EnumPopup("Material 1:", mat1);
-                building.myList[0] = mat1;
+                listRawMaterials[0] = mat1;
                 mat2 = (RawMaterials)EditorGUILayout.EnumPopup("Material 2:", mat2);
-                building.myList[1] = mat2;
+                listRawMaterials[1] = mat2;
                 mat3 = (RawMaterials)EditorGUILayout.EnumPopup("Material 3:", mat3);
-                building.myList[2] = mat3;
-                for (int i = 3; i < building.myList.Count; i++)
+                listRawMaterials[2] = mat3;
+                for (int i = 3; i < listRawMaterials.Count; i++)
                 {
-                    building.myList[i] = RawMaterials.None;
+                    listRawMaterials[i] = RawMaterials.None;
                 }
                 break;
             case 4:
                 mat1 = (RawMaterials)EditorGUILayout.EnumPopup("Material 1:", mat1);
-                building.myList[0] = mat1;
+                listRawMaterials[0] = mat1;
                 mat2 = (RawMaterials)EditorGUILayout.EnumPopup("Material 2:", mat2);
-                building.myList[1] = mat2;
+                listRawMaterials[1] = mat2;
                 mat3 = (RawMaterials)EditorGUILayout.EnumPopup("Material 3:", mat3);
-                building.myList[2] = mat3;
+                listRawMaterials[2] = mat3;
                 mat4 = (RawMaterials)EditorGUILayout.EnumPopup("Material 4:", mat4);
-                building.myList[3] = mat4;
-                building.myList[4] = RawMaterials.None;
+                listRawMaterials[3] = mat4;
+                listRawMaterials[4] = RawMaterials.None;
                 break;
             case 5:
                 mat1 = (RawMaterials)EditorGUILayout.EnumPopup("Material 1:", mat1);
-                building.myList[0] = mat1;
+                listRawMaterials[0] = mat1;
                 mat2 = (RawMaterials)EditorGUILayout.EnumPopup("Material 2:", mat2);
-                building.myList[1] = mat2;
+                listRawMaterials[1] = mat2;
                 mat3 = (RawMaterials)EditorGUILayout.EnumPopup("Material 3:", mat3);
-                building.myList[2] = mat3;
+                listRawMaterials[2] = mat3;
                 mat4 = (RawMaterials)EditorGUILayout.EnumPopup("Material 4:", mat4);
-                building.myList[3] = mat4;
+                listRawMaterials[3] = mat4;
                 mat5 = (RawMaterials)EditorGUILayout.EnumPopup("Material 5:", mat5);
-                building.myList[4] = mat5;
+                listRawMaterials[4] = mat5;
                 break;
             default:
                 break;
         }
-
     }
 
     #region Limits

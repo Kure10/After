@@ -42,7 +42,6 @@ public class BuildingBridge : MonoBehaviour
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
         bbb.BuildingChangeStats(building,bm);
-       // bbb.BroadcastMessage("SetBackgroundImage", bm);
     }
 
     private void ChoiceBuildingHolder (Sector sector, GameObject go)
