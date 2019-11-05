@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class BuildingOnUse : MonoBehaviour
 {
-    private Building currentBuilding; 
-
+    private Building currentBuilding;
+    private ResourceControler resourceControler;
 
     private void Awake()
     {
@@ -18,6 +18,11 @@ public class BuildingOnUse : MonoBehaviour
         currentBuilding = building;
     }
 
+    public void CacheResourcesControler(ResourceControler rc)
+    {
+        resourceControler = rc;
+    }
+
     public void SetButtonEvent ()
     {
         Button button = GetComponent<Button>();
@@ -26,8 +31,16 @@ public class BuildingOnUse : MonoBehaviour
 
     public void ButtonOnClick ()
     {
-        Debug.Log("Button Executed !!!!  " + this.name);
+        bool haveEnoughtResources = false;
+        haveEnoughtResources =  resourceControler.TryBuildBuilding(currentBuilding);
+
+        if(haveEnoughtResources)
+        {
+            Debug.Log("Button Executed !!!!  " + this.name);
+        }
+        
     }
+
 
 
 }

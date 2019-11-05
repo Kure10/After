@@ -5,9 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResourceControler : MonoBehaviour
+public class ResourceManager : MonoBehaviour
 {
-
+    
     private int potraviny;
     private int vojenskyMaterial;
     private int technickyMaterial;
@@ -27,49 +27,67 @@ public class ResourceControler : MonoBehaviour
 
     public Text[] text;
 
+    #region Properity
 
-   /*   Metody na nastaveni kazde surky zvlast */
+     public int Potraviny { get { return potraviny; } set{ potraviny = value;} }
 
-   /*
-    * TODO: Nemelo by byt v nazvu Set (to by znamenalo nastavit napevno na novou hodnotu), ale nejake Inc nebo tak - at je jasne ze pricitas. Ashen
-   */
-    public void SetPotraviny (int value)
+    public int VojenskyMaterial { get { return vojenskyMaterial; } set { vojenskyMaterial = value; } }
+
+    public int TechnickyMaterial { get { return technickyMaterial; } set { technickyMaterial = value; } }
+
+    public int CivilniMaterial { get { return civilniMaterial; } set { civilniMaterial = value; } }
+
+    public int PohonneHmoty { get { return pohonneHmoty; } set { pohonneHmoty = value; } }
+
+    public int Energie { get { return energie; } set { energie = value; } }
+
+    public int Deti { get { return deti; } set { deti = value; } }
+
+    public int Karma { get { return karma; } set { karma = value; } }
+
+    #endregion
+
+
+
+
+    /*   Metody na nastaveni kazde surky zvlast */
+    public void IncPotraviny (int value)
     {
         potraviny += value;
     }
 
-    public void SetVojenskyMaterialy(int value)
+    public void IncVojenskyMaterialy(int value)
     {
         vojenskyMaterial += value;
     }
 
-    public void SetTechnickyMaterial(int value)
+    public void IncTechnickyMaterial(int value)
     {
         technickyMaterial += value;
         SpawnTechnickyMaterial(value);
     }
 
-    public void SetPohonneHmoty(int value)
+    public void IncPohonneHmoty(int value)
     {
         pohonneHmoty += value;
     }
 
-    public void SetCivilniMaterial(int value)
+    public void IncCivilniMaterial(int value)
     {
         civilniMaterial += value;
     }
 
-    public void SetEnergie(int value)
+    public void IncEnergie(int value)
     {
         energie += value;
     }
 
-    public void SetDeti(int value)
+    public void IncDeti(int value)
     {
         deti += value;
     }
 
-    public void SetKarma(int value)
+    public void IncKarma(int value)
     {
         karma += value;
     }

@@ -15,6 +15,7 @@ public class BuildingBridge : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
+    private ResourceControler rc;
     private BuildingManager bm;
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
@@ -22,6 +23,7 @@ public class BuildingBridge : MonoBehaviour
     private void Awake()
     {
         bm = FindObjectOfType<BuildingManager>();
+        rc = FindObjectOfType<ResourceControler>();
         AddAllBuildings();
     }
 
@@ -42,6 +44,8 @@ public class BuildingBridge : MonoBehaviour
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
         bbb.BuildingChangeStats(building,bm);
+        BuildingOnUse bou = go.GetComponent<BuildingOnUse>();
+        bou.CacheResourcesControler(rc);
     }
 
     private void ChoiceBuildingHolder (Sector sector, GameObject go)

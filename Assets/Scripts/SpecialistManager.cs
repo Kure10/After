@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecialistControler : MonoBehaviour
+public class SpecialistManager : MonoBehaviour
 {
     [Header("Default Specialists")]
     [SerializeField]
