@@ -29,7 +29,7 @@ public class ResourceManager : MonoBehaviour
 
     #region Properity
 
-     public int Potraviny { get { return potraviny; } set{ potraviny = value;} }
+    public int Potraviny { get { return potraviny; } set{ potraviny = value;} }
 
     public int VojenskyMaterial { get { return vojenskyMaterial; } set { vojenskyMaterial = value; } }
 

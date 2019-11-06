@@ -3085,7 +3085,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetVojenskyMaterialy
+        m_MethodName: IncVojenskyMaterialy
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5125,7 +5125,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetCivilniMaterial
+        m_MethodName: IncCivilniMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7337,7 +7337,7 @@ GameObject:
   - component: {fileID: 743865659}
   - component: {fileID: 743865658}
   m_Layer: 5
-  m_Name: Button (9)
+  m_Name: Set to 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7651,7 +7651,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetCivilniMaterial
+        m_MethodName: IncCivilniMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8544,7 +8544,7 @@ GameObject:
   - component: {fileID: 930166994}
   - component: {fileID: 930166993}
   m_Layer: 5
-  m_Name: Button (8)
+  m_Name: Add ALl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8614,7 +8614,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetTechnickyMaterial
+        m_MethodName: AddAll
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9405,7 +9405,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetPotraviny
+        m_MethodName: IncPotraviny
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13551,7 +13551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1469687954
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14380,7 +14380,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetTechnickyMaterial
+        m_MethodName: IncTechnickyMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16703,7 +16703,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetPotraviny
+        m_MethodName: IncPotraviny
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18075,7 +18075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1871945901
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18446,7 +18446,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetVojenskyMaterialy
+        m_MethodName: IncVojenskyMaterialy
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18599,7 +18599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3346682, y: 0.19759968}
   m_AnchorMax: {x: 0.54800004, y: 0.46079907}
-  m_AnchoredPosition: {x: 1.199997, y: -1.2000122}
+  m_AnchoredPosition: {x: 1.199997, y: -1.2000065}
   m_SizeDelta: {x: 0, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1941471246
@@ -18986,7 +18986,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: SetTechnickyMaterial
+        m_MethodName: IncTechnickyMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

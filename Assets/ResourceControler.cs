@@ -14,11 +14,6 @@ public class ResourceControler : MonoBehaviour
        if(CheckEnoughTechnickyMaterial(building.Tech) && CheckEnoughCivilniMaterial(building.Civil) && CheckEnoughVojenskyMaterial(building.Military))
         {
 
-            resourceManager.CivilniMaterial -= building.Civil;
-            resourceManager.TechnickyMaterial -= building.Tech;
-            resourceManager.VojenskyMaterial -= building.Military;
-            // todo  and others
-
             // Allow Build fucking building;
             return true;
         }
