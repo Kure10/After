@@ -8,7 +8,8 @@ public class ResourceControler : MonoBehaviour
     [SerializeField]
     ResourceManager resourceManager;
 
-    // todo -- Musim to dodelat
+    // todo -- Tady bude vice podminek. Zatím tady jsou tyhle jenom.
+    // Jde o to ze nevím jak budou poreseny Raw Materials a taky jak Elektrina. a dalsí..
     public bool TryBuildBuilding(Building building)
     {
        if(CheckEnoughTechnickyMaterial(building.Tech) && CheckEnoughCivilniMaterial(building.Civil) && CheckEnoughVojenskyMaterial(building.Military))

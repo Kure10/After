@@ -10,7 +10,7 @@ public class BuildingOnUse : MonoBehaviour
 
     private void Awake()
     {
-       SetButtonEvent();
+       SetButtonEvent(); 
     }
 
     public void CacheBuilding(Building building)
@@ -34,6 +34,7 @@ public class BuildingOnUse : MonoBehaviour
         bool haveEnoughtResources = false;
         haveEnoughtResources =  resourceControler.TryBuildBuilding(currentBuilding);
 
+        // Zkontroluje jenom jestli ma dost na počatešní postaveni budovy.. (Nic se neodečíta.)
         if(haveEnoughtResources)
         {
             Debug.Log("Button Executed !!!!  " + this.name);

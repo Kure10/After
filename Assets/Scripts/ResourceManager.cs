@@ -47,9 +47,6 @@ public class ResourceManager : MonoBehaviour
 
     #endregion
 
-
-
-
     /*   Metody na nastaveni kazde surky zvlast */
     public void IncPotraviny (int value)
     {
@@ -105,12 +102,6 @@ public class ResourceManager : MonoBehaviour
     {
         UpdateText();
     }
-
-    /*
-    public void SetValueOf(int value, int resourse)
-    {
-        resourse += value;
-    }*/
 
         /*  Updatuje nase suroviny v gui */
     private void UpdateText ()
