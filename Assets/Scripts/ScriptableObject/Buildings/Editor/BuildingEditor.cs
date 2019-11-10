@@ -22,7 +22,7 @@ public class BuildingEditor : Editor
 
     public override void OnInspectorGUI()
     {
-      //  base.OnInspectorGUI();
+        base.OnInspectorGUI();
         Building build = (Building)target;
 
         EditorGUILayout.Space();
