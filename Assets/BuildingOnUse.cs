@@ -12,8 +12,9 @@ public class BuildingOnUse : MonoBehaviour
     private void Awake()
     {
         SetButtonEvent();
-        bc = GameObject.FindGameObjectWithTag("BuildingManager").GetComponent<BuildingCreator>();
+        bc = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<BuildingCreator>();
     }
+
 
     public void CacheBuilding(Building building)
     {
