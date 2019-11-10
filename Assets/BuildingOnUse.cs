@@ -7,10 +7,12 @@ public class BuildingOnUse : MonoBehaviour
 {
     private Building currentBuilding;
     private ResourceControler resourceControler;
+    private BuildingCreator bc;
 
     private void Awake()
     {
-       SetButtonEvent(); 
+        SetButtonEvent();
+        bc = GameObject.FindGameObjectWithTag("BuildingManager").GetComponent<BuildingCreator>();
     }
 
     public void CacheBuilding(Building building)
@@ -23,23 +25,31 @@ public class BuildingOnUse : MonoBehaviour
         resourceControler = rc;
     }
 
-    public void SetButtonEvent ()
+    public void SetButtonEvent()
     {
         Button button = GetComponent<Button>();
         button.onClick.AddListener(() => ButtonOnClick());
     }
 
-    public void ButtonOnClick ()
+    public void ButtonOnClick()
     {
         bool haveEnoughtResources = false;
-        haveEnoughtResources =  resourceControler.TryBuildBuilding(currentBuilding);
+        haveEnoughtResources = resourceControler.TryBuildBuilding(currentBuilding);
 
         // Zkontroluje jenom jestli ma dost na počatešní postaveni budovy.. (Nic se neodečíta.)
-        if(haveEnoughtResources)
+        if (haveEnoughtResources)
         {
+            if (currentBuilding.Prefab != null)
+            {
+                bc.CreateBuilding(currentBuilding.Prefab);
+            }
+            else
+            {
+                Debug.Log("Chybi Prefab pro building!");
+            }
             Debug.Log("Button Executed !!!!  " + this.name);
         }
-        
+
     }
 
 
