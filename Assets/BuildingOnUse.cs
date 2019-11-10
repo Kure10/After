@@ -7,12 +7,14 @@ public class BuildingOnUse : MonoBehaviour
 {
     private Building currentBuilding;
     private ResourceControler resourceControler;
-    private BuildingCreator bc;
+    private BuildingCreator buildingCreator;
+    private PanelControler panelControler;
 
     private void Awake()
     {
         SetButtonEvent();
-        bc = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<BuildingCreator>();
+        buildingCreator = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<BuildingCreator>();
+        panelControler = GameObject.FindGameObjectWithTag("Canvas").GetComponent<PanelControler>();
     }
 
 
@@ -42,7 +44,8 @@ public class BuildingOnUse : MonoBehaviour
         {
             if (currentBuilding.Prefab != null)
             {
-                bc.CreateBuilding(currentBuilding.Prefab);
+                buildingCreator.CreateBuilding(currentBuilding.Prefab);
+                panelControler.DisableAllPanels(); // disable all open panels. Pak tu dam current. Kdyby se nejak rozsirila hra.
             }
             else
             {

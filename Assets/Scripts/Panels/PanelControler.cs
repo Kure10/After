@@ -58,12 +58,17 @@ public class PanelControler : MonoBehaviour
         {
             CameraMovement.scrollEnabled = true;
 
-            foreach (var item in panels)
+            DisableAllPanels();
+        }
+    }
+
+    public void DisableAllPanels()
+    {
+        foreach (var item in panels)
+        {
+            if (item.activeSelf)
             {
-                if (item.activeSelf)
-                {
-                    item.SetActive(false);
-                }
+                item.SetActive(false);
             }
         }
     }
