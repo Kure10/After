@@ -1695,7 +1695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.9505209, y: 0.31380552}
   m_AnchorMax: {x: 1, y: 0.67600006}
-  m_AnchoredPosition: {x: -0.9989624, y: -0.5}
+  m_AnchoredPosition: {x: -0.99902344, y: -0.5}
   m_SizeDelta: {x: 2.0023193, y: 1}
   m_Pivot: {x: 0.5000006, y: 0.5}
 --- !u!114 &211515967
@@ -11832,8 +11832,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3583534686e0944ea390ffae10571ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TechnickyMaterialBox: {fileID: 5619154904886353550, guid: accc2f06fd4ae8f449d81168eea66c1b,
+  PotravinyBigBox: {fileID: 5092823461259278513, guid: fd937d21719cc48499f827ae49b575dd,
     type: 3}
+  PotravinySmallBox: {fileID: 5266448385444591522, guid: d050aa1b558010740ad22c2dbf299a8a,
+    type: 3}
+  VojenskyMaterialBigBox: {fileID: 7221443982588406139, guid: 3fce5977e86390c48bf23d0e0aff1a51,
+    type: 3}
+  VojenskyMaterialSmallBox: {fileID: 2646546169232345407, guid: 2ad632214e4944c48a851fcc5cd0e8fb,
+    type: 3}
+  TechnickyMaterialBigBox: {fileID: 5619154904886353550, guid: accc2f06fd4ae8f449d81168eea66c1b,
+    type: 3}
+  TechnickyMaterialSmallBox: {fileID: 3364368371064079678, guid: 9dc820ec4548aff4d820a76199970256,
+    type: 3}
+  CivilniMaterialBigBox: {fileID: 973470853882637921, guid: 70c4ce2ccd060cb47918ee104303af39,
+    type: 3}
+  CivilniMaterialSmallBox: {fileID: 8869494125272694937, guid: 4d3a9602ccef9e546a9a4e069d2c39a0,
+    type: 3}
+  PohonneHmotyBigBox: {fileID: 0}
+  PohonneHmotySmallBox: {fileID: 0}
   text:
   - {fileID: 1088373653}
   - {fileID: 231783659}
@@ -14381,7 +14397,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1246727684}
-        m_MethodName: IncTechnickyMaterial
+        m_MethodName: IncVojenskyMaterialy
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

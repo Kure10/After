@@ -16,10 +16,35 @@ public class ResourceManager : MonoBehaviour
     private int energie;
     private int deti;
     private int karma;
-    private List<GameObject> TechnickyMaterialBoxes;
-    private TileFactory tileFactory;
-    public GameObject TechnickyMaterialBox;
 
+    private List<GameObject> potravinyBoxes;
+    private List<GameObject> vojenskyMaterialBoxes;
+    private List<GameObject> technickyMaterialBoxes;
+    private List<GameObject> civilniMaterialBoxes;
+    private List<GameObject> pohonneHmotyBoxes;
+    private TileFactory tileFactory;
+    public GameObject PotravinyBigBox;
+    public GameObject PotravinySmallBox;
+    public GameObject VojenskyMaterialBigBox;
+    public GameObject VojenskyMaterialSmallBox;
+    public GameObject TechnickyMaterialBigBox;
+    public GameObject TechnickyMaterialSmallBox;
+    public GameObject CivilniMaterialBigBox;
+    public GameObject CivilniMaterialSmallBox;
+    public GameObject PohonneHmotyBigBox;
+    public GameObject PohonneHmotySmallBox;
+
+
+
+    [Serializable]
+    public enum Material
+    {
+        Potraviny,
+        Vojensky,
+        Technicky,
+        Civilni,
+        Pohonne
+    }
     /*
     private int specialniMaterial;
     private int specialiste;
@@ -51,27 +76,46 @@ public class ResourceManager : MonoBehaviour
     public void IncPotraviny (int value)
     {
         potraviny += value;
+        if (value > 0)
+        {
+            SpawnMaterial(Material.Potraviny, value);
+        }
     }
 
     public void IncVojenskyMaterialy(int value)
     {
         vojenskyMaterial += value;
+        if (value > 0)
+        {
+            SpawnMaterial(Material.Vojensky, value);
+        }
     }
 
     public void IncTechnickyMaterial(int value)
     {
         technickyMaterial += value;
-        SpawnTechnickyMaterial(value);
+        if (value > 0)
+        {
+            SpawnMaterial(Material.Technicky, value);
+        }
     }
 
     public void IncPohonneHmoty(int value)
     {
         pohonneHmoty += value;
+        if (value > 0)
+        {
+            SpawnMaterial(Material.Pohonne, value);
+        }
     }
 
     public void IncCivilniMaterial(int value)
     {
         civilniMaterial += value;
+        if (value > 0)
+        {
+            SpawnMaterial(Material.Civilni, value);
+        }
     }
 
     public void IncEnergie(int value)
@@ -94,7 +138,11 @@ public class ResourceManager : MonoBehaviour
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
-        TechnickyMaterialBoxes = new List<GameObject>();
+        technickyMaterialBoxes = new List<GameObject>();
+        potravinyBoxes = new List<GameObject>();
+        vojenskyMaterialBoxes = new List<GameObject>();
+        civilniMaterialBoxes = new List<GameObject>();
+        pohonneHmotyBoxes = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -121,11 +169,16 @@ public class ResourceManager : MonoBehaviour
         potraviny += value;
         vojenskyMaterial += value;
         technickyMaterial += value;
-    //    pohonneHmoty += value;
+     //   pohonneHmoty += value;
         civilniMaterial += value;
-     //   energie += value;
-     //   deti += value;
-     //   karma += value;
+        //   energie += value;
+        //   deti += value;
+        //   karma += value;
+        SpawnMaterial(Material.Potraviny, value);
+        SpawnMaterial(Material.Vojensky, value);
+        SpawnMaterial(Material.Technicky, value);
+     //   SpawnMaterial(Material.Pohonne, value);
+        SpawnMaterial(Material.Civilni, value);
     }
 
     public void SetToZero()
@@ -140,36 +193,57 @@ public class ResourceManager : MonoBehaviour
       //  karma = 0;
     }
 
-
-
-
-
-
-    //jakmile ziskas novou surku, mela by se objevit i na mape ve forme bedny
-    //aby se nerozhodil pocet surek a pocet beden, melo by se spawnovat jen z jednoho misto, ktere to bude hlidat
-    //tady test, zatim jen pro TechnickyMaterial, casem nejak univerzalneji
-    public void SpawnTechnickyMaterial(int amount, Vector2Int coord)
+    
+    //Unity editor neumi udel dropmenu s enumama, takze obezlicka pres int, bohuzel
+    public void SpawnMaterial(int typ, int amount)
     {
-        var box = Instantiate(TechnickyMaterialBox, Geometry.PointFromGrid(coord), Quaternion.identity);
-        TechnickyMaterialBoxes.Add(box);
-        tileFactory.AddBox(coord, box);
+        SpawnMaterial((Material)typ, amount);
     }
-
-    //nemame-li konkretni koordinaty, najdi nahodne volne misto a spawni to tam
-    public void SpawnTechnickyMaterial(int amount)
+    public void SpawnMaterial(Material typ, int amount)
     {
-        //Finds first emptyTile with no building and no resource box
+        GameObject box;
+        List<GameObject> pointer;
+        switch (typ)
+        {
+            case Material.Potraviny:
+                box = amount == 10 ? PotravinyBigBox : PotravinySmallBox;
+                pointer = potravinyBoxes;
+                break;
+            case Material.Civilni:
+                box = amount == 10 ? CivilniMaterialBigBox : CivilniMaterialSmallBox;
+                pointer = civilniMaterialBoxes;
+                break;
+            case Material.Vojensky:
+                box = amount == 10 ? VojenskyMaterialBigBox : VojenskyMaterialSmallBox;
+                pointer = vojenskyMaterialBoxes;
+                break;
+            case Material.Technicky: 
+                box = amount == 10 ? TechnickyMaterialBigBox : TechnickyMaterialSmallBox;
+                pointer = technickyMaterialBoxes;
+                break;
+            default:
+                box = amount == 10 ? PohonneHmotyBigBox : PohonneHmotySmallBox;
+                pointer = pohonneHmotyBoxes;
+                break;
+        }
+
+        if (amount > 10)
+        {
+            SpawnMaterial(typ, amount - 10);
+        }
         var coord = tileFactory.FindFreeTile();
-        SpawnTechnickyMaterial(amount, coord);
+        var newBox = Instantiate(box, Geometry.PointFromGrid(coord), Quaternion.identity);
+        pointer.Add(newBox);
+        tileFactory.AddBox(coord, newBox);
     }
 
     //zatim jen proof of work, jen pro technicky material
     //najdi nejblizsi bednu od pole 'from'
     public GameObject Nearest(Vector2Int from)
     {
-        var cheapest = TechnickyMaterialBoxes.First();
+        var cheapest = technickyMaterialBoxes.First();
         int smallestSteps = int.MaxValue;
-        foreach (var box in TechnickyMaterialBoxes)
+        foreach (var box in technickyMaterialBoxes)
         {
             var steps = tileFactory.FindPath(from, Geometry.GridFromPoint(box.transform.position)).Count;
             if (steps < smallestSteps)
