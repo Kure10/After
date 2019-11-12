@@ -8,11 +8,11 @@ public class BuildingEditor : Editor
 {
 
     //RawMaterials rawMat = RawMaterials.dynamit;
-    
+
     private List<RawMaterials> listRawMaterials = new List<RawMaterials>();
 
-    Sector sec = Sector.agregat;
-    TypeOfBuilding type = TypeOfBuilding.basis;
+    //[SerializeField] Sector sec = Sector.agregat;
+    //TypeOfBuilding type = TypeOfBuilding.basis;
 
     RawMaterials mat1 = RawMaterials.dynamit;
     RawMaterials mat2 = RawMaterials.dynamit;
@@ -20,17 +20,41 @@ public class BuildingEditor : Editor
     RawMaterials mat4 = RawMaterials.dynamit;
     RawMaterials mat5 = RawMaterials.dynamit;
 
-    public override void OnInspectorGUI()
+    private SerializedProperty sector;
+    private SerializedProperty type;
+
+    private SerializedProperty list;
+
+    private void OnEnable()
     {
-        base.OnInspectorGUI();
+        this.sector = this.serializedObject.FindProperty("sector");
+        this.type = this.serializedObject.FindProperty("type");
+
+        this.list = this.serializedObject.FindProperty("listRawMaterials");
+
+        this.serializedObject.Update();
+    }
+
+public override void OnInspectorGUI()
+    {
+        this.serializedObject.Update();
+
+        // EditorGUILayout.PropertyField(sector);      Vojto
+        
+       // EditorGUILayout.PropertyField(list);
+        // this.serializedObject.ApplyModifiedProperties();
+
+        // base.OnInspectorGUI();
         Building build = (Building)target;
 
         EditorGUILayout.Space();
 
         GUILayout.Label("Main Settings", EditorStyles.boldLabel);
         build.Name = EditorGUILayout.TextField("Building Name", build.Name);
-        sec = (Sector)EditorGUILayout.EnumPopup("Sector", sec);
-        type = (TypeOfBuilding)EditorGUILayout.EnumPopup("Type", type);
+        EditorGUILayout.PropertyField(sector);
+        this.serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.PropertyField(type);
+        this.serializedObject.ApplyModifiedProperties();
         build.TimeToBuild = EditorGUILayout.FloatField("Time To Build", build.TimeToBuild);
         build.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab",build.Prefab, typeof(GameObject), allowSceneObjects: false);
         GUILayout.Label("Building requirements ", EditorStyles.boldLabel);
@@ -42,20 +66,24 @@ public class BuildingEditor : Editor
         build.Military = EditorGUILayout.IntField("Vojensky Material", build.Military);
         EditorGUILayout.Space();
         build.RawMaterial = (int)EditorGUILayout.Slider("Number of Raw Material", build.RawMaterial,0,5);
-        OnRawMaterials(build.RawMaterial, build, listRawMaterials);
+        OnRawMaterials(build.RawMaterial);
         GUILayout.Label("Ilustration Image", EditorStyles.boldLabel);
         build.Sprite = (Sprite)EditorGUILayout.ObjectField(build.Sprite, typeof(Sprite), allowSceneObjects: false);
         GUILayout.Label("Text Information", EditorStyles.boldLabel);
         build.Info = EditorGUILayout.TextArea(build.Info, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
         ProperytyLimits(build);
 
-        build.SetSector(sec);
-        build.SetTypeOfBuilding(type);
 
         build.SynchronizedList(listRawMaterials);
+        serializedObject.ApplyModifiedProperties();
+       
+        
+
+        //EditorUtility.SetDirty(target);
+        this.serializedObject.ApplyModifiedProperties();
     }
 
-    private void OnRawMaterials (int size, Building building, List<RawMaterials> listRawMaterials)
+    private void OnRawMaterials (int size)
     {
         if(listRawMaterials.Count == 0)
         {

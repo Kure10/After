@@ -33,6 +33,16 @@ public class Building : ScriptableObject
 
     public List<RawMaterials> listRawMaterials = new List<RawMaterials>();
 
+    [SerializeField]
+    class NeededRawMaterials
+    {
+        private RawMaterials material1 = RawMaterials.None;
+        private RawMaterials material2 = RawMaterials.None;
+        private RawMaterials material3 = RawMaterials.None;
+        private RawMaterials material4 = RawMaterials.None;
+        private RawMaterials material5 = RawMaterials.None;
+    }
+   
 
     public string Name { get { return buildingName; } set { buildingName = value; } }
     public int Civil { get { return civilniMaterial; } set { civilniMaterial = value; } }
