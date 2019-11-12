@@ -30,25 +30,25 @@ public class BuildingEditor : Editor
         this.sector = this.serializedObject.FindProperty("sector");
         this.type = this.serializedObject.FindProperty("type");
 
-        this.list = this.serializedObject.FindProperty("listRawMaterials");
+        //this.list = this.serializedObject.FindProperty("listRawMaterials");
 
         this.serializedObject.Update();
     }
 
 public override void OnInspectorGUI()
     {
-        this.serializedObject.Update();
+       // this.serializedObject.Update();
 
-        // EditorGUILayout.PropertyField(sector);      Vojto
+        // EditorGUILayout.PropertyField(sector);
         
-       // EditorGUILayout.PropertyField(list);
+        // EditorGUILayout.PropertyField(list);
         // this.serializedObject.ApplyModifiedProperties();
 
-        // base.OnInspectorGUI();
+       // base.OnInspectorGUI();
         Building build = (Building)target;
 
         EditorGUILayout.Space();
-
+        GUILayout.Label("--------------------------", EditorStyles.boldLabel);
         GUILayout.Label("Main Settings", EditorStyles.boldLabel);
         build.Name = EditorGUILayout.TextField("Building Name", build.Name);
         EditorGUILayout.PropertyField(sector);
@@ -65,8 +65,11 @@ public override void OnInspectorGUI()
         build.Tech = EditorGUILayout.IntField("Technicky Material", build.Tech);
         build.Military = EditorGUILayout.IntField("Vojensky Material", build.Military);
         EditorGUILayout.Space();
-        build.RawMaterial = (int)EditorGUILayout.Slider("Number of Raw Material", build.RawMaterial,0,5);
-        OnRawMaterials(build.RawMaterial);
+        // build.RawMaterial = (int)EditorGUILayout.Slider("Number of Raw Material", build.RawMaterial,0,5);
+        // OnRawMaterials(build.RawMaterial);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("listRawMaterials"), true);
+        this.serializedObject.ApplyModifiedProperties();
+
         GUILayout.Label("Ilustration Image", EditorStyles.boldLabel);
         build.Sprite = (Sprite)EditorGUILayout.ObjectField(build.Sprite, typeof(Sprite), allowSceneObjects: false);
         GUILayout.Label("Text Information", EditorStyles.boldLabel);
@@ -74,8 +77,8 @@ public override void OnInspectorGUI()
         ProperytyLimits(build);
 
 
-        build.SynchronizedList(listRawMaterials);
-        serializedObject.ApplyModifiedProperties();
+      //  build.SynchronizedList(listRawMaterials);
+      //  serializedObject.ApplyModifiedProperties();
        
         
 

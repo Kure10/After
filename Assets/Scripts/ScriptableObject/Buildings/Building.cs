@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,16 +33,6 @@ public class Building : ScriptableObject
     [SerializeField] string textForInfo = "Lazy GameDesign";
 
     public List<RawMaterials> listRawMaterials = new List<RawMaterials>();
-
-    [SerializeField]
-    class NeededRawMaterials
-    {
-        private RawMaterials material1 = RawMaterials.None;
-        private RawMaterials material2 = RawMaterials.None;
-        private RawMaterials material3 = RawMaterials.None;
-        private RawMaterials material4 = RawMaterials.None;
-        private RawMaterials material5 = RawMaterials.None;
-    }
    
 
     public string Name { get { return buildingName; } set { buildingName = value; } }
