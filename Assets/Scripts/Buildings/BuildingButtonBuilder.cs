@@ -55,14 +55,13 @@ public class BuildingButtonBuilder : MonoBehaviour
         ElectricHolder.text = building.ElectricConsumption.ToString();
         IlustrationImage.sprite = building.Sprite;
 
-
-       // building.GetCountRawMaterials();
-
-        //for (int i = 0; i < building.RawMaterial; i++)
-        //{
-        //   // RawMaterials[i].SetActive(true);
-        //    RawMaterials[i].color = Color.yellow;
-        //}
+        for (int i = 0; i < building.GetCountRawMaterials(); i++)
+        {
+            if (i > 5)
+                return;
+            // RawMaterials[i].SetActive(true);
+            RawMaterials[i].color = Color.yellow;
+        }
 
         for (int i = 0; i < building.Size; i++)
         {
