@@ -26,7 +26,7 @@ public class BuildingButtonBuilder : MonoBehaviour
     }
 
 
-    public void BuildingSetUp()
+    private void BuildingSetUp()
     {
         BackgroundImage = gameObject.transform.GetComponent<Image>();
         NameText = gameObject.transform.GetChild(0).GetComponent<Text>();
@@ -55,12 +55,14 @@ public class BuildingButtonBuilder : MonoBehaviour
         ElectricHolder.text = building.ElectricConsumption.ToString();
         IlustrationImage.sprite = building.Sprite;
 
- 
-        for (int i = 0; i < building.RawMaterial; i++)
-        {
-           // RawMaterials[i].SetActive(true);
-            RawMaterials[i].color = Color.yellow;
-        }
+
+       // building.GetCountRawMaterials();
+
+        //for (int i = 0; i < building.RawMaterial; i++)
+        //{
+        //   // RawMaterials[i].SetActive(true);
+        //    RawMaterials[i].color = Color.yellow;
+        //}
 
         for (int i = 0; i < building.Size; i++)
         {

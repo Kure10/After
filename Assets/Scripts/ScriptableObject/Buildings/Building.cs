@@ -25,7 +25,7 @@ public class Building : ScriptableObject
     [SerializeField] int technickyMaterial = 0;
     [SerializeField] int vojenskyMaterial = 0;
     [Space]
-    [SerializeField] private int rawMaterial = 0; // Tohle bude bool -> Když ano tak by se meli zobrazit jeden raw material a tlacitko plus na pridani dalsiho
+    //[SerializeField] private int rawMaterial = 0; // Tohle bude bool -> Když ano tak by se meli zobrazit jeden raw material a tlacitko plus na pridani dalsiho
     [Header("Images")]
     [SerializeField] Sprite ilustrationImage;
     [Header("Text Information")]
@@ -39,7 +39,6 @@ public class Building : ScriptableObject
     public int Civil { get { return civilniMaterial; } set { civilniMaterial = value; } }
     public int Tech { get { return technickyMaterial; } set { technickyMaterial = value; } }
     public int Military { get { return vojenskyMaterial; } set { vojenskyMaterial = value; } }
-    public int RawMaterial { get { return rawMaterial; } set { rawMaterial = value; } }
     public Sprite Sprite { get { return ilustrationImage; } set { ilustrationImage = value; } }
     public int Size { get { return sizeOfBuilding; } set { sizeOfBuilding = value; } }
     public string Info { get { return textForInfo; } set { textForInfo = value; } }
@@ -50,6 +49,11 @@ public class Building : ScriptableObject
     public List<RawMaterials> GetĹistRawMaterials()
     {
         return listRawMaterials;
+    }
+
+    public int GetCountRawMaterials()
+    {
+        return listRawMaterials.Count;
     }
 
     public void SynchronizedList (List<RawMaterials> myList)

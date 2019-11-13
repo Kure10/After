@@ -15,21 +15,6 @@ public class BuildingManager : MonoBehaviour
 
     private Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
 
-    // Tady bych asi vymyslel nejake ID budov. Aby se to nemuselo vybirat podle jmena. , Nebo nejaky jiny identifikator.
-    // podobnou metodu mas i v BuildingBuilderu. 
-    public Building GetBuildingByName (string name)
-    {
-        foreach (var item in buildings)
-        {
-            if(item.name == name)
-            {
-                return item;
-            }
-        }
-
-        return null;
-    }
-
     public List<Building> GetBuildingList()
     {
         return buildings;
@@ -41,7 +26,7 @@ public class BuildingManager : MonoBehaviour
     }
 
     
-    public void SetUpDictionary()
+    private void SetUpDictionary()
     {
         backgroundImages.Add(Sector.agregat, sprites[0]);
         backgroundImages.Add(Sector.dilna, sprites[1]);
@@ -57,8 +42,7 @@ public class BuildingManager : MonoBehaviour
     public Sprite GetSprite (Sector sector)
     {
         Sprite sprite;
-        sprite = backgroundImages[sector];
-        return sprite;
+        return sprite = backgroundImages[sector];
     }
 
 

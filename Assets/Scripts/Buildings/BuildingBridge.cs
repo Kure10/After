@@ -15,27 +15,27 @@ public class BuildingBridge : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
-    private ResourceControler rc;
-    private BuildingManager bm;
+    private ResourceControler resourceControler;
+    private BuildingManager buildingManager;
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
 
     private void Awake()
     {
-        bm = FindObjectOfType<BuildingManager>();
-        rc = FindObjectOfType<ResourceControler>();
+        buildingManager = FindObjectOfType<BuildingManager>();
+        resourceControler = FindObjectOfType<ResourceControler>();
         AddAllBuildings();
     }
 
-    public void AddAllBuildings()
+    private void AddAllBuildings()
     {
-        foreach (var item in bm.GetBuildingList())
+        foreach (var item in buildingManager.GetBuildingList())
         {
             AddBuildingHolder(item);
         }
     }
 
-    public void AddBuildingHolder (Building building)
+    private void AddBuildingHolder (Building building)
     {
         Sector sector = building.GetSector();
 
@@ -43,9 +43,9 @@ public class BuildingBridge : MonoBehaviour
         ChoiceBuildingHolder(sector,go);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
-        bbb.BuildingChangeStats(building,bm);
+        bbb.BuildingChangeStats(building,buildingManager);
         BuildingOnUse bou = go.GetComponent<BuildingOnUse>();
-        bou.CacheResourcesControler(rc);
+        bou.CacheResourcesControler(resourceControler);
     }
 
     private void ChoiceBuildingHolder (Sector sector, GameObject go)

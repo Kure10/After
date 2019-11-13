@@ -165,10 +165,6 @@ public override void OnInspectorGUI()
     #region Limits
     private static void ProperytyLimits(Building build)
     {
-        if (build.RawMaterial < 0)
-        {
-            build.RawMaterial = 0;
-        }
         if (build.Civil < 0)
         {
             build.Civil = 0;
