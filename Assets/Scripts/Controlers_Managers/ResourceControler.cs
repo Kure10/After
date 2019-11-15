@@ -12,39 +12,21 @@ public class ResourceControler : MonoBehaviour
     // Jde o to ze nevím jak budou poreseny Raw Materials a taky jak Elektrina. a dalsí..
     public bool TryBuildBuilding(Building building)
     {
-       if(CheckEnoughTechnickyMaterial(building.Tech) && CheckEnoughCivilniMaterial(building.Civil) && CheckEnoughVojenskyMaterial(building.Military))
-        {
+        return CheckMaterialAvailability(building.Tech, ResourceManager.Material.Technicky) &&
+               CheckMaterialAvailability(building.Civil, ResourceManager.Material.Civilni) &&
+               CheckMaterialAvailability(building.Military, ResourceManager.Material.Vojensky);
+        /*
+if(CheckEnoughTechnickyMaterial(building.Tech) && CheckEnoughCivilniMaterial(building.Civil) 
+&& CheckEnoughVojenskyMaterial(building.Military))
+ {
 
-            // Allow Build fucking building;
-            return true;
-        }
-
-        return false;
+     // Allow Build fucking building;
+     return true;
+ }*/
     }
 
-
-    private bool CheckEnoughTechnickyMaterial(int value)
+    private bool CheckMaterialAvailability(int value, ResourceManager.Material type)
     {
-        if (resourceManager.TechnickyMaterial >= value)
-            return true;
-         
-        return false;
-    }      
-
-    private bool CheckEnoughVojenskyMaterial (int value)
-    {
-         if (resourceManager.VojenskyMaterial >= value)
-            return true;
-
-        return false;
+        return resourceManager.GetResourceCount(type) >= value;
     }
-
-     private bool CheckEnoughCivilniMaterial(int value)
-     {
-        if (resourceManager.CivilniMaterial >= value)
-            return true;
-
-        return false;
-     }
-            
 }

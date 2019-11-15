@@ -201,7 +201,7 @@ public class TileFactory : MonoBehaviour
         }
     }
 
-    public void AddBox(Vector2Int coords, GameObject box)
+    public void AddBox(Vector2Int coords, Resource box)
     {
         if (grid[coords.x, coords.y] is Tile t)
         {
