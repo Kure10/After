@@ -64,10 +64,10 @@ public class ResourceManager : MonoBehaviour
     public void IncPohonneHmoty(int value)
     {
         pohonneHmoty += value;
-        if (value > 0)
+     /*   if (value > 0)
         {
             SpawnMaterial(Material.Pohonne, value);
-        }
+        }*/
     }
 
     public void IncPotraviny(int value)
@@ -147,36 +147,64 @@ public class ResourceManager : MonoBehaviour
 
     public void SpawnMaterial(Material typ, int amount)
     {
-        GameObject box;
-        switch (typ)
+
+        if (amount > 0)
         {
-            case Material.Potraviny:
-                box = amount == 10 ? PotravinyBigBox : PotravinySmallBox;
-                break;
-            case Material.Civilni:
-                box = amount == 10 ? CivilniMaterialBigBox : CivilniMaterialSmallBox;
-                break;
-            case Material.Vojensky:
-                box = amount == 10 ? VojenskyMaterialBigBox : VojenskyMaterialSmallBox;
-                break;
-            case Material.Technicky: 
-                box = amount == 10 ? TechnickyMaterialBigBox : TechnickyMaterialSmallBox;
-                break;
-            default:
-                box = amount == 10 ? PohonneHmotyBigBox : PohonneHmotySmallBox;
-                break;
+            GameObject box;
+            switch (typ)
+            {
+                case Material.Potraviny:
+                    box = amount == 10 ? PotravinyBigBox : PotravinySmallBox;
+                    break;
+                case Material.Civilni:
+                    box = amount == 10 ? CivilniMaterialBigBox : CivilniMaterialSmallBox;
+                    break;
+                case Material.Vojensky:
+                    box = amount == 10 ? VojenskyMaterialBigBox : VojenskyMaterialSmallBox;
+                    break;
+                case Material.Technicky:
+                    box = amount == 10 ? TechnickyMaterialBigBox : TechnickyMaterialSmallBox;
+                    break;
+                default:
+                    box = amount == 10 ? PohonneHmotyBigBox : PohonneHmotySmallBox;
+                    break;
+            }
+
+            if (amount > 10)
+            {
+                SpawnMaterial(typ, amount - 10);
+            }
+
+            var coord = tileFactory.FindFreeTile();
+            var newBox = Instantiate(box, Geometry.PointFromGrid(coord), Quaternion.identity);
+            //ted vytvarime vzdy novy BOX TODO - pridat moznost pridat amount k jiz existujicimu boxu a zkontrolovat, jesli neni plny
+            var newResourse = new Resource() {amount = amount, position = coord, material = typ, prefab = newBox};
+            resources.Add(newResourse);
+            tileFactory.AddBox(coord, newResourse);
+        }
+        else
+        {
+            var FirstBox = resources.First(res => res.material == typ);
+            if (FirstBox.amount + amount <= 0)
+            {
+                amount += FirstBox.amount;
+                Destroy(FirstBox.prefab);
+                resources.Remove(FirstBox);
+            }
+            else
+            {
+                FirstBox.amount += amount;
+                amount = 0;
+                //TODO zmenit box jestli bylo 10 a spadlo na mensi
+            }
+
+            if (amount != 0)
+            {
+                SpawnMaterial(typ, amount);
+            }
+
         }
 
-        if (amount > 10)
-        {
-            SpawnMaterial(typ, amount - 10);
-        }
-        var coord = tileFactory.FindFreeTile();
-        var newBox = Instantiate(box, Geometry.PointFromGrid(coord), Quaternion.identity);
-        //ted vytvarime vzdy novy BOX TODO - pridat moznost pridat amount k jiz existujicimu boxu a zkontrolovat, jesli neni plny
-        var newResourse = new Resource() {amount = amount, position = coord, material = typ, prefab = newBox};
-
-        tileFactory.AddBox(coord, newResourse);
         ResourceAmountChanged();
     }
 
