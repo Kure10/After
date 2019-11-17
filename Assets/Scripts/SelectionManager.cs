@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class SelectionManager : MonoBehaviour
     private TileFactory tileFactory;
     private List<GameObject> selectedObjects;
     private List<GameObject> highlightedObjects;
+    private ResourceManager resourceManager;
     private int layerMask;
     private float maxDist = 100f;
     private readonly int TILE = 1 << 8;
@@ -17,6 +19,7 @@ public class SelectionManager : MonoBehaviour
         selectedObjects = new List<GameObject>();
         highlightedObjects = new List<GameObject>();
         layerMask = SELECTABLE; //hit only layer 9 (selectables)
+        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
     }
 
     // Update is called once per frame
@@ -63,7 +66,22 @@ public class SelectionManager : MonoBehaviour
                 if (Input.GetMouseButtonDown(1))
                 {
                     var targetTile = tileFactory.getTile(coord);
-
+                    if (targetTile is Tile t)
+                    {
+                        if (t.building != null)
+                        {
+                            //TODO map to building class to get the state of building (if it's under construction,
+                            //what materials are missing...)
+                            var charPosition = Geometry.GridFromPoint(selectedObjects[0].transform.position);
+                            var nearestRes = resourceManager.Nearest(charPosition, ResourceManager.Material.Civilni); //TODO pro vsechny matrose
+                            var pathToMaterial = tileFactory.FindPath(charPosition, nearestRes.position);
+                            var pathFromMatToBuilding = tileFactory.FindPath(nearestRes.position, coord);
+                            Move(selectedObjects[0], pathToMaterial.Concat(pathFromMatToBuilding).ToList());
+                            ClearHighlight(highlightedObjects);
+                            ClearHighlight(selectedObjects);
+                            return;
+                        }
+                    }
                     foreach(var character in selectedObjects)
                     {
                         var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
