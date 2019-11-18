@@ -29,7 +29,7 @@ public class ResourceManager : MonoBehaviour
     public GameObject PohonneHmotyBigBox;
     public GameObject PohonneHmotySmallBox;
 
-
+    public int ResValue { get; set; }
 
     [Serializable]
     public enum Material
@@ -72,21 +72,21 @@ public class ResourceManager : MonoBehaviour
 
     public void IncPotraviny(int value)
     {
-        SpawnMaterial(Material.Potraviny, value);
+        SpawnMaterial(Material.Potraviny, ResValue);
     }
     public void IncVojenskyMaterialy(int value)
     {
-        SpawnMaterial(Material.Vojensky, value);
+        SpawnMaterial(Material.Vojensky, ResValue);
 
     }
     public void IncTechnickyMaterial(int value)
     {
-        SpawnMaterial(Material.Technicky, value);
+        SpawnMaterial(Material.Technicky, ResValue);
 
     }
     public void IncCivilniMaterial(int value)
     {
-        SpawnMaterial(Material.Civilni, value);
+        SpawnMaterial(Material.Civilni, ResValue);
     }
     public void IncEnergie(int value)
     {
@@ -110,6 +110,8 @@ public class ResourceManager : MonoBehaviour
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
         resources = new List<Resource>();
         pohonneHmotyBoxes = new List<GameObject>();
+        ResourceAmountChanged();
+        ResValue = 1;
     }
 
     // Update is called once per frame
