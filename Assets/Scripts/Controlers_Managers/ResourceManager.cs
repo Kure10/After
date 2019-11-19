@@ -183,7 +183,12 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
+
+            if (!resources.Any())  // Kure -> Pokud je prazdny list (neni box) -> Resource je 0 ( Zaporné resource mit nejde prepokladam ) ----- Komentář smaž Ashene pokud souhlasis se zmenou.
+                return;
+
             var FirstBox = resources.First(res => res.material == typ);
+
             if (FirstBox.amount + amount <= 0)
             {
                 amount += FirstBox.amount;

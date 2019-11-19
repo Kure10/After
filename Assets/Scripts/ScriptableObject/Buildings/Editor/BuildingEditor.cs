@@ -14,11 +14,11 @@ public class BuildingEditor : Editor
     //[SerializeField] Sector sec = Sector.agregat;
     //TypeOfBuilding type = TypeOfBuilding.basis;
 
-    RawMaterials mat1 = RawMaterials.dynamit;
-    RawMaterials mat2 = RawMaterials.dynamit;
-    RawMaterials mat3 = RawMaterials.dynamit;
-    RawMaterials mat4 = RawMaterials.dynamit;
-    RawMaterials mat5 = RawMaterials.dynamit;
+    RawMaterials mat1 = RawMaterials.None;
+    RawMaterials mat2 = RawMaterials.None;
+    RawMaterials mat3 = RawMaterials.None;
+    RawMaterials mat4 = RawMaterials.None;
+    RawMaterials mat5 = RawMaterials.None;
 
     private SerializedProperty sector;
     private SerializedProperty type;

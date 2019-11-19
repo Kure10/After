@@ -87,5 +87,4 @@ public enum TypeOfBuilding {basis , upgrade , extension};
 
 public enum Sector { ubikace, dilna, strilna, sklad, vezeni, laborator, agregat, garaz, kaple};
 
-public enum RawMaterials { radiator, dynamit, fyaloveHovinko, peceneKure, BarbekiuOmacka, MojeNohy, None };
-
+public enum RawMaterials { bojler, varic, lednicka, usmernovac, sadaNaradi, sverak, kovadlina , rozsireneNaradi, elektrickeRucniNastroje, strojniZarizeni, automatizacniJednotka, Computer , zakladniNastroje,None };

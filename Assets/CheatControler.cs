@@ -23,29 +23,7 @@ public class CheatControler : MonoBehaviour , IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
-       // PressedKeyCode();
     }
-
-    // Obsolete
-    //private void PressedKeyCode()
-    //{
-    //    if (EventSystem.current.IsPointerOverGameObject())
-    //    {
-    //        if (Input.GetKey(KeyCode.LeftControl))
-    //        {
-    //            IsCtrPressed = true;
-    //        }
-    //        else if (Input.GetKey(KeyCode.LeftAlt))
-    //        {
-    //            IsAltPressed = true;
-    //        }
-    //        else
-    //        {
-    //            IsAltPressed = false;
-    //            IsCtrPressed = false;
-    //        }
-    //    }
-    //}
 
     public void OnPointerClick(PointerEventData eventData)
     {
