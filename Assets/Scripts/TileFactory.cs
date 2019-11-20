@@ -207,7 +207,8 @@ public class TileFactory : MonoBehaviour
         {
             if (t.resourceBox != null)
             {
-                Debug.LogWarning(
+                if (t.resourceBox.amount != 0)
+                    Debug.LogWarning(
                     $"There is already an resource box at {coords.x} : {coords.y}! This shouldn't happen'");
             }
             t.resourceBox = box;
@@ -218,6 +219,17 @@ public class TileFactory : MonoBehaviour
                 $"Tried to add resource box to non-Tile object at {coords.x} : {coords.y}! This shouldn't happen'");
         }
     }
+
+    public void RemoveBox(Vector2Int coords)
+    {
+        if (grid[coords.x, coords.y] is Tile t)
+        {
+            Object.Destroy(t.resourceBox.prefab);
+            t.resourceBox = null;
+        }
+
+    }
+    
 
     private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
     {
@@ -241,7 +253,7 @@ public class TileFactory : MonoBehaviour
         {
             if (item is Tile t)
             {
-                if (t.building == null && t.resourceBox == null && t.inside == true)
+                if (t.building == null && (t.resourceBox == null || t.resourceBox.amount == 0) && t.inside == true)
                 {
                     return Geometry.GridFromPoint(t.tile.transform.position);
                 }

@@ -105,8 +105,7 @@ public class ResourceManager : MonoBehaviour
     {
         foreach (var res in resources)
         {
-            Destroy(res.prefab);
-            //TODO na tohle misto destroy pridat nejakou funkci do Tile, ktera znulluje i ref na box - jinak si Tile stale mysli, ze na nem neco je
+            tileFactory.RemoveBox(res.position);
         }
         resources.Clear();
         ResourceAmountChanged();
@@ -193,8 +192,7 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-
-            if (!resources.Any())  // Kure -> Pokud je prazdny list (neni box) -> Resource je 0 ( Zaporné resource mit nejde prepokladam ) ----- Komentář smaž Ashene pokud souhlasis se zmenou.
+            if (!resources.Any()) 
                 return;
 
             var firstBox = resources.First(res => res.material == typ);
@@ -202,7 +200,7 @@ public class ResourceManager : MonoBehaviour
             if (firstBox.amount + amount <= 0)
             {
                 amount += firstBox.amount;
-                Destroy(firstBox.prefab);
+                tileFactory.RemoveBox(firstBox.position);
                 resources.Remove(firstBox);
             }
             else
