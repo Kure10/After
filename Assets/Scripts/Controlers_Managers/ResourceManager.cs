@@ -101,6 +101,15 @@ public class ResourceManager : MonoBehaviour
         karma += value;
     }
 
+    public void SetToZero()
+    {
+        foreach (var res in resources)
+        {
+            Destroy(res.prefab);
+            //TODO na tohle misto destroy pridat nejakou funkci do Tile, ktera znulluje i ref na box - jinak si Tile stale mysli, ze na nem neco je
+        }
+        resources.Clear();
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -187,17 +196,17 @@ public class ResourceManager : MonoBehaviour
             if (!resources.Any())  // Kure -> Pokud je prazdny list (neni box) -> Resource je 0 ( Zaporné resource mit nejde prepokladam ) ----- Komentář smaž Ashene pokud souhlasis se zmenou.
                 return;
 
-            var FirstBox = resources.First(res => res.material == typ);
+            var firstBox = resources.First(res => res.material == typ);
 
-            if (FirstBox.amount + amount <= 0)
+            if (firstBox.amount + amount <= 0)
             {
-                amount += FirstBox.amount;
-                Destroy(FirstBox.prefab);
-                resources.Remove(FirstBox);
+                amount += firstBox.amount;
+                Destroy(firstBox.prefab);
+                resources.Remove(firstBox);
             }
             else
             {
-                FirstBox.amount += amount;
+                firstBox.amount += amount;
                 amount = 0;
                 //TODO zmenit box jestli bylo 10 a spadlo na mensi
             }
