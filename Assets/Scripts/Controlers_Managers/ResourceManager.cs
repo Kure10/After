@@ -109,6 +109,7 @@ public class ResourceManager : MonoBehaviour
             //TODO na tohle misto destroy pridat nejakou funkci do Tile, ktera znulluje i ref na box - jinak si Tile stale mysli, ze na nem neco je
         }
         resources.Clear();
+        ResourceAmountChanged();
     }
     
     // Start is called before the first frame update
