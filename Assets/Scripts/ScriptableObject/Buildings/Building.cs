@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Building", fileName = "Building")]
+[CreateAssetMenu(menuName = "ScriptableObject/Building", fileName = "_NewBuilding")]
 public class Building : ScriptableObject
 {
     [Header("Main Settings")]
