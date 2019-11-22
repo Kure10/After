@@ -18,16 +18,16 @@ public class ResourceManager : MonoBehaviour
 
     private List<Resource> resources;
     
-    public GameObject PotravinyBigBox;
-    public GameObject PotravinySmallBox;
-    public GameObject VojenskyMaterialBigBox;
-    public GameObject VojenskyMaterialSmallBox;
-    public GameObject TechnickyMaterialBigBox;
-    public GameObject TechnickyMaterialSmallBox;
-    public GameObject CivilniMaterialBigBox;
-    public GameObject CivilniMaterialSmallBox;
-    public GameObject PohonneHmotyBigBox;
-    public GameObject PohonneHmotySmallBox;
+    public  GameObject PotravinyBigBox;
+    public  GameObject PotravinySmallBox;
+    public  GameObject VojenskyMaterialBigBox;
+    public  GameObject VojenskyMaterialSmallBox;
+    public  GameObject TechnickyMaterialBigBox;
+    public  GameObject TechnickyMaterialSmallBox;
+    public  GameObject CivilniMaterialBigBox;
+    public  GameObject CivilniMaterialSmallBox;
+    public  GameObject PohonneHmotyBigBox;
+    public  GameObject PohonneHmotySmallBox;
 
     [Serializable]
     public enum Material
@@ -105,7 +105,7 @@ public class ResourceManager : MonoBehaviour
     {
         foreach (var res in resources)
         {
-            tileFactory.RemoveBox(res.position);
+            res.Amount = 0;
         }
         resources.Clear();
         ResourceAmountChanged();
@@ -151,30 +151,34 @@ public class ResourceManager : MonoBehaviour
     {
         SpawnMaterial((Material)typ, amount);
     }
-
-
+    
     public void SpawnMaterial(Material typ, int amount)
     {
 
         if (amount > 0)
         {
-            GameObject box;
+            GameObject sBox, bBox;
             switch (typ)
             {
                 case Material.Potraviny:
-                    box = amount == 10 ? PotravinyBigBox : PotravinySmallBox;
+                    bBox = PotravinyBigBox;
+                    sBox = PotravinySmallBox;
                     break;
                 case Material.Civilni:
-                    box = amount == 10 ? CivilniMaterialBigBox : CivilniMaterialSmallBox;
+                    bBox = CivilniMaterialBigBox;
+                    sBox = CivilniMaterialSmallBox;
                     break;
                 case Material.Vojensky:
-                    box = amount == 10 ? VojenskyMaterialBigBox : VojenskyMaterialSmallBox;
+                    bBox = VojenskyMaterialBigBox;
+                    sBox = VojenskyMaterialSmallBox;
                     break;
                 case Material.Technicky:
-                    box = amount == 10 ? TechnickyMaterialBigBox : TechnickyMaterialSmallBox;
+                    bBox = TechnickyMaterialBigBox;
+                    sBox = TechnickyMaterialSmallBox;
                     break;
                 default:
-                    box = amount == 10 ? PohonneHmotyBigBox : PohonneHmotySmallBox;
+                    bBox = PohonneHmotyBigBox;
+                    sBox = PohonneHmotySmallBox;
                     break;
             }
 
@@ -184,9 +188,7 @@ public class ResourceManager : MonoBehaviour
             }
 
             var coord = tileFactory.FindFreeTile();
-            var newBox = Instantiate(box, Geometry.PointFromGrid(coord), Quaternion.identity);
-            //ted vytvarime vzdy novy BOX TODO - pridat moznost pridat amount k jiz existujicimu boxu a zkontrolovat, jesli neni plny
-            var newResourse = new Resource() {amount = amount, position = coord, material = typ, prefab = newBox};
+            var newResourse = new Resource(amount, typ, sBox, bBox, coord);
             resources.Add(newResourse);
             tileFactory.AddBox(coord, newResourse);
         }
@@ -197,17 +199,16 @@ public class ResourceManager : MonoBehaviour
 
             var firstBox = resources.First(res => res.material == typ);
 
-            if (firstBox.amount + amount <= 0)
+            if (firstBox.Amount + amount <= 0)
             {
-                amount += firstBox.amount;
-                tileFactory.RemoveBox(firstBox.position);
+                amount += firstBox.Amount;
+                firstBox.Amount = 0;
                 resources.Remove(firstBox);
             }
             else
             {
-                firstBox.amount += amount;
+                firstBox.Amount += amount;
                 amount = 0;
-                //TODO zmenit box jestli bylo 10 a spadlo na mensi
             }
 
             if (amount != 0)
@@ -246,6 +247,6 @@ public class ResourceManager : MonoBehaviour
 
     public int GetResourceCount(Material type)
     {
-        return GetAllBoxesOfType(type).Sum(box => box.amount);
+        return GetAllBoxesOfType(type).Sum(box => box.Amount);
     }
 }
