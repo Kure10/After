@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObject/Region", fileName = "_NewRegion")]
 public class Region : ScriptableObject
 {
-
+    public string regionName = "NoWhere";
     public bool isStartingRegion = false;
     public bool isExplored = false;
     public bool isFarAway = true;
