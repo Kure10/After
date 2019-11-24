@@ -1,35 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Boo.Lang.Environments;
 using UnityEngine;
 
 public class BuildingCreator : MonoBehaviour
 {
-    private GameObject building = null;
+    private BuildingBlueprint selectedBuildingBlueprint = null;
+    private GameObject blueprint = null;
+    private GameObject test = null;
     private readonly int TILE = 1 << 8;
     private float scroll;
     private int direction;
     private int rotation;
     private TileFactory tileFactory;
-    private int column = 2; //hardcoded for now
-    private int row = 3; //TODO: create new class for buildings with column and row properties
+
+    private List<Building> buildings;
     // Start is called before the first frame update
-    public GameObject testBuilding;
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
+        buildings = new List<Building>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (building == null)
-        {
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-               CreateBuilding(testBuilding);
-            }
-        }
-        else 
+        if (blueprint != null)
         {
  
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
@@ -45,7 +41,7 @@ public class BuildingCreator : MonoBehaviour
                 rotation += direction;
                 rotation = (4 + rotation) % 4;
                 scroll = 0;
-                building.transform.Rotate(new Vector3(0, 90 * direction));
+                blueprint.transform.Rotate(new Vector3(0, 90 * direction));
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -54,7 +50,7 @@ public class BuildingCreator : MonoBehaviour
                 Vector3 point = hit.point;
                 var coord = Geometry.GridFromPoint(point);
 
-                building.transform.position = Geometry.PointFromGrid(coord);
+                blueprint.transform.position = Geometry.PointFromGrid(coord);
                 var buildingGrid = getGridForBuilding(coord);
                 bool canBuild = true;
                 foreach (var item in buildingGrid)
@@ -62,6 +58,7 @@ public class BuildingCreator : MonoBehaviour
                     if (tileFactory.Buildable(item) == false)
                     {
                         canBuild = false;
+                        Debug.Log($"Failed on: {item.x}, {item.y}");
                         break;
                     }
                 }
@@ -69,40 +66,39 @@ public class BuildingCreator : MonoBehaviour
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
                     float upDiff = 0.04f;
-                    var newBuild = Instantiate(building, building.transform.position + new Vector3(0,upDiff,0), building.transform.rotation); 
+
+                    blueprint.transform.position += new Vector3(0, upDiff, 0); 
+                    var newBuild = new Building(selectedBuildingBlueprint, blueprint );
+                    buildings.Add(newBuild);
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
                 }
-
             }
         }
     }
 
-    public void CreateBuilding(GameObject prefab)
+    public void CreateBuilding(BuildingBlueprint buildingBlueprint)
     {
         CameraMovement.ZoomByScrollEnabled(false);
-        if (building != null)
-        {
-            Destroy(building);
-        }
+        selectedBuildingBlueprint = buildingBlueprint;
         scroll = 0f;
         rotation = 0;
-        building = Instantiate(prefab);
+        blueprint = Instantiate(buildingBlueprint.Prefab);
         
     }
     private void EndBuildingMode()
     {
         CameraMovement.ZoomByScrollEnabled(true);
-        Destroy(building);
-        building = null;
+        Destroy(blueprint);
+        selectedBuildingBlueprint = null;
     }
     private List<Vector2Int> getGridForBuilding(Vector2Int coord)
     {
         int xx, yy;
         List<Vector2Int> grid = new List<Vector2Int>();
-        for (int x = 0; x < column; x++)
+        for (int x = 0; x < selectedBuildingBlueprint.row; x++)
         {
-            for (int y = 0; y < row; y++)
+            for (int y = 0; y < selectedBuildingBlueprint.column; y++)
             {
                 // example for row = 3, column = 2
                 // rotation == 0 

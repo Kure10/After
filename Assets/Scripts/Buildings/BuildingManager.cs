@@ -6,7 +6,7 @@ public class BuildingManager : MonoBehaviour
 {
 
     [SerializeField]
-    private List<Building> buildings = new List<Building>();
+    private List<BuildingBlueprint> buildings = new List<BuildingBlueprint>();
 
     [Space]
     [Header("Background Images For Buildings")]
@@ -15,7 +15,7 @@ public class BuildingManager : MonoBehaviour
 
     private Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
 
-    public List<Building> GetBuildingList()
+    public List<BuildingBlueprint> GetBuildingList()
     {
         return buildings;
     }

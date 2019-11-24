@@ -10,11 +10,11 @@ public class ResourceControler : MonoBehaviour
 
     // todo -- Tady bude vice podminek. Zatím tady jsou tyhle jenom.
     // Jde o to ze nevím jak budou poreseny Raw Materials a taky jak Elektrina. a dalsí..
-    public bool TryBuildBuilding(Building building)
+    public bool TryBuildBuilding(BuildingBlueprint buildingBlueprint)
     {
-        return CheckMaterialAvailability(building.Tech, ResourceManager.Material.Technicky) &&
-               CheckMaterialAvailability(building.Civil, ResourceManager.Material.Civilni) &&
-               CheckMaterialAvailability(building.Military, ResourceManager.Material.Vojensky);
+        return CheckMaterialAvailability(buildingBlueprint.Tech, ResourceManager.Material.Technicky) &&
+               CheckMaterialAvailability(buildingBlueprint.Civil, ResourceManager.Material.Civilni) &&
+               CheckMaterialAvailability(buildingBlueprint.Military, ResourceManager.Material.Vojensky);
         /*
 if(CheckEnoughTechnickyMaterial(building.Tech) && CheckEnoughCivilniMaterial(building.Civil) 
 && CheckEnoughVojenskyMaterial(building.Military))

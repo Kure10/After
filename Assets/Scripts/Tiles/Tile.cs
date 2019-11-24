@@ -12,7 +12,7 @@ public class Tile : BaseTile, IWalkable
     public int gCost { get; set; }
     public int hCost { get; set; }
     public bool walkthrough { get; set; }
-    public GameObject building;
+    public Building building;
     public Resource resourceBox;
     public bool inside;
     public int fCost => gCost + hCost;

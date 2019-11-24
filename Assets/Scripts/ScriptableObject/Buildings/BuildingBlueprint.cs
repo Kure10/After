@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Building", fileName = "_NewBuilding")]
-public class Building : ScriptableObject
+public class BuildingBlueprint : ScriptableObject
 {
     [Header("Main Settings")]
     [SerializeField] string buildingName = "Default";
@@ -16,9 +16,11 @@ public class Building : ScriptableObject
     [SerializeField] float timeToBuild = 20f;
     
     [Header("Building requirements")]
-    [SerializeField] [Range(1, 6)] private int sizeOfBuilding = 1;
     [SerializeField] private float electricConsumption = 0;
     [SerializeField] private GameObject prefab;
+    //prozatim quick & dirty, at se da stavet
+    [SerializeField] public int column;
+    [SerializeField] public int row;
 
     [Header("Resources cost")]
     [SerializeField] int civilniMaterial = 0;
@@ -40,7 +42,7 @@ public class Building : ScriptableObject
     public int Tech { get { return technickyMaterial; } set { technickyMaterial = value; } }
     public int Military { get { return vojenskyMaterial; } set { vojenskyMaterial = value; } }
     public Sprite Sprite { get { return ilustrationImage; } set { ilustrationImage = value; } }
-    public int Size { get { return sizeOfBuilding; } set { sizeOfBuilding = value; } }
+    public int Size { get { return row * column; } }
     public string Info { get { return textForInfo; } set { textForInfo = value; } }
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
     public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BuildingOnUse : MonoBehaviour
 {
-    private Building currentBuilding;
+    private BuildingBlueprint currentBuildingBlueprint;
     private ResourceControler resourceControler;
     private BuildingCreator buildingCreator;
     private PanelControler panelControler;
@@ -18,9 +18,9 @@ public class BuildingOnUse : MonoBehaviour
     }
 
 
-    public void CacheBuilding(Building building)
+    public void CacheBuilding(BuildingBlueprint buildingBlueprint)
     {
-        currentBuilding = building;
+        currentBuildingBlueprint = buildingBlueprint;
     }
 
     public void CacheResourcesControler(ResourceControler rc)
@@ -37,14 +37,14 @@ public class BuildingOnUse : MonoBehaviour
     public void ButtonOnClick()
     {
         bool haveEnoughtResources = false;
-        haveEnoughtResources = resourceControler.TryBuildBuilding(currentBuilding);
+        haveEnoughtResources = resourceControler.TryBuildBuilding(currentBuildingBlueprint);
 
         // Zkontroluje jenom jestli ma dost na počatešní postaveni budovy.. (Nic se neodečíta.)
         if (haveEnoughtResources)
         {
-            if (currentBuilding.Prefab != null)
+            if (currentBuildingBlueprint.Prefab != null)
             {
-                buildingCreator.CreateBuilding(currentBuilding.Prefab);
+                buildingCreator.CreateBuilding(currentBuildingBlueprint);
                 panelControler.DisableAllPanels(); // disable all open panels. Pak tu dam current. Kdyby se nejak rozsirila hra.
             }
             else

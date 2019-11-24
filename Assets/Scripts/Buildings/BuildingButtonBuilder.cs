@@ -40,22 +40,22 @@ public class BuildingButtonBuilder : MonoBehaviour
         RawMaterials = gameObject.transform.GetChild(8).GetComponentsInChildren<Image>();
     }
 
-    public void BuildingChangeStats(Building building, BuildingManager bm)
+    public void BuildingChangeStats(BuildingBlueprint buildingBlueprint, BuildingManager bm)
     {
-        this.name = building.name;
+        this.name = buildingBlueprint.name;
 
-        if (building.Sprite == null)
+        if (buildingBlueprint.Sprite == null)
         {
             Debug.Log("Image errors on the building");
         }
-        NameText.text = building.Name;
-        CivilHolder.text = building.Civil.ToString();
-        TechHolder.text = building.Tech.ToString();
-        MilitaryHolder.text = building.Military.ToString();
-        ElectricHolder.text = building.ElectricConsumption.ToString();
-        IlustrationImage.sprite = building.Sprite;
+        NameText.text = buildingBlueprint.Name;
+        CivilHolder.text = buildingBlueprint.Civil.ToString();
+        TechHolder.text = buildingBlueprint.Tech.ToString();
+        MilitaryHolder.text = buildingBlueprint.Military.ToString();
+        ElectricHolder.text = buildingBlueprint.ElectricConsumption.ToString();
+        IlustrationImage.sprite = buildingBlueprint.Sprite;
 
-        for (int i = 0; i < building.GetCountRawMaterials(); i++)
+        for (int i = 0; i < buildingBlueprint.GetCountRawMaterials(); i++)
         {
             if (i > 5)
                 return;
@@ -63,19 +63,19 @@ public class BuildingButtonBuilder : MonoBehaviour
             RawMaterials[i].color = Color.yellow;
         }
 
-        for (int i = 0; i < building.Size; i++)
+        for (int i = 0; i < buildingBlueprint.Size; i++)
         {
             Size[i].color = Color.black;
         }
-        InfoPanelText.text = building.Info;
+        InfoPanelText.text = buildingBlueprint.Info;
 
-        if (building == null || bm == null)
+        if (buildingBlueprint == null || bm == null)
         {
             return;
         }
-        BackgroundImage.sprite = bm.GetSprite(building.GetSector());
+        BackgroundImage.sprite = bm.GetSprite(buildingBlueprint.GetSector());
 
-        BroadcastMessage("CacheBuilding", building);
+        BroadcastMessage("CacheBuilding", buildingBlueprint);
     }
 
 }

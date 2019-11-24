@@ -35,15 +35,15 @@ public class BuildingBridge : MonoBehaviour
         }
     }
 
-    private void AddBuildingHolder (Building building)
+    private void AddBuildingHolder (BuildingBlueprint buildingBlueprint)
     {
-        Sector sector = building.GetSector();
+        Sector sector = buildingBlueprint.GetSector();
 
         GameObject go = Instantiate(buildingPrefab);
         ChoiceBuildingHolder(sector,go);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
-        bbb.BuildingChangeStats(building,buildingManager);
+        bbb.BuildingChangeStats(buildingBlueprint,buildingManager);
         BuildingOnUse bou = go.GetComponent<BuildingOnUse>();
         bou.CacheResourcesControler(resourceControler);
     }

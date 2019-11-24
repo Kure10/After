@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Building))]
+[CustomEditor(typeof(BuildingBlueprint))]
 public class BuildingEditor : Editor
 {
 
@@ -45,7 +45,7 @@ public override void OnInspectorGUI()
         // this.serializedObject.ApplyModifiedProperties();
 
        // base.OnInspectorGUI();
-        Building build = (Building)target;
+        BuildingBlueprint build = (BuildingBlueprint)target;
 
         EditorGUILayout.Space();
         GUILayout.Label("--------------------------", EditorStyles.boldLabel);
@@ -58,8 +58,9 @@ public override void OnInspectorGUI()
         build.TimeToBuild = EditorGUILayout.FloatField("Time To Build", build.TimeToBuild);
         build.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab",build.Prefab, typeof(GameObject), allowSceneObjects: false);
         GUILayout.Label("Building requirements ", EditorStyles.boldLabel);
-        build.Size = (int)EditorGUILayout.Slider("Size Of Building", build.Size, 1, 6);
         build.ElectricConsumption = EditorGUILayout.FloatField("Electric Consumption ",build.ElectricConsumption);
+        build.column = (int)EditorGUILayout.Slider("Columns", build.column, 1, 6);
+        build.row = (int)EditorGUILayout.Slider("Rows", build.row, 1, 6);
         GUILayout.Label("Resources Cost", EditorStyles.boldLabel);
         build.Civil = EditorGUILayout.IntField("Civilni Material", build.Civil);
         build.Tech = EditorGUILayout.IntField("Technicky Material", build.Tech);
@@ -163,7 +164,7 @@ public override void OnInspectorGUI()
     }
 
     #region Limits
-    private static void ProperytyLimits(Building build)
+    private static void ProperytyLimits(BuildingBlueprint build)
     {
         if (build.Civil < 0)
         {
@@ -179,7 +180,8 @@ public override void OnInspectorGUI()
         }
         if (build.Size < 1)
         {
-            build.Size = 1;
+            build.row = 1;
+            build.column = 1;
         }
         if(build.TimeToBuild < 0)
         {

@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileFactory : MonoBehaviour
 {
@@ -11,10 +13,27 @@ public class TileFactory : MonoBehaviour
     public GameObject character;
     public TextAsset level;
     private BaseTile[,] grid;
+    private readonly int TILE = 1 << 8;
+    public Text coordText;
+
+    private Ray ray;
+
+    private RaycastHit hit;
     // Start is called before the first frame update
     void Start()
     {
         grid = CreateGrid();
+    }
+
+    void Update()
+    {
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 100f, TILE))
+        {
+            Vector3 point = hit.point;
+            var coord = Geometry.GridFromPoint(point);
+            coordText.text = $"({coord.x},{coord.y})";
+        }
     }
 
     public BaseTile getTile(Vector2Int coordinates)
@@ -190,7 +209,7 @@ public class TileFactory : MonoBehaviour
         }
         return ret;
     }
-    public void AddBuilding(List<Vector2Int> coords, GameObject building)
+    public void AddBuilding(List<Vector2Int> coords, Building building)
     {
         foreach (var coord in coords)
         {
