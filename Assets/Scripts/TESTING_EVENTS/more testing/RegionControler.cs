@@ -11,11 +11,13 @@ public class RegionControler : MonoBehaviour
 
     public float fogValue = 0.25f;
     public Color color;
+    private Color normalColor;
 
     private bool isInitialized = false;
 
     private void Awake()
     {
+       normalColor = this.GetComponent<Image>().color;
        image = GetComponent<Image>();
        InicializationRegion();
     }
@@ -28,17 +30,17 @@ public class RegionControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.region.isFarAway)
+        if (this.region.isOutOfReach)
         {
             image.color = color;
         }
         else if (!this.region.isExplored)
         {
-            image.color = new Color(image.color.r, image.color.g, image.color.b, fogValue);
+            image.color = new Color(normalColor.r, normalColor.g, normalColor.b, fogValue);
         }
         else
         {
-            image.color = new Color(image.color.r, image.color.g, image.color.b, 1f);
+            image.color = new Color(normalColor.r, normalColor.g, normalColor.b, 1f);
         }
     }
 
@@ -48,7 +50,7 @@ public class RegionControler : MonoBehaviour
         if(!this.isInitialized)
         {
             this.region.isExplored = false;
-            this.region.isFarAway = false;
+            this.region.isOutOfReach = true;
         }
 
         this.isInitialized = true;
@@ -58,9 +60,9 @@ public class RegionControler : MonoBehaviour
     {
         foreach (var item in this.region.neighborhoodRegions)
         {
-            if(item.isFarAway == true)
+            if(item.isOutOfReach == true)
             {
-                item.isFarAway = false;
+                item.isOutOfReach = false;
             }
         }
     }
@@ -80,9 +82,10 @@ public class RegionControler : MonoBehaviour
 
                 foreach (var item in this.region.neighborhoodRegions)
                 {
-                    item.isFarAway = false;
+                    item.isOutOfReach = false;
                 }
-                this.region.isExplored = true; // možna nebude. První misse bude explore muj region nevím...
+                this.region.isExplored = true;
+                this.region.isOutOfReach = false; // možna nebude. První misse bude explore muj region nevím...
             }
             else
             {

@@ -9,7 +9,7 @@ public class Region : ScriptableObject
     public string regionName = "NoWhere";
     public bool isStartingRegion = false;
     public bool isExplored = false;
-    public bool isFarAway = true;
+    public bool isOutOfReach = true;
 
     public List<Region> neighborhoodRegions = new List<Region>();
 

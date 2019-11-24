@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: das
   m_EditorClassIdentifier: 
   regionName: Sydny
-  isStartingRegion: 0
-  isExplored: 0
-  isFarAway: 1
-  neighborhoodRegions: []
+  isStartingRegion: 1
+  isExplored: 1
+  isOutOfReach: 0
+  neighborhoodRegions:
+  - {fileID: 11400000, guid: 98b40d24e7cf3ba42aa65930b0f2ae41, type: 2}
+  - {fileID: 11400000, guid: 5e9c159922afd64469570c269da1da10, type: 2}
+  - {fileID: 11400000, guid: bf8764a3b6d28c6409466f35a74804e9, type: 2}
+  - {fileID: 11400000, guid: 487931bd4a3b09846997d0fb402c76c8, type: 2}
+  - {fileID: 11400000, guid: b210d4d00d2b3f9489b69379fd684183, type: 2}
+  - {fileID: 11400000, guid: f6733e3f1d9977f4c8c711093e6aae15, type: 2}
