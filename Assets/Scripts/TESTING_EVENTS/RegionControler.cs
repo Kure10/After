@@ -63,8 +63,20 @@ public class RegionControler : MonoBehaviour
             if(item.isOutOfReach == true)
             {
                 item.isOutOfReach = false;
+                item.isExplored = false;
             }
         }
+    }
+
+    public void ExploreRegion ()
+    {
+        if (!this.region.isExplored)
+        {
+            this.region.isExplored = true;
+        }
+           
+        // a dalsi inicializace objektu ... umozneni obeveni buttonu atd.
+    
     }
 
     public void SetUp()
@@ -82,10 +94,10 @@ public class RegionControler : MonoBehaviour
 
                 foreach (var item in this.region.neighborhoodRegions)
                 {
-                    item.isOutOfReach = false;
+                    item.isOutOfReach = true;
                 }
-                this.region.isExplored = true;
-                this.region.isOutOfReach = false; // možna nebude. První misse bude explore muj region nevím...
+                this.region.isExplored = false;
+                this.region.isOutOfReach = false;
             }
             else
             {
