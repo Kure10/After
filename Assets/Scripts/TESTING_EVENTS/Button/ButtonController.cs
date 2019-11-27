@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ButtonController : MonoBehaviour //, IPointerClickHandler
+public class ButtonController : MonoBehaviour , IPointerClickHandler
 {
     private GameObject instantExploreButton;
+
+    public UnityEvent leftClick;
+    public UnityEvent middleClick;
+    public UnityEvent rightClick;
 
     private Image image;
     public Color idleColor;
@@ -32,8 +37,19 @@ public class ButtonController : MonoBehaviour //, IPointerClickHandler
 
     public void OnClick()
     {
-        CheckExploreButton();
-        StartCoroutine("OneClick"); 
+       // PointerEventData
+
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("Leve tlacitko pico");
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Leve tlacitko pico");
+        }
+
+        //CheckExploreButton();
+        //StartCoroutine("OneClick"); 
     }
 
 
@@ -66,18 +82,23 @@ public class ButtonController : MonoBehaviour //, IPointerClickHandler
         instantExploreButton.gameObject.transform.SetParent(exploreButtonParent);
     }
 
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    // Debug.Log("??????");
-    //    //throw new System.NotImplementedException();
-    //    if (Input.GetKey(KeyCode.Mouse0))
-    //    {
-    //        Debug.Log("jsemtady");
-    //        instantExploreButton.SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("jsdasdsa");
-    //    }
-    //}
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Debug.Log("??????");
+        //throw new System.NotImplementedException();
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            leftClick.Invoke();
+            Debug.Log(this.gameObject.name);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Middle)
+        {
+            middleClick.Invoke();
+        } 
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            rightClick.Invoke();
+        }
+            
+    }
 }
