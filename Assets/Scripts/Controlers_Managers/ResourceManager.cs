@@ -61,11 +61,7 @@ public class ResourceManager : MonoBehaviour
 
     public void IncPohonneHmoty(int value)
     {
-        pohonneHmoty += value;
-     /*   if (value > 0)
-        {
-            SpawnMaterial(Material.Pohonne, value);
-        }*/
+        SpawnMaterial(Material.Pohonne, value);
     }
 
     public void IncPotraviny(int value)
@@ -130,7 +126,7 @@ public class ResourceManager : MonoBehaviour
              text[1].text = GetResourceCount(Material.Vojensky).ToString();
              text[2].text = GetResourceCount(Material.Technicky).ToString();
              text[3].text = GetResourceCount(Material.Civilni).ToString();
-             text[4].text = pohonneHmoty.ToString();
+             text[4].text = GetResourceCount(Material.Pohonne).ToString();
              text[5].text = energie.ToString();
              text[6].text = deti.ToString();
              text[7].text = karma.ToString();
@@ -151,9 +147,16 @@ public class ResourceManager : MonoBehaviour
     {
         SpawnMaterial((Material)typ, amount);
     }
-    
+
     public void SpawnMaterial(Material typ, int amount)
     {
+
+        if ((10 > GetResourceCount(typ) && amount == -10) || (GetResourceCount(typ) <= 0 && amount < 0))
+        {
+            Debug.Log("U cant have negative resources !!");
+            return;
+        }
+            
 
         if (amount > 0)
         {
@@ -176,8 +179,13 @@ public class ResourceManager : MonoBehaviour
                     bBox = TechnickyMaterialBigBox;
                     sBox = TechnickyMaterialSmallBox;
                     break;
-                default:
+                case Material.Pohonne:
                     bBox = PohonneHmotyBigBox;
+                    sBox = PohonneHmotySmallBox;
+                    break;
+                default:
+                    Debug.Log("Snazime se pridat neexistujici material -> viz Resource Manager");
+                    bBox = PohonneHmotyBigBox; // Tohle tady je chybně
                     sBox = PohonneHmotySmallBox;
                     break;
             }

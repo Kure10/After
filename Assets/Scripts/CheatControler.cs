@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CheatControler : MonoBehaviour , IPointerClickHandler
 {
     
-    enum ResourceType { food, civil, tech, military }
+    enum ResourceType { food, civil, tech, military , fuel}
 
     [SerializeField]
     ResourceType type = ResourceType.food;
@@ -68,6 +68,9 @@ public class CheatControler : MonoBehaviour , IPointerClickHandler
                 break;
             case 3:
                 resourceManager.IncVojenskyMaterialy(value);
+                break;
+            case 4:
+                resourceManager.IncPohonneHmoty(value);
                 break;
             default:
                 break;
