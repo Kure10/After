@@ -87,9 +87,8 @@ GameObject:
   - component: {fileID: 7905034303121095958}
   - component: {fileID: 7905034303121095957}
   - component: {fileID: 7905034303121095956}
-  - component: {fileID: 7905034303121095955}
-  - component: {fileID: 7905034303121095959}
   - component: {fileID: 1497782240}
+  - component: {fileID: 5735661623762330836}
   m_Layer: 5
   m_Name: Region
   m_TagString: Untagged
@@ -166,84 +165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alphaThreshold: 0.1
---- !u!114 &7905034303121095955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7905034303121095953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93fecfcf284ad674d8299bf8abd36644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idleColor: {r: 1, g: 1, b: 1, a: 1}
-  hoverColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
-  clickColor: {r: 0, g: 0, b: 0, a: 1}
-  exploreButtonParent: {fileID: 2810711200038676174}
-  exploreButton: {fileID: 9000534176892451796, guid: dee2e2fceab7cee4fbc13d15952941d3,
-    type: 3}
-  exploreQuestionButton: {fileID: 4915306074179120079, guid: 6f762dd2353d2744ca5fb380bb245bcb,
-    type: 3}
---- !u!114 &7905034303121095959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7905034303121095953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7905034303121095955}
-          m_MethodName: SwitchHover
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7905034303121095955}
-          m_MethodName: SwitchHover
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7905034303121095955}
-          m_MethodName: OnClick
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &1497782240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,3 +181,30 @@ MonoBehaviour:
   image: {fileID: 0}
   fogValue: 0.25
   color: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &5735661623762330836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7905034303121095953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93fecfcf284ad674d8299bf8abd36644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftClick:
+    m_PersistentCalls:
+      m_Calls: []
+  middleClick:
+    m_PersistentCalls:
+      m_Calls: []
+  rightClick:
+    m_PersistentCalls:
+      m_Calls: []
+  idleColor: {r: 1, g: 1, b: 1, a: 0}
+  hoverColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 0.6}
+  clickColor: {r: 0.1981132, g: 0.17475079, b: 0.17475079, a: 0.63529414}
+  exploreQuestionButton: {fileID: 4915306074179120079, guid: 6f762dd2353d2744ca5fb380bb245bcb,
+    type: 3}
+  exploreButtonParent: {fileID: 2810711200038676174}

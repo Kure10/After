@@ -15,6 +15,12 @@ public class RegionControler : MonoBehaviour
 
     private bool isInitialized = false;
 
+
+    public Region GetRegion
+    {
+        get { return this.region; }
+    }
+
     private void Awake()
     {
        normalColor = this.GetComponent<Image>().color;
@@ -24,17 +30,17 @@ public class RegionControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetUp();
+     
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (this.region.isOutOfReach)
+        if (this.region.IsOutOfReach)
         {
             image.color = color;
         }
-        else if (!this.region.isExplored)
+        else if (!this.region.IsExplored)
         {
             image.color = new Color(normalColor.r, normalColor.g, normalColor.b, fogValue);
         }
@@ -46,11 +52,16 @@ public class RegionControler : MonoBehaviour
 
     public void InicializationRegion ()
     {
-
-        if(!this.isInitialized)
+        this.name = this.region.regionName;
+        if (this.region.IsStartingRegion)
         {
-            this.region.isExplored = false;
-            this.region.isOutOfReach = true;
+            this.region.IsExplored = false;
+            this.region.IsOutOfReach = false;
+        }
+        else if (!this.isInitialized)
+        {
+            this.region.IsExplored = false;
+            this.region.IsOutOfReach = true;
         }
 
         this.isInitialized = true;
@@ -60,50 +71,30 @@ public class RegionControler : MonoBehaviour
     {
         foreach (var item in this.region.neighborhoodRegions)
         {
-            if(item.isOutOfReach == true)
+            if(item.IsOutOfReach == true)
             {
-                item.isOutOfReach = false;
-                item.isExplored = false;
+                item.IsOutOfReach = false;
+                item.IsExplored = false;
             }
         }
     }
 
-    public void ExploreRegion ()
+    public void ExploreRegion()
     {
-        if (!this.region.isExplored)
+        if(!this.region.IsOutOfReach) 
         {
-            this.region.isExplored = true;
-        }
-           
-        // a dalsi inicializace objektu ... umozneni obeveni buttonu atd.
-    
-    }
+            if (!this.region.IsExplored)
+                this.region.IsExplored = true;
 
-    public void SetUp()
-    {
-        if (this.region.neighborhoodRegions.Count == 0)
-        {
-            Debug.Log("Region has no neighborhood Regions -> Error");
-            return;
-        }
-        else
-        {
-            if (this.region.isStartingRegion)
+            foreach (var nearRegion in region.neighborhoodRegions)
             {
-                this.name = "_" + this.region.regionName;
-
-                foreach (var item in this.region.neighborhoodRegions)
-                {
-                    item.isOutOfReach = true;
-                }
-                this.region.isExplored = false;
-                this.region.isOutOfReach = false;
-            }
-            else
-            {
-                this.name = this.region.regionName;
+                if (nearRegion.IsOutOfReach)
+                    nearRegion.IsOutOfReach = false;
             }
         }
+
     }
+
+
 
 }

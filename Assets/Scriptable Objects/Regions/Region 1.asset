@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7374151546c1b0746811bcde51db0af4, type: 3}
-  m_Name: das 2
+  m_Name: Region 1
   m_EditorClassIdentifier: 
-  regionName: Sydny
+  regionName: Zeme
   isStartingRegion: 0
-  isExplored: 0
   isOutOfReach: 0
-  neighborhoodRegions: []
+  neighborhoodRegions:
+  - {fileID: 11400000, guid: 4185edc2dd6511042bd0657235728a0b, type: 2}
+  - {fileID: 11400000, guid: d0d1f6c9e660d3a44936540675468415, type: 2}
+  - {fileID: 11400000, guid: 4ad95d57e9921384287df619f0e84347, type: 2}
+  - {fileID: 11400000, guid: bf8764a3b6d28c6409466f35a74804e9, type: 2}
