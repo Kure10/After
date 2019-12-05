@@ -5,15 +5,6 @@ using UnityEngine.UI;
 
 public class SpecSetGui : MonoBehaviour
 {
-    /*  old */
-    Transform firstPanel;
-
-    Transform panelImage;
-
-    Transform panelStats;
-
-    /*  New */
-
     [Header("Main Header")]
     [SerializeField] Image specialistImage;
     [SerializeField] Text characterName;
@@ -45,12 +36,6 @@ public class SpecSetGui : MonoBehaviour
 
     */
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     private void SetSpecialistImage(Specialists spec)
     {
         specialistImage.sprite = spec.GetSprite();
@@ -71,10 +56,6 @@ public class SpecSetGui : MonoBehaviour
         technicianValue.text = spec.Tel.ToString();
         socialValue.text = spec.Sol.ToString();
         karmaValue.text = spec.Kar.ToString();
-
-        // ToDo Jeste nevim jak to udelam a za jakych podminek se meni stav.
-
-       // karmaValue.text = "Todo Nezapomen dodelat :D";
     }
 
     public void SetAll(Specialists spec)
