@@ -5,78 +5,83 @@ using UnityEngine.UI;
 
 public class SpecSetGui : MonoBehaviour
 {
+    /*  old */
     Transform firstPanel;
 
     Transform panelImage;
 
     Transform panelStats;
 
+    /*  New */
+
+    [Header("Main Header")]
+    [SerializeField] Image specialistImage;
+    [SerializeField] Text characterName;
+    [SerializeField] Text characterLevel;
+
+    [Header("Stats")]
+    [SerializeField] Transform healthBar;
+    [SerializeField] Transform staminaBar;
+    [Space]
+    [SerializeField] Text militaryValue;
+    [SerializeField] Text socialValue;
+    [SerializeField] Text technicianValue;
+    [SerializeField] Text scientistValue;
+    [SerializeField] Text karmaValue;
+    [Header("Stats")]
+    [SerializeField] Text currentActivity;
+
+    [Header("Buttons")]
+    [SerializeField] Button Control1;
+    [SerializeField] Button Control2;
+    [SerializeField] Button Control3;
+
+    /*
+     chyby inventar a buttony co delaji by meli byt asi dynamycke. Možna se jejich funkčnost bude jmenit.
+
+        -- ovladani buttonu atd. Jeste nevíme co budou delat. A ani co bude presne zobrazovat probíhajicí cinnost
+
+        ToDo  dodelat property
+
+    */
 
     // Start is called before the first frame update
     void Start()
     {
-        firstPanel = transform.GetChild(0);
-        panelImage = firstPanel.GetChild(0);
-        panelStats = firstPanel.GetChild(1);
+
     }
 
-    private void SetImagePanel(Specialists spec)
+    private void SetSpecialistImage(Specialists spec)
     {
-        var image = panelImage.GetChild(0).GetComponent<Image>();
-        image.sprite = spec.GetSprite();
+        specialistImage.sprite = spec.GetSprite();
     }
 
     private void CalcHealtandStamina(Specialists spec)
     {
-        var barHealth = panelImage.GetChild(1).GetChild(2);
-        barHealth.transform.localScale = new Vector3(spec.PercentHealt / 100, 1f, 1f);
-
-
-        var barStamina = panelImage.GetChild(2).GetChild(2);
-        barStamina.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+        healthBar.transform.localScale = new Vector3(spec.PercentHealt / 100, 1f, 1f);
+        staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
     }
 
     private void SetStatsPanel(Specialists spec)
     {
-        Text text = panelStats.GetChild(0).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.FullName.ToString();
-
-        text = panelStats.GetChild(1).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.Level.ToString();
-
-        text = panelStats.GetChild(2).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.Mil.ToString();
-
-        text = panelStats.GetChild(3).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.Scl.ToString();
-
-        text = panelStats.GetChild(4).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.Tel.ToString();
-
-        text = panelStats.GetChild(5).GetChild(1).GetComponentInChildren<Text>();
-        text.text = spec.Sol.ToString();
+        characterName.text = spec.FullName.ToString();
+        characterLevel.text = spec.Level.ToString();
+        militaryValue.text = spec.Mil.ToString();
+        scientistValue.text = spec.Scl.ToString();
+        technicianValue.text = spec.Tel.ToString();
+        socialValue.text = spec.Sol.ToString();
+        karmaValue.text = spec.Kar.ToString();
 
         // ToDo Jeste nevim jak to udelam a za jakych podminek se meni stav.
-        text = panelStats.GetChild(6).GetChild(1).GetComponentInChildren<Text>();
-        text.text = "Todo Nezapomen dodelat :D";
 
-        text = panelStats.GetChild(10).GetChild(0).GetComponentInChildren<Text>();
-        text.text = spec.Kar.ToString();
+       // karmaValue.text = "Todo Nezapomen dodelat :D";
     }
 
     public void SetAll(Specialists spec)
     {
-        SetImagePanel(spec);
+        SetSpecialistImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
     }
 
-    public void SetUp()
-    {
-        firstPanel = transform.GetChild(0);
-        panelImage = firstPanel.GetChild(0);
-        panelStats = firstPanel.GetChild(1);
-    }
-
-    
 }

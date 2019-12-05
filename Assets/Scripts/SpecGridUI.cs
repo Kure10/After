@@ -21,7 +21,6 @@ public class SpecGridUI : MonoBehaviour
         ga.transform.parent = this.transform;
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         SpecSetGui ssg = ga.GetComponent<SpecSetGui>();
-        ssg.SetUp();
         ssg.SetAll(spec);
     }
 
