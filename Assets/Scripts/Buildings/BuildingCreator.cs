@@ -118,10 +118,12 @@ public class BuildingCreator : MonoBehaviour
 
                 switch (rotation)
                 {
-                    case 0: xx = coord.x - x; yy = coord.y + y; break;
-                    case 1: xx = coord.x + y; yy = coord.y + x; break;
-                    case 2: xx = coord.x + x; yy = coord.y - y; break;
-                    default: xx = coord.x - y; yy = coord.y - x; break;
+                    case 0: xx = coord.x + x; yy = coord.y + y; break;
+                    case 1: xx = coord.x + y; yy = coord.y - x; break;
+                    case 2: xx = coord.x - x; yy = coord.y - y; break;
+                    default: xx = coord.x - y; yy = coord.y + x; break;
+                    
+                   
                 }
                 grid.Add(new Vector2Int(xx, yy));
             }

@@ -41,7 +41,8 @@ public class Building
         }
         switch (state)
         {
-            case BuildingState.Designed: prefab = Object.Instantiate(blueprint.Prefab, prefab.transform.position, prefab.transform.rotation);
+            case BuildingState.Designed: prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position, prefab.transform.rotation);
+                prefab.transform.Find("background").GetComponent<Renderer>().material.color = blueprint.BackgroundColor;
                 break;
             default: break; //TODO
         }

@@ -57,6 +57,8 @@ public override void OnInspectorGUI()
         this.serializedObject.ApplyModifiedProperties();
         build.TimeToBuild = EditorGUILayout.FloatField("Time To Build", build.TimeToBuild);
         build.Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab",build.Prefab, typeof(GameObject), allowSceneObjects: false);
+        build.ConstructionPrefab = (GameObject)EditorGUILayout.ObjectField("Construction Prefab",build.ConstructionPrefab, typeof(GameObject), allowSceneObjects: false);
+        build.BackgroundColor = EditorGUILayout.ColorField("Background Color", build.BackgroundColor);
         GUILayout.Label("Building requirements ", EditorStyles.boldLabel);
         build.ElectricConsumption = EditorGUILayout.FloatField("Electric Consumption ",build.ElectricConsumption);
         build.column = (int)EditorGUILayout.Slider("Columns", build.column, 1, 6);

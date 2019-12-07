@@ -18,6 +18,9 @@ public class BuildingBlueprint : ScriptableObject
     [Header("Building requirements")]
     [SerializeField] private float electricConsumption = 0;
     [SerializeField] private GameObject prefab;
+    [SerializeField] private GameObject constructionPrefab;
+    [SerializeField] private Color backgroundColor;
+
     //prozatim quick & dirty, at se da stavet
     [SerializeField] public int column;
     [SerializeField] public int row;
@@ -47,6 +50,13 @@ public class BuildingBlueprint : ScriptableObject
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
     public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }
     public GameObject Prefab { get { return prefab; } set { prefab = value; } }
+    public GameObject ConstructionPrefab { get { return constructionPrefab; } set { constructionPrefab = value; } }
+
+    public Color BackgroundColor
+    {
+        get => backgroundColor;
+        set => backgroundColor = value;
+    }
 
     public List<RawMaterials> GetĹistRawMaterials()
     {

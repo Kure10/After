@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Win32;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -198,8 +199,10 @@ public class TileFactory : MonoBehaviour
     public bool Buildable(Vector2Int coord)
     {
         bool ret = false;
+        Tile highlight = null;
         if (grid[coord.x, coord.y] is Tile tile && !(grid[coord.x, coord.y] is DebrisTile))
         {
+            highlight = tile;
             if (!tile.inside)
                 return false;
             if (tile.building == null)
@@ -207,6 +210,14 @@ public class TileFactory : MonoBehaviour
                 ret = true;
             }
         }
+
+        /* //NEMAZAT pouzivam pro debug
+        if (highlight != null)
+        {
+            highlight.tile.transform.GetComponent<Renderer>().material.color = ret ? Color.green : Color.red;
+        } */
+        
+
         return ret;
     }
     public void AddBuilding(List<Vector2Int> coords, Building building)
