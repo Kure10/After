@@ -71,7 +71,7 @@ public override void OnInspectorGUI()
         // build.RawMaterial = (int)EditorGUILayout.Slider("Number of Raw Material", build.RawMaterial,0,5);
         // OnRawMaterials(build.RawMaterial);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("listRawMaterials"), true);
-        this.serializedObject.ApplyModifiedProperties();
+       // this.serializedObject.ApplyModifiedProperties();
 
         GUILayout.Label("Ilustration Image", EditorStyles.boldLabel);
         build.Sprite = (Sprite)EditorGUILayout.ObjectField(build.Sprite, typeof(Sprite), allowSceneObjects: false);
@@ -79,14 +79,19 @@ public override void OnInspectorGUI()
         build.Info = EditorGUILayout.TextArea(build.Info, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
         ProperytyLimits(build);
 
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(build);
+            serializedObject.ApplyModifiedProperties();
+        }
 
-      //  build.SynchronizedList(listRawMaterials);
-      //  serializedObject.ApplyModifiedProperties();
-       
-        
+        //  build.SynchronizedList(listRawMaterials);
+        //  serializedObject.ApplyModifiedProperties();
+
+
 
         //EditorUtility.SetDirty(target);
-        this.serializedObject.ApplyModifiedProperties();
+       // this.serializedObject.ApplyModifiedProperties();
     }
 
     private void OnRawMaterials (int size)
