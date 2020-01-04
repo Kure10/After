@@ -27,5 +27,9 @@ public class uButtonExploreScript : MonoBehaviour
         this.regionControler = regionControler;
     }
 
+    void OnEnable()
+    {
+        Debug.Log("me enabled");
+    }
 
 }

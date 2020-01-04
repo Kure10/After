@@ -8,8 +8,9 @@ public class Region : ScriptableObject
 {
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
-    private bool isExplored = false;
-    private bool isOutOfReach = true;
+    public bool isExplored = false;
+    public bool isInShadow = false;
+    public bool isInDarkness = true;
 
     public List<Region> neighborhoodRegions = new List<Region>();
 
@@ -25,6 +26,20 @@ public class Region : ScriptableObject
         get { return isStartingRegion; }
     }
 
+    public bool IsInShadow
+    {
+        get { return isInShadow; }
+        set
+        {
+            isInShadow = value;
+            if (this.isInShadow == true)
+            {
+                isInDarkness = false;
+                isExplored = false;
+            }
+        }
+    }
+
     public bool IsExplored 
     {
         get { return isExplored; }
@@ -33,24 +48,31 @@ public class Region : ScriptableObject
             isExplored = value;
             if (this.isExplored == true)
             {
-                isOutOfReach = false;
+                isInDarkness = false;
+                isInShadow = false;
             }
         }
     }
 
     public bool IsOutOfReach
     {
-        get { return isOutOfReach; }
+        get { return isInDarkness; }
         set
         {
-            isOutOfReach = value;
+            isInDarkness = value;
             this.isExplored = false;
+            isInShadow = false;
         }
     }
 
-    // jeste se musím doptat nefa jak to bude.
-
-    // každy region by měl mít specifické mise .. což jsou eventy a to jeste nevím jak budu reprezentovat..
+    public void RevealNeighbors ()
+    {
+        foreach (Region item in neighborhoodRegions)
+        {
+            item.IsInShadow = true;
+        }
+    }
+   
 
 }
 
