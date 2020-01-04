@@ -10,11 +10,14 @@ public class Character : MonoBehaviour
     private float speed = 10f;
     private float accumulatedTime;
     private Vector3 startingPoint;
+    private Resource carrying = null;
+    private TileFactory tf;
     void Start()
     {
         startingPoint = transform.position;
         target = new List<Vector2Int>();
         tc = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
+        tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
     }
 
     // Update is called once per frame
@@ -58,11 +61,21 @@ public class Character : MonoBehaviour
         if (target.Count > 0)
         {
             startingPoint = Geometry.PointFromGrid(target[0]);
+            var lastPosition = target[0];
             transform.position = startingPoint;
             target.RemoveAt(0);
             if (target.Count == 0)
             {
-                //TODO add action for destination point
+                // add action for destination point
+                //if there is an resource box, pick it up TODO: do this universally
+                if (tf.getTile(lastPosition) is Tile tile)
+                {
+                    if (tile.resourceBox != null && tile.resourceBox.Amount > 0)
+                    {
+                        carrying = tile.resourceBox.Clone();
+                        tile.resourceBox = null;
+                    }
+                }
             }
         }
 

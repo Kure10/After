@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class Resource
 {
-    public Resource(int amount, ResourceManager.Material material, GameObject smallBox, GameObject bigBox, Vector2Int coord)
+    public Resource(int amount, ResourceManager.Material material, GameObject smallBox, GameObject bigBox,
+        Vector2Int coord)
     {
         this.smallBox = smallBox;
         this.bigBox = bigBox;
@@ -13,6 +16,12 @@ public class Resource
         this.material = material;
         position = coord;
         ChangePrefab(amount);
+    }
+
+    public Resource Clone()
+    {
+        var clone = new Resource(Amount, material, smallBox, bigBox, new Vector2Int());
+        return clone;
     }
     private int amount;
     private  GameObject prefab;
