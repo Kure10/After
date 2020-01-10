@@ -17,17 +17,34 @@ public class ResourceManager : MonoBehaviour
     private TileFactory tileFactory;
 
     private List<Resource> resources;
+    public GameObject[] Prefabs;
     
-    public  GameObject PotravinyBigBox;
-    public  GameObject PotravinySmallBox;
-    public  GameObject VojenskyMaterialBigBox;
-    public  GameObject VojenskyMaterialSmallBox;
-    public  GameObject TechnickyMaterialBigBox;
-    public  GameObject TechnickyMaterialSmallBox;
-    public  GameObject CivilniMaterialBigBox;
-    public  GameObject CivilniMaterialSmallBox;
-    public  GameObject PohonneHmotyBigBox;
-    public  GameObject PohonneHmotySmallBox;
+    
+    public  static GameObject PotravinyBigBox;
+    public  static GameObject PotravinySmallBox;
+    public  static GameObject VojenskyMaterialBigBox;
+    public  static GameObject VojenskyMaterialSmallBox;
+    public  static GameObject TechnickyMaterialBigBox;
+    public  static GameObject TechnickyMaterialSmallBox;
+    public  static GameObject CivilniMaterialBigBox;
+    public  static GameObject CivilniMaterialSmallBox;
+    public  static GameObject PohonneHmotyBigBox;
+    public  static GameObject PohonneHmotySmallBox;
+
+    public void Awake()
+    {
+        //ugly hack just to be able to set it from unity interface
+        PotravinyBigBox = Prefabs[0];
+        PotravinySmallBox = Prefabs[1];
+        VojenskyMaterialBigBox = Prefabs[2];
+        VojenskyMaterialSmallBox = Prefabs[3];
+        TechnickyMaterialBigBox = Prefabs[4];
+        TechnickyMaterialSmallBox = Prefabs[5];
+        CivilniMaterialBigBox = Prefabs[6];
+        CivilniMaterialSmallBox = Prefabs[7];
+        PohonneHmotyBigBox = Prefabs[8];
+        PohonneHmotySmallBox = Prefabs[9];
+    }
 
     [Serializable]
     public enum Material
@@ -58,6 +75,27 @@ public class ResourceManager : MonoBehaviour
     #endregion
 
     /*   Metody na nastaveni kazde surky zvlast */
+
+    public static GameObject GetPrefab(int amount, Material type)
+    {
+        switch (type)
+        {
+            case Material.Potraviny:
+                return amount == 10 ? PotravinyBigBox : PotravinySmallBox;
+            case Material.Civilni:
+                return amount == 10 ? CivilniMaterialBigBox : CivilniMaterialSmallBox;
+            case Material.Vojensky:
+                return amount == 10 ? VojenskyMaterialBigBox : VojenskyMaterialSmallBox;
+            case Material.Technicky:
+                return amount == 10 ? TechnickyMaterialBigBox : TechnickyMaterialSmallBox;
+            case Material.Pohonne:
+                return amount == 10 ? PohonneHmotyBigBox : PohonneHmotySmallBox;
+            default:
+                Debug.Log("Snazime se pridat neexistujici material -> viz Resource Manager");
+                break;
+        }
+        return PotravinyBigBox; //shouldn't happen, TODO use some other 'red warning box' or something
+    }
 
     public void IncPohonneHmoty(int value)
     {
@@ -148,6 +186,20 @@ public class ResourceManager : MonoBehaviour
         SpawnMaterial((Material)typ, amount);
     }
 
+    public Resource PickUp(Vector2Int position)
+    {
+        if (tileFactory.getTile(position) is Tile t)
+        {
+            var res = resources.Where(r => r.Owner == t).ToList();
+            if (res.Count() == 1)
+            {
+                return res.First();
+            }
+        }
+
+        return null;
+    }
+
     public void SpawnMaterial(Material typ, int amount)
     {
 
@@ -156,56 +208,25 @@ public class ResourceManager : MonoBehaviour
             Debug.Log("U cant have negative resources !!");
             return;
         }
-            
 
         if (amount > 0)
         {
-            GameObject sBox, bBox;
-            switch (typ)
-            {
-                case Material.Potraviny:
-                    bBox = PotravinyBigBox;
-                    sBox = PotravinySmallBox;
-                    break;
-                case Material.Civilni:
-                    bBox = CivilniMaterialBigBox;
-                    sBox = CivilniMaterialSmallBox;
-                    break;
-                case Material.Vojensky:
-                    bBox = VojenskyMaterialBigBox;
-                    sBox = VojenskyMaterialSmallBox;
-                    break;
-                case Material.Technicky:
-                    bBox = TechnickyMaterialBigBox;
-                    sBox = TechnickyMaterialSmallBox;
-                    break;
-                case Material.Pohonne:
-                    bBox = PohonneHmotyBigBox;
-                    sBox = PohonneHmotySmallBox;
-                    break;
-                default:
-                    Debug.Log("Snazime se pridat neexistujici material -> viz Resource Manager");
-                    bBox = PohonneHmotyBigBox; // Tohle tady je chybně
-                    sBox = PohonneHmotySmallBox;
-                    break;
-            }
-
+            
+  
             if (amount > 10)
             {
                 SpawnMaterial(typ, amount - 10);
             }
-
-            var coord = tileFactory.FindFreeTile();
-            var newResourse = new Resource(amount, typ, sBox, bBox, coord);
+            var coord = tileFactory.FindFreeTile(resources);
+            var newResourse = new Resource(amount, typ, tileFactory.getTile(coord));
             resources.Add(newResourse);
-            tileFactory.AddBox(coord, newResourse);
         }
         else
         {
             if (!resources.Any()) 
                 return;
 
-            var firstBox = resources.First(res => res.material == typ);
+            var firstBox = resources.First(res => res.Material == typ);
 
             if (firstBox.Amount + amount <= 0)
             {
@@ -236,9 +257,11 @@ public class ResourceManager : MonoBehaviour
         var res = GetAllBoxesOfType(type);
         var cheapest = res.First();
         int smallestSteps = int.MaxValue;
-        foreach (var box in res)
+        foreach (var box in res.Where(r => r.Owner is Tile))
         {
-            var steps = tileFactory.FindPath(from, box.position).Count;
+            var tile = (Tile) box.Owner;
+            Vector2Int position = new Vector2Int(tile.x, tile.y);
+            var steps = tileFactory.FindPath(from, position ).Count;
             if (steps < smallestSteps)
             {
                 smallestSteps = steps;
@@ -250,7 +273,7 @@ public class ResourceManager : MonoBehaviour
 
     private List<Resource> GetAllBoxesOfType(Material type)
     {
-        return resources.Where(r => r.material == type).ToList();
+        return resources.Where(r => r.Material == type).ToList();
     }
 
     public int GetResourceCount(Material type)

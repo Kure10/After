@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Win32;
 using UnityEngine;
 using UnityEngine.UI;
@@ -230,25 +231,7 @@ public class TileFactory : MonoBehaviour
             }
         }
     }
-
-    public void AddBox(Vector2Int coords, Resource box)
-    {
-        if (grid[coords.x, coords.y] is Tile t)
-        {
-            if (t.resourceBox != null)
-            {
-                if (t.resourceBox.Amount != 0)
-                    Debug.LogWarning(
-                    $"There is already an resource box at {coords.x} : {coords.y}! This shouldn't happen'");
-            }
-            t.resourceBox = box;
-        }
-        else
-        {
-            Debug.LogWarning(
-                $"Tried to add resource box to non-Tile object at {coords.x} : {coords.y}! This shouldn't happen'");
-        }
-    }
+    
     
 
     private List<Vector2Int> RetracePath(IWalkable start, IWalkable end)
@@ -267,15 +250,25 @@ public class TileFactory : MonoBehaviour
 
 
     //Finds first emptyTile with no building and no resource box
-    public Vector2Int FindFreeTile()
+    public Vector2Int FindFreeTile(List<Resource> resources)
     {
+        var resOnTiles = resources.Where(r => r.Owner is Tile).ToList();
         foreach (var item in grid)
         {
             if (item is Tile t)
             {
-                if (t.building == null && (t.resourceBox == null || t.resourceBox.Amount == 0) && t.inside == true)
+                if (t.building == null && t.inside == true)
                 {
-                    return Geometry.GridFromPoint(t.tile.transform.position);
+                    var empty = true;
+                    foreach (var res in resOnTiles)
+                    {
+                        if (res.Owner == t)
+                        {
+                            empty = false;
+                            break;
+                        }
+                    }
+                    if (empty) return Geometry.GridFromPoint(t.tile.transform.position);
                 }
             }
         }

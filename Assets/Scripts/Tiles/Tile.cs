@@ -13,7 +13,6 @@ public class Tile : BaseTile, IWalkable
     public int hCost { get; set; }
     public bool walkthrough { get; set; }
     public Building building;
-    public Resource resourceBox;
     public bool inside;
     public int fCost => gCost + hCost;
     public BaseTile parent { get; set; }

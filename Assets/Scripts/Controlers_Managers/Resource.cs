@@ -1,57 +1,52 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = UnityEngine.Object;
 
 public class Resource
 {
-    public Resource(int amount, ResourceManager.Material material, GameObject smallBox, GameObject bigBox,
-        Vector2Int coord)
-    {
-        this.smallBox = smallBox;
-        this.bigBox = bigBox;
-        this.amount = amount;
-        this.material = material;
-        position = coord;
-        ChangePrefab(amount);
-    }
-
-    public Resource Clone()
-    {
-        var clone = new Resource(Amount, material, smallBox, bigBox, new Vector2Int());
-        return clone;
-    }
     private int amount;
     private  GameObject prefab;
-    private GameObject smallBox;
-    private GameObject bigBox;
-    public ResourceManager.Material material;
+    public ResourceManager.Material Material { get; }
+    private System.Object owner;
+
+    public System.Object Owner
+    {
+        get => owner;
+        set
+        {
+            owner = value;
+            ChangePrefab(amount);
+        }
+    }
+
     public int Amount
     {
         get => amount;
         set
         {
-            Object.Destroy(prefab);
-            ChangePrefab(value);
             amount = value;
+            ChangePrefab(value);
         }
     }
-    public Vector2Int position;
+    
+    public Resource(int amount, ResourceManager.Material material, System.Object owner)
+    {
+        this.amount = amount;
+        Material = material;
+        Owner = owner;
+        ChangePrefab(amount);
+    }
 
     private void ChangePrefab(int newAmount)
     {
-        switch (newAmount)
+        if (prefab != null)
         {
-            case 0:
-                break;
-            case 10:
-                prefab = Object.Instantiate(bigBox, Geometry.PointFromGrid(position), Quaternion.identity );
-                break;
-            default:
-                prefab =  Object.Instantiate(smallBox, Geometry.PointFromGrid(position), Quaternion.identity);
-                break;
+            Object.Destroy(prefab);
+        }
+        //Prefab looks different depending on who is the owner - laying on the floor/in the storage/carried by person...
+        //for now take care only for tiles, TODO solve this for other owners
+        if (Owner is Tile t)
+        {
+            prefab = Object.Instantiate(ResourceManager.GetPrefab(newAmount, Material), t.tile.transform.position, Quaternion.identity);
         }
     }
 }
