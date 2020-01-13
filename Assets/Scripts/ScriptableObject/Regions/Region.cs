@@ -8,9 +8,9 @@ public class Region : ScriptableObject
 {
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
-    public bool isExplored = false;
-    public bool isInShadow = false;
-    public bool isInDarkness = true;
+    private bool isExplored = false;
+    private bool isInShadow = false;
+    private bool isInDarkness = true;
 
     public List<Region> neighborhoodRegions = new List<Region>();
 
@@ -54,7 +54,7 @@ public class Region : ScriptableObject
         }
     }
 
-    public bool IsOutOfReach
+    public bool IsInDarkness
     {
         get { return isInDarkness; }
         set

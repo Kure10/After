@@ -29,6 +29,21 @@ public class RegionButControler : MonoBehaviour , IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
+        if(this.currentState == null)
+        {
+            return;
+        }
+
+      // if(region.isExplored == true)
+       //     currentState = currentState.Process
+
+                // takze budu cekovat Region v jakem je stavu
+
+        // dale pokud (v jakem je stavu) tak,,, 
+
+        // bych mu měl zmenit stav
+
+        // udelam current state process 
 
     }
 
@@ -39,4 +54,5 @@ public class RegionButControler : MonoBehaviour , IPointerClickHandler
 
         currentState = currentState.Process(regionImage, this.explorePanel, eventData);
     }
+
 }

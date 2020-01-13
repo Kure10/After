@@ -16,14 +16,14 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
     public UnityEvent middleClick;
     public UnityEvent rightClick;
     [Header("Settings")]
-    public Color idleColor;
-    public Color hoverColor;
-    public Color clickColor;
+    public Color idleColor = new Color(1,1,1,1);
+    public Color hoverColor = new Color(1,1,1,0.4f);
+    public Color clickColor = new Color(0,0,0,1);
 
     [Header("Prefabs")]
     [SerializeField] GameObject exploreQuestionButton;
-    [Header("Parents")]
-    [SerializeField] Transform exploreButtonParent;
+    //[Header("Parents")]
+    //[SerializeField] Transform exploreButtonParent;
 
 
     public void Awake()
@@ -39,11 +39,11 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             Region region = this.regionControler.GetRegion;
-            StartCoroutine(ClickFeedBack());
-            if (region.IsOutOfReach || region.IsExplored) 
+           // StartCoroutine(ClickFeedBack());
+            if (region.IsInDarkness || region.IsExplored) 
                 return;
 
-            DoyouWannaExplore();
+            DoyouWannaExplore(eventData);
                 // leftClick.Invoke();
             Debug.Log("Left Clicked");
         }
@@ -60,19 +60,17 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
         }  
     }
 
-    public void SwitchHover(bool flag)
-    {
-        image.color = flag ? hoverColor : idleColor;
-    }
+    //public void SwitchHover(bool flag)
+    //{
+    //    image.color = flag ? hoverColor : idleColor;
+    //}
 
-    public void DoyouWannaExplore()
+    public void DoyouWannaExplore(PointerEventData eventData)
     {
-        instantExploreButton = Instantiate(exploreQuestionButton, Input.mousePosition, Quaternion.identity);
-        instantExploreButton.gameObject.transform.SetParent(exploreButtonParent);
-        uButtonExploreScript exploreButton = instantExploreButton.GetComponent<uButtonExploreScript>();
+        exploreQuestionButton.SetActive(true);
+        exploreQuestionButton.transform.position = Input.mousePosition;
+        uButtonExploreScript exploreButton = exploreQuestionButton.GetComponent<uButtonExploreScript>();
         exploreButton.In(this.regionControler);
-        //  Button button = this.instantExploreButton.GetComponent<Button>();
-
     }
 
     private void CloseExplorePanel()
