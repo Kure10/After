@@ -82,3 +82,32 @@ public class PickUp : Command
         return true;
     }
 }
+public class Drop : Command
+{
+    public Drop(GameObject target)
+    {
+        Target = target;
+    }
+    public override bool Execute()
+    {
+        var resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
+        var resource = resourceManager.GetResource(Target.GetComponent<Character>());
+        if (resource != null)
+        {
+            var tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
+            var dropPoint = tf.getTile(Geometry.GridFromPoint(Target.transform.position));
+            if (dropPoint is Tile t)
+            {
+                if (t.building != null)
+                {
+                    resource.Owner = t.building;
+                }
+                else
+                {
+                    resource.Owner = t;
+                }
+            } 
+        }
+        return true;
+    }
+}

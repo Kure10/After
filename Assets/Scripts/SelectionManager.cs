@@ -82,6 +82,7 @@ public class SelectionManager : MonoBehaviour
                                 character.AddCommand(new PickUp(selectedObjects[0]));
                                 var pathFromMatToBuilding = tileFactory.FindPath(nearest, coord);
                                 character.AddCommand(new Move(selectedObjects[0], pathFromMatToBuilding));
+                                character.AddCommand(new Drop(selectedObjects[0]));
                             }
                             ClearHighlight(highlightedObjects);
                             ClearHighlight(selectedObjects);
