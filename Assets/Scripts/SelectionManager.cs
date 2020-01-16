@@ -72,14 +72,17 @@ public class SelectionManager : MonoBehaviour
                         {
                             //TODO map to building class to get the state of building (if it's under construction,
                             //what materials are missing...)
-                            var charPosition = Geometry.GridFromPoint(selectedObjects[0].transform.position);
-                            var nearestRes = (Tile) resourceManager.Nearest(charPosition, ResourceManager.Material.Civilni).Owner; //TODO pro vsechny matrose
-                            
-                            var nearest = new Vector2Int(nearestRes.x, nearestRes.y);
-                            var pathToMaterial = tileFactory.FindPath(charPosition, nearest);
-                            //var pathFromMatToBuilding = tileFactory.FindPath(nearest, coord);
-                            //Move(selectedObjects[0], pathToMaterial.Concat(pathFromMatToBuilding).ToList());
-                            Move(selectedObjects[0], pathToMaterial);
+                            if (selectedObjects[0].TryGetComponent(out Character character))
+                            {
+                                var charPosition = Geometry.GridFromPoint(selectedObjects[0].transform.position);
+                                var nearestRes = (Tile) resourceManager.Nearest(charPosition, ResourceManager.Material.Civilni).Owner; //TODO pro vsechny matrose
+                                var nearest = new Vector2Int(nearestRes.x, nearestRes.y);
+                                var pathToMaterial = tileFactory.FindPath(charPosition, nearest);
+                                character.AddCommand(new Move(selectedObjects[0], pathToMaterial));
+                                character.AddCommand(new PickUp(selectedObjects[0]));
+                                var pathFromMatToBuilding = tileFactory.FindPath(nearest, coord);
+                                character.AddCommand(new Move(selectedObjects[0], pathFromMatToBuilding));
+                            }
                             ClearHighlight(highlightedObjects);
                             ClearHighlight(selectedObjects);
                             return;
@@ -92,9 +95,10 @@ public class SelectionManager : MonoBehaviour
                         {
                             //Move to target and if the targe tile has some default action, add it to stack of actions
                             //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
-                            
-                            Move(character, path);
-                            //TODO actions
+                            if (character.TryGetComponent(out Character person))
+                            {
+                                person.AddCommand(new Move(character, path));
+                            }
                         }
                     }
                     ClearHighlight(highlightedObjects);
@@ -112,9 +116,5 @@ public class SelectionManager : MonoBehaviour
             prevSelection.transform.Find("Selection").gameObject.SetActive(false);
         }
         objects.Clear();
-    }
-    private void Move(GameObject character, List<Vector2Int> path)
-    {
-        character.GetComponent<Character>().Move(path);
     }
 }
