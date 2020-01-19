@@ -5,7 +5,14 @@ using UnityEngine;
 public abstract class Command
 {
     internal GameObject Target;
-    public abstract bool Execute();
+    public abstract Result Execute();
+}
+
+public enum Result
+{
+    Success,
+    Failure,
+    Running
 }
 
 public class Move : Command
@@ -27,7 +34,7 @@ public class Move : Command
         init = true;
     }
     //returns true if completed and can move to another command
-    public override bool Execute()
+    public override Result Execute()
     {
         if (init)
         {
@@ -57,9 +64,9 @@ public class Move : Command
         {
             var nextVector3 = Geometry.PointFromGrid(Path[0]);
             Step(nextVector3);
-            return false;
+            return Result.Running;
         }
-        return true;
+        return Result.Success;
     }
     void Step(Vector3 to)
     {
@@ -73,13 +80,14 @@ public class PickUp : Command
     {
         Target = target;
     }
-    public override bool Execute()
+    public override Result Execute()
     {
         var resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         var resource = resourceManager.PickUp(Geometry.GridFromPoint(Target.transform.position));
+        if (resource == null) return Result.Failure;
         var character = Target.GetComponent<Character>();
         resource.Owner = character;
-        return true;
+        return Result.Success;
     }
 }
 public class Drop : Command
@@ -88,26 +96,22 @@ public class Drop : Command
     {
         Target = target;
     }
-    public override bool Execute()
+    public override Result Execute()
     {
         var resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         var resource = resourceManager.GetResource(Target.GetComponent<Character>());
-        if (resource != null)
+        if (resource == null) return Result.Failure;
+        var tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
+        var dropPoint = tf.getTile(Geometry.GridFromPoint(Target.transform.position));
+        if (!(dropPoint is Tile t)) return Result.Failure;
+        if (t.building != null)
         {
-            var tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
-            var dropPoint = tf.getTile(Geometry.GridFromPoint(Target.transform.position));
-            if (dropPoint is Tile t)
-            {
-                if (t.building != null)
-                {
-                    resource.Owner = t.building;
-                }
-                else
-                {
-                    resource.Owner = t;
-                }
-            } 
+            resource.Owner = t.building;
         }
-        return true;
+        else
+        {
+            resource.Owner = t;
+        }
+        return Result.Success;
     }
 }

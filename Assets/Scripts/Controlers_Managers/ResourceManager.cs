@@ -260,7 +260,7 @@ public class ResourceManager : MonoBehaviour
     public Resource Nearest(Vector2Int from, Material type)
     {
         var res = GetAllBoxesOfType(type);
-        var cheapest = res.First();
+        Resource cheapest = null;
         int smallestSteps = int.MaxValue;
         foreach (var box in res.Where(r => r.Owner is Tile))
         {

@@ -74,15 +74,8 @@ public class SelectionManager : MonoBehaviour
                             //what materials are missing...)
                             if (selectedObjects[0].TryGetComponent(out Character character))
                             {
-                                var charPosition = Geometry.GridFromPoint(selectedObjects[0].transform.position);
-                                var nearestRes = (Tile) resourceManager.Nearest(charPosition, ResourceManager.Material.Civilni).Owner; //TODO pro vsechny matrose
-                                var nearest = new Vector2Int(nearestRes.x, nearestRes.y);
-                                var pathToMaterial = tileFactory.FindPath(charPosition, nearest);
-                                character.AddCommand(new Move(selectedObjects[0], pathToMaterial));
-                                character.AddCommand(new PickUp(selectedObjects[0]));
-                                var pathFromMatToBuilding = tileFactory.FindPath(nearest, coord);
-                                character.AddCommand(new Move(selectedObjects[0], pathFromMatToBuilding));
-                                character.AddCommand(new Drop(selectedObjects[0]));
+                                t.building.AddWorker(character);
+                                
                             }
                             ClearHighlight(highlightedObjects);
                             ClearHighlight(selectedObjects);
