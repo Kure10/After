@@ -48,5 +48,11 @@ public class Resource
         {
             prefab = Object.Instantiate(ResourceManager.GetPrefab(newAmount, Material), t.tile.transform.position, Quaternion.identity);
         }
+
+        if (Owner is Building b)
+        {
+            //TODO umisti na paletu
+            prefab = Object.Instantiate(ResourceManager.GetPrefab(newAmount, Material), b.GetPosition(), Quaternion.identity);
+        }
     }
 }

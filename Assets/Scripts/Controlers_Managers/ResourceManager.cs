@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = System.Object;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class ResourceManager : MonoBehaviour
     private int deti;
     private int karma;
 
-    private List<GameObject> pohonneHmotyBoxes;
     private TileFactory tileFactory;
 
     private List<Resource> resources;
@@ -150,7 +150,6 @@ public class ResourceManager : MonoBehaviour
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
         resources = new List<Resource>();
-        pohonneHmotyBoxes = new List<GameObject>();
         ResourceAmountChanged();
     }
 
@@ -190,16 +189,22 @@ public class ResourceManager : MonoBehaviour
     {
         if (tileFactory.getTile(position) is Tile t)
         {
-            var res = resources.Where(r => r.Owner == t).ToList();
-            if (res.Count() == 1)
-            {
-                return res.First();
-            }
+            return GetResource(t);
+        }
+//TODO mozna bude mozne i prebirat nevyuzite/zrusene surky z rozestavenych budov etc...
+        return null;
+    }
+
+    public Resource GetResource(System.Object owner)
+    {   
+        var res = resources.Where(r => r.Owner == owner).ToList();
+        if (res.Count() == 1)
+        {
+            return res.First();
         }
 
         return null;
     }
-
     public void SpawnMaterial(Material typ, int amount)
     {
 
@@ -255,7 +260,7 @@ public class ResourceManager : MonoBehaviour
     public Resource Nearest(Vector2Int from, Material type)
     {
         var res = GetAllBoxesOfType(type);
-        var cheapest = res.First();
+        Resource cheapest = null;
         int smallestSteps = int.MaxValue;
         foreach (var box in res.Where(r => r.Owner is Tile))
         {
