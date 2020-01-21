@@ -69,6 +69,9 @@ public class Region : ScriptableObject
     {
         foreach (Region item in neighborhoodRegions)
         {
+            if (item.IsInShadow || item.IsExplored)
+                continue;
+
             item.IsInShadow = true;
         }
     }
