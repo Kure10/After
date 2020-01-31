@@ -36,12 +36,7 @@ public class BuildingOnUse : MonoBehaviour
 
     public void ButtonOnClick()
     {
-        bool haveEnoughtResources = false;
-        haveEnoughtResources = resourceControler.TryBuildBuilding(currentBuildingBlueprint);
-
-        // Zkontroluje jenom jestli ma dost na počatešní postaveni budovy.. (Nic se neodečíta.)
-        if (haveEnoughtResources)
-        {
+        
             if (currentBuildingBlueprint.Prefab != null)
             {
                 buildingCreator.CreateBuilding(currentBuildingBlueprint);
@@ -51,8 +46,8 @@ public class BuildingOnUse : MonoBehaviour
             {
                 Debug.Log("Chybi Prefab pro building!");
             }
+
             Debug.Log("Button Executed !!!!  " + this.name);
-        }
 
     }
 
