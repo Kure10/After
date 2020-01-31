@@ -9,6 +9,9 @@ public class uButtonExploreScript : MonoBehaviour
 
     private RegionControler regionControler;
 
+    [SerializeField]
+    GameObject panelMission;
+
     public void YesButton()
     {
         Debug.Log("Yes Button -> Show Mission panel and other shits");
@@ -31,5 +34,15 @@ public class uButtonExploreScript : MonoBehaviour
     {
         Debug.Log("me enabled");
     }
+
+
+    public void SetMissionPanel ()
+    {
+
+    }
+
+
+
+
 
 }
