@@ -36,6 +36,7 @@ public class Building
     enum WorkerState
     {
         init,
+        wait,
         empty,
         pickup,
         full,
@@ -45,6 +46,7 @@ public class Building
     {
         public Character character;
         public WorkerState state;
+        public float time;
     }
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
@@ -71,12 +73,22 @@ public class Building
             var activeWorker = worker;
             switch (activeWorker.state)
             {
+                case WorkerState.wait:
+                    activeWorker.time += Time.deltaTime;
+                    if (activeWorker.time > 1f)
+                    {
+                        activeWorker.state = WorkerState.init;
+                    }
+                    break;
                 case WorkerState.init:
                     var charPosition = Geometry.GridFromPoint(activeWorker.character.transform.position);
                     var tile = resourceManager.Nearest(charPosition, ResourceManager.Material.Civilni);
                     if (tile == null)
                     {
-                        Workers.Remove(worker);
+                        //no available material, wait for some to appear in future
+                        activeWorker.time = 0;
+                        activeWorker.state = WorkerState.wait;
+                        //Workers.Remove(worker);
                         break;
                     }
                     var nearestRes = (Tile)tile.Owner; //TODO pro vsechny matrose
