@@ -46,11 +46,6 @@ public class BuildingOnUse : MonoBehaviour
             {
                 Debug.Log("Chybi Prefab pro building!");
             }
-
             Debug.Log("Button Executed !!!!  " + this.name);
-
     }
-
-
-
 }
