@@ -25,8 +25,8 @@ public class BuildingCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        buildings.ForEach(b=>b.Update());
-        
+        buildings?.ForEach(b=>b.Update());
+
         if (blueprint != null)
         {
  

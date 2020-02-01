@@ -205,6 +205,11 @@ public class ResourceManager : MonoBehaviour
 
         return null;
     }
+
+    public List<Resource> GetResourcesForOwner(Object owner)
+    {
+        return resources.Where(r => r.Owner == owner).ToList();
+    }
     public void SpawnMaterial(Material typ, int amount)
     {
 

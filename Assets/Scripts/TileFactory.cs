@@ -108,7 +108,6 @@ public class TileFactory : MonoBehaviour
         {
             return null;
         }
-        var path = new List<Vector2Int>();
         start.gCost = 100;
         List<IWalkable> openSet = new List<IWalkable>();
         HashSet<IWalkable> closedSet = new HashSet<IWalkable>();
