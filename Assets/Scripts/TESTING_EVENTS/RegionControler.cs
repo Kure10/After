@@ -5,23 +5,18 @@ using UnityEngine.UI;
 
 public class RegionControler : MonoBehaviour
 {
-    [SerializeField] Region region;
 
-    private Image image;
+    public  float fogValue = 0.25f;
+    public  Color black = new Color(0,0,0,1f);
+    public  Color idleColor = new Color(1,1,1,1);
 
-    public float fogValue = 0.25f;
-    private Color black = new Color(0,0,0,1f);
-    private Color idleColor = new Color(1,1,1,1);
-
-    public Region GetRegion
-    {
-        get { return this.region; }
-    }
+    private RegionSettings[] arrayOfregionsSettings;
+    private MissionManager missionManager;
 
     private void Awake()
     {
-       image = GetComponent<Image>();
-       InicializationRegion();
+        arrayOfregionsSettings = FindObjectsOfType<RegionSettings>();
+        missionManager = GameObject.FindGameObjectWithTag("MissionManager").GetComponent<MissionManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -32,42 +27,40 @@ public class RegionControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // tohle tady nesmí byt
-        if (this.region.IsInDarkness)
+
+    }
+
+    public void ChangeRegionState(Region region, Image regionImage)
+    {
+        ChangeColoring(region, regionImage);
+    }
+
+    public void RefreshRegions()
+    {
+        foreach (var item in arrayOfregionsSettings)
         {
-            image.color = black;
-        }
-        else if (!this.region.IsExplored)
-        {
-            image.color = new Color(idleColor.r, idleColor.g, idleColor.b, fogValue);
-        }
-        else
-        {
-            image.color = new Color(idleColor.r, idleColor.g, idleColor.b, 1f);
+            var regionImage = item.GetImage();
+            var region = item.GetRegion();
+            ChangeColoring(region, regionImage);
         }
     }
 
-    public void InicializationRegion ()
+    private void ChangeColoring(Region region, Image regionImage)
     {
-        this.name = this.region.regionName;
-        if (this.region.IsStartingRegion)
+        if (region.IsExplored)
         {
-            this.region.IsInShadow = true;
+            regionImage.color = idleColor;
         }
-        else
+        else if (region.IsInDarkness)
         {
-            this.region.IsInDarkness = true;
+            regionImage.color = black;
+        }
+        else if (region.IsInShadow)
+        {
+            regionImage.color = new Color(1, 1, 1, fogValue);
         }
     }
 
-    public void ExploreRegion()
-    {
-        if (this.region.IsInShadow)
-        {
-            this.region.IsExplored = true;
-            this.region.RevealNeighbors();
-        }
-    }
 
 
 

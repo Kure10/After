@@ -29,7 +29,7 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
     public void Awake()
     {
         this.image = GetComponent<Image>();
-        this.regionControler = GetComponent<RegionControler>();
+       // this.regionControler = GetComponent<RegionControler>();
     }
 
 
@@ -38,10 +38,10 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Region region = this.regionControler.GetRegion;
-           // StartCoroutine(ClickFeedBack());
-            if (region.IsInDarkness || region.IsExplored) 
-                return;
+           // Region region = this.regionControler.GetRegion;
+           
+          //  if (region.IsInDarkness || region.IsExplored) 
+            //    return;
 
             DoyouWannaExplore(eventData);
                 // leftClick.Invoke();
@@ -70,7 +70,7 @@ public class RegionButtonControler : MonoBehaviour , IPointerClickHandler
         exploreQuestionButton.SetActive(true);
         exploreQuestionButton.transform.position = Input.mousePosition;
         uButtonExploreScript exploreButton = exploreQuestionButton.GetComponent<uButtonExploreScript>();
-        exploreButton.In(this.regionControler);
+       // exploreButton.In(this.regionControler);
     }
 
     private void CloseExplorePanel()

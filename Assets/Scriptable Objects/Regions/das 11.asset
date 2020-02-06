@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7374151546c1b0746811bcde51db0af4, type: 3}
   m_Name: das 11
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: fac0d24205fbe6e4f9b5a71f7bcd37cf, type: 3}
   regionName: Sydny
   isStartingRegion: 0
-  isExplored: 0
-  isFarAway: 1
-  neighborhoodRegions: []
+  neighborhoodRegions:
+  - {fileID: 11400000, guid: 5e9c159922afd64469570c269da1da10, type: 2}
+  - {fileID: 11400000, guid: bf8764a3b6d28c6409466f35a74804e9, type: 2}
+  - {fileID: 11400000, guid: ae2078c9889be4c458e807a17c13d9d1, type: 2}
+  - {fileID: 11400000, guid: 3d704f45504e0e74296fd59c5d7253f5, type: 2}
+  - {fileID: 11400000, guid: f6733e3f1d9977f4c8c711093e6aae15, type: 2}
+  - {fileID: 11400000, guid: 7ef62bb997a369d4dbbb0650b28c7b9d, type: 2}
+  - {fileID: 11400000, guid: ea43c77e83e776845b22c50587a7309b, type: 2}

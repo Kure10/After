@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "ScriptableObject/Region", fileName = "_NewRegion")]
 public class Region : ScriptableObject
 {
+    [SerializeField] private Sprite sprite;
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
     private bool isExplored = false;
@@ -14,11 +15,14 @@ public class Region : ScriptableObject
 
     public List<Region> neighborhoodRegions = new List<Region>();
 
-    public List<Events> events = new List<Events>(); // zatim nema vyuziti jeste uvidim jak se to vyvyne
-
     public string RegionName
     {
         get { return this.regionName;}
+    }
+
+    public Sprite GetSprite
+    {
+        get { return sprite; }
     }
 
     public bool IsStartingRegion
@@ -75,11 +79,5 @@ public class Region : ScriptableObject
             item.IsInShadow = true;
         }
     }
-   
-
-}
-
-public class Events
-{
 
 }
