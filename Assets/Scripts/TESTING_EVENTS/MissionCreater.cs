@@ -19,18 +19,6 @@ public class MissionCreater : MonoBehaviour
         FillMissionList();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Mission CreateMission()
     {
         Mission mis = new Mission();

@@ -54,6 +54,11 @@ public class RegionSettings : MonoBehaviour
         uButtonExploreScript exploreButton = exploreQuestionButton.GetComponent<uButtonExploreScript>();
     }
 
+
+    public void StartExploreMission()
+    {
+        regionControler.StartExploreMision();
+    }
     public void CloseExplorePanel()
     {
         this.exploreQuestionButton.SetActive(false);

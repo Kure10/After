@@ -10,7 +10,7 @@ public class uButtonExploreScript : MonoBehaviour
     [SerializeField]
     private RegionSettings regionSettings;
 
-
+    
 
     private void Awake()
     {
@@ -19,6 +19,7 @@ public class uButtonExploreScript : MonoBehaviour
 
     public void YesButton()
     {
+        regionSettings.StartExploreMission();
         //Debug.Log("Yes Button -> Show Mission panel and other shits");
         regionSettings.ExploreRegion();
         parentObject.SetActive(false);
@@ -33,14 +34,15 @@ public class uButtonExploreScript : MonoBehaviour
 
     void OnEnable()
     {
-        //Debug.Log("me enabled");
+      //  RegionControler.OnReginsterOpenEvent(this);
     }
 
-
-    public void SetMissionPanel ()
+    private void OnDisable()
     {
-
+      //  RegionControler.UnReginsterOpenEvent(this);
     }
+
+
 
 
 

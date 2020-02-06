@@ -6,12 +6,18 @@ using UnityEngine.UI;
 public class RegionControler : MonoBehaviour
 {
 
-    public  float fogValue = 0.25f;
-    public  Color black = new Color(0,0,0,1f);
-    public  Color idleColor = new Color(1,1,1,1);
+    public float fogValue = 0.25f;
+    public Color black = new Color(0, 0, 0, 1f);
+    public Color idleColor = new Color(1, 1, 1, 1);
 
     private RegionSettings[] arrayOfregionsSettings;
     private MissionManager missionManager;
+
+    
+
+    //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
+    //public delegate void OnExploreButtonClick();
+    //public static event OnExploreButtonClick onClick;
 
     private void Awake()
     {
@@ -21,7 +27,7 @@ public class RegionControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-     
+
     }
 
     // Update is called once per frame
@@ -29,6 +35,17 @@ public class RegionControler : MonoBehaviour
     {
 
     }
+
+    //public static void OnReginsterOpenEvent(uButtonExploreScript tmp)
+    //{
+    //    ubes.Add(tmp);
+    //}
+
+    //public static void UnReginsterOpenEvent(uButtonExploreScript tmp)
+    //{
+    //    if(ubes.Contains(tmp))
+    //        ubes.Remove(tmp);
+    //}
 
     public void ChangeRegionState(Region region, Image regionImage)
     {
@@ -61,7 +78,9 @@ public class RegionControler : MonoBehaviour
         }
     }
 
-
-
+    public void StartExploreMision()
+    {
+        missionManager.ChoiseMission();
+    }
 
 }
