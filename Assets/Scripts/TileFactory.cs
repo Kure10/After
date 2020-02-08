@@ -36,6 +36,7 @@ public class TileFactory : MonoBehaviour
             var coord = Geometry.GridFromPoint(point);
             coordText.text = $"({coord.x},{coord.y})";
         }
+        
     }
 
     public BaseTile getTile(Vector2Int coordinates)

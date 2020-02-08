@@ -13,6 +13,7 @@ public class SelectionManager : MonoBehaviour
     private float maxDist = 100f;
     private readonly int TILE = 1 << 8;
     private readonly int SELECTABLE = 1 << 9;
+    private List<Character> characters;
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
@@ -20,6 +21,7 @@ public class SelectionManager : MonoBehaviour
         highlightedObjects = new List<GameObject>();
         layerMask = SELECTABLE; //hit only layer 9 (selectables)
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
+        characters = new List<Character>();
     }
 
     // Update is called once per frame
@@ -87,11 +89,12 @@ public class SelectionManager : MonoBehaviour
                         var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
                         if (path != null)
                         {
-                            //Move to target and if the targe tile has some default action, add it to stack of actions
+                            //Move to target and if the target tile has some default action, add it to stack of actions
                             //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
                             if (character.TryGetComponent(out Character person))
                             {
                                 person.AddCommand(new Move(character, path));
+                                characters.Add(person);
                             }
                         }
                     }
@@ -100,8 +103,17 @@ public class SelectionManager : MonoBehaviour
 
                 }
             }
-
+            
         }
+
+        foreach (var character in characters.ToList())
+        {
+            if (character.Execute() == Result.Success)
+            {
+                characters.Remove(character);
+            }
+        }
+        
     }
     private void ClearHighlight(List<GameObject> objects)
     {
