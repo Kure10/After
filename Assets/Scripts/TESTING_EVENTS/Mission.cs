@@ -6,35 +6,37 @@ using UnityEngine.UI;
 [SerializeField]
 public class Mission
 {
-    private string missionName;
+    public string missionName;
 
-    private float missionDistance; // vzdalenost je tam ale ne zpatky
+    public float missionDistance; // vzdalenost je tam ale ne zpatky
 
-    public Image image;
+    public Sprite image;
 
-    public string missionMission;
+   // public string missionMission;
 
     public string missionType;
 
-    MissionTime missionTime; // kolik eventu te potka
+    public MissionTime missionTime; // kolik eventu te potka
 
-    MissionLevel missionLevel; // jak jsou tezke eventy // i finalni event
+    public LevelOfDangerous levelOfDangerous; // jak jsou tezke eventy // i finalni event
 
-    MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
+    public MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
 
     // List Eventu .....
 
-    List<Specialists> specialistOnMission = new List<Specialists>();
+    public List<Specialists> specialistOnMission = new List<Specialists>();
 
     public Mission ()
     {
-
+        missionTime = MissionTime.akorat;
+        levelOfDangerous = LevelOfDangerous.dva;
+        missionEnviroment = MissionEnviroment.poust;
     }
 
 }
 
-enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
+public enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
 
-enum MissionLevel { jedna, dva, tri };
+public enum LevelOfDangerous { jedna, dva, tri };
 
-enum MissionEnviroment { pole, poust, dzungle, les };
+public enum MissionEnviroment { pole, poust, dzungle, les };

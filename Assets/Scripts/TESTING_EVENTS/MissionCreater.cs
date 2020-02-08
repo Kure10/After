@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MissionCreater : MonoBehaviour
 {
     [SerializeField]
     public List<Mission> missions = new List<Mission>();
     private MissionManager missionManager;
+
+    public Sprite image;
 
 
     private void Awake()
@@ -23,6 +26,10 @@ public class MissionCreater : MonoBehaviour
     {
         Mission mis = new Mission();
 
+        mis.missionName = "Explore";
+        mis.missionDistance = 30f;
+        mis.image = image;
+        mis.missionType = "je to v pici";
 
         return mis;
     }
