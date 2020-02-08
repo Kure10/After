@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class MissionManager : MonoBehaviour
 {
+
     [SerializeField]
-    GameObject missionPanel;
+    uWindowMission windowMission;
 
     public List<Mission> missions = new List<Mission>();
 
 
-
-    public GameObject EnableMissionPanel { set { missionPanel.SetActive(value); } }
 
     public void ChoiseMission()
     {
@@ -25,7 +24,19 @@ public class MissionManager : MonoBehaviour
 
     private void ShowMissionPanel(Mission mission)
     {
-        missionPanel.SetActive(true);
+        this.windowMission.MissionName = mission.missionName;
+        this.windowMission.MissionType = mission.missionType;
+        this.windowMission.MissionDistance = mission.missionDistance;
+        this.windowMission.MissionLevel = mission.levelOfDangerous;
+        this.windowMission.MissionEnviroment = mission.missionEnviroment;
+        this.windowMission.MissionTime = mission.missionTime;
+        this.windowMission.Sprite = mission.image;
+
+        this.windowMission.Init();
+
+        // napln specialisty..
+
+        this.windowMission.SetActivityMissionPanel = true;
     }
 
 

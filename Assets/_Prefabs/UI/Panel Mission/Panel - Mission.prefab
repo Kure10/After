@@ -1160,7 +1160,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text:'
+  m_Text: Vzdalenost
 --- !u!1 &2739280779714993321
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,7 +2681,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text:'
+  m_Text: Prostredi
 --- !u!1 &5390724099046944767
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,7 +2834,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text:'
+  m_Text: Uroven Nebezpeci
 --- !u!1 &5540434885884986822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2911,7 +2911,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text:'
+  m_Text: 'Delka Mise:'
 --- !u!1 &5715956488355890524
 GameObject:
   m_ObjectHideFlags: 0
@@ -3260,7 +3260,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'New Text:'
+  m_Text: 'Typ mise:'
 --- !u!1 &6877822989390451837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3691,7 +3691,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 444.5, y: -135.24998}
+  m_AnchoredPosition: {x: 444.5, y: -163.7493}
   m_SizeDelta: {x: 889, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7001930136365307043
@@ -3745,6 +3745,7 @@ GameObject:
   - component: {fileID: 8566126246745516476}
   - component: {fileID: 5268789974552442635}
   - component: {fileID: 8918075640839129508}
+  - component: {fileID: 43589354590117324}
   m_Layer: 5
   m_Name: Panel - Mission
   m_TagString: Untagged
@@ -3834,6 +3835,28 @@ MonoBehaviour:
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &43589354590117324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962711055955030940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7938e31664fca4281dd79dd1fc933f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _missionName: {fileID: 7560203682390332397}
+  image: {fileID: 9201308361669610836}
+  labelType: {fileID: 6915650962123808214}
+  labelLevel: {fileID: 2051270734874211815}
+  labelEnviroment: {fileID: 1971181344272732259}
+  labelTime: {fileID: 4718378022321078051}
+  labelDistance: {fileID: 7604229829312039076}
+  missionLevel: 2
+  missionEnviroment: 2
+  missionTime: 2
 --- !u!1 &8292656361118834724
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,11 +16,11 @@ public class Mission
 
     public string missionType;
 
-    MissionTime missionTime; // kolik eventu te potka
+    public MissionTime missionTime; // kolik eventu te potka
 
-    LevelOfDangerous levelOfDangerous; // jak jsou tezke eventy // i finalni event
+    public LevelOfDangerous levelOfDangerous; // jak jsou tezke eventy // i finalni event
 
-    MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
+    public MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
 
     // List Eventu .....
 
@@ -35,8 +35,8 @@ public class Mission
 
 }
 
-enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
+public enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
 
-enum LevelOfDangerous { jedna, dva, tri };
+public enum LevelOfDangerous { jedna, dva, tri };
 
-enum MissionEnviroment { pole, poust, dzungle, les };
+public enum MissionEnviroment { pole, poust, dzungle, les };
