@@ -7,6 +7,7 @@ public class Resource
     private  GameObject prefab;
     public ResourceManager.Material Material { get; }
     private System.Object owner;
+    private ResourceManager rm;
 
     public System.Object Owner
     {
@@ -25,6 +26,7 @@ public class Resource
         {
             amount = value;
             ChangePrefab(value);
+            rm.ResourceAmountChanged();
         }
     }
     
@@ -34,6 +36,7 @@ public class Resource
         Material = material;
         Owner = owner;
         ChangePrefab(amount);
+        rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
     }
 
     private void ChangePrefab(int newAmount)
@@ -42,6 +45,8 @@ public class Resource
         {
             Object.Destroy(prefab);
         }
+
+        if (newAmount == 0) return;
         //Prefab looks different depending on who is the owner - laying on the floor/in the storage/carried by person...
         //for now take care only for tiles, TODO solve this for other owners
         if (Owner is Tile t)
