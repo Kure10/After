@@ -15,6 +15,7 @@ public class Building
     private TileFactory tileFactory;
     private readonly BuildingBlueprint blueprint;
     private GameObject prefab;
+    private float timeToBuildRemaining;
 
     private BuildingState State
     {
@@ -60,6 +61,7 @@ public class Building
         this.prefab =
             prefab; //this is ugly hack just to get selected position easily- the prefab is reInstantiated later
         State = BuildingState.Designed;
+        timeToBuildRemaining = blueprint.TimeToBuild;
         Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
@@ -73,12 +75,17 @@ public class Building
         Workers.Add(worker);
     }
 
+    private static int debug = 0;
+
     public void Update()
     {
+        debug++;
+        var workerNr = 0;
         if (state == BuildingState.Designed)
         {
             foreach (var worker in Workers.ToList())
             {
+                workerNr++;
                 var activeWorker = worker;
                 switch (activeWorker.state)
                 {
@@ -96,6 +103,7 @@ public class Building
                         if (!missingMaterials.Any())
                         {
                             activeWorker.time = 0;
+                            activeWorker.character.AddCommand(new Build());
                             activeWorker.state = WorkerState.building;
                             return;
                         }
@@ -162,13 +170,25 @@ public class Building
                         break;
                     case WorkerState.building:
                         //TODO nejaka logika na zapocitavani prace od workeru, zatim jen casove
-                        activeWorker.time += Time.deltaTime;
-                        if (activeWorker.time > 5f)
+                        activeWorker.character.Execute();
+                        float buildPoints = 0;
+                        if (activeWorker.character.GetCommand() is Build buildCmd)
+                        {
+                            buildPoints = buildCmd.GetBuildPoints(activeWorker.character.GetTechLevel());
+                            timeToBuildRemaining -= buildPoints;
+                        }
+
+                        if (debug % 100 == 0)
+                        {
+                            Debug.Log($"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
+
+                        }
+                        
+                        if (timeToBuildRemaining <= 0) 
                         {
                             Workers.Remove(worker);
                             State = BuildingState.Build;
                         }
-
                         break;
                 }
             }

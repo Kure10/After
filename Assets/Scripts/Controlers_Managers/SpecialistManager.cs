@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpecialistManager : MonoBehaviour
@@ -25,6 +26,17 @@ public class SpecialistManager : MonoBehaviour
             specGridUI.AddSpecHolder(specialists[i]);
         }
     }
+
+    public Specialists GetSpecialistByPosition(int position)
+    {
+        if (position < specialists.Count())
+        {
+            return specialists[position];
+        }
+        return specialists.First();
+    }
+    
+    
 
 
 }

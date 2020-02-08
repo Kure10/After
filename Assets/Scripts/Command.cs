@@ -115,3 +115,27 @@ public class Drop : Command
         return Result.Success;
     }
 }
+
+public class Build : Command
+{
+    private float accumulatedTime;
+    private TimeControl tc;
+    public Build()
+    {
+        accumulatedTime = 0f;
+        tc = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
+    }
+    public override Result Execute()
+    {
+        accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
+       
+        return Result.Success;
+    }
+
+    public float GetBuildPoints(int techLevel)
+    {
+        var ret = (accumulatedTime / 10f + techLevel) * 10f;
+        accumulatedTime = 0;
+        return ret;
+    }
+}

@@ -55,6 +55,7 @@ public class TileFactory : MonoBehaviour
         int x = 0;
         int z = 0;
         int rows = 0;
+        var specialistsInGame = 0;
         foreach (var line in lines)
         {
             if (line[0] == '#') continue;
@@ -76,6 +77,9 @@ public class TileFactory : MonoBehaviour
                     case 'e': col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z) {inside = true}); break;
                     case 's':
                         Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+                        var sm = GameObject.FindGameObjectWithTag("SpecialistManager")
+                            .GetComponent<SpecialistManager>();
+                        character.GetComponent<Character>().SetBlueprint(sm.GetSpecialistByPosition(specialistsInGame++));
                         goto case 'e';
                     case 'd': col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z)); break;
                     case '0': col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z) {inside = false}); break;
