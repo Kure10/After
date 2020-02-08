@@ -8,12 +8,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
 
     private Command command;
-    void Start()
-    {
-    }
     
-
-
     public Result Execute()
     {
         if (command != null)

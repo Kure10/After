@@ -155,7 +155,7 @@ public class ResourceManager : MonoBehaviour
 
     // Update is called once per frame
 
-    void ResourceAmountChanged()
+    public void ResourceAmountChanged()
     {
         /*  Updatuje nase suroviny v gui */
         
