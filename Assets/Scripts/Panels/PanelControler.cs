@@ -87,6 +87,9 @@ public class PanelControler : MonoBehaviour
         }
     }
 
-
+    public void CloseThisPanel(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
+    }
 
 }
