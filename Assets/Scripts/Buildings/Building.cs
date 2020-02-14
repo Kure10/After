@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class Building
 {
     private List<Worker> Workers;
-    private BuildingState state;
+    private BuildingState _state;
     private ResourceManager resourceManager;
     private TileFactory tileFactory;
     private readonly BuildingBlueprint blueprint;
@@ -19,11 +19,11 @@ public class Building
 
     private BuildingState State
     {
-        get => state;
+        get => _state;
         set
         {
-            if (value == state) return;
-            state = value;
+            if (value == _state) return;
+            _state = value;
             OnStateChanged();
         }
     }
@@ -45,6 +45,7 @@ public class Building
         pickup,
         full,
         drop,
+        move,
         building
     }
 
@@ -69,6 +70,16 @@ public class Building
 
     public void AddWorker(Character character)
     {
+        if (Workers.Select(w => w.character).Contains(character))
+        {
+            foreach (var w in Workers.ToList())
+            {
+                if (w.character == character)
+                {
+                    Workers.Remove(w);
+                }
+            }
+        }
         var worker = new Worker();
         worker.character = character;
         worker.state = WorkerState.init;
@@ -81,11 +92,10 @@ public class Building
     {
         debug++;
         var workerNr = 0;
-        if (state == BuildingState.Designed)
+        if (State == BuildingState.Designed)
         {
             foreach (var worker in Workers.ToList())
             {
-                workerNr++;
                 var activeWorker = worker;
                 switch (activeWorker.state)
                 {
@@ -147,11 +157,7 @@ public class Building
                         }
                         else
                         {
-                            var buildingPosition = Geometry.GridFromPoint(this.prefab.transform.position);
-                            var pathFromMatToBuilding = tileFactory.FindPath(
-                                Geometry.GridFromPoint(activeWorker.character.transform.position), buildingPosition);
-                            activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject,
-                                pathFromMatToBuilding));
+                            MoveBack(activeWorker);
                             activeWorker.state = WorkerState.full;
                         }
 
@@ -167,43 +173,91 @@ public class Building
                     case WorkerState.drop:
                         activeWorker.character.Execute();
                         activeWorker.state = WorkerState.init;
-                        break;
-                    case WorkerState.building:
-                        //TODO nejaka logika na zapocitavani prace od workeru, zatim jen casove
-                        activeWorker.character.Execute();
-                        float buildPoints = 0;
-                        if (activeWorker.character.GetCommand() is Build buildCmd)
+                        if (!GetMissingMaterials().Any())
                         {
-                            buildPoints = buildCmd.GetBuildPoints(activeWorker.character.GetTechLevel());
+                            State = BuildingState.UnderConstruction;
+                        }
+
+                        break;
+                }
+            }
+        }
+        else if (State == BuildingState.UnderConstruction)
+        {
+            foreach (var worker in Workers.ToList())
+            {
+                workerNr++;
+                switch (worker.state)
+                {
+                    case WorkerState.building:
+                        worker.character.Execute();
+                        float buildPoints = 0;
+                        if (worker.character.GetCommand() is Build buildCmd)
+                        {
+                            buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
                             timeToBuildRemaining -= buildPoints;
                         }
 
                         if (debug % 100 == 0)
                         {
-                            Debug.Log($"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
+                            Debug.Log(
+                                $"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
+                        }
 
-                        }
-                        
-                        if (timeToBuildRemaining <= 0) 
+                        if (timeToBuildRemaining <= 0)
                         {
-                            Workers.Remove(worker);
                             State = BuildingState.Build;
+                            Workers.Clear();
                         }
+                        break;
+                    case WorkerState.full:
+                        worker.character.AddCommand(new Drop(worker.character.gameObject));
+                        worker.state = WorkerState.drop;
+                        break;
+                    case WorkerState.drop:
+                        worker.character.Execute();
+                        worker.state = WorkerState.init;
+                        break;
+                    case WorkerState.init:
+                        MoveBack(worker);
+                        worker.state = WorkerState.move;
+                        break;
+                    case WorkerState.move:
+                        if (worker.character.Execute() == Result.Success)
+                        {
+                            worker.state = WorkerState.building;
+                            worker.character.AddCommand(new Build());
+                        }
+                        break;
+                    default: worker.state = WorkerState.init;
                         break;
                 }
             }
         }
     }
 
+    private void MoveBack(Worker activeWorker)
+    {
+        var buildingPosition = Geometry.GridFromPoint(this.prefab.transform.position);
+        var pathFromMatToBuilding = tileFactory.FindPath(
+            Geometry.GridFromPoint(activeWorker.character.transform.position), buildingPosition);
+        activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject,
+            pathFromMatToBuilding));
+    }
+
     private List<ResourceManager.Material> GetMissingMaterials()
     {
         var missing = new List<ResourceManager.Material>();
         var onSiteResources = resourceManager.GetResourcesForOwner(this);
-        var civil = blueprint.Civil - onSiteResources.Where(r=>r.Material == ResourceManager.Material.Civilni).Select(r => r.Amount).Sum();
+        var civil = blueprint.Civil - onSiteResources.Where(r => r.Material == ResourceManager.Material.Civilni)
+                        .Select(r => r.Amount).Sum();
         if (civil > 0) missing.Add(ResourceManager.Material.Civilni);
-        var military = blueprint.Military - onSiteResources.Where(res => res.Material == ResourceManager.Material.Vojensky).Select(r => r.Amount).Sum();
+        var military = blueprint.Military - onSiteResources
+                           .Where(res => res.Material == ResourceManager.Material.Vojensky).Select(r => r.Amount).Sum();
         if (military > 0) missing.Add(ResourceManager.Material.Vojensky);
-        var technicky = blueprint.Tech - onSiteResources.Where(res => res.Material == ResourceManager.Material.Technicky).Select(r => r.Amount).Sum();
+        var technicky = blueprint.Tech - onSiteResources
+                            .Where(res => res.Material == ResourceManager.Material.Technicky).Select(r => r.Amount)
+                            .Sum();
         if (technicky > 0) missing.Add(ResourceManager.Material.Technicky);
         return missing;
     }
@@ -214,16 +268,20 @@ public class Building
         {
             Object.Destroy(prefab);
         }
-        
-        switch (state)
+
+        switch (State)
         {
             case BuildingState.Designed:
                 prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,
                     prefab.transform.rotation);
                 prefab.transform.Find("background").GetComponent<Renderer>().material.color = blueprint.BackgroundColor;
                 break;
+            case BuildingState.UnderConstruction:
+                prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,
+                    prefab.transform.rotation);
+                resourceManager.GetResourcesForOwner(this).ForEach(res => res.Amount = 0);
+                break;
             case BuildingState.Build:
-                resourceManager.GetResourcesForOwner(this).ForEach(res=>res.Amount = 0);
                 Object.Destroy(prefab);
                 prefab = Object.Instantiate(blueprint.Prefab, prefab.transform.position, prefab.transform.rotation);
                 break;
