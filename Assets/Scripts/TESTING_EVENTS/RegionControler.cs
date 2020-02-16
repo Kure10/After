@@ -36,17 +36,6 @@ public class RegionControler : MonoBehaviour
 
     }
 
-    //public static void OnReginsterOpenEvent(uButtonExploreScript tmp)
-    //{
-    //    ubes.Add(tmp);
-    //}
-
-    //public static void UnReginsterOpenEvent(uButtonExploreScript tmp)
-    //{
-    //    if(ubes.Contains(tmp))
-    //        ubes.Remove(tmp);
-    //}
-
     public void ChangeRegionState(Region region, Image regionImage)
     {
         ChangeColoring(region, regionImage);
