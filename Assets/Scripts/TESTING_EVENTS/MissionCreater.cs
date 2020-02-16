@@ -17,19 +17,19 @@ public class MissionCreater : MonoBehaviour
         this.missionManager =  this.GetComponent<MissionManager>();
         for (int i = 0; i < 10; i++)
         {
-            missions.Add(CreateMission());
+            missions.Add(CreateMission(i));
         }
         FillMissionList();
     }
 
-    public Mission CreateMission()
+    public Mission CreateMission(int i)
     {
         Mission mis = new Mission();
 
         mis.missionName = "Explore";
         mis.missionDistance = 30f;
         mis.image = image;
-        mis.missionType = "je to v pici";
+        mis.missionType = "Typerino : " + i.ToString(); ;
 
         return mis;
     }

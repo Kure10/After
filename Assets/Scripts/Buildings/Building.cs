@@ -197,13 +197,11 @@ public class Building
                             buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
                             timeToBuildRemaining -= buildPoints;
                         }
-
                         if (debug % 100 == 0)
                         {
                             Debug.Log(
                                 $"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
                         }
-
                         if (timeToBuildRemaining <= 0)
                         {
                             State = BuildingState.Build;

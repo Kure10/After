@@ -10,6 +10,9 @@ public class MissionManager : MonoBehaviour
 
     public List<Mission> missions = new List<Mission>();
 
+    public List<Mission> missionsInProcces = new List<Mission>(); // not used for now
+
+    public Mission currentMission;
 
 
     public void ChoiseMission()
@@ -34,10 +37,13 @@ public class MissionManager : MonoBehaviour
 
         this.windowMission.Init();
 
-        // napln specialisty..
+        currentMission = mission;
 
         this.windowMission.SetActivityMissionPanel = true;
     }
+
+
+
 
 
 }
