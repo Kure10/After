@@ -6,9 +6,8 @@ public class uButton : MonoBehaviour
 {
 
 
-    public void CloseWindow()
+    public void Close()
     {
         this.gameObject.SetActive(false);
     }
-
 }

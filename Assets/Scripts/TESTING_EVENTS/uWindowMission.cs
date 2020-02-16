@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class uWindowMission : MonoBehaviour
@@ -24,6 +25,10 @@ public class uWindowMission : MonoBehaviour
     [SerializeField] private Text labelTime;
 
     [SerializeField] private Text labelDistance;
+
+    [Header("Button")]
+
+    [SerializeField] private Button buttonStartMission;
 
     [Header("Info")]
 
@@ -83,6 +88,11 @@ public class uWindowMission : MonoBehaviour
         set { this.gameObject.SetActive(value); }
     }
 
+    public Button GetStartMissionButton
+    {
+        get { return buttonStartMission; }
+        /*set { buttonStartMission = value; }*/
+    }
 
     #endregion
 
@@ -141,6 +151,7 @@ public class uWindowMission : MonoBehaviour
                 break;
         }    
     }
+
 
     public void Init()
     {

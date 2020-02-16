@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MissionManager : MonoBehaviour
 {
@@ -8,9 +9,10 @@ public class MissionManager : MonoBehaviour
     [SerializeField]
     uWindowMission windowMission;
 
-    public List<Mission> missions = new List<Mission>();
+    [SerializeField]
+    private MissionController missionController;
 
-    public List<Mission> missionsInProcces = new List<Mission>(); // not used for now
+    public List<Mission> missions = new List<Mission>();
 
     public Mission currentMission;
 
@@ -34,6 +36,11 @@ public class MissionManager : MonoBehaviour
         this.windowMission.MissionEnviroment = mission.missionEnviroment;
         this.windowMission.MissionTime = mission.missionTime;
         this.windowMission.Sprite = mission.image;
+
+        Button startButton = this.windowMission.GetStartMissionButton;
+        startButton.onClick.AddListener(delegate () { missionController.StartMission(mission); });
+
+
 
         this.windowMission.Init();
 
