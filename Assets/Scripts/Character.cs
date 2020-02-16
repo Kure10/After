@@ -35,6 +35,7 @@ public class Character : MonoBehaviour
     {
         return command;
     }
+    
 
     public void AddCommand(Command command)
     {
