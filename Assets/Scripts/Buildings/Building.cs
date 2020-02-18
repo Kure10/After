@@ -7,7 +7,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public class Building
+public class Building : IWorkSource
 {
     private List<Worker> Workers;
     private BuildingState _state;
@@ -68,7 +68,17 @@ public class Building
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
     }
 
-    public void AddWorker(Character character)
+
+    public void Register(Character character)
+    {
+        Unregister(character);
+        var worker = new Worker();
+        worker.character = character;
+        worker.state = WorkerState.init;
+        Workers.Add(worker);
+    }
+
+    public void Unregister(Character character)
     {
         if (Workers.Select(w => w.character).Contains(character))
         {
@@ -80,10 +90,6 @@ public class Building
                 }
             }
         }
-        var worker = new Worker();
-        worker.character = character;
-        worker.state = WorkerState.init;
-        Workers.Add(worker);
     }
 
     private static int debug = 0;

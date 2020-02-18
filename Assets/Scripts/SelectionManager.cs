@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SelectionManager : MonoBehaviour
+public class SelectionManager : MonoBehaviour, IWorkSource
 {
     private TileFactory tileFactory;
     private List<GameObject> selectedObjects;
@@ -76,7 +76,7 @@ public class SelectionManager : MonoBehaviour
                             //what materials are missing...)
                             if (selectedObjects[0].TryGetComponent(out Character character))
                             {
-                                t.building.AddWorker(character);
+                                character.Register(t.building);
                                 
                             }
                             ClearHighlight(highlightedObjects);
@@ -93,8 +93,8 @@ public class SelectionManager : MonoBehaviour
                             //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
                             if (character.TryGetComponent(out Character person))
                             {
+                                person.Register(this);
                                 person.AddCommand(new Move(character, path));
-                                characters.Add(person);
                             }
                         }
                     }
@@ -110,7 +110,7 @@ public class SelectionManager : MonoBehaviour
         {
             if (character.Execute() == Result.Success)
             {
-                characters.Remove(character);
+                Unregister(character);
             }
         }
         
@@ -122,5 +122,15 @@ public class SelectionManager : MonoBehaviour
             prevSelection.transform.Find("Selection").gameObject.SetActive(false);
         }
         objects.Clear();
+    }
+
+    public void Register(Character who)
+    {
+        characters.Add(who);
+    }
+
+    public void Unregister(Character who)
+    {
+        characters.Remove(who);
     }
 }
