@@ -15,8 +15,7 @@ public class ResourceManager : MonoBehaviour
     private int karma;
 
     private TileFactory tileFactory;
-
-    private List<Resource> resources;
+    public List<Resource> resources { get; private set; }
     public GameObject[] Prefabs;
     
     
@@ -45,7 +44,6 @@ public class ResourceManager : MonoBehaviour
         PohonneHmotyBigBox = Prefabs[8];
         PohonneHmotySmallBox = Prefabs[9];
     }
-
     [Serializable]
     public enum Material
     {
@@ -227,7 +225,7 @@ public class ResourceManager : MonoBehaviour
             {
                 SpawnMaterial(typ, amount - 10);
             }
-            var coord = tileFactory.FindFreeTile(resources);
+            var coord = tileFactory.FindFreeTile();
             var newResourse = new Resource(amount, typ, tileFactory.getTile(coord));
             resources.Add(newResourse);
         }

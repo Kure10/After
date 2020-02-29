@@ -86,6 +86,11 @@ public class Building : IWorkSource
             {
                 if (w.character == character)
                 {
+                    if (w.state == WorkerState.full)
+                    {
+                        w.character.AddCommand(new Drop(character.gameObject));
+                        w.character.Execute();
+                    }
                     Workers.Remove(w);
                 }
             }
@@ -94,6 +99,7 @@ public class Building : IWorkSource
 
     private static int debug = 0;
 
+  
     public void Update()
     {
         debug++;

@@ -110,7 +110,8 @@ public class Drop : Command
         }
         else
         {
-            resource.Owner = t;
+            
+            resource.Owner = tf.getTile(tf.FindFreeTile(Geometry.GridFromPoint(Target.transform.position)));
         }
         return Result.Success;
     }
