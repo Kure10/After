@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
 
     private Command command;
     private Specialists blueprint;
+    private IWorkSource source;
 
     public void SetBlueprint(Specialists specialist)
     {
@@ -42,4 +43,10 @@ public class Character : MonoBehaviour
         this.command = command;
     }
 
+    public void Register(IWorkSource workSource)
+    {
+        source?.Unregister(this);
+        workSource.Register(this);
+        source = workSource;
+    }
 }
