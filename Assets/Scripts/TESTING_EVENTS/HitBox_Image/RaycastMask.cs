@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/*
+
+
+ OBSOLETE
+
+
+*/
+
 [RequireComponent(typeof(RectTransform))]
 [RequireComponent(typeof(Image))]
 public class RaycastMask : MonoBehaviour, ICanvasRaycastFilter

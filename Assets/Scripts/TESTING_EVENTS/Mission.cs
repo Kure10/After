@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [SerializeField]
 public class Mission
 {
+    public int missionID;
+
     public string missionName;
 
     public float missionDistance; // vzdalenost je tam ale ne zpatky

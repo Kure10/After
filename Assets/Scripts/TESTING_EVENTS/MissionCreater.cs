@@ -19,23 +19,24 @@ public class MissionCreater : MonoBehaviour
         {
             missions.Add(CreateMission(i));
         }
-        FillMissionList();
+        PassMissionList();
     }
 
     public Mission CreateMission(int i)
     {
         Mission mis = new Mission();
 
+        mis.missionID = i;
         mis.missionName = "Explore";
-        mis.missionDistance = 30f;
+        mis.missionDistance = 10f;
         mis.image = image;
         mis.missionType = "Typerino : " + i.ToString(); ;
 
         return mis;
     }
 
-    public void FillMissionList()
+    public void PassMissionList()
     {
-        missionManager.missions = this.missions;
+        missionManager.allMissions = this.missions;
     }
 }

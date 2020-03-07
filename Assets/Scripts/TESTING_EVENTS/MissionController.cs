@@ -5,15 +5,26 @@ using UnityEngine;
 public class MissionController : MonoBehaviour
 {
 
+    public MissionInfoController infoController;  /* tohle pak asi bude neco jako missionViewControler  Nebo tak neco aby se staral o misse na view casti */
+
     public List<Mission> missionsInProcces = new List<Mission>();
 
-    public void StartMission(Mission missinToStart)
+    [SerializeField]
+    public uWindowMission windowMission;
+
+    private TimeControl theTC;
+
+    private void Awake()
     {
+        theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
+    }
+
+    public void StartMission (Mission missinToStart)
+    {
+        this.windowMission.gameObject.SetActive(false);
+
         missionsInProcces.Add(missinToStart);
-
-       // Debug.Log("START !!!!!!" + missinToStart.missionDistance + " a dalsi : " + missinToStart.missionType );
-
-       // Debug.Log(missionsInProcces.Count.ToString());
+        infoController.InfoRowCreate(missinToStart);
 
     }
 
@@ -21,20 +32,25 @@ public class MissionController : MonoBehaviour
     {
 
         MissionProcess();
+        
     }
 
     public void MissionProcess()
     {
 
-        foreach (var item in missionsInProcces)
+        for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
-            item.missionDistance -= Time.deltaTime;
-            Debug.Log(item.missionDistance.ToString("F1"));
+            // var currentMission = missionsInProcces[i];
+            missionsInProcces[i].missionDistance -= Time.deltaTime;
 
-            if (item.missionDistance <= 0)
+            infoController.UpdateInfoRows(missionsInProcces);
+
+            if (missionsInProcces[i].missionDistance <= 0)
             {
                 Debug.Log("mission is done");
-                MissionComplete(item);
+
+                MissionComplete(missionsInProcces[i]);
+                continue;
             }
         }
     }
@@ -42,11 +58,16 @@ public class MissionController : MonoBehaviour
 
     public void MissionComplete(Mission mission)
     {
+
+        // delete from info row // pozdeji se asi napise mission complete a bude se cekat na hrace co udela ..
         //player gets reward
+
         // more shits
 
-        missionsInProcces.Remove(mission);
+        missionsInProcces.Remove(mission); 
+        infoController.DeleteFromInfoRow(mission);
     }
 
-
 }
+
+

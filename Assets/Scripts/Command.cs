@@ -135,6 +135,7 @@ public class Build : Command
     public float GetBuildPoints(int techLevel)
     {
         var ret = (accumulatedTime / 10f + techLevel) * 10f;
+        Debug.Log(accumulatedTime + "Accumulated time");
         accumulatedTime = 0;
         return ret;
     }

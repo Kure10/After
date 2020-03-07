@@ -6,21 +6,21 @@ using UnityEngine.UI;
 public class MissionManager : MonoBehaviour
 {
 
-    [SerializeField]
-    uWindowMission windowMission;
 
     [SerializeField]
-    private MissionController missionController;
+    private MissionController theMC;
 
-    public List<Mission> missions = new List<Mission>();
+    /*tady mam vsechny misse*/
+    public List<Mission> allMissions = new List<Mission>();
 
     public Mission currentMission;
 
 
     public void ChoiseMission()
     {
-        int i = Random.Range(0, missions.Count);
-        Mission mission = missions[i];
+       
+        int i = Random.Range(0, allMissions.Count);
+        Mission mission = allMissions[i];
 
 
         ShowMissionPanel(mission);
@@ -29,24 +29,22 @@ public class MissionManager : MonoBehaviour
 
     private void ShowMissionPanel(Mission mission)
     {
-        this.windowMission.MissionName = mission.missionName;
-        this.windowMission.MissionType = mission.missionType;
-        this.windowMission.MissionDistance = mission.missionDistance;
-        this.windowMission.MissionLevel = mission.levelOfDangerous;
-        this.windowMission.MissionEnviroment = mission.missionEnviroment;
-        this.windowMission.MissionTime = mission.missionTime;
-        this.windowMission.Sprite = mission.image;
+        theMC.windowMission.MissionName = mission.missionName;
+        theMC.windowMission.MissionType = mission.missionType;
+        theMC.windowMission.MissionDistance = mission.missionDistance;
+        theMC.windowMission.MissionLevel = mission.levelOfDangerous;
+        theMC.windowMission.MissionEnviroment = mission.missionEnviroment;
+        theMC.windowMission.MissionTime = mission.missionTime;
+        theMC.windowMission.Sprite = mission.image;
 
-        Button startButton = this.windowMission.GetStartMissionButton;
-        startButton.onClick.AddListener(delegate () { missionController.StartMission(mission); });
+        Button startButton = theMC.windowMission.GetStartMissionButton;
+        startButton.onClick.AddListener(delegate () { theMC.StartMission(mission); });
 
-
-
-        this.windowMission.Init();
+        theMC.windowMission.Init();
 
         currentMission = mission;
 
-        this.windowMission.SetActivityMissionPanel = true;
+        theMC.windowMission.SetActivityMissionPanel = true;
     }
 
 
