@@ -28,7 +28,7 @@ public class MissionCreater : MonoBehaviour
 
         mis.missionID = i;
         mis.missionName = "Explore";
-        mis.missionDistance = 10f;
+        mis.missionDistance = 38000f;
         mis.image = image;
         mis.missionType = "Typerino : " + i.ToString(); ;
 

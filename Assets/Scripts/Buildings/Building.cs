@@ -7,7 +7,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public class Building : IWorkSource
+public partial class Building : IWorkSource
 {
     private List<Worker> Workers;
     private BuildingState _state;
@@ -49,7 +49,7 @@ public class Building : IWorkSource
         building
     }
 
-    class Worker
+    partial class Worker
     {
         public Character character;
         public WorkerState state;

@@ -41,7 +41,10 @@ public class MissionController : MonoBehaviour
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
             // var currentMission = missionsInProcces[i];
-            missionsInProcces[i].missionDistance -= Time.deltaTime;
+            // tady se musi prepocitavat cas...
+            var tmp = CalculateTime();
+
+            missionsInProcces[i].missionDistance -= tmp;
 
             infoController.UpdateInfoRows(missionsInProcces);
 
@@ -68,6 +71,14 @@ public class MissionController : MonoBehaviour
         infoController.DeleteFromInfoRow(mission);
     }
 
+    private float CalculateTime()
+    {
+        float accumulatedTime = 0;
+        accumulatedTime += Time.deltaTime * theTC.TimePointMultiplier();
+
+        return accumulatedTime;
+    }
 }
+
 
 
