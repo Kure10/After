@@ -115,7 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 3973229780123471002, guid: 3b9b497d2c134194f8c1865d8f57dcb2,
     type: 3}
-  spawnUnderThisGO: {fileID: 7756650038585727581}
+  ParentHolder: {fileID: 0}
 --- !u!1 &7756650038585727581
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,8 +150,8 @@ RectTransform:
   m_Father: {fileID: 7651594075892775138}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 164.8, y: 0}
   m_SizeDelta: {x: 329.6, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

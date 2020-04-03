@@ -31,7 +31,13 @@ public class MissionController : MonoBehaviour
     public void Update()
     {
 
-        MissionProcess();
+        if(missionsInProcces.Count > 0)
+        {
+            MissionProcess();
+            TryOutbreakEvent();
+        }
+
+
         
     }
 
@@ -40,11 +46,11 @@ public class MissionController : MonoBehaviour
 
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
-            // var currentMission = missionsInProcces[i];
-            // tady se musi prepocitavat cas...
-            var tmp = CalculateTime();
 
-            missionsInProcces[i].missionDistance -= tmp;
+
+            float betweenTime = CalculateTime();
+
+            missionsInProcces[i].missionDistance -= betweenTime;
 
             infoController.UpdateInfoRows(missionsInProcces);
 
@@ -78,6 +84,34 @@ public class MissionController : MonoBehaviour
 
         return accumulatedTime;
     }
+
+    private void TryOutbreakEvent()
+    {
+       // Debug.Log("1 step " + missionsInProcces.Count );
+
+        /*   Ok tadz bude muset byt komplikovanejsi system..
+         1. preskakuji eventy.
+         2. z nejakeho dubodu jich trigeruji vice.
+         */
+
+        for (int i = 0; i < missionsInProcces.Count; i++)
+        {
+            int distance = (int)missionsInProcces[i].missionDistance;
+        //    Debug.Log("2 step distance " + (int)missionsInProcces[i].missionDistance);
+
+            for (int j = 0; j < missionsInProcces[i].eventEvocationTimes.Length -1; j++)
+            {
+                int tmp = missionsInProcces[i].eventEvocationTimes[j];
+                if (distance == tmp)
+                {
+                    Debug.Log("EVENT NOW");
+                }
+            }
+        }
+    }
+
+
+
 }
 
 

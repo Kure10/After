@@ -14,7 +14,9 @@ public class Mission
 
     public Sprite image;
 
-   // public string missionMission;
+    public int[] eventEvocationTimes;
+
+    public int maxNumberOfEvents;
 
     public string missionType;
 
