@@ -6,19 +6,19 @@ using UnityEngine.UI;
 [SerializeField]
 public class Mission
 {
-    public int missionID;
+    public int id;
 
-    public string missionName;
+    public string _name;
 
-    public float missionDistance; // vzdalenost je tam ale ne zpatky
+    public float distance; 
 
     public Sprite image;
 
-    public int[] eventEvocationTimes;
+    //public int[] eventEvocationTimes;
 
     public int maxNumberOfEvents;
 
-    public string missionType;
+    public string type;
 
     public MissionTime missionTime; // kolik eventu te potka
 
@@ -26,7 +26,7 @@ public class Mission
 
     public MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
 
-    // List Eventu .....
+    public List<EventBlueprint> posibleEvents = new List<EventBlueprint>();
 
     public List<Specialists> specialistOnMission = new List<Specialists>();
 

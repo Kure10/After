@@ -8,13 +8,19 @@ public class MissionCreater : MonoBehaviour
     [SerializeField]
     public List<Mission> createdMissions = new List<Mission>();
     private MissionManager missionManager;
+    private ResourceLoader resourceLoader;
 
     public Sprite image;
 
+    /*  in percent */
+    [SerializeField] float timeUntilFirstEvent = 7f;
+    [SerializeField] float timeBetweenEvents = 5f;
+    [SerializeField] float timeBetweenLastEvent = 3f;
 
     private void Awake()
     {
         this.missionManager =  this.GetComponent<MissionManager>();
+        this.resourceLoader = this.GetComponent<ResourceLoader>();
 
         for (int i = 0; i < 10; i++)
         {
@@ -27,14 +33,17 @@ public class MissionCreater : MonoBehaviour
     {
         Mission mis = new Mission();
 
-        mis.missionID = i;
-        mis.missionName = "Explore";
-        mis.missionDistance = 100f;
+
+        mis.id = i;
+        mis._name = "Explore";
+        mis.distance = 100f;
         mis.image = image;
         mis.maxNumberOfEvents = 5;
-        mis.missionType = "Typerino : " + i.ToString(); ;
+        mis.type = "Typerino : " + i.ToString(); ;
 
-        DeterminateEventTimesInMission(mis);
+        CreateEvents(mis);
+
+       // DeterminateEventTimesInMission(mis);
 
         return mis;
     }
@@ -44,31 +53,48 @@ public class MissionCreater : MonoBehaviour
         this.missionManager.allMissions = this.createdMissions;
     }
 
-    private void DeterminateEventTimesInMission(Mission mis)
+    private void CreateEvents(Mission mis)
     {
-        /*  in percent */
-        float timeUntilFirstMission = 7f;
-        float timeBetweenMissions = 5f;
-        float timeBetweenLastMission = 3f;
+        /* Event */
+        int amountEvents = mis.maxNumberOfEvents;
+        float distance = mis.distance;
+        float firstOccurrenceEvent = distance * ((100 - timeUntilFirstEvent - timeBetweenLastEvent) / 100);
+        float eventOccurrenceRange = firstOccurrenceEvent / amountEvents;
+        eventOccurrenceRange = eventOccurrenceRange - timeBetweenEvents;
 
-        var amountEvents = mis.maxNumberOfEvents;
-        var distance = mis.missionDistance;
-        mis.eventEvocationTimes = new int[amountEvents];
+        firstOccurrenceEvent = SetEventTimeInMission(mis, firstOccurrenceEvent, eventOccurrenceRange);
 
-        var firstOccurrenceEvent = distance * ((100 - timeUntilFirstMission - timeBetweenLastMission) / 100);
-        var eventOccurrenceRange = firstOccurrenceEvent / amountEvents;
-        eventOccurrenceRange = eventOccurrenceRange - timeBetweenMissions;
+        /* Event Image*/
 
-        for (int i = 0; i < amountEvents; i++)
-        {
-           
-            var secondOccurrenceEvent = firstOccurrenceEvent - eventOccurrenceRange;
-            var currentEventOccurrenceTime = Random.Range(firstOccurrenceEvent, secondOccurrenceEvent);
-           // Debug.Log("EventPointy " + i + " range: " + (int)firstOccurrenceEvent + "// " + (int)secondOccurrenceEvent);
-            mis.eventEvocationTimes[i] = (int)currentEventOccurrenceTime;
-            firstOccurrenceEvent = secondOccurrenceEvent - timeBetweenMissions;
-        }
+        SetEventsImage(mis);
 
     }
+
+    private void SetEventsImage(Mission mis)
+    {
+        foreach (var item in mis.posibleEvents)
+        {
+            item.sprite = resourceLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
+        }
+    }
+
+    private float SetEventTimeInMission(Mission mis, float firstOccurrenceEvent, float eventOccurrenceRange)
+    {
+        for (int i = 0; i < mis.maxNumberOfEvents; i++)
+        {
+            EventBlueprint newEvent = new EventBlueprint();
+
+            float secondOccurrenceEvent = firstOccurrenceEvent - eventOccurrenceRange;
+            float currentEventOccurrenceTime = Random.Range(firstOccurrenceEvent, secondOccurrenceEvent);
+            newEvent.evocationTime = (int)currentEventOccurrenceTime;
+            firstOccurrenceEvent = secondOccurrenceEvent - timeBetweenEvents;
+
+            mis.posibleEvents.Add(newEvent);
+        }
+
+        return firstOccurrenceEvent;
+    }
+
+    
 
 }

@@ -29,9 +29,9 @@ public class MissionManager : MonoBehaviour
 
     private void ShowMissionPanel(Mission mission)
     {
-        theMC.windowMission.MissionName = mission.missionName;
-        theMC.windowMission.MissionType = mission.missionType;
-        theMC.windowMission.MissionDistance = mission.missionDistance;
+        theMC.windowMission.MissionName = mission._name;
+        theMC.windowMission.MissionType = mission.type;
+        theMC.windowMission.MissionDistance = mission.distance;
         theMC.windowMission.MissionLevel = mission.levelOfDangerous;
         theMC.windowMission.MissionEnviroment = mission.missionEnviroment;
         theMC.windowMission.MissionTime = mission.missionTime;

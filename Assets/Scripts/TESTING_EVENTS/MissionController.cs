@@ -50,11 +50,11 @@ public class MissionController : MonoBehaviour
 
             float betweenTime = CalculateTime();
 
-            missionsInProcces[i].missionDistance -= betweenTime;
+            missionsInProcces[i].distance -= betweenTime;
 
             infoController.UpdateInfoRows(missionsInProcces);
 
-            if (missionsInProcces[i].missionDistance <= 0)
+            if (missionsInProcces[i].distance <= 0)
             {
                 Debug.Log("mission is done");
 
@@ -96,15 +96,16 @@ public class MissionController : MonoBehaviour
 
         for (int i = 0; i < missionsInProcces.Count; i++)
         {
-            int distance = (int)missionsInProcces[i].missionDistance;
+            int distance = (int)missionsInProcces[i].distance;
         //    Debug.Log("2 step distance " + (int)missionsInProcces[i].missionDistance);
 
-            for (int j = 0; j < missionsInProcces[i].eventEvocationTimes.Length -1; j++)
+            for (int j = 0; j < missionsInProcces[i].posibleEvents.Count -1; j++)
             {
-                int tmp = missionsInProcces[i].eventEvocationTimes[j];
-                if (distance == tmp)
+                EventBlueprint currentEvent = missionsInProcces[i].posibleEvents[j];
+                if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
-                    Debug.Log("EVENT NOW");
+                    currentEvent.wasTriggered = true;
+                    Debug.Log("Event Triggerd");
                 }
             }
         }
