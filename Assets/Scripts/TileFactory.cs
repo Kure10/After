@@ -85,11 +85,10 @@ public class TileFactory : MonoBehaviour
                         col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z) {inside = true});
                         break;
                     case 's':
-                        Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
-                        var sm = GameObject.FindGameObjectWithTag("SpecialistManager")
-                            .GetComponent<SpecialistManager>();
-                        character.GetComponent<Character>()
-                            .SetBlueprint(sm.GetSpecialistByPosition(specialistsInGame++));
+                        var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+                        var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
+                        var spec = sm.GetSpecialistByPosition(specialistsInGame++);
+                        person.GetComponent<Character>().SetBlueprint(spec);
                         goto case 'e';
                     case 'd':
                         col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z));
