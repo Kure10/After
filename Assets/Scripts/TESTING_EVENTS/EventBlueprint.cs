@@ -16,7 +16,7 @@ public class EventBlueprint
 
     public string description;
 
-    public string[] answerTextField;
+    public string[] answerTextField = new string[3];
 
     public bool wasTriggered;
 

@@ -114,6 +114,11 @@ public class MissionController : MonoBehaviour
                     GameObject eventGameObject = Instantiate(this.eventPanel, this.eventHolder.transform.position, Quaternion.identity);
                     EventPanel eventPanel = eventGameObject.GetComponent<EventPanel>();
 
+                    
+
+
+                    eventGameObject.transform.SetParent(eventHolder);
+
                     /*tohle bude v interni metode.. .. TODO Dodelat pico..*/
 
                     eventPanel.TitleField.text = "ahoj";
@@ -121,9 +126,13 @@ public class MissionController : MonoBehaviour
                     eventPanel.SetSprite = currentEvent.sprite;
 
                     // tohle jeste otestovat .... // ToDo nastavit button akci..
-                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField); 
+                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField);
 
-                    
+                    /* reset transform .. */
+                    RectTransform rect = eventGameObject.GetComponent<RectTransform>();
+                    rect.offsetMin = new Vector2(0, 0);
+                    rect.offsetMax = new Vector2(0, 0);
+                    eventGameObject.transform.localScale = new Vector3(1, 1, 1);
 
                     /*-------*/
                     Debug.Log("Event Triggerd");

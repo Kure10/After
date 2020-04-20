@@ -73,6 +73,8 @@ public class MissionCreater : MonoBehaviour
         foreach (var item in mis.eventsInMission)
         {
             /*checknout jestli funguje..*/
+            item.numberOfOptions = 1; // todo spatne..
+
             for (int i = 0; i < item.answerTextField.Length; i++)
             {
                 item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
