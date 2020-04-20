@@ -7,11 +7,10 @@ public class EventPanel : MonoBehaviour
 {
     [Header("Main Setting")]
 
-    //[SerializeField]
-    //private Sprite sprite;
+    private Sprite sprite;  // Main Image of Event
 
     [SerializeField]
-    private Text nameTextField;
+    private Text titleField; 
 
     [SerializeField]
     private Text descriptionTextField;
@@ -31,20 +30,18 @@ public class EventPanel : MonoBehaviour
 
     [TextArea(5, 10)]
     [SerializeField]
-    private string description;
+    private string description; // this is only for testing purposes (for Game Designer or Artist..)
 
     [Header("Buttons")]
 
     
-    public int numberOfOptions; // prozatím public
+    private int numberOfOptions; // prozatím public
 
     [SerializeField]
-    private Button origin;
+    private Button origin; // This is origin Button like a template
 
     [SerializeField]
-    private GameObject parrent;
-
-    /* ?? Tady mozna bude neco jineho   ,, jednoduse musím vytvořit buttonu podle počtu odpovedí a naležite vyplnit.. DYnamycky probug..*/
+    private GameObject optionParrent; // just a holder for options
 
     #region Properities
 
@@ -52,31 +49,30 @@ public class EventPanel : MonoBehaviour
     public string Description { get { return description; } }
     public Text DescriptionTextField { get { return descriptionTextField; } }
 
-    public Text NameTextField { get { return nameTextField; } }
+    public Sprite SetSprite
+    {
+        set { this.sprite = value; }
+    }
+
+    public Text TitleField { get { return this.titleField; } }
     public int FontSize { get { return fontSize; } set { fontSize = value; } }
 
     public int NameFontSize { get { return nameFontSize; } set { nameFontSize = value; } }
 
     #endregion
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void CreateOptions(int numberOfOptions, string[] optionsTextField)
     {
-        descriptionTextField.fontSize = fontSize;
-        CreateOptions();
-    }
+        this.numberOfOptions = numberOfOptions;
 
-    public void CreateOptions()
-    {
         if (numberOfOptions == 1)
         {
-            SetupOrigin();
+            SetupOrigin(optionsTextField[0]);
         }
         else if (numberOfOptions > 1)
         {
-            SetupOrigin();
-            AddNewOptions();
+            SetupOrigin(optionsTextField[0]);
+            AddNewOptions(optionsTextField);
         }
         else
         {
@@ -84,26 +80,42 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void AddNewOptions()
+    private void AddNewOptions(string[] optionsTextField)
     {
         for (int i = 1; i < numberOfOptions; i++)
         {
-            SetupOption();
+            SetupOption(optionsTextField[i]);
         }
     }
 
-    public void SetupOrigin()
+    private void SetupOrigin(string textButton)
     {
-        // Tady se nastavi tlacitko jeho text a barva.. 
-        // A taky udalost která se má vyvolat po zmačknutí tlačítka..
-        // možna i vice.
+        Button button = this.origin.GetComponent<Button>();
+        Image image = this.origin.GetComponent<Image>();
+        Text buttonText = this.origin.GetComponentInChildren<Text>();
+
+        //  button.onClick.AddListener(); 
+        //  image.color; 
+
+        buttonText.text = textButton;
+
+
     }
 
-    public void SetupOption()
+    private void SetupOption(string text)
     {
         Button newButton;
         newButton = Instantiate(origin, this.transform.position, Quaternion.identity);
-        newButton.transform.SetParent(parrent.transform);
+        newButton.transform.SetParent(this.optionParrent.transform);
+
+        Button button = newButton.GetComponent<Button>();
+        Image image = newButton.GetComponent<Image>();
+        Text buttonTextField = newButton.GetComponentInChildren<Text>();
+
+        //  button.onClick.AddListener(); 
+        //  image.color; 
+
+        buttonTextField.text = text;
 
     }
 

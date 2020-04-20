@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
+using UnityEditor;
 using UnityEngine;
 
 public class MissionController : MonoBehaviour
 {
 
     public MissionInfoController infoController;  /* tohle pak asi bude neco jako missionViewControler  Nebo tak neco aby se staral o misse na view casti */
+    [SerializeField] private GameObject eventPanel;
+    [SerializeField] private Transform eventHolder;
 
     public List<Mission> missionsInProcces = new List<Mission>();
 
@@ -13,15 +17,22 @@ public class MissionController : MonoBehaviour
     public uWindowMission windowMission;
 
     private TimeControl theTC;
+    private PanelTime thePT;
 
     private void Awake()
     {
-        theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
+        this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
+        this.thePT = GameObject.FindObjectOfType<PanelTime>();
     }
+
+
 
     public void StartMission (Mission missinToStart)
     {
         this.windowMission.gameObject.SetActive(false);
+
+
+        
 
         missionsInProcces.Add(missinToStart);
         infoController.InfoRowCreate(missinToStart);
@@ -87,24 +98,34 @@ public class MissionController : MonoBehaviour
 
     private void TryOutbreakEvent()
     {
-       // Debug.Log("1 step " + missionsInProcces.Count );
-
-        /*   Ok tadz bude muset byt komplikovanejsi system..
-         1. preskakuji eventy.
-         2. z nejakeho dubodu jich trigeruji vice.
-         */
 
         for (int i = 0; i < missionsInProcces.Count; i++)
         {
             int distance = (int)missionsInProcces[i].distance;
-        //    Debug.Log("2 step distance " + (int)missionsInProcces[i].missionDistance);
 
-            for (int j = 0; j < missionsInProcces[i].posibleEvents.Count -1; j++)
+            for (int j = 0; j < missionsInProcces[i].eventsInMission.Count; j++)
             {
-                EventBlueprint currentEvent = missionsInProcces[i].posibleEvents[j];
+                EventBlueprint currentEvent = missionsInProcces[i].eventsInMission[j];
                 if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
                     currentEvent.wasTriggered = true;
+                    this.thePT.Pause();
+
+                    GameObject eventGameObject = Instantiate(this.eventPanel, this.eventHolder.transform.position, Quaternion.identity);
+                    EventPanel eventPanel = eventGameObject.GetComponent<EventPanel>();
+
+                    /*tohle bude v interni metode.. .. TODO Dodelat pico..*/
+
+                    eventPanel.TitleField.text = "ahoj";
+                    eventPanel.DescriptionTextField.text = "LOL";
+                    eventPanel.SetSprite = currentEvent.sprite;
+
+                    // tohle jeste otestovat .... // ToDo nastavit button akci..
+                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField); 
+
+                    
+
+                    /*-------*/
                     Debug.Log("Event Triggerd");
                 }
             }

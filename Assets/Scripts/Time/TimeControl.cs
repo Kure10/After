@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TimeControl : MonoBehaviour
 {
+    //private int previousTimeSpeed;
 
     public static event Action<int> OnTimeChanged = delegate { };
     public static event Action<int> OnTimeSpeedChanged = delegate { };
@@ -50,5 +51,15 @@ public class TimeControl : MonoBehaviour
         return timePointsPerSecond[TimeSpeed];
     }
 
+    //public void PauseTime()
+    //{
+    //    this.previousTimeSpeed = TimeSpeed;
+    //    TimeSpeed = 0;
+    //}
+
+    //public void UnPauseTime()
+    //{
+    //    TimeSpeed = this.previousTimeSpeed;
+    //}
     
 }

@@ -68,11 +68,23 @@ public class MissionCreater : MonoBehaviour
 
         SetEventsImage(mis);
 
+        /* Event text answers for buttons */
+
+        foreach (var item in mis.eventsInMission)
+        {
+            /*checknout jestli funguje..*/
+            for (int i = 0; i < item.answerTextField.Length; i++)
+            {
+                item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
+            }
+        }
+
+
     }
 
     private void SetEventsImage(Mission mis)
     {
-        foreach (var item in mis.posibleEvents)
+        foreach (var item in mis.eventsInMission)
         {
             item.sprite = resourceLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
         }
@@ -89,7 +101,7 @@ public class MissionCreater : MonoBehaviour
             newEvent.evocationTime = (int)currentEventOccurrenceTime;
             firstOccurrenceEvent = secondOccurrenceEvent - timeBetweenEvents;
 
-            mis.posibleEvents.Add(newEvent);
+            mis.eventsInMission.Add(newEvent);
         }
 
         return firstOccurrenceEvent;
