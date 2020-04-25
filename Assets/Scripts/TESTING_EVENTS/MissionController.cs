@@ -18,11 +18,13 @@ public class MissionController : MonoBehaviour
 
     private TimeControl theTC;
     private PanelTime thePT;
+    private NotificationManager notificationManager;
 
     private void Awake()
     {
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
+        this.notificationManager = GameObject.FindObjectOfType<NotificationManager>();
     }
 
 
@@ -31,9 +33,6 @@ public class MissionController : MonoBehaviour
     {
         this.windowMission.gameObject.SetActive(false);
 
-
-        
-
         missionsInProcces.Add(missinToStart);
         infoController.InfoRowCreate(missinToStart);
 
@@ -41,34 +40,24 @@ public class MissionController : MonoBehaviour
 
     public void Update()
     {
-
         if(missionsInProcces.Count > 0)
         {
             MissionProcess();
             TryOutbreakEvent();
         }
-
-
-        
     }
 
     public void MissionProcess()
     {
-
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
-
-
             float betweenTime = CalculateTime();
-
             missionsInProcces[i].distance -= betweenTime;
-
             infoController.UpdateInfoRows(missionsInProcces);
 
             if (missionsInProcces[i].distance <= 0)
             {
                 Debug.Log("mission is done");
-
                 MissionComplete(missionsInProcces[i]);
                 continue;
             }
@@ -98,7 +87,6 @@ public class MissionController : MonoBehaviour
 
     private void TryOutbreakEvent()
     {
-
         for (int i = 0; i < missionsInProcces.Count; i++)
         {
             int distance = (int)missionsInProcces[i].distance;
@@ -126,7 +114,7 @@ public class MissionController : MonoBehaviour
                     eventPanel.SetSprite = currentEvent.sprite;
 
                     // tohle jeste otestovat .... // ToDo nastavit button akci..
-                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField);
+                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField, currentEvent);
 
                     /* reset transform .. */
                     RectTransform rect = eventGameObject.GetComponent<RectTransform>();
@@ -134,15 +122,16 @@ public class MissionController : MonoBehaviour
                     rect.offsetMax = new Vector2(0, 0);
                     eventGameObject.transform.localScale = new Vector3(1, 1, 1);
 
+
+                    /* Create Notifiction*/
+                    this.notificationManager.CreateNewNotification(currentEvent); // neni dokonceno
+
                     /*-------*/
                     Debug.Log("Event Triggerd");
                 }
             }
         }
     }
-
-
-
 }
 
 

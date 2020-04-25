@@ -38,6 +38,8 @@ public class MissionManager : MonoBehaviour
         theMC.windowMission.Sprite = mission.image;
 
         Button startButton = theMC.windowMission.GetStartMissionButton;
+
+        startButton.onClick.RemoveAllListeners();
         startButton.onClick.AddListener(delegate () { theMC.StartMission(mission); });
 
         theMC.windowMission.Init();

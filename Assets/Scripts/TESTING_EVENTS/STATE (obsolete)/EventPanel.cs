@@ -61,9 +61,11 @@ public class EventPanel : MonoBehaviour
 
     #endregion
 
-    public void CreateOptions(int numberOfOptions, string[] optionsTextField)
+    public void CreateOptions(int numberOfOptions, string[] optionsTextField, EventBlueprint currentEvent)
     {
         this.numberOfOptions = numberOfOptions;
+
+        SetUpAvoidButton(currentEvent);
 
         if (numberOfOptions == 1)
         {
@@ -116,7 +118,32 @@ public class EventPanel : MonoBehaviour
         //  image.color; 
 
         buttonTextField.text = text;
+    }
 
+    private void SetUpAvoidButton(EventBlueprint currentEvent)
+    {
+        if(currentEvent.hasAvoidButton)
+        {
+            Button newButton;
+            newButton = Instantiate(origin, this.transform.position, Quaternion.identity);
+            newButton.transform.SetParent(this.optionParrent.transform);
+
+            Button button = newButton.GetComponent<Button>();
+            Image image = newButton.GetComponent<Image>();
+            Text buttonTextField = newButton.GetComponentInChildren<Text>();
+
+            button.onClick.AddListener(() => Avoid(currentEvent)); ; 
+            //  image.color; 
+
+            buttonTextField.text = "Avoid";
+           // button.onClick.AddListener
+        }    
+    }
+
+    private void Avoid (EventBlueprint currentEvent)
+    {
+        currentEvent.isEventFinished = true;
+        Destroy(this.gameObject);
     }
 
 }

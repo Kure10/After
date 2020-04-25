@@ -39,7 +39,7 @@ public class MissionCreater : MonoBehaviour
         mis.distance = 100f;
         mis.image = image;
         mis.maxNumberOfEvents = 5;
-        mis.type = "Typerino : " + i.ToString(); ;
+        mis.type = "Typerino : " + i.ToString();
 
         CreateEvents(mis);
 
@@ -55,7 +55,7 @@ public class MissionCreater : MonoBehaviour
 
     private void CreateEvents(Mission mis)
     {
-        /* Event */
+        /* Event set trigger Time*/
         int amountEvents = mis.maxNumberOfEvents;
         float distance = mis.distance;
         float firstOccurrenceEvent = distance * ((100 - timeUntilFirstEvent - timeBetweenLastEvent) / 100);
@@ -70,8 +70,9 @@ public class MissionCreater : MonoBehaviour
 
         /* Event text answers for buttons */
 
-        foreach (var item in mis.eventsInMission)
+        foreach (EventBlueprint item in mis.eventsInMission)
         {
+            item.hasAvoidButton = true; // testing
             /*checknout jestli funguje..*/
             item.numberOfOptions = 1; // todo spatne..
 
@@ -80,7 +81,6 @@ public class MissionCreater : MonoBehaviour
                 item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
             }
         }
-
 
     }
 

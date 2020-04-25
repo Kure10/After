@@ -45,21 +45,9 @@ public class TimeControl : MonoBehaviour
         }
     }
 
-
     public int TimePointMultiplier()
     {
         return timePointsPerSecond[TimeSpeed];
     }
 
-    //public void PauseTime()
-    //{
-    //    this.previousTimeSpeed = TimeSpeed;
-    //    TimeSpeed = 0;
-    //}
-
-    //public void UnPauseTime()
-    //{
-    //    TimeSpeed = this.previousTimeSpeed;
-    //}
-    
 }
