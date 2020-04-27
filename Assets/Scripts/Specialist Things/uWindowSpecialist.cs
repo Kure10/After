@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpecSetGui : MonoBehaviour
+public class uWindowSpecialist : MonoBehaviour
 {
+    #region Fields
+
     [Header("Main Header")]
     [SerializeField] Image specialistImage;
     [SerializeField] Text characterName;
@@ -22,20 +24,25 @@ public class SpecSetGui : MonoBehaviour
     [Header("Stats")]
     [SerializeField] Text currentActivity;
 
+    /* For now buttons are not used.. waiting for functionality and implementation.....*/
     [Header("Buttons")]
     [SerializeField] Button Control1;
     [SerializeField] Button Control2;
     [SerializeField] Button Control3;
 
-    /*
-     chyby inventar a buttony co delaji by meli byt asi dynamycke. Možna se jejich funkčnost bude jmenit.
+    // inventory is missiong ... Todo. (if designer will want to.)
 
-        -- ovladani buttonu atd. Jeste nevíme co budou delat. A ani co bude presne zobrazovat probíhajicí cinnost
+    #endregion
 
-        ToDo  dodelat property
 
-    */
 
+    #region Properity
+
+    public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
+
+    #endregion
+
+    #region Methods
     private void SetSpecialistImage(Specialists spec)
     {
         specialistImage.sprite = spec.GetSprite();
@@ -64,5 +71,5 @@ public class SpecSetGui : MonoBehaviour
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
     }
-
+    #endregion
 }
