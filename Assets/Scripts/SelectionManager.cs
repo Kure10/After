@@ -83,6 +83,17 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                             ClearHighlight(selectedObjects);
                             return;
                         }
+
+                        if (t is DebrisTile debris)
+                        {
+                            if (selectedObjects[0].TryGetComponent(out Character character))
+                            {
+                                character.Register(debris);
+                            }
+                            ClearHighlight(highlightedObjects);
+                            ClearHighlight(selectedObjects);
+                            return;
+                        }
                     }
                     foreach(var character in selectedObjects)
                     {

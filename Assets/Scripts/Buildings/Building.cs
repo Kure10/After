@@ -37,24 +37,7 @@ public partial class Building : IWorkSource
         //upgrading? destroyed? - pro kazdy stav by mela byt vlastni grafika
     };
 
-    enum WorkerState
-    {
-        init,
-        wait,
-        empty,
-        pickup,
-        full,
-        drop,
-        move,
-        building
-    }
 
-    partial class Worker
-    {
-        public Character character;
-        public WorkerState state;
-        public float time;
-    }
 
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
