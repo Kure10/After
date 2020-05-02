@@ -16,6 +16,11 @@ public class Character : MonoBehaviour
         blueprint = specialist;
     }
 
+    public Specialists GetBlueprint()
+    {
+        return blueprint;
+    }
+    
     public Color GetColor()
     {
         return blueprint.backgroundColor;

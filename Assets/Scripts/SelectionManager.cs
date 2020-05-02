@@ -15,6 +15,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     private readonly int TILE = 1 << 8;
     private readonly int SELECTABLE = 1 << 9;
     private List<Character> characters;
+    private GameObject panelUI;
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
@@ -23,6 +24,8 @@ public class SelectionManager : MonoBehaviour, IWorkSource
         layerMask = SELECTABLE; //hit only layer 9 (selectables)
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         characters = new List<Character>();
+        panelUI = GameObject.FindGameObjectWithTag("SpecialistUI");
+        panelUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,11 +45,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                 if (highlight != null)
                 {
                     selectedObjects.Add(character);
-                    var color = character.GetComponent<Character>().GetColor();
-                    highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", color);
+                    var blueprint = character.GetComponent<Character>();
+                    highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                     highlight.gameObject.SetActive(true);
-                }
+                    panelUI.GetComponent<uWindowSpecialist>().SetAll(blueprint.GetBlueprint());
+                    panelUI.SetActive(true);
 
+                }
             }
         }
         if (selectedObjects.Count > 0)
@@ -136,6 +141,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
             prevSelection.transform.Find("Selection").gameObject.SetActive(false);
         }
         objects.Clear();
+
     }
 
     public void Register(Character who)
