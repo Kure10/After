@@ -20,7 +20,7 @@ public class SpecGridUI : MonoBehaviour
         GameObject ga = Instantiate(panelSpecialist);
         ga.transform.parent = this.transform;
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
-        SpecSetGui ssg = ga.GetComponent<SpecSetGui>();
+        uWindowSpecialist ssg = ga.GetComponent<uWindowSpecialist>();
         ssg.SetAll(spec);
     }
 

@@ -26,7 +26,7 @@ public class Mission
 
     public MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
 
-    public List<EventBlueprint> posibleEvents = new List<EventBlueprint>();
+    public List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
 
     public List<Specialists> specialistOnMission = new List<Specialists>();
 

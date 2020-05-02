@@ -39,7 +39,7 @@ public class MissionCreater : MonoBehaviour
         mis.distance = 100f;
         mis.image = image;
         mis.maxNumberOfEvents = 5;
-        mis.type = "Typerino : " + i.ToString(); ;
+        mis.type = "Typerino : " + i.ToString();
 
         CreateEvents(mis);
 
@@ -55,7 +55,7 @@ public class MissionCreater : MonoBehaviour
 
     private void CreateEvents(Mission mis)
     {
-        /* Event */
+        /* Event set trigger Time*/
         int amountEvents = mis.maxNumberOfEvents;
         float distance = mis.distance;
         float firstOccurrenceEvent = distance * ((100 - timeUntilFirstEvent - timeBetweenLastEvent) / 100);
@@ -68,11 +68,25 @@ public class MissionCreater : MonoBehaviour
 
         SetEventsImage(mis);
 
+        /* Event text answers for buttons */
+
+        foreach (EventBlueprint item in mis.eventsInMission)
+        {
+            item.hasAvoidButton = true; // testing
+            /*checknout jestli funguje..*/
+            item.numberOfOptions = 1; // todo spatne..
+
+            for (int i = 0; i < item.answerTextField.Length; i++)
+            {
+                item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
+            }
+        }
+
     }
 
     private void SetEventsImage(Mission mis)
     {
-        foreach (var item in mis.posibleEvents)
+        foreach (var item in mis.eventsInMission)
         {
             item.sprite = resourceLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
         }
@@ -89,7 +103,7 @@ public class MissionCreater : MonoBehaviour
             newEvent.evocationTime = (int)currentEventOccurrenceTime;
             firstOccurrenceEvent = secondOccurrenceEvent - timeBetweenEvents;
 
-            mis.posibleEvents.Add(newEvent);
+            mis.eventsInMission.Add(newEvent);
         }
 
         return firstOccurrenceEvent;

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EventBlueprint
 {
+    public bool isEventFinished = false;
 
     public int evocationTime;
 
@@ -16,9 +17,13 @@ public class EventBlueprint
 
     public string description;
 
-    public string[] answerTextField;
+    public string[] answerTextField = new string[3];
 
     public bool wasTriggered;
+
+    public bool hasAvoidButton; // jestli ma avoid tlacitko..
+
+    public List<string> reaction = new List<string>(); // tohle by mohlo byt pro akce.. nejdriv string a pak podle toho udelam akci na button.
 
     // mnohem vic to tu bude... musim si promyslet jakou strukturu budou mit entity...
     //  (počet zombiku ,  stamina , info pro hrace.. , stamina cost. ..  Nevim ??)

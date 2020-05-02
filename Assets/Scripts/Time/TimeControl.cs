@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TimeControl : MonoBehaviour
 {
+    //private int previousTimeSpeed;
 
     public static event Action<int> OnTimeChanged = delegate { };
     public static event Action<int> OnTimeSpeedChanged = delegate { };
@@ -44,11 +45,9 @@ public class TimeControl : MonoBehaviour
         }
     }
 
-
     public int TimePointMultiplier()
     {
         return timePointsPerSecond[TimeSpeed];
     }
 
-    
 }
