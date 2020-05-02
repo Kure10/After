@@ -16,6 +16,11 @@ public class Character : MonoBehaviour
         blueprint = specialist;
     }
 
+    public Color GetColor()
+    {
+        return blueprint.backgroundColor;
+    }
+
     //TODO prozatim - tohle je treba udelat nejak rozumne, ale k tomu je treba pohrabat se v Specialists.cs
     public int GetTechLevel()
     {

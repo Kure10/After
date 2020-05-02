@@ -50,7 +50,7 @@ public class uWindowSpecialist : MonoBehaviour
 
     private void CalcHealtandStamina(Specialists spec)
     {
-        healthBar.transform.localScale = new Vector3(spec.PercentHealt / 100, 1f, 1f);
+        healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
     }
 

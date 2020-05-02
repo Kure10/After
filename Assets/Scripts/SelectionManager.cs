@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -41,6 +42,8 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                 if (highlight != null)
                 {
                     selectedObjects.Add(character);
+                    var color = character.GetComponent<Character>().GetColor();
+                    highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", color);
                     highlight.gameObject.SetActive(true);
                 }
 

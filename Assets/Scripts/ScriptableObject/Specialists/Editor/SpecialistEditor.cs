@@ -16,7 +16,7 @@ public class SpecialistEditor : Editor
 
 
         spec.maxStamina = 57600 + 2400 * spec.Level;
-        spec.maxZdravy = 40 + spec.Level + 4 * spec.vojak + 2 * spec.technik + spec.vedec + spec.social;
+        spec.maxHP = 40 + spec.Level + 4 * spec.vojak + 2 * spec.technik + spec.vedec + spec.social;
 
 
     }
