@@ -27,13 +27,9 @@ public class SpecialistManager : MonoBehaviour
         }
     }
 
-    public Specialists GetSpecialistByPosition(int position)
+    public List<Specialists> GetSpecialists()
     {
-        if (position < specialists.Count())
-        {
-            return specialists[position];
-        }
-        return specialists.First();
+        return specialists;
     }
     
     
