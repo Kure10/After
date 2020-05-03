@@ -11,7 +11,7 @@ using UnityEngine;
 
  */
 
-public class NotificationManager : MonoBehaviour
+public class MissionNotificationManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -23,21 +23,30 @@ public class NotificationManager : MonoBehaviour
     private List<Notification> impendingNotification = new List<Notification>();
 
 
-    public void CreateNewNotification (EventBlueprint currentEvent)
+    public void CreateNewNotification(Mission currentMission)
     {
         Notification not = new Notification(NotificationType.Event); // tohle je huste nedodelane..
-        not.subTittle = currentEvent.name;
+                                                                     // not.subTittle = currentEvent;
 
         GameObject notification = Instantiate(NotificationPrefab, NotificationHolder.position, Quaternion.identity);
-        var windowSettings = notification.GetComponent<uWindowNotification>();
+        uWindowMissionNotification windowSettings = notification.GetComponent<uWindowMissionNotification>();
 
         windowSettings.Tittle.text = not.tittle;
         windowSettings.SubTittle.text = not.subTittle;
+
+        /* buttons */
+        windowSettings.ButtonOne.onClick.AddListener(() => OpenMissionPanel(currentMission.id)) ;
 
         // Set parrent and Reset Scale.
         notification.transform.SetParent(NotificationHolder);
         notification.transform.localScale = new Vector3(1, 1, 1);
 
+    }
+
+    /*Events*/
+
+    public void OpenMissionPanel(int mission)
+    {
 
     }
 

@@ -143,6 +143,9 @@ public class EventPanel : MonoBehaviour
     private void Avoid (EventBlueprint currentEvent)
     {
         currentEvent.isEventFinished = true;
+
+        TimeControl.IsTimeBlocked = false; // nebezpečné :D
+
         Destroy(this.gameObject);
     }
 

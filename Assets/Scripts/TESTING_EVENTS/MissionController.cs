@@ -11,20 +11,20 @@ public class MissionController : MonoBehaviour
     [SerializeField] private GameObject eventPanel;
     [SerializeField] private Transform eventHolder;
 
-    public List<Mission> missionsInProcces = new List<Mission>();
+    public List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
 
     [SerializeField]
     public uWindowMission windowMission;
 
     private TimeControl theTC;
     private PanelTime thePT;
-    private NotificationManager notificationManager;
+    private MissionNotificationManager notificationMissionManager;
 
     private void Awake()
     {
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
-        this.notificationManager = GameObject.FindObjectOfType<NotificationManager>();
+        this.notificationMissionManager = GameObject.FindObjectOfType<MissionNotificationManager>();
     }
 
 
@@ -93,11 +93,12 @@ public class MissionController : MonoBehaviour
 
             for (int j = 0; j < missionsInProcces[i].eventsInMission.Count; j++)
             {
-                EventBlueprint currentEvent = missionsInProcces[i].eventsInMission[j];
+                Mission currentMission = missionsInProcces[i];
+                EventBlueprint currentEvent = currentMission.eventsInMission[j];
                 if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
                     currentEvent.wasTriggered = true;
-                    this.thePT.Pause();
+                    this.thePT.Pause(); // toto je mozna spatne :D musim se nad tím zamyslet co vsechno dela pause.
 
                     GameObject eventGameObject = Instantiate(this.eventPanel, this.eventHolder.transform.position, Quaternion.identity);
                     EventPanel eventPanel = eventGameObject.GetComponent<EventPanel>();
@@ -124,7 +125,10 @@ public class MissionController : MonoBehaviour
 
 
                     /* Create Notifiction*/
-                    this.notificationManager.CreateNewNotification(currentEvent); // neni dokonceno
+                    this.notificationMissionManager.CreateNewNotification(currentMission); // neni dokonceno
+
+                    /* Time blocked*/
+                    TimeControl.IsTimeBlocked = true;
 
                     /*-------*/
                     Debug.Log("Event Triggerd");

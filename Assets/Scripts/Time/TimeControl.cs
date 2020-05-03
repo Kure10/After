@@ -13,6 +13,20 @@ public class TimeControl : MonoBehaviour
     private static readonly List<int> timePointsPerSecond = new List<int>() {0, 10, 60, 120, 1200, 7200};
     private static int timeSpeed = 1; //0 = paused, 1 = very slow etc
 
+    private static bool isTimeBlocked = false;
+
+    #region Properities
+
+    public static bool IsTimeBlocked { 
+        get { return isTimeBlocked; } 
+        set { 
+            if (isTimeBlocked = value)
+                return;
+
+            isTimeBlocked = value;
+            } 
+    }
+
     private static int TimeSpeed
     {
         get => timeSpeed;
@@ -26,6 +40,7 @@ public class TimeControl : MonoBehaviour
     }
     private float timePointsDelta = 0;
 
+    #endregion
 
     void Update()
     {

@@ -70,8 +70,12 @@ public class PanelTime : MonoBehaviour
 
     public void Pause()
     {
+        if (TimeControl.IsTimeBlocked)
+            return;
+
         blinkingTime = 0;
         paused = !paused;
+
         if (paused)
         {
             TimeControl.SetTime(0);
