@@ -184,7 +184,12 @@ public class TileFactory : MonoBehaviour
 
             foreach (var neighbour in GetNeighbours(node))
             {
-                if ((!neighbour.walkthrough && !node.walkthrough) || closedSet.Contains(neighbour))
+                if ((!neighbour.walkthrough && !node.walkthrough))
+                {
+                    continue;
+                }
+
+                if (closedSet.Contains(neighbour))
                 {
                     continue;
                 }
@@ -225,7 +230,7 @@ public class TileFactory : MonoBehaviour
                 int gridSizeY = grid.GetLength(1);
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    if (grid[checkX, checkY] is IWalkable g && !(grid[checkX, checkY] is DebrisTile))
+                    if (grid[checkX, checkY] is IWalkable g) // && !(grid[checkX, checkY] is DebrisTile))
                         neighbours.Add(g);
                 }
             }
@@ -247,6 +252,10 @@ public class TileFactory : MonoBehaviour
         */
     }
 
+    public void ClearDebris(int col, int row)
+    {
+        grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
+    }
     public bool Buildable(Vector2Int coord)
     {
         bool ret = false;

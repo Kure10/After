@@ -15,5 +15,5 @@ public enum WorkerState
     full,
     drop,
     move,
-    building
+    working
 }

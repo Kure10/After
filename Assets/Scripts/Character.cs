@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     private Command command;
     private Specialists blueprint;
@@ -52,10 +51,15 @@ public class Character : MonoBehaviour
         this.command = command;
     }
 
-    public void Register(IWorkSource workSource)
+    public bool Register(IWorkSource workSource)
     {
         source?.Unregister(this);
-        workSource.Register(this);
-        source = workSource;
+        if (workSource.Register(this))
+        {
+            source = workSource;
+            return true;
+        }
+
+        return false;
     }
 }

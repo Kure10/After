@@ -1,5 +1,6 @@
 public interface IWorkSource
 {
-    void Register(Character who);
+    bool Register(Character who);
     void Unregister(Character who);
+    void Update();
 }

@@ -29,7 +29,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -144,9 +144,10 @@ public class SelectionManager : MonoBehaviour, IWorkSource
 
     }
 
-    public void Register(Character who)
+    public bool Register(Character who)
     {
         characters.Add(who);
+        return true;
     }
 
     public void Unregister(Character who)
