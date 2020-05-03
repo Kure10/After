@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     private readonly int TILE = 1 << 8;
     private readonly int SELECTABLE = 1 << 9;
     private List<Character> characters;
+    private GameObject panelUI;
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
@@ -22,10 +24,12 @@ public class SelectionManager : MonoBehaviour, IWorkSource
         layerMask = SELECTABLE; //hit only layer 9 (selectables)
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         characters = new List<Character>();
+        panelUI = GameObject.FindGameObjectWithTag("SpecialistUI");
+        panelUI.SetActive(false);
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -41,9 +45,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                 if (highlight != null)
                 {
                     selectedObjects.Add(character);
+                    var blueprint = character.GetComponent<Character>();
+                    highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                     highlight.gameObject.SetActive(true);
-                }
+                    panelUI.GetComponent<uWindowSpecialist>().SetAll(blueprint.GetBlueprint());
+                    panelUI.SetActive(true);
 
+                }
             }
         }
         if (selectedObjects.Count > 0)
@@ -78,6 +86,17 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                             {
                                 character.Register(t.building);
                                 
+                            }
+                            ClearHighlight(highlightedObjects);
+                            ClearHighlight(selectedObjects);
+                            return;
+                        }
+
+                        if (t is DebrisTile debris)
+                        {
+                            if (selectedObjects[0].TryGetComponent(out Character character))
+                            {
+                                character.Register(debris);
                             }
                             ClearHighlight(highlightedObjects);
                             ClearHighlight(selectedObjects);
@@ -122,11 +141,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
             prevSelection.transform.Find("Selection").gameObject.SetActive(false);
         }
         objects.Clear();
+
     }
 
-    public void Register(Character who)
+    public bool Register(Character who)
     {
         characters.Add(who);
+        return true;
     }
 
     public void Unregister(Character who)

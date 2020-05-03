@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.Win32;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,12 +22,25 @@ public class TileFactory : MonoBehaviour
     private Ray ray;
 
     private RaycastHit hit;
+    private Vector2Int specPosition = new Vector2Int();
 
     // Start is called before the first frame update
     void Start()
     {
-        grid = CreateGrid();
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
+        grid = CreateGrid();
+        var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
+        var spec = sm.GetSpecialists();
+        List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
+        foreach (var specialist in spec)
+        {
+            var gridPoint = FindFreeTile(specPosition, alreadyPlaced);
+            alreadyPlaced.Add(gridPoint);
+            var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+            person.GetComponent<Character>().SetBlueprint(specialist);
+        }
+
+
     }
 
     void Update()
@@ -85,10 +99,14 @@ public class TileFactory : MonoBehaviour
                         col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z) {inside = true});
                         break;
                     case 's':
-                        var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
-                        var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
-                        var spec = sm.GetSpecialistByPosition(specialistsInGame++);
-                        person.GetComponent<Character>().SetBlueprint(spec);
+                        //changed - now all specialists are placed around the first point with this symbol, skip if more than one
+                        if (specialistsInGame == 0)
+                        {
+                            specialistsInGame++;
+                            //save this position and generate specialist around this point (need to be generated after everything else to know where the free tiles are
+                            specPosition = gridPoint;
+                        }
+
                         goto case 'e';
                     case 'd':
                         col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z));
@@ -116,6 +134,8 @@ public class TileFactory : MonoBehaviour
                 ret[item.x, item.y] = item;
             }
         }
+
+     
 
         return ret;
     }
@@ -164,7 +184,12 @@ public class TileFactory : MonoBehaviour
 
             foreach (var neighbour in GetNeighbours(node))
             {
-                if ((!neighbour.walkthrough && !node.walkthrough) || closedSet.Contains(neighbour))
+                if ((!neighbour.walkthrough && !node.walkthrough))
+                {
+                    continue;
+                }
+
+                if (closedSet.Contains(neighbour))
                 {
                     continue;
                 }
@@ -205,7 +230,7 @@ public class TileFactory : MonoBehaviour
                 int gridSizeY = grid.GetLength(1);
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    if (grid[checkX, checkY] is IWalkable g && !(grid[checkX, checkY] is DebrisTile))
+                    if (grid[checkX, checkY] is IWalkable g) // && !(grid[checkX, checkY] is DebrisTile))
                         neighbours.Add(g);
                 }
             }
@@ -227,6 +252,10 @@ public class TileFactory : MonoBehaviour
         */
     }
 
+    public void ClearDebris(int col, int row)
+    {
+        grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
+    }
     public bool Buildable(Vector2Int coord)
     {
         bool ret = false;
@@ -287,10 +316,10 @@ public class TileFactory : MonoBehaviour
     }
 
     //Find first emtyTile but start searching from start point
-    public Vector2Int FindFreeTile(Vector2Int startPoint)
+    public Vector2Int FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null)
     {
          
-        var resOnTiles = rm.resources.Where(r => r.Owner is Tile).ToList();
+        var resOnTiles = rm.resources == null ? new List<Resource>() : rm.resources.Where(r => r.Owner is Tile).ToList();
 
         int distance = 0;
         while (distance < 20)
@@ -311,6 +340,15 @@ public class TileFactory : MonoBehaviour
                         if (t.building == null && t.inside == true)
                         {
                             var empty = true;
+                            var candidate = new Vector2Int(t.x, t.y);
+                            if (!(forbiddenTiles is null))
+                            {
+                                if (forbiddenTiles.Contains(candidate))
+                                {
+                                    empty = false;
+                                }
+                            }
+                                
                             foreach (var res in resOnTiles)
                             {
                                 if (res.Owner == t)

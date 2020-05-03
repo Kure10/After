@@ -13,6 +13,7 @@ public class Specialists : ScriptableObject
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private string fullName = "Pavel";
     [SerializeField] Povolani povolani;
+    [SerializeField] public Color backgroundColor;
     [Header("Main attributes")]
     [Range(0, 20)] [SerializeField] private int level = 0;
     [Range(0,10)] [SerializeField] public int vojak = 0;
@@ -23,10 +24,10 @@ public class Specialists : ScriptableObject
 
     [Header("Health and Stamina")]
     [SerializeField] public int maxStamina;
-    [SerializeField] public int maxZdravy;
+    [SerializeField] public int maxHP;
     [Space]
     [SerializeField] private int currentStamina = 1;
-    [SerializeField] private int currentZdravy = 1;
+    [SerializeField] private int currentHP = 1;
 
 
     public string FullName { get { return fullName; } }
@@ -39,11 +40,11 @@ public class Specialists : ScriptableObject
     public int Kar { get { return karma; } }
 
 
-    public float PercentHealt
+    public float PercentHealth
     {
         get
         {
-            return ( (float)currentZdravy / (float)maxZdravy ) * 100;
+            return ( (float)currentHP / (float)maxHP ) * 100;
         }
     }
 
@@ -63,7 +64,7 @@ public class Specialists : ScriptableObject
 
     private void Awake()
     {
-        povolani = Povolani.Doktor;
+        //povolani = Povolani.Doktor;
         CalcHealth(level,vojak,technik,vedec,social);
         CalcStamina(level);
     }
@@ -75,7 +76,7 @@ public class Specialists : ScriptableObject
 
     private void CalcHealth(int lvl, int mil, int tel, int scl, int sol)
     {
-        maxZdravy = 40 + lvl + 4 * mil + 2 * tel + scl + sol;
+        maxHP = 40 + lvl + 4 * mil + 2 * tel + scl + sol;
     }
 
     public Sprite GetSprite()

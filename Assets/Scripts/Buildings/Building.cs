@@ -37,24 +37,7 @@ public partial class Building : IWorkSource
         //upgrading? destroyed? - pro kazdy stav by mela byt vlastni grafika
     };
 
-    enum WorkerState
-    {
-        init,
-        wait,
-        empty,
-        pickup,
-        full,
-        drop,
-        move,
-        building
-    }
 
-    partial class Worker
-    {
-        public Character character;
-        public WorkerState state;
-        public float time;
-    }
 
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
@@ -69,13 +52,14 @@ public partial class Building : IWorkSource
     }
 
 
-    public void Register(Character character)
+    public bool Register(Character character)
     {
         Unregister(character);
         var worker = new Worker();
         worker.character = character;
         worker.state = WorkerState.init;
         Workers.Add(worker);
+        return true;
     }
 
     public void Unregister(Character character)
@@ -126,7 +110,7 @@ public partial class Building : IWorkSource
                         {
                             activeWorker.time = 0;
                             activeWorker.character.AddCommand(new Build());
-                            activeWorker.state = WorkerState.building;
+                            activeWorker.state = WorkerState.working;
                             return;
                         }
 
@@ -201,7 +185,7 @@ public partial class Building : IWorkSource
                 workerNr++;
                 switch (worker.state)
                 {
-                    case WorkerState.building:
+                    case WorkerState.working:
                         worker.character.Execute();
                         float buildPoints = 0;
                         if (worker.character.GetCommand() is Build buildCmd)
@@ -235,7 +219,7 @@ public partial class Building : IWorkSource
                     case WorkerState.move:
                         if (worker.character.Execute() == Result.Success)
                         {
-                            worker.state = WorkerState.building;
+                            worker.state = WorkerState.working;
                             worker.character.AddCommand(new Build());
                         }
                         break;
