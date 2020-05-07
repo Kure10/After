@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     
     public Color GetColor()
     {
-        return blueprint.backgroundColor;
+        return blueprint.SpecialistColor;
     }
 
     //TODO prozatim - tohle je treba udelat nejak rozumne, ale k tomu je treba pohrabat se v Specialists.cs

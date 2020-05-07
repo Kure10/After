@@ -11,6 +11,7 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Image specialistImage;
     [SerializeField] Text characterName;
     [SerializeField] Text characterLevel;
+    [SerializeField] Image backgroundImage;
 
     [Header("Stats")]
     [SerializeField] Transform healthBar;
@@ -34,18 +35,18 @@ public class uWindowSpecialist : MonoBehaviour
 
     #endregion
 
-
-
     #region Properity
 
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
     #endregion
 
-    #region Methods
+    #region Private Methods
     private void SetSpecialistImage(Specialists spec)
     {
-        specialistImage.sprite = spec.GetSprite();
+        this.specialistImage.sprite = spec.GetSprite();
+        if (this.backgroundImage != null)
+            this.backgroundImage.color = spec.SpecialistColor;
     }
 
     private void CalcHealtandStamina(Specialists spec)
@@ -64,7 +65,9 @@ public class uWindowSpecialist : MonoBehaviour
         socialValue.text = spec.Sol.ToString();
         karmaValue.text = spec.Kar.ToString();
     }
+    #endregion
 
+    #region Public Methods
     public void SetAll(Specialists spec)
     {
         SetSpecialistImage(spec);

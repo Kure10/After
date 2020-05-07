@@ -13,7 +13,7 @@ public class Specialists : ScriptableObject
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private string fullName = "Pavel";
     [SerializeField] Povolani povolani;
-    [SerializeField] public Color backgroundColor;
+    [SerializeField] private Color backgroundColor;
     [Header("Main attributes")]
     [Range(0, 20)] [SerializeField] private int level = 0;
     [Range(0,10)] [SerializeField] public int vojak = 0;
@@ -39,6 +39,8 @@ public class Specialists : ScriptableObject
     public int Sol { get { return social; } }
     public int Kar { get { return karma; } }
 
+
+    public Color SpecialistColor { get { return this.backgroundColor; } set { this.backgroundColor = value; } }
 
     public float PercentHealth
     {
