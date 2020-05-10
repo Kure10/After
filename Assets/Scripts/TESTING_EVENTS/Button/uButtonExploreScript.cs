@@ -21,7 +21,7 @@ public class uButtonExploreScript : MonoBehaviour
     {
         regionSettings.StartExploreMission();
         //Debug.Log("Yes Button -> Show Mission panel and other shits");
-        regionSettings.ExploreRegion();
+      //  regionSettings.ExploreRegion();
         parentObject.SetActive(false);
     }
 

@@ -67,9 +67,9 @@ public class RegionControler : MonoBehaviour
         }
     }
 
-    public void StartExploreMision()
+    public void StartExploreMision(RegionSettings regionSettings)
     {
-        missionManager.ChoiseMission();
+        missionManager.ChoiseMission(regionSettings);
     }
 
 }

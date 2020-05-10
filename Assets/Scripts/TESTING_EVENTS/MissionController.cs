@@ -29,10 +29,10 @@ public class MissionController : MonoBehaviour
 
 
 
-    public void StartMission (Mission missinToStart)
+    public void StartMission (Mission missinToStart,RegionSettings regionSettings)
     {
         this.windowMission.gameObject.SetActive(false);
-
+        regionSettings.ExploreRegion();
         missionsInProcces.Add(missinToStart);
         infoController.InfoRowCreate(missinToStart);
 
