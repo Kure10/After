@@ -14,6 +14,7 @@ public class TileFactory : MonoBehaviour
     public GameObject outsideTile;
     public GameObject debrisTile;
     public GameObject character;
+    public GameObject DebrisHealthbar;
     public TextAsset level;
     private BaseTile[,] grid;
     private readonly int TILE = 1 << 8;

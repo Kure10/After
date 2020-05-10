@@ -16,6 +16,8 @@ public partial class Building : IWorkSource
     private readonly BuildingBlueprint blueprint;
     private GameObject prefab;
     private float timeToBuildRemaining;
+    private GameObject statusbar;
+    private HealthbarHandle statusHandle;
 
     private BuildingState State
     {
@@ -172,6 +174,12 @@ public partial class Building : IWorkSource
                         if (!GetMissingMaterials().Any())
                         {
                             State = BuildingState.UnderConstruction;
+                            var hpPosition = Camera.main.WorldToScreenPoint(prefab.transform.position);
+                            var canvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetComponent<Canvas>();
+                            statusbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
+                            statusHandle = statusbar.GetComponent<HealthbarHandle>();
+                            statusHandle.parent = prefab;
+                            statusHandle.SetHPValue(0);
                         }
 
                         break;
@@ -198,10 +206,12 @@ public partial class Building : IWorkSource
                             Debug.Log(
                                 $"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
                         }
+                        statusHandle.SetHPValue(1 - (timeToBuildRemaining / blueprint.TimeToBuild));
                         if (timeToBuildRemaining <= 0)
                         {
                             State = BuildingState.Build;
                             Workers.Clear();
+                            GameObject.Destroy(statusbar);
                         }
                         break;
                     case WorkerState.full:

@@ -2,30 +2,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 using Object = System.Object;
 
 public class DebrisTile : Tile, IWorkSource
 {
-    public float hp;
+    private float hp;
     private List<Worker> Workers;
     private ResourceManager resourceManager;
     private TileFactory tileFactory;
     private const int MaxNumberOfWorkers = 4;
     private WorkManager workManager;
     private bool depleted = false;
-
+    private GameObject healthbar;
+    private HealthbarHandle hpHandle;
+    private const float TOTALHP = 200f;
     public DebrisTile(GameObject tile, int x, int y) : base(tile, x, y)
     {
         walkthrough = false;
-        hp = 100;
         Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
         workManager = GameObject.FindGameObjectWithTag("WorkManager").transform.GetComponent<WorkManager>();
-
+        var hpPosition = Camera.main.WorldToScreenPoint(tile.transform.position);
+        var canvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetComponent<Canvas>();
+        healthbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
+        hpHandle = healthbar.GetComponent<HealthbarHandle>();
+        hpHandle.parent = tile;
+        hp = TOTALHP;
+        hpHandle.SetHPValue(1);
     }
 
+    private bool DoDamage(float dmg)
+    {
+        hp -= dmg;
+        hpHandle.SetHPValue(hp / TOTALHP);
+        return hp <= 0;
+    }
     public void Update()
     {
         foreach (var worker in Workers)
@@ -40,9 +54,7 @@ public class DebrisTile : Tile, IWorkSource
                     }
                     break;
                 case WorkerState.working:
-                    //do some proper calculation
-                    hp -= Time.deltaTime * 10;
-                    if (hp <= 0)
+                    if (DoDamage(Time.deltaTime * 10))
                     {
                         //done, we're depleted
                         depleted = true;
@@ -61,6 +73,7 @@ public class DebrisTile : Tile, IWorkSource
             Workers.Clear();
             tileFactory.ClearDebris(x, y);
             GameObject.Destroy(tile);
+            GameObject.Destroy(healthbar);
         }
     }
     
