@@ -10,10 +10,8 @@ public class RegionControler : MonoBehaviour
     public Color black = new Color(0, 0, 0, 1f);
     public Color idleColor = new Color(1, 1, 1, 1);
 
-    private RegionSettings[] arrayOfregionsSettings;
+    private RegionOperator[] arrayOfregionsOperator;
     private MissionManager missionManager;
-
-    
 
     //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
     //public delegate void OnExploreButtonClick();
@@ -21,13 +19,13 @@ public class RegionControler : MonoBehaviour
 
     private void Awake()
     {
-        arrayOfregionsSettings = FindObjectsOfType<RegionSettings>();
+        arrayOfregionsOperator = FindObjectsOfType<RegionOperator>();
         missionManager = GameObject.FindGameObjectWithTag("MissionManager").GetComponent<MissionManager>();
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -43,7 +41,7 @@ public class RegionControler : MonoBehaviour
 
     public void RefreshRegions()
     {
-        foreach (var item in arrayOfregionsSettings)
+        foreach (var item in arrayOfregionsOperator)
         {
             var regionImage = item.GetImage();
             var region = item.GetRegion();
@@ -67,9 +65,8 @@ public class RegionControler : MonoBehaviour
         }
     }
 
-    public void StartExploreMision(RegionSettings regionSettings)
+    public void StartExploreMision(RegionOperator regionOperator)
     {
-        missionManager.ChoiseMission(regionSettings);
+        missionManager.ChoiseMission(regionOperator);
     }
-
 }

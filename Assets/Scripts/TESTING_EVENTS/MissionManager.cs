@@ -16,18 +16,18 @@ public class MissionManager : MonoBehaviour
     public Mission currentMission;
 
 
-    public void ChoiseMission(RegionSettings regionSettings)
+    public void ChoiseMission(RegionOperator regionOperator)
     {
        
         int i = Random.Range(0, allMissions.Count);
         Mission mission = allMissions[i];
 
 
-        ShowMissionPanel(mission, regionSettings);
+        ShowMissionPanel(mission, regionOperator);
 
     }
 
-    private void ShowMissionPanel(Mission mission,RegionSettings regionSettings)
+    private void ShowMissionPanel(Mission mission,RegionOperator regionOperator)
     {
         theMC.windowMission.MissionName = mission._name;
         theMC.windowMission.MissionType = mission.type;
@@ -40,7 +40,7 @@ public class MissionManager : MonoBehaviour
         Button startButton = theMC.windowMission.GetStartMissionButton;
 
         startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionSettings); });
+        startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator); });
 
         theMC.windowMission.Init();
 

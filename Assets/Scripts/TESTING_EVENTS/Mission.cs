@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [SerializeField]
 public class Mission
 {
+    #region Fields
+
     public int id;
 
     public string _name;
@@ -30,6 +32,11 @@ public class Mission
 
     public List<Specialists> specialistOnMission = new List<Specialists>();
 
+    private RegionOperator currentRegionOperator;
+
+    #endregion
+
+    #region Constructor
     public Mission ()
     {
         missionTime = MissionTime.akorat;
@@ -37,10 +44,24 @@ public class Mission
         missionEnviroment = MissionEnviroment.poust;
     }
 
+    #endregion
+
+    #region Properitiers
+
+    public RegionOperator RegionOperator { get { return this.currentRegionOperator; } set { this.currentRegionOperator = value; } }
+
+
+    #endregion
+
 }
 
+
+
+#region Enum 
 public enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
 
 public enum LevelOfDangerous { jedna, dva, tri };
 
 public enum MissionEnviroment { pole, poust, dzungle, les };
+
+#endregion

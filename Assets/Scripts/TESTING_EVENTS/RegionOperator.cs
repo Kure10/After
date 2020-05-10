@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RegionSettings : MonoBehaviour
+public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] Region region;
     [SerializeField] GameObject exploreQuestionButton;
-    [SerializeField] public RegionControler regionControler;
+    //[SerializeField] 
+    private RegionControler regionControler;
 
     private Image image;
 
     private void Awake()
     {
+        this.regionControler = GameObject.FindObjectOfType<RegionControler>();
         image = GetComponent<Image>();
         image.sprite = this.region.GetSprite;
         InicializationRegion();

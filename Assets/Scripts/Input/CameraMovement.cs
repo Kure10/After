@@ -11,7 +11,8 @@ public class CameraMovement : MonoBehaviour
 
     private float xAxis, yAxis, zAxis;
     private Vector3 movement;
-    public static bool scrollEnabled = true;
+    private static bool scrollEnabled = true;
+    private static bool movementEnabled = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +53,13 @@ public class CameraMovement : MonoBehaviour
         {
             movement.y = 0;
         }
+
+        if (!movementEnabled)
+        {
+            movement.x = 0;
+            movement.z = 0;
+        }
+
         var height = transform.parent.transform.position.y;
         if (height > MaxY || height < MinY)
         {
@@ -73,5 +81,16 @@ public class CameraMovement : MonoBehaviour
     public static void ZoomByScrollEnabled(bool enabled)
     {
         scrollEnabled = enabled;
+    }
+
+    public static void MovementByArrowsEnabled(bool enabled)
+    {
+        movementEnabled = enabled;
+    }
+
+    public static void MovementAllEnable(bool enabled)
+    {
+        scrollEnabled = enabled;
+        movementEnabled = enabled;
     }
 }

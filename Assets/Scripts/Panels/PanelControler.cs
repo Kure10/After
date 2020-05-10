@@ -24,7 +24,6 @@ public class PanelControler : MonoBehaviour
 
     public void TurnOn(int currentPanel)
     {
-        //CameraMovement.scrollEnabled = true;
 
         if (panels[currentPanel].activeSelf == true)
         {
@@ -41,12 +40,12 @@ public class PanelControler : MonoBehaviour
         {
             if(item.activeSelf == true)
             {
-                CameraMovement.scrollEnabled = false;
+                CameraMovement.MovementAllEnable(false);
                 return;
             }
             else
             {
-                CameraMovement.scrollEnabled = true;
+                CameraMovement.MovementAllEnable(true);
             }
         }
     }
@@ -56,7 +55,7 @@ public class PanelControler : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            CameraMovement.scrollEnabled = true;
+            CameraMovement.MovementAllEnable(true);
 
             DisableAllPanels();
         }

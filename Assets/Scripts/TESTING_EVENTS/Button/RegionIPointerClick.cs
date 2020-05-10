@@ -7,11 +7,11 @@ using UnityEngine.UI;
 
 public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
 {
-    private RegionSettings regionSettings;
+    private RegionOperator regionOperator;
 
     public void Awake()
     {
-        this.regionSettings = GetComponent<RegionSettings>();
+        this.regionOperator = GetComponent<RegionOperator>();
     }
 
 
@@ -19,7 +19,7 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            regionSettings.OpenExplorePanel();
+            regionOperator.OpenExplorePanel();
                 // leftClick.Invoke();
            // Debug.Log("Left Clicked");
         }
@@ -31,7 +31,7 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             // rightClick.Invoke();
-            regionSettings.CloseExplorePanel();
+            regionOperator.CloseExplorePanel();
           //  Debug.Log("Right Clicked");
         }  
     }

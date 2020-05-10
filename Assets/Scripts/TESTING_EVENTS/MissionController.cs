@@ -29,10 +29,10 @@ public class MissionController : MonoBehaviour
 
 
 
-    public void StartMission (Mission missinToStart,RegionSettings regionSettings)
+    public void StartMission (Mission missinToStart,RegionOperator regionOperator)
     {
         this.windowMission.gameObject.SetActive(false);
-        regionSettings.ExploreRegion();
+        missinToStart.RegionOperator = regionOperator;
         missionsInProcces.Add(missinToStart);
         infoController.InfoRowCreate(missinToStart);
 
@@ -58,6 +58,7 @@ public class MissionController : MonoBehaviour
             if (missionsInProcces[i].distance <= 0)
             {
                 Debug.Log("mission is done");
+                missionsInProcces[i].RegionOperator.ExploreRegion();
                 MissionComplete(missionsInProcces[i]);
                 continue;
             }

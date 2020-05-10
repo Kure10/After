@@ -8,7 +8,7 @@ public class uButtonExploreScript : MonoBehaviour
     private GameObject parentObject;
 
     [SerializeField]
-    private RegionSettings regionSettings;
+    private RegionOperator regionOperator;
 
     
 
@@ -19,7 +19,7 @@ public class uButtonExploreScript : MonoBehaviour
 
     public void YesButton()
     {
-        regionSettings.StartExploreMission();
+        regionOperator.StartExploreMission();
         //Debug.Log("Yes Button -> Show Mission panel and other shits");
       //  regionSettings.ExploreRegion();
         parentObject.SetActive(false);
