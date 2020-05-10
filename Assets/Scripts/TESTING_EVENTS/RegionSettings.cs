@@ -57,7 +57,7 @@ public class RegionSettings : MonoBehaviour
 
     public void StartExploreMission()
     {
-        regionControler.StartExploreMision();
+        regionControler.StartExploreMision(this);
     }
     public void CloseExplorePanel()
     {

@@ -63,6 +63,7 @@ public enum NotificationType { Specialist , Event , Building} // jeden pro každ
 
 public class Notification
 {
+    #region Fields
     private bool isBlockingTime;
 
     private NotificationType type;
@@ -71,6 +72,9 @@ public class Notification
 
     public string subTittle;
 
+    #endregion
+
+    #region Construktor
     public Notification(NotificationType type)
     {
         switch (type)
@@ -89,4 +93,5 @@ public class Notification
                 break;
         }
     }
+    #endregion
 }
