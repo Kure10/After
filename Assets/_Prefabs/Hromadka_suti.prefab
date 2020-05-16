@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.438}
-  m_SizeDelta: {x: 600, y: 200}
+  m_SizeDelta: {x: 700, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7887905045193243777
 Canvas:
@@ -171,8 +171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rect: {fileID: 7864482441189839092}
-  image: {fileID: 3332621607135164880}
+  healthbarImage: {fileID: 0}
   imageRect: {fileID: 8603491215780921759}
+  canvas: {fileID: 7864482441189839092}
 --- !u!1 &7317151911543532371
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,15 +12,40 @@ public class HealthbarHandler2 : MonoBehaviour
     [SerializeField] private Image healthbarImage;
     [SerializeField] private RectTransform imageRect;
 
+    [SerializeField] private RectTransform canvas;
+
+    private float initialHeight;
+    private float initialWidth;
+
+    private int percentScaleForOneMeter = 2; // dve procenta narust ci pokles
+    private int initialDistance = 20;  // Když je kamera vzdalena 20m. tak ma healthBar 100% scale. když 10m tak 80%
+
+
     void Start()
     {
-        
+        initialWidth = canvas.rect.width;
+        initialHeight = canvas.rect.height;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        CalculateSizeOfPanel();
+    }
+
+    private void CalculateSizeOfPanel()
+    {
+        float cameraPositionY = CameraMovement.cameraPositionY;
+
+        float tmp = initialDistance - cameraPositionY;
+        tmp = tmp * percentScaleForOneMeter;
+        tmp = 100 - tmp; // procento narustu ci poklesu
+
+        float newWidth = initialWidth * (tmp / 100);
+        float newHeight = initialHeight * (tmp / 100);
+
+        Vector2 vec = new Vector2((int)newWidth, (int)newHeight);
+        canvas.sizeDelta = vec;
     }
 
     // Toto jsem prekopiroval od tebe. 

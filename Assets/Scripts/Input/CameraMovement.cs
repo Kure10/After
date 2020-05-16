@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour
     public float MinY = 10f;
     public float MaxY = 40f;
 
+    public static float cameraPositionY;
     private float xAxis, yAxis, zAxis;
     private Vector3 movement;
     private static bool scrollEnabled = true;
@@ -60,23 +61,34 @@ public class CameraMovement : MonoBehaviour
             movement.z = 0;
         }
 
-        var height = transform.parent.transform.position.y;
-        if (height > MaxY || height < MinY)
+        Vector3 vec = transform.parent.transform.position;
+
+        if (vec.y > MaxY || vec.y < MinY)
         {
             movement.y = 0;
         }
-        
-        transform.parent.transform.Translate(movement);
-        //fix for fast scrolling on slow computer
-        var v = transform.parent.transform.position;
 
-        if (height < MinY)
+        bool isMaxZoom = false;
+        bool isMinZoom = false;
+
+        if (vec.y <= MinY)
         {
-            transform.parent.transform.position = new Vector3(v.x, MinY + 0.01f, v.z);
-        } else if (height > MaxY)
-        {
-            transform.parent.transform.position = new Vector3(v.x, MaxY - 0.01f, v.z);
+            vec.y = MinY;
+            transform.parent.transform.position = new Vector3(vec.x, 10 /*MinY + 0.01f*/, vec.z);
+            isMinZoom = true;
         }
+        else if (vec.y >= MaxY)
+        {
+            vec.y = MaxY;
+            transform.parent.transform.position = new Vector3(vec.x, 40 /*MaxY + 0.01f*/, vec.z);
+            isMaxZoom = true;
+        }
+
+        cameraPositionY = transform.parent.transform.position.y; // properity for healthBar
+
+        if ((movement.y < 0 && !isMinZoom) || (movement.y > 0 && !isMaxZoom))
+            transform.parent.transform.Translate(movement);
+
     }
     public static void ZoomByScrollEnabled(bool enabled)
     {
@@ -93,4 +105,5 @@ public class CameraMovement : MonoBehaviour
         scrollEnabled = enabled;
         movementEnabled = enabled;
     }
+
 }
