@@ -86,7 +86,7 @@ public class CameraMovement : MonoBehaviour
 
         cameraPositionY = transform.parent.transform.position.y; // properity for healthBar
 
-        if ((movement.y < 0 && !isMinZoom) || (movement.y > 0 && !isMaxZoom))
+        if ((movement.y <= 0 && !isMinZoom) || (movement.y >= 0 && !isMaxZoom))
             transform.parent.transform.Translate(movement);
 
     }

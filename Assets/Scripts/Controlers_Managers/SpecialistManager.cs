@@ -12,7 +12,7 @@ public class SpecialistManager : MonoBehaviour
     [Space]
     [Header("Utility things")]
     [SerializeField]
-    private SpecGridUI specGridUI;
+    private uWindowSpecController specUWindowUi;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class SpecialistManager : MonoBehaviour
     {
         for (int i = 0; i < specialists.Count; i++)
         {
-            specGridUI.AddSpecHolder(specialists[i]);
+            specUWindowUi.AddSpecHolder(specialists[i]);
         }
     }
 
