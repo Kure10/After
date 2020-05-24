@@ -16,7 +16,6 @@ public partial class Building : IWorkSource
     private readonly BuildingBlueprint blueprint;
     private GameObject prefab;
     private float timeToBuildRemaining;
-    private GameObject statusbar;
     private HealthbarHandle statusHandle;
 
     private BuildingState State
@@ -51,6 +50,7 @@ public partial class Building : IWorkSource
         Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
+
     }
 
 
@@ -176,9 +176,6 @@ public partial class Building : IWorkSource
                             State = BuildingState.UnderConstruction;
                             var hpPosition = Camera.main.WorldToScreenPoint(prefab.transform.position);
                             var canvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetComponent<Canvas>();
-                            statusbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
-                            statusHandle = statusbar.GetComponent<HealthbarHandle>();
-                            statusHandle.parent = prefab;
                             statusHandle.SetHPValue(0);
                         }
 
@@ -211,7 +208,6 @@ public partial class Building : IWorkSource
                         {
                             State = BuildingState.Build;
                             Workers.Clear();
-                            GameObject.Destroy(statusbar);
                         }
                         break;
                     case WorkerState.full:
@@ -279,11 +275,15 @@ public partial class Building : IWorkSource
                 prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,
                     prefab.transform.rotation);
                 prefab.transform.Find("background").GetComponent<Renderer>().material.color = blueprint.BackgroundColor;
+                statusHandle = prefab.GetComponent<HealthbarHandle>();
+                statusHandle.SetHPValue(0);
                 break;
             case BuildingState.UnderConstruction:
                 prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,
                     prefab.transform.rotation);
                 resourceManager.GetResourcesForOwner(this).ForEach(res => res.Amount = 0);
+                statusHandle = prefab.GetComponent<HealthbarHandle>();
+                statusHandle.SetHPValue(0);
                 break;
             case BuildingState.Build:
                 Object.Destroy(prefab);
