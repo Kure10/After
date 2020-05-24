@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = System.Object;
@@ -208,7 +209,7 @@ public class ResourceManager : MonoBehaviour
     {
         return resources.Where(r => r.Owner == owner).ToList();
     }
-    public void SpawnMaterial(Material typ, int amount)
+    public void SpawnMaterial(Material typ, int amount, Vector2Int where = default)
     {
 
         if ((10 > GetResourceCount(typ) && amount == -10) || (GetResourceCount(typ) <= 0 && amount < 0))
@@ -225,7 +226,8 @@ public class ResourceManager : MonoBehaviour
             {
                 SpawnMaterial(typ, amount - 10);
             }
-            var coord = tileFactory.FindFreeTile();
+
+            var coord = tileFactory.FindFreeTile(where);
             var newResourse = new Resource(amount, typ, tileFactory.getTile(coord));
             resources.Add(newResourse);
         }

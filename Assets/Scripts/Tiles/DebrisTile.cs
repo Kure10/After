@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = System.Object;
+using Random = System.Random;
 
 public class DebrisTile : Tile, IWorkSource
 {
@@ -18,6 +19,7 @@ public class DebrisTile : Tile, IWorkSource
     //private GameObject healthbar;
     private HealthbarHandle hpHandle;
     private const float TOTALHP = 200f;
+    private Random rnd;
     public DebrisTile(GameObject tile, int x, int y) : base(tile, x, y)
     {
         walkthrough = false;
@@ -30,6 +32,7 @@ public class DebrisTile : Tile, IWorkSource
         hpHandle = tile.GetComponent<HealthbarHandle>();
         hp = TOTALHP;
         hpHandle.SetHPValue(1);
+        rnd = new Random();
     }
 
     private bool DoDamage(float dmg)
@@ -55,6 +58,8 @@ public class DebrisTile : Tile, IWorkSource
                     if (DoDamage(Time.deltaTime * 10))
                     {
                         //done, we're depleted
+                        var amount = rnd.Next(5, 10);
+                        resourceManager.SpawnMaterial(amount % 2 == 0 ? ResourceManager.Material.Civilni : ResourceManager.Material.Technicky, amount, Geometry.GridFromPoint(worker.character.transform.position));
                         depleted = true;
                         break;
                     }
