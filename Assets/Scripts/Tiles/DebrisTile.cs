@@ -18,7 +18,7 @@ public class DebrisTile : Tile, IWorkSource
     private bool depleted = false;
     //private GameObject healthbar;
     private HealthbarHandle hpHandle;
-    private const float TOTALHP = 200f;
+    private const float TOTALHP = 40000f;
     private Random rnd;
     public DebrisTile(GameObject tile, int x, int y) : base(tile, x, y)
     {
@@ -52,10 +52,17 @@ public class DebrisTile : Tile, IWorkSource
                     if (worker.character.Execute() == Result.Success)
                     {
                         worker.state = WorkerState.working;
+                        worker.character.AddCommand(new Build());
                     }
                     break;
                 case WorkerState.working:
-                    if (DoDamage(Time.deltaTime * 10))
+                    worker.character.Execute();
+                    float buildPoints = 0;
+                    if (worker.character.GetCommand() is Build buildCmd)
+                    {
+                        buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
+                    }
+                    if (DoDamage(buildPoints))
                     {
                         //done, we're depleted
                         var amount = rnd.Next(5, 10);
