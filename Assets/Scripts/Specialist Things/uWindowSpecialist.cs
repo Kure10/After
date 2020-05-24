@@ -31,11 +31,22 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Button Control2;
     [SerializeField] Button Control3;
 
+    private float percentHealth = 0;
+    private float percentStamina = 0;
+
     // inventory is missiong ... Todo. (if designer will want to.)
 
     #endregion
 
     #region Properity
+    public float GetPercentHelth { get => this.percentHealth; }
+    public string GetName { get =>  this.characterName.text.ToString(); }
+  //  public int MilitaryValue { get => int.Parse(this.militaryValue.text); }
+    public int GetKarma { get => int.Parse(this.karmaValue.text); }
+
+    public int GetLevel { get => int.Parse(this.characterLevel.text); }
+
+    public float GetHealth { get => int.Parse(this.characterLevel.text); }
 
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
@@ -51,6 +62,8 @@ public class uWindowSpecialist : MonoBehaviour
 
     private void CalcHealtandStamina(Specialists spec)
     {
+        this.percentHealth = spec.PercentHealth;
+        this.percentStamina = spec.PercentStamina;
         healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
     }

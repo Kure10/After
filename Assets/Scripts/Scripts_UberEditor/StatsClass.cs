@@ -736,6 +736,7 @@ public class StatsClass
         {
             // Read file
             string finalpath = string.Format("{0}/{1}.bytes", filepath, filename);
+            //string finalpath = string.Format("{0}/{1}", filepath, filename);
             using (FileStream stream = File.Open(finalpath, FileMode.Open))
             {
                 using (BinaryReader r = new BinaryReader(stream, Encoding.UTF8))

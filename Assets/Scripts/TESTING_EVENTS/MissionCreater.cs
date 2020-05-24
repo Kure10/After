@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ResolveMachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,8 @@ public class MissionCreater : MonoBehaviour
     {
         this.missionManager =  this.GetComponent<MissionManager>();
         this.resourceLoader = this.GetComponent<ResourceLoader>();
+
+        LoadMissions();
 
         for (int i = 0; i < 10; i++)
         {
@@ -51,6 +54,31 @@ public class MissionCreater : MonoBehaviour
     public void PassMissionList()
     {
         this.missionManager.allMissions = this.createdMissions;
+    }
+
+    public void LoadMissions()
+    {
+       // string path = "Assets/Data/XML/Testing Mission Data/Missions.xml";
+        string path = "C:/Unity Games/After/after/Assets/Data/XML/Testing Mission Data";
+        string fileName = "Missions";
+        string fileNameCZ = "Missions-CZ";
+        ResolveMaster rm = new ResolveMaster();
+
+
+        var data2 = StatsClass.LoadXmlFile(path, fileName);
+        rm.AddDataNode(fileName, data2);
+        
+
+        var dataloc2 = StatsClass.LoadXmlFile(path, fileNameCZ);
+        rm.ModifyDataNode(fileName, dataloc2);
+        foreach (var key in rm.GetDataKeys(fileName)) Debug.LogWarning(key.ToLog());
+
+        var tmp = rm.GetDataKeys("Missions");
+
+        ResolveSlave slave = rm.AddDataSlave("Missions", rm.GetDataKeys("Missions")[0].Title);
+
+        slave.StartResolve();
+        var output = slave.Resolve();
     }
 
     private void CreateEvents(Mission mis)
@@ -109,6 +137,5 @@ public class MissionCreater : MonoBehaviour
         return firstOccurrenceEvent;
     }
 
-    
 
 }

@@ -7,12 +7,17 @@ public class SpecialistManager : MonoBehaviour
 {
     [Header("Default Specialists")]
     [SerializeField]
-    private List<Specialists> specialists = new List<Specialists>();
+    private List<Specialists> defaultSpecialists = new List<Specialists>();
 
     [Space]
     [Header("Utility things")]
     [SerializeField]
     private uWindowSpecController specUWindowUi;
+
+
+   // private static List<Specialists> inGameSpecialists = new List<Specialists>();
+
+  //  public static List<Specialists> GetInGameSpecialists { get { return SpecialistManager.inGameSpecialists; }  }
 
     private void Start()
     {
@@ -21,18 +26,32 @@ public class SpecialistManager : MonoBehaviour
 
     public void AddAllSpecialistToUI()
     {
-        for (int i = 0; i < specialists.Count; i++)
+        for (int i = 0; i < defaultSpecialists.Count; i++)
         {
-            specUWindowUi.AddSpecHolder(specialists[i]);
+            specUWindowUi.AddSpecHolder(defaultSpecialists[i]);
+            AddInGameSpecialist(defaultSpecialists[i]);
         }
     }
 
     public List<Specialists> GetSpecialists()
     {
-        return specialists;
+        return defaultSpecialists;
     }
-    
-    
+
+    private void AddInGameSpecialist(Specialists spec)
+    {
+   //     inGameSpecialists.Add(spec);
+    }
+
+    //public void SortList()
+    //{
+    //    SpecialistManager.inGameSpecialist = inGameSpecialist.OrderByDescending(x => x.Kar).ToList();
+
+    //    foreach (var item in SpecialistManager.inGameSpecialist)
+    //    {
+    //        Debug.Log(item.Kar);
+    //    }
+    //}
 
 
 }
