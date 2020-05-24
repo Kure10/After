@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.Win32;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class TileFactory : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class TileFactory : MonoBehaviour
         int z = 0;
         int rows = 0;
         var specialistsInGame = 0;
+        var rng = new Random();
         foreach (var line in lines)
         {
             if (line[0] == '#') continue;
@@ -110,7 +112,13 @@ public class TileFactory : MonoBehaviour
 
                         goto case 'e';
                     case 'd':
-                        col.Add(new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z));
+                        var item = new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z);
+                        var holder = item.tile.transform.Find("Hromadka_suti/holder");
+                        holder.Rotate(Vector3.up, (float)rng.NextDouble() * 180);
+                        var rand = (float)rng.NextDouble() * 0.2f;
+                        var newscale = new Vector3(0.9f + rand, 0.5f + (float)rng.NextDouble(), 0.9f + rand);
+                        holder.localScale = newscale;
+                        col.Add(item);
                         break;
                     case '0':
                         col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z) {inside = false});

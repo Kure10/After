@@ -15,7 +15,7 @@ public class DebrisTile : Tile, IWorkSource
     private const int MaxNumberOfWorkers = 4;
     private WorkManager workManager;
     private bool depleted = false;
-    private GameObject healthbar;
+    //private GameObject healthbar;
     private HealthbarHandle hpHandle;
     private const float TOTALHP = 200f;
     public DebrisTile(GameObject tile, int x, int y) : base(tile, x, y)
@@ -25,11 +25,9 @@ public class DebrisTile : Tile, IWorkSource
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
         workManager = GameObject.FindGameObjectWithTag("WorkManager").transform.GetComponent<WorkManager>();
-        var hpPosition = Camera.main.WorldToScreenPoint(tile.transform.position);
         var canvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetComponent<Canvas>();
-        healthbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
-        hpHandle = healthbar.GetComponent<HealthbarHandle>();
-        hpHandle.parent = tile;
+        //healthbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
+        hpHandle = tile.GetComponent<HealthbarHandle>();
         hp = TOTALHP;
         hpHandle.SetHPValue(1);
     }
@@ -73,7 +71,6 @@ public class DebrisTile : Tile, IWorkSource
             Workers.Clear();
             tileFactory.ClearDebris(x, y);
             GameObject.Destroy(tile);
-            GameObject.Destroy(healthbar);
         }
     }
     
