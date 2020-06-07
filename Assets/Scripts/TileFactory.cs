@@ -24,11 +24,13 @@ public class TileFactory : MonoBehaviour
     private Ray ray;
 
     private RaycastHit hit;
-    private Vector2Int specPosition = new Vector2Int();
+    private Vector2Int specPosition;
 
+    private List<Vector2Int> occupiedTiles;
     // Start is called before the first frame update
     void Start()
     {
+        occupiedTiles = new List<Vector2Int>();
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         grid = CreateGrid();
         var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
@@ -43,6 +45,35 @@ public class TileFactory : MonoBehaviour
         }
 
 
+    }
+    //Mark tile as occupied (for ie by specilalist) so no one else can move here
+    //return false if already occupied
+    public bool OccupyTile(Vector2Int coord)
+    {
+        if (grid[coord.x, coord.y] is IWalkable tile)
+        {
+            foreach (var candidate in occupiedTiles)
+            {
+                if (candidate.x == coord.x && candidate.y == coord.y)
+                {
+                    return false;
+                }
+            }
+            occupiedTiles.Add(coord);
+            return true;
+        }
+        return false;
+    }
+
+    public void LeaveTile(Vector2Int coord)
+    {
+        foreach (var candidate in occupiedTiles.ToArray())
+        {
+            if (candidate.x == coord.x && candidate.y == coord.y)
+            {
+                occupiedTiles.Remove(candidate);
+            }
+        }
     }
 
     void Update()
@@ -325,10 +356,13 @@ public class TileFactory : MonoBehaviour
     }
 
     //Find first emtyTile but start searching from start point
-    public Vector2Int FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null)
+    public Vector2Int FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null, bool allowResources = false)
     {
-         
-        var resOnTiles = rm.resources == null ? new List<Resource>() : rm.resources.Where(r => r.Owner is Tile).ToList();
+        List<Resource> resOnTiles = new List<Resource>();
+        if (!allowResources)
+        {
+            resOnTiles = rm.resources == null ? new List<Resource>() : rm.resources.Where(r => r.Owner is Tile).ToList();
+        }
 
         int distance = 0;
         while (distance < 20)
@@ -376,5 +410,10 @@ public class TileFactory : MonoBehaviour
 
         //TODO kdyz nic nenajde, vrat pole mimo bazi
         return startPoint;
+    }
+
+    public List<Vector2Int> GetOccupiedTiles()
+    {
+        return occupiedTiles;
     }
 }

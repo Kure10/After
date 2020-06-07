@@ -31,7 +31,7 @@ public class DebrisTile : Tile, IWorkSource
         //healthbar = UnityEngine.Object.Instantiate(tileFactory.DebrisHealthbar, hpPosition, Quaternion.identity, canvas.transform);
         hpHandle = tile.GetComponent<HealthbarHandle>();
         hp = TOTALHP;
-        hpHandle.SetHPValue(1);
+        hpHandle.SetHPValue(0);
         rnd = new Random();
     }
 

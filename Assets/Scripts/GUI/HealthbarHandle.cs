@@ -55,6 +55,7 @@ public class HealthbarHandle : MonoBehaviour
     {
         if (healthbarImage is null)
         {
+            return;
         }
         healthbarImage.fillAmount = value;
         if (healthbarImage.fillAmount < 0.3f)

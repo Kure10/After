@@ -41,6 +41,7 @@ public class Move : Command
             init = false;
             startingPoint = Target.transform.position;
             accumulatedTime = 0;
+            tf.LeaveTile(Geometry.GridFromPoint(startingPoint));
         }
         accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
         //in case of more then one time point from last frame, skip rendering of previous actions
@@ -66,7 +67,19 @@ public class Move : Command
             Step(nextVector3);
             return Result.Running;
         }
-        return Result.Success;
+
+        Vector2Int mark = Geometry.GridFromPoint(Target.transform.position);
+        if (tf.OccupyTile(mark))
+        {
+            return Result.Success;
+        }
+        else
+        {
+            var forbiddenTiles = tf.GetOccupiedTiles();
+            var newPlace = tf.FindFreeTile(mark, forbiddenTiles, true);
+            Path = tf.FindPath(mark, newPlace);
+            return Result.Running;
+        }
     }
     void Step(Vector3 to)
     {
