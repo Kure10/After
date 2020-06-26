@@ -52,19 +52,24 @@ public class TileFactory : MonoBehaviour
     {
         if (grid[coord.x, coord.y] is IWalkable tile)
         {
-            foreach (var candidate in occupiedTiles)
-            {
-                if (candidate.x == coord.x && candidate.y == coord.y)
-                {
-                    return false;
-                }
-            }
+            if (IsOccupied(coord)) return false;
             occupiedTiles.Add(coord);
             return true;
         }
         return false;
     }
 
+    public bool IsOccupied(Vector2Int coord)
+    {
+        foreach (var candidate in occupiedTiles)
+        {
+            if (candidate.x == coord.x && candidate.y == coord.y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void LeaveTile(Vector2Int coord)
     {
         foreach (var candidate in occupiedTiles.ToArray())
