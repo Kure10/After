@@ -43,7 +43,7 @@ public class DebrisTile : Tile, IWorkSource
     }
     public void Update()
     {
-        foreach (var worker in Workers)
+        foreach (var worker in Workers.ToList())
         {
             if (depleted) break;
             switch (worker.state)
@@ -51,6 +51,17 @@ public class DebrisTile : Tile, IWorkSource
                 case WorkerState.init:
                     if (worker.character.Execute() == Result.Success)
                     {
+                        //check if on allowed tile (could ended elsewhere if the tile got occupied)
+                        var charPlace = Geometry.GridFromPoint(worker.character.transform.position);
+                        tileFactory.LeaveTile(charPlace);
+                        if (!GetMiningSpots().Contains(charPlace))
+                        {
+                            //try again
+                            Unregister(worker.character);
+                            Register(worker.character);
+                            continue;
+                        }
+                        tileFactory.OccupyTile(charPlace);
                         worker.state = WorkerState.working;
                         worker.character.AddCommand(new Build());
                     }
@@ -93,9 +104,15 @@ public class DebrisTile : Tile, IWorkSource
     {
         if (Workers.Count < MaxNumberOfWorkers)
         {
-            var path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position), Geometry.GridPoint(x, y));
+            var possiblePlaces = GetMiningSpots();
+            var path = new List<Vector2Int>();
+            foreach (var possiblePlace in possiblePlaces)
+            {
+                path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position), possiblePlace);
+                if (path != null && path.Count > 0) break;
+            }
             if (path is null || path.Count == 0) return false;
-            path.Remove(path.Last());
+            //path.Remove(path.Last());
             Unregister(who);
             var worker = new Worker();
             worker.character = who;
@@ -111,6 +128,24 @@ public class DebrisTile : Tile, IWorkSource
         }
         return false;
     }
+
+    private List<Vector2Int> GetMiningSpots()
+    {
+        var allowedSpots = new List<Vector2Int>() {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
+        var freeSpots = new List<Vector2Int>();
+        var center = new Vector2Int(x, y);
+        foreach (var where in allowedSpots)
+        {
+            //check if 1) is empty tile 2) no other character is there
+            var candidate = center + where;
+            if (!(tileFactory.getTile(candidate) is DebrisTile))
+            {
+                if (!tileFactory.IsOccupied(candidate)) freeSpots.Add(candidate);
+            }
+        }
+        return freeSpots;
+    }
+
     public void Unregister(Character character)
     {
         if (Workers.Select(w => w.character).Contains(character))

@@ -136,7 +136,7 @@ public partial class Building : IWorkSource
                         var nearest = new Vector2Int(nearestRes.x, nearestRes.y);
                         var pathToMaterial = tileFactory.FindPath(charPosition, nearest);
 
-                        activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject, pathToMaterial));
+                        activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject, pathToMaterial, true));
                         activeWorker.state = WorkerState.empty;
                         break;
                     case WorkerState.empty:

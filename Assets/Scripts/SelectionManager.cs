@@ -12,7 +12,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     private ResourceManager resourceManager;
     private int layerMask;
     private float maxDist = 100f;
-    private readonly int TILE = 1 << 8;
+    private readonly int TILE = (1 << 8) | (1 << 12);
     private readonly int SELECTABLE = 1 << 9;
     private List<Character> characters;
     private GameObject panelUI;

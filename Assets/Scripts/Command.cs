@@ -24,14 +24,16 @@ public class Move : Command
     private float speed = 10f;
     private Vector3 startingPoint;
     private bool init;
-    
-    public Move(GameObject target, List<Vector2Int> path)
+    private bool ignoreMark;
+
+    public Move(GameObject target, List<Vector2Int> path, bool ignoreMark = false)
     {
         Target = target;
         tc = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
         Path = path;
         init = true;
+        this.ignoreMark = ignoreMark;
     }
     //returns true if completed and can move to another command
     public override Result Execute()
@@ -68,18 +70,17 @@ public class Move : Command
             return Result.Running;
         }
 
+        if (ignoreMark) return Result.Success;
         Vector2Int mark = Geometry.GridFromPoint(Target.transform.position);
         if (tf.OccupyTile(mark))
         {
             return Result.Success;
         }
-        else
-        {
-            var forbiddenTiles = tf.GetOccupiedTiles();
+        
+        var forbiddenTiles = tf.GetOccupiedTiles();
             var newPlace = tf.FindFreeTile(mark, forbiddenTiles, true);
             Path = tf.FindPath(mark, newPlace);
             return Result.Running;
-        }
     }
     void Step(Vector3 to)
     {
