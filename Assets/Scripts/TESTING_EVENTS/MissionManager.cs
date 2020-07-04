@@ -29,13 +29,13 @@ public class MissionManager : MonoBehaviour
 
     private void ShowMissionPanel(Mission mission,RegionOperator regionOperator)
     {
-        theMC.windowMission.MissionName = mission._name;
-        theMC.windowMission.MissionType = mission.type;
-        theMC.windowMission.MissionDistance = mission.distance;
-        theMC.windowMission.MissionLevel = mission.levelOfDangerous;
-        theMC.windowMission.MissionEnviroment = mission.missionEnviroment;
-        theMC.windowMission.MissionTime = mission.missionTime;
-        theMC.windowMission.Sprite = mission.image;
+        theMC.windowMission.MissionName = mission.Name;
+        theMC.windowMission.MissionType = mission.Type;
+        theMC.windowMission.MissionDistance = mission.Distance;
+        theMC.windowMission.MissionLevel = mission.GetLevelOfDangerous;
+        theMC.windowMission.MissionEnviroment = mission.GetMissionEnviroment;
+        theMC.windowMission.MissionTime = mission.GetMissionTime;
+        theMC.windowMission.Sprite = mission.Image;
 
         Button startButton = theMC.windowMission.GetStartMissionButton;
 

@@ -52,10 +52,10 @@ public class MissionController : MonoBehaviour
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
             float betweenTime = CalculateTime();
-            missionsInProcces[i].distance -= betweenTime;
+            missionsInProcces[i].Distance -= betweenTime;
             infoController.UpdateInfoRows(missionsInProcces);
 
-            if (missionsInProcces[i].distance <= 0)
+            if (missionsInProcces[i].Distance <= 0)
             {
                 Debug.Log("mission is done");
                 missionsInProcces[i].RegionOperator.ExploreRegion();
@@ -90,12 +90,12 @@ public class MissionController : MonoBehaviour
     {
         for (int i = 0; i < missionsInProcces.Count; i++)
         {
-            int distance = (int)missionsInProcces[i].distance;
+            int distance = (int)missionsInProcces[i].Distance;
 
-            for (int j = 0; j < missionsInProcces[i].eventsInMission.Count; j++)
+            for (int j = 0; j < missionsInProcces[i].GetEventsInMission.Count; j++)
             {
                 Mission currentMission = missionsInProcces[i];
-                EventBlueprint currentEvent = currentMission.eventsInMission[j];
+                EventBlueprint currentEvent = currentMission.GetEventsInMission[j];
                 if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
                     currentEvent.wasTriggered = true;

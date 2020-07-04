@@ -35,7 +35,7 @@ public class MissionInfoController : MonoBehaviour
         SpawnInfoRow();
         uMissionInfoRow tmp = myRow.GetComponent<uMissionInfoRow>();
 
-        tmp.misID = mis.id;
+        tmp.misID = mis.Id;
         tmp.TextString.text = UpdateDescription(mis);
         rows.Add(tmp);
     }
@@ -46,7 +46,7 @@ public class MissionInfoController : MonoBehaviour
         {
             for (int j = 0; j <= rows.Count -1; j++)
             {
-                if(rows[j].misID == missionInProgress[i].id)
+                if(rows[j].misID == missionInProgress[i].Id)
                 {
                     rows[j].TextString.text = UpdateDescription(missionInProgress[i]);
                 }
@@ -60,11 +60,11 @@ public class MissionInfoController : MonoBehaviour
 
         if (missionComplete)
         {
-            description = miss._name.ToString() + " Mission Complete! ";
+            description = miss.Name.ToString() + " Mission Complete! ";
             return description;
         }
 
-        description = miss._name.ToString() + " " + miss.id + " Time Remains: " + miss.distance.ToString("N0");
+        description = miss.Name.ToString() + " " + miss.Id + " Time Remains: " + miss.Distance.ToString("N0");
         return description;
     }
 
@@ -81,7 +81,7 @@ public class MissionInfoController : MonoBehaviour
     {
         for (int i = 0; i <= rows.Count -1; i++)
         {
-            if (miss.id == rows[i].misID)
+            if (miss.Id == rows[i].misID)
                 return rows[i];
         }
 

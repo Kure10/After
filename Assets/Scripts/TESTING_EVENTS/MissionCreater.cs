@@ -11,6 +11,9 @@ public class MissionCreater : MonoBehaviour
     private MissionManager missionManager;
     private ResourceLoader resourceLoader;
 
+    List<StatsClass> XMLLoadedMissions = new List<StatsClass>();
+    List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
+
     public Sprite image;
 
     /*  in percent */
@@ -23,12 +26,23 @@ public class MissionCreater : MonoBehaviour
         this.missionManager =  this.GetComponent<MissionManager>();
         this.resourceLoader = this.GetComponent<ResourceLoader>();
 
-        LoadMissions();
+        LoadMissionsFromXML();
 
+
+        // Tady musim z mojich listu premenit data na misse...
         for (int i = 0; i < 10; i++)
         {
             createdMissions.Add(CreateMission(i));
         }
+
+        // pokus 
+        foreach (var item in XMLLoadedMissions)
+        {
+            Mission mis = new Mission();
+
+        }
+        // end
+
         PassMissionList();
     }
 
@@ -37,12 +51,12 @@ public class MissionCreater : MonoBehaviour
         Mission mis = new Mission();
 
 
-        mis.id = i;
-        mis._name = "Explore";
-        mis.distance = 100f;
-        mis.image = image;
-        mis.maxNumberOfEvents = 5;
-        mis.type = "Typerino : " + i.ToString();
+        mis.Id = i;
+        mis.Name = "Explore";
+        mis.Distance = 100f;
+        mis.Image = image;
+        mis.MaxNumberOfEvents = 5;
+        mis.Type = "Typerino : " + i.ToString();
 
         CreateEvents(mis);
 
@@ -56,27 +70,37 @@ public class MissionCreater : MonoBehaviour
         this.missionManager.allMissions = this.createdMissions;
     }
 
-    public void LoadMissions()
+    public void LoadMissionsFromXML()
     {
-       // string path = "Assets/Data/XML/Testing Mission Data/Missions.xml";
         string path = "C:/Unity Games/After/after/Assets/Data/XML/Testing Mission Data";
         string fileName = "Missions";
         string fileNameCZ = "Missions-CZ";
-        ResolveMaster rm = new ResolveMaster();
+        ResolveMaster resolveMaster = new ResolveMaster();
 
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        resolveMaster.AddDataNode(fileName, firstData);
 
-        var data2 = StatsClass.LoadXmlFile(path, fileName);
-        rm.AddDataNode(fileName, data2);
+        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
+        resolveMaster.AddDataNode(fileNameCZ, secondData);
+
+        XMLLoadedMissions = resolveMaster.GetDataKeys(fileName);
+        XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
+
+        //List<ResolveSlave> slave = new List<ResolveSlave>();
         
+        //for (int i = 0; i < AllLoadedMissions.Count; i++)
+        //{
+        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
+        //}
 
-        var dataloc2 = StatsClass.LoadXmlFile(path, fileNameCZ);
-        rm.ModifyDataNode(fileName, dataloc2);
-        foreach (var key in rm.GetDataKeys(fileName)) Debug.LogWarning(key.ToLog());
+        //for (int i = 0; i < AllLoadedMissions.Count; i++)
+        //{
+        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
+        //}
 
-        var tmp = rm.GetDataKeys("Missions");
-
-        ResolveSlave slave = rm.AddDataSlave("Missions", rm.GetDataKeys("Missions")[0].Title);
-
+        //
+        ResolveSlave slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[0].Title);
+        //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
         slave.StartResolve();
         var output = slave.Resolve();
     }
@@ -84,8 +108,8 @@ public class MissionCreater : MonoBehaviour
     private void CreateEvents(Mission mis)
     {
         /* Event set trigger Time*/
-        int amountEvents = mis.maxNumberOfEvents;
-        float distance = mis.distance;
+        int amountEvents = mis.MaxNumberOfEvents;
+        float distance = mis.Distance;
         float firstOccurrenceEvent = distance * ((100 - timeUntilFirstEvent - timeBetweenLastEvent) / 100);
         float eventOccurrenceRange = firstOccurrenceEvent / amountEvents;
         eventOccurrenceRange = eventOccurrenceRange - timeBetweenEvents;
@@ -98,7 +122,7 @@ public class MissionCreater : MonoBehaviour
 
         /* Event text answers for buttons */
 
-        foreach (EventBlueprint item in mis.eventsInMission)
+        foreach (EventBlueprint item in mis.GetEventsInMission)
         {
             item.hasAvoidButton = true; // testing
             /*checknout jestli funguje..*/
@@ -114,7 +138,7 @@ public class MissionCreater : MonoBehaviour
 
     private void SetEventsImage(Mission mis)
     {
-        foreach (var item in mis.eventsInMission)
+        foreach (var item in mis.GetEventsInMission)
         {
             item.sprite = resourceLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
         }
@@ -122,7 +146,7 @@ public class MissionCreater : MonoBehaviour
 
     private float SetEventTimeInMission(Mission mis, float firstOccurrenceEvent, float eventOccurrenceRange)
     {
-        for (int i = 0; i < mis.maxNumberOfEvents; i++)
+        for (int i = 0; i < mis.MaxNumberOfEvents; i++)
         {
             EventBlueprint newEvent = new EventBlueprint();
 
@@ -131,7 +155,7 @@ public class MissionCreater : MonoBehaviour
             newEvent.evocationTime = (int)currentEventOccurrenceTime;
             firstOccurrenceEvent = secondOccurrenceEvent - timeBetweenEvents;
 
-            mis.eventsInMission.Add(newEvent);
+            mis.AddEventInMissions(newEvent);
         }
 
         return firstOccurrenceEvent;

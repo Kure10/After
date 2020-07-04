@@ -35,7 +35,7 @@ public class MissionNotificationManager : MonoBehaviour
         windowSettings.SubTittle.text = not.subTittle;
 
         /* buttons */
-        windowSettings.ButtonOne.onClick.AddListener(() => OpenMissionPanel(currentMission.id)) ;
+        windowSettings.ButtonOne.onClick.AddListener(() => OpenMissionPanel(currentMission.Id)) ;
 
         // Set parrent and Reset Scale.
         notification.transform.SetParent(NotificationHolder);
