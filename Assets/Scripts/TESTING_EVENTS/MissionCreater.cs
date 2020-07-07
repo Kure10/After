@@ -72,7 +72,7 @@ public class MissionCreater : MonoBehaviour
 
     public void LoadMissionsFromXML()
     {
-        string path = "C:/Unity Games/After/after/Assets/Data/XML/Testing Mission Data";
+        string path = "Assets/Data/XML/Testing Mission Data";
         string fileName = "Missions";
         string fileNameCZ = "Missions-CZ";
         ResolveMaster resolveMaster = new ResolveMaster();
