@@ -104,6 +104,8 @@ public class DebrisTile : Tile, IWorkSource
     {
         if (Workers.Count < MaxNumberOfWorkers)
         {
+            var charPlace = Geometry.GridFromPoint(who.transform.position);
+            tileFactory.LeaveTile(charPlace);
             var possiblePlaces = GetMiningSpots();
             var path = new List<Vector2Int>();
             foreach (var possiblePlace in possiblePlaces)
@@ -111,7 +113,12 @@ public class DebrisTile : Tile, IWorkSource
                 path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position), possiblePlace);
                 if (path != null && path.Count > 0) break;
             }
-            if (path is null || path.Count == 0) return false;
+            tileFactory.OccupyTile(charPlace);
+
+            if (path is null)
+            {
+                return false;
+            }
             //path.Remove(path.Last());
             Unregister(who);
             var worker = new Worker();
