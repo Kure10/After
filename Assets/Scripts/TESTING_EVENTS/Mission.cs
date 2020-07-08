@@ -12,11 +12,11 @@ public class Mission
 
     private string _name;
 
+    private string description;
+
     private float distance;
 
     private Sprite image;
-
-    private int maxNumberOfEvents;
 
     private string type;
 
@@ -28,8 +28,6 @@ public class Mission
 
     private int repeatableIn;
 
-    private int time;
-
     private int specMin;
 
     private int specMax;
@@ -40,11 +38,11 @@ public class Mission
 
     private List<DirectEvents> directEvents = new List<DirectEvents>();
 
-    private MissionTime missionTime; // kolik eventu te potka
+    private MissionTime misTime; // kolik eventu te potka
 
     private LevelOfDangerous levelOfDangerous; // jak jsou tezke eventy // i finalni event
 
-    private MissionEnviroment missionEnviroment; // filtr pro nahodny víběr eventu....
+    private List<Terrain> emergingTerrains = new List<Terrain>(); // filtr pro nahodny víběr eventu....
 
     private List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
 
@@ -52,14 +50,15 @@ public class Mission
 
     private RegionOperator currentRegionOperator;
 
+    private MapField mapField;
+
     #endregion
 
     #region Constructor
     public Mission()
     {
-        missionTime = MissionTime.akorat;
+        misTime = MissionTime.akorat;
         levelOfDangerous = LevelOfDangerous.dva;
-        missionEnviroment = MissionEnviroment.poust;
     }
 
     #endregion
@@ -72,11 +71,11 @@ public class Mission
 
     public string Name { get { return this._name; } set { this._name = value; } }
 
+    public string Description { get { return this.description; } set { this.description = value; } }
+
     public float Distance { get { return this.distance; } set { this.distance = value; } }
 
     public Sprite Image { get { return this.image; } set { this.image = value; } }
-
-    public int MaxNumberOfEvents { get { return this.maxNumberOfEvents; } set { this.maxNumberOfEvents = value; } }
 
     public string Type { get { return this.type; } set { this.type = value; } }
 
@@ -91,8 +90,6 @@ public class Mission
 
     public int RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 
-    public int Time { get { return this.time; } set { this.time = value; } }
-
     public int SpecMin { get { return this.specMin; } set { this.specMin = value; } }
 
     public int SpecMax { get { return this.specMax; } set { this.specMax = value; } }
@@ -103,10 +100,10 @@ public class Mission
 
     public int FinalEventID { get { return this.finalEventId; } set { this.finalEventId = value; } }
 
-    public MissionTime GetMissionTime { get { return this.missionTime; } }
-    public LevelOfDangerous GetLevelOfDangerous { get { return this.levelOfDangerous; } }
-    public MissionEnviroment GetMissionEnviroment { get { return this.missionEnviroment; } }
-
+    public MissionTime MissionTime { get { return this.misTime; } set { this.misTime = value; } }
+    public LevelOfDangerous LevelOfDangerous { get { return this.levelOfDangerous; } set { this.levelOfDangerous = value; } }
+    public List<Terrain> GetEmergingTerrains { get { return this.emergingTerrains; } }
+    public MapField MapField { get { return this.mapField; } set { this.mapField = value; } }
     #endregion
 
     #region Methods
@@ -125,6 +122,53 @@ public class Mission
         directEvents.Add(dirEvent);
     }
 
+    public void AddTerrain(Terrain terrain)
+    {
+        emergingTerrains.Add(terrain);
+    }
+
+
+    #endregion
+
+    #region Helpers
+
+    public Terrain ConvertTerrainStringData(string data)
+    {
+        switch (data)
+        {
+            case "Pole":
+                return Terrain.pole;
+            case "Poust":
+                return Terrain.poust;
+            case "Dzungle":
+                return Terrain.dzungle;
+            case "Lesy":
+                return Terrain.les;
+            case "Louky":
+                return Terrain.louky;
+            default:
+                return Terrain.unknow;
+        }
+    }
+    public MapField ConvertMapFieldStringData(string data)
+    {
+        switch (data)
+        {
+            case "Udoly":
+                return MapField.udoly;
+            case "Peklo":
+                return MapField.peklo;
+            case "Ring":
+                return MapField.ring;
+            case "Ctverec":
+                return MapField.ctverec;
+            case "Garaz":
+                return MapField.garaz;
+            default:
+                return MapField.none;
+        }
+    }
+
     #endregion
 
 }
@@ -133,9 +177,11 @@ public class Mission
 #region Enum 
 public enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
 
-public enum LevelOfDangerous { jedna, dva, tri };
+public enum LevelOfDangerous { jedna = 1, dva = 2 , tri = 3 };
 
-public enum MissionEnviroment { pole, poust, dzungle, les };
+public enum Terrain { pole , poust , dzungle, les , louky, unknow };
+
+public enum MapField { ring, ctverec, garaz, udoly, peklo , none };
 
 #endregion
 

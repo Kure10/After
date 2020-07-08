@@ -34,7 +34,9 @@ public class uWindowMission : MonoBehaviour
 
     [SerializeField] private LevelOfDangerous missionLevel;
 
-    [SerializeField] private MissionEnviroment missionEnviroment;
+   // [SerializeField] private Terrain missionEnviroment;
+
+    [SerializeField] private List<Terrain> emergingTerrains = new List<Terrain>();
 
     [SerializeField] private MissionTime missionTime;
 
@@ -71,10 +73,10 @@ public class uWindowMission : MonoBehaviour
         set { missionLevel = value; }
     }
 
-    public MissionEnviroment MissionEnviroment
+    public List<Terrain> MissionTerrainList
     {
-        get { return missionEnviroment; }
-        set { missionEnviroment = value; }
+        get { return emergingTerrains; }
+        set { emergingTerrains = value; }
     }
 
     public MissionTime MissionTime
@@ -98,6 +100,11 @@ public class uWindowMission : MonoBehaviour
 
     #region Methods
 
+    public void AddTerrain(Terrain terrain)
+    {
+        this.emergingTerrains.Add(terrain);
+    }
+
     public void RefreshDangerousLevel()
     {
         switch (missionLevel)
@@ -116,21 +123,27 @@ public class uWindowMission : MonoBehaviour
 
     public void RefreshMissionEnviroment()
     {
-        switch (missionEnviroment)
+        // vypis je TMP -> konečný format se pořesí v průběhu..
+        foreach (var item in emergingTerrains)
         {
-            case MissionEnviroment.pole:
-                labelEnviroment.text = "pole";
-                break;
-            case MissionEnviroment.poust:
-                labelEnviroment.text = "poust";
-                break;
-            case MissionEnviroment.dzungle:
-                labelEnviroment.text = "dzungle";
-                break;
-            case MissionEnviroment.les:
-                labelEnviroment.text = "les";
-                break;
+            switch (item)
+            {
+                case Terrain.pole:
+                    labelEnviroment.text += "pole ";
+                    break;
+                case Terrain.poust:
+                    labelEnviroment.text += "poust ";
+                    break;
+                case Terrain.dzungle:
+                    labelEnviroment.text += "dzungle ";
+                    break;
+                case Terrain.les:
+                    labelEnviroment.text += "les ";
+                    break;
+            }
         }
+
+
     }
 
     public void RefreshMissionTime()

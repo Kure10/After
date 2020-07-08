@@ -32,9 +32,9 @@ public class MissionManager : MonoBehaviour
         theMC.windowMission.MissionName = mission.Name;
         theMC.windowMission.MissionType = mission.Type;
         theMC.windowMission.MissionDistance = mission.Distance;
-        theMC.windowMission.MissionLevel = mission.GetLevelOfDangerous;
-        theMC.windowMission.MissionEnviroment = mission.GetMissionEnviroment;
-        theMC.windowMission.MissionTime = mission.GetMissionTime;
+        theMC.windowMission.MissionLevel = mission.LevelOfDangerous;
+        theMC.windowMission.MissionTerrainList = mission.GetEmergingTerrains;
+        theMC.windowMission.MissionTime = mission.MissionTime;
         theMC.windowMission.Sprite = mission.Image;
 
         Button startButton = theMC.windowMission.GetStartMissionButton;

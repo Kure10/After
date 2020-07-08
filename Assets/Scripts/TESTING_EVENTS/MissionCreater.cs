@@ -1,6 +1,7 @@
 ﻿using ResolveMachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,9 +11,6 @@ public class MissionCreater : MonoBehaviour
     public List<Mission> createdMissions = new List<Mission>();
     private MissionManager missionManager;
     private ResourceLoader resourceLoader;
-
-    List<StatsClass> XMLLoadedMissions = new List<StatsClass>();
-    List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
 
     public Sprite image;
 
@@ -26,52 +24,33 @@ public class MissionCreater : MonoBehaviour
         this.missionManager =  this.GetComponent<MissionManager>();
         this.resourceLoader = this.GetComponent<ResourceLoader>();
 
-        LoadMissionsFromXML();
+        createdMissions = LoadMissionsFromXML();
 
-
-        // Tady musim z mojich listu premenit data na misse...
-        for (int i = 0; i < 10; i++)
+        foreach (Mission mission in createdMissions)
         {
-            createdMissions.Add(CreateMission(i));
+            AddEventsToMission(mission);
         }
 
-        // pokus 
-        foreach (var item in XMLLoadedMissions)
-        {
-            Mission mis = new Mission();
-
-        }
-        // end
 
         PassMissionList();
     }
 
-    public Mission CreateMission(int i)
-    {
-        Mission mis = new Mission();
 
 
-        mis.Id = i;
-        mis.Name = "Explore";
-        mis.Distance = 100f;
-        mis.Image = image;
-        mis.MaxNumberOfEvents = 5;
-        mis.Type = "Typerino : " + i.ToString();
 
-        CreateEvents(mis);
-
-       // DeterminateEventTimesInMission(mis);
-
-        return mis;
-    }
 
     public void PassMissionList()
     {
         this.missionManager.allMissions = this.createdMissions;
     }
 
-    public void LoadMissionsFromXML()
+    public List<Mission> LoadMissionsFromXML()
     {
+        List<StatsClass> XMLLoadedMissions = new List<StatsClass>();
+        List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
+        List<Mission> allMissions = new List<Mission>();
+
+        /*  tohle jsou spatne cesty... v buildu se to musí zmenit.*/
         string path = "C:/Unity Games/After/after/Assets/Data/XML/Testing Mission Data";
         string fileName = "Missions";
         string fileNameCZ = "Missions-CZ";
@@ -86,8 +65,11 @@ public class MissionCreater : MonoBehaviour
         XMLLoadedMissions = resolveMaster.GetDataKeys(fileName);
         XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
 
-        //List<ResolveSlave> slave = new List<ResolveSlave>();
-        
+
+        allMissions = SerializedMission(XMLLoadedMissions, XMLAdditionalMissionsInformation);
+
+        // chyby jeste direct a final event...   dodelat...
+
         //for (int i = 0; i < AllLoadedMissions.Count; i++)
         //{
         //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
@@ -103,12 +85,14 @@ public class MissionCreater : MonoBehaviour
         //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
         slave.StartResolve();
         var output = slave.Resolve();
+
+        return allMissions;
     }
 
-    private void CreateEvents(Mission mis)
+    private void AddEventsToMission(Mission mis)
     {
         /* Event set trigger Time*/
-        int amountEvents = mis.MaxNumberOfEvents;
+        int amountEvents = Random.Range(mis.EventsMin, mis.EventsMax + 1);
         float distance = mis.Distance;
         float firstOccurrenceEvent = distance * ((100 - timeUntilFirstEvent - timeBetweenLastEvent) / 100);
         float eventOccurrenceRange = firstOccurrenceEvent / amountEvents;
@@ -146,7 +130,7 @@ public class MissionCreater : MonoBehaviour
 
     private float SetEventTimeInMission(Mission mis, float firstOccurrenceEvent, float eventOccurrenceRange)
     {
-        for (int i = 0; i < mis.MaxNumberOfEvents; i++)
+        for (int i = 0; i < mis.EventsMax; i++)
         {
             EventBlueprint newEvent = new EventBlueprint();
 
@@ -161,5 +145,57 @@ public class MissionCreater : MonoBehaviour
         return firstOccurrenceEvent;
     }
 
+    public List<Mission> SerializedMission(List<StatsClass> firstStatClass , List<StatsClass> secondStatClass)
+    {
+        List<Mission> allMissions = new List<Mission>();
+
+        foreach (StatsClass item in firstStatClass)
+        {
+            Mission newMission = new Mission(); //Take care Construktor is not empty..
+
+            bool success = int.TryParse(item.Title, out int idNumber);
+            if(!success)
+                Debug.LogError("Some mission has Error while Serialized id: " + item.Title);
+               // mozna poptremyslet o nejakem zalozním planu když se neco posere..
+               // napriklad generovani nejake generické mise.. Nebo tak neco..
+
+            newMission.Id = idNumber;
+            newMission.Repeate = item.GetIntStat("Repeat");
+            newMission.Type = item.GetStrStat("Type");
+            newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
+            string terrains = item.GetStrStat("Terrain");
+            List<string> result = terrains.Split(',').ToList();
+            foreach (var str in result)
+            {
+                Terrain terrain = newMission.ConvertTerrainStringData(str);
+                newMission.AddTerrain(terrain);
+            }
+            newMission.Distance = item.GetIntStat("Time"); // delka mise
+            newMission.SpecMin = item.GetIntStat("SpecMin");
+            newMission.SpecMax = item.GetIntStat("SpecMax");
+            newMission.NeededTransport = item.GetStrStat("Transport");
+            newMission.EventsMin = item.GetIntStat("EventsMin");
+            newMission.EventsMax = item.GetIntStat("EventsMax");
+            newMission.RepeatableIn = item.GetIntStat("IsRepeatable");
+
+            // for data which can be translated
+            foreach (StatsClass secondItem in secondStatClass)
+            {
+                if (item.Title == secondItem.Title)
+                {
+                    newMission.Description = secondItem.GetStrStat("Description");
+                    newMission.Name = secondItem.GetStrStat("Name");
+                    string mapField = secondItem.GetStrStat("MapField");
+                    newMission.MapField = newMission.ConvertMapFieldStringData(mapField); // mise se vyskuje na teto mape..
+                }
+            }
+
+            newMission.Image = image; // Todo dodelat .. Image se bude brat s nejakeho poolu..
+
+            allMissions.Add(newMission);
+        }
+
+        return allMissions;
+    }
 
 }
