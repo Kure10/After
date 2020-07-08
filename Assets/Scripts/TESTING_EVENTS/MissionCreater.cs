@@ -31,7 +31,6 @@ public class MissionCreater : MonoBehaviour
             AddEventsToMission(mission);
         }
 
-
         PassMissionList();
     }
 
