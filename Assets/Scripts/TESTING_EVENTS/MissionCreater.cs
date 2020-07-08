@@ -46,6 +46,10 @@ public class MissionCreater : MonoBehaviour
 
     public List<Mission> LoadMissionsFromXML()
     {
+        List<StatsClass> XMLLoadedMissions = new List<StatsClass>();
+        List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
+        List<Mission> allMissions = new List<Mission>();
+
         string path = "C:/Unity Games/After/after/Assets/Data/XML/Testing Mission Data";
         string fileName = "Missions";
         string fileNameCZ = "Missions-CZ";
