@@ -9,9 +9,9 @@ public class Region : ScriptableObject
     [SerializeField] private Sprite sprite;
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
-    private bool isExplored = false;
-    private bool isInShadow = false;
-    private bool isInDarkness = true;
+    private bool isExplored = false;  // Obeven -> na viber jsou misse v Regionu.
+    private bool isInShadow = false; //  Pokud je soused isExplored == true , Je v Shadow. OFC pokud sam neni Explored.
+    private bool isInDarkness = true; // Počateční stav.  Je neaktivni cerny..
 
     public List<Region> neighborhoodRegions = new List<Region>();
 

@@ -18,7 +18,7 @@ public class Mission
 
     private Sprite image;
 
-    private string type;
+    private MissionType type;
 
     private int eventsMin;
 
@@ -77,7 +77,7 @@ public class Mission
 
     public Sprite Image { get { return this.image; } set { this.image = value; } }
 
-    public string Type { get { return this.type; } set { this.type = value; } }
+    public MissionType Type { get { return this.type; } set { this.type = value; } }
 
     public int EventsMin { get { return this.eventsMin; } set { this.eventsMin = value; } }
     public int EventsMax { get { return this.eventsMax; } set { this.eventsMax = value; } }
@@ -169,6 +169,48 @@ public class Mission
         }
     }
 
+    public MissionType ConvertMissionTypeStringData(string data)
+    {
+        switch (data)
+        {
+            case "Pruzkum":
+                return MissionType.pruzkum;
+            case "SberLov":
+                return MissionType.sberLov;
+            case "skavender":
+                return MissionType.skavender;
+            case "zachrana":
+                return MissionType.zachrana;
+            case "zajmutiNempritele":
+                return MissionType.zajmutiNempritele;
+            case "odlakaniHordy":
+                return MissionType.odlakaniHordy;
+            default:
+                return MissionType.neznamyCil;
+        }
+    }
+
+    public string ConvertMissionTypeStringData(MissionType type)
+        {
+            switch (type)
+            {
+                case MissionType.pruzkum:
+                    return "pruzkum";
+                case MissionType.sberLov:
+                    return "sberLov";
+                case MissionType.skavender:
+                    return "skavender";
+                case MissionType.zachrana:
+                    return "zachrana";
+                case MissionType.zajmutiNempritele:
+                    return "zajmutiNempritele";
+                case MissionType.odlakaniHordy:
+                    return "odlakaniHordy";
+                default:
+                    return "Unknow";
+            }
+        }
+
     #endregion
 
 }
@@ -182,6 +224,8 @@ public enum LevelOfDangerous { jedna = 1, dva = 2 , tri = 3 };
 public enum Terrain { pole , poust , dzungle, les , louky, unknow };
 
 public enum MapField { ring, ctverec, garaz, udoly, peklo , none };
+
+public enum MissionType { pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
 
 #endregion
 

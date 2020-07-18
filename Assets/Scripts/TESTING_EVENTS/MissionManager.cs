@@ -10,18 +10,28 @@ public class MissionManager : MonoBehaviour
     [SerializeField]
     private MissionController theMC;
 
-    /*tady mam vsechny misse*/
-    public List<Mission> allMissions = new List<Mission>();
+
+    public List<Mission> exploreMissions = new List<Mission>();
+    public List<Mission> othersMissions = new List<Mission>();
 
     public Mission currentMission;
 
 
-    public void ChoiseMission(RegionOperator regionOperator)
+    public void ChoiseMission(RegionOperator regionOperator, bool isExploreMission = false)
     {
-       
-        int i = Random.Range(0, allMissions.Count);
-        Mission mission = allMissions[i];
-
+        int i = 0;
+        Mission mission = new Mission();
+        // vyber explore missi nebo vsechny ostatni..
+        if (isExploreMission)
+        {
+            i = Random.Range(0, exploreMissions.Count);
+            mission = exploreMissions[i];
+        }
+        else
+        {
+            i = Random.Range(0, othersMissions.Count);
+            mission = othersMissions[i];
+        }
 
         ShowMissionPanel(mission, regionOperator);
 
@@ -30,7 +40,7 @@ public class MissionManager : MonoBehaviour
     private void ShowMissionPanel(Mission mission,RegionOperator regionOperator)
     {
         theMC.windowMission.MissionName = mission.Name;
-        theMC.windowMission.MissionType = mission.Type;
+        theMC.windowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
         theMC.windowMission.MissionDistance = mission.Distance;
         theMC.windowMission.MissionLevel = mission.LevelOfDangerous;
         theMC.windowMission.MissionTerrainList = mission.GetEmergingTerrains;

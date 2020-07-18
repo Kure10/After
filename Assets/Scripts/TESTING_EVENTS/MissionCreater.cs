@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class MissionCreater : MonoBehaviour
 {
+    // Je SerializeField for testing
     [SerializeField]
-    public List<Mission> createdMissions = new List<Mission>();
+    public List<Mission> exploreMissions = new List<Mission>();
+    [SerializeField]
+    public List<Mission> otherMissions = new List<Mission>();
     private MissionManager missionManager;
     private ResourceLoader resourceLoader;
 
@@ -21,26 +24,43 @@ public class MissionCreater : MonoBehaviour
 
     private void Awake()
     {
-        this.missionManager =  this.GetComponent<MissionManager>();
+        List<Mission> createdMissions = new List<Mission>();
+        this.missionManager = this.GetComponent<MissionManager>();
         this.resourceLoader = this.GetComponent<ResourceLoader>();
 
         createdMissions = LoadMissionsFromXML();
 
+        SortMissions(createdMissions);
+
+        AddEventsToMissions(exploreMissions);
+        AddEventsToMissions(otherMissions);
+
+        PassMissionToManager();
+    }
+
+    private void AddEventsToMissions(List<Mission> createdMissions)
+    {
         foreach (Mission mission in createdMissions)
         {
             AddEventsToMission(mission);
         }
-
-        PassMissionList();
     }
 
-
-
-
-
-    public void PassMissionList()
+    public void SortMissions(List<Mission> createdMissions)
     {
-        this.missionManager.allMissions = this.createdMissions;
+        foreach (Mission item in createdMissions)
+        {
+            if(item.Type == MissionType.pruzkum)
+                exploreMissions.Add(item);
+            else
+                otherMissions.Add(item);
+        }
+    }
+
+    public void PassMissionToManager()
+    {
+        this.missionManager.exploreMissions = this.exploreMissions;
+        this.missionManager.othersMissions = this.otherMissions;
     }
 
     public List<Mission> LoadMissionsFromXML()
@@ -159,7 +179,9 @@ public class MissionCreater : MonoBehaviour
 
             newMission.Id = idNumber;
             newMission.Repeate = item.GetIntStat("Repeat");
-            newMission.Type = item.GetStrStat("Type");
+
+            var misType = item.GetStrStat("Type");
+            newMission.Type = newMission.ConvertMissionTypeStringData(misType);
             newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
             string terrains = item.GetStrStat("Terrain");
             List<string> result = terrains.Split(',').ToList();

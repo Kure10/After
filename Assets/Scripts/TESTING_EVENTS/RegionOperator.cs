@@ -8,10 +8,21 @@ public class RegionOperator : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] Region region;
     [SerializeField] GameObject exploreQuestionButton;
-    //[SerializeField] 
+
+    [SerializeField] List<GameObject> missionsAfterExplore = new List<GameObject>();
+
     private RegionControler regionControler;
 
+    // info about region
+    private bool currentRegionIsExplored = false; // atim se nepouziva ale asi bude
+
     private Image image;
+
+    #region Properities
+
+    public bool SetCurrentRegionIsExplored { set { currentRegionIsExplored = value; } } // myslim si ze to budu potrebovat na rozeznani typu misse
+
+    #endregion
 
     private void Awake()
     {
@@ -28,6 +39,7 @@ public class RegionOperator : MonoBehaviour
         {
             this.region.IsExplored = true;
             this.region.RevealNeighbors();
+            this.ActivateAdditionalMissions(true);
             regionControler.RefreshRegions();
         }
     }
@@ -43,6 +55,7 @@ public class RegionOperator : MonoBehaviour
         {
             this.region.IsInDarkness = true;
         }
+        this.ActivateAdditionalMissions(false);
         regionControler.ChangeRegionState(this.region, this.image);
     }
 
@@ -53,7 +66,15 @@ public class RegionOperator : MonoBehaviour
 
         exploreQuestionButton.SetActive(true);
         exploreQuestionButton.transform.position = Input.mousePosition;
-        uButtonExploreScript exploreButton = exploreQuestionButton.GetComponent<uButtonExploreScript>();
+    }
+
+    private void ActivateAdditionalMissions(bool activate)
+    {
+
+        foreach (GameObject item in missionsAfterExplore)
+        {
+            item.SetActive(activate);
+        }
     }
 
 

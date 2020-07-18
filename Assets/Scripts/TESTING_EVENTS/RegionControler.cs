@@ -67,6 +67,6 @@ public class RegionControler : MonoBehaviour
 
     public void StartExploreMision(RegionOperator regionOperator)
     {
-        missionManager.ChoiseMission(regionOperator);
+        missionManager.ChoiseMission(regionOperator , true);
     }
 }
