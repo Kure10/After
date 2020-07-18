@@ -97,4 +97,9 @@ public class RegionOperator : MonoBehaviour
         return this.region;
     }
 
+    public void ShowMissionWithID (int id)
+    {
+
+    }
+
 }

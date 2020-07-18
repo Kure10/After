@@ -179,9 +179,6 @@ public class MissionCreater : MonoBehaviour
 
             newMission.Id = idNumber;
             newMission.Repeate = item.GetIntStat("Repeat");
-
-            var misType = item.GetStrStat("Type");
-            newMission.Type = newMission.ConvertMissionTypeStringData(misType);
             newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
             string terrains = item.GetStrStat("Terrain");
             List<string> result = terrains.Split(',').ToList();
@@ -205,6 +202,8 @@ public class MissionCreater : MonoBehaviour
                 {
                     newMission.Description = secondItem.GetStrStat("Description");
                     newMission.Name = secondItem.GetStrStat("Name");
+                    var misType = secondItem.GetStrStat("Type");
+                    newMission.Type = newMission.ConvertMissionTypeStringData(misType);
                     string mapField = secondItem.GetStrStat("MapField");
                     newMission.MapField = newMission.ConvertMapFieldStringData(mapField); // mise se vyskuje na teto mape..
                 }
