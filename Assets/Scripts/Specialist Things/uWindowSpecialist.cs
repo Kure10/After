@@ -8,21 +8,25 @@ public class uWindowSpecialist : MonoBehaviour
     #region Fields
 
     [Header("Main Header")]
-    [SerializeField] Image specialistImage;
+    [SerializeField] Image image;
     [SerializeField] Text characterName;
     [SerializeField] Text characterLevel;
     [SerializeField] Image backgroundImage;
+    [SerializeField] Text buildingName;
 
 
     [Header("Stats")]
     [SerializeField] Transform healthBar;
     [SerializeField] Transform staminaBar;
+    [SerializeField] Transform progressBar;
     [Space]
     [SerializeField] Text militaryValue;
     [SerializeField] Text socialValue;
     [SerializeField] Text technicianValue;
     [SerializeField] Text scientistValue;
     [SerializeField] Text karmaValue;
+    [SerializeField] Text progressBarText;
+    [SerializeField] Text stateBarText;
     [Header("Stats")]
     [SerializeField] Text currentActivity;
 
@@ -42,7 +46,7 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] GameObject statsPerson;
     [SerializeField] GameObject barsPerson;
 
-    private bool isActiveBuilding; // ToDo Need Rename... Asi by mel by byt enum a podle toho co je za typ se aktivuje cast prefabu..
+    private bool isActiveBuilding;
 
     // inventory is missiong ... Todo. (if designer will want to.)
 
@@ -51,7 +55,6 @@ public class uWindowSpecialist : MonoBehaviour
     #region Properity
     public float GetPercentHelth { get => this.percentHealth; }
     public string GetName { get => this.characterName.text.ToString(); }
-    //  public int MilitaryValue { get => int.Parse(this.militaryValue.text); }
     public int GetKarma { get => int.Parse(this.karmaValue.text); }
 
     public int GetLevel { get => int.Parse(this.characterLevel.text); }
@@ -72,14 +75,14 @@ public class uWindowSpecialist : MonoBehaviour
                 statsBuilding.SetActive(true);
                 barsBuilding.SetActive(true);
                 statsPerson.SetActive(false);
-                statsPerson.SetActive(false);
+                barsPerson.SetActive(false);
             }
             else
             {
                 statsBuilding.SetActive(false);
                 barsBuilding.SetActive(false);
                 statsPerson.SetActive(true);
-                statsPerson.SetActive(true);
+                barsPerson.SetActive(true);
             }
         } 
     }
@@ -87,11 +90,16 @@ public class uWindowSpecialist : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private void SetSpecialistImage(Specialists spec)
+    private void SetImage(Specialists spec)
     {
-        this.specialistImage.sprite = spec.GetSprite();
+        this.image.sprite = spec.GetSprite();
         if (this.backgroundImage != null)
             this.backgroundImage.color = spec.SpecialistColor;
+    }
+
+    private void SetImage(BuildingBlueprint build)
+    {
+        this.image.sprite = build.Sprite;
     }
 
     private void CalcHealtandStamina(Specialists spec)
@@ -100,6 +108,14 @@ public class uWindowSpecialist : MonoBehaviour
         this.percentStamina = spec.PercentStamina;
         healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+    }
+
+    private void CalcProgressAndState(BuildingBlueprint build)
+    {
+        //this.percentHealth = spec.PercentHealth;
+        //this.percentStamina = spec.PercentStamina;
+        //healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
+        //staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -112,14 +128,30 @@ public class uWindowSpecialist : MonoBehaviour
         socialValue.text = spec.Sol.ToString();
         karmaValue.text = spec.Kar.ToString();
     }
+
+    private void SetStatsPanel(BuildingBlueprint build)
+    {
+        buildingName.text = build.Name;
+    }
     #endregion
 
     #region Public Methods
     public void SetAll(Specialists spec)
     {
-        SetSpecialistImage(spec);
+        this.isActiveBuilding = false;
+        SetImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
     }
+
+    public void SetAll(BuildingBlueprint building)
+    {
+        // budova nema skoro nic .. Musi se pridat..
+        this.isActiveBuilding = true;
+        SetImage(building); 
+        CalcProgressAndState(building);
+        SetStatsPanel(building);
+    }
+
     #endregion
 }
