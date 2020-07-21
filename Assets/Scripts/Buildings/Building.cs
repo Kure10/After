@@ -29,12 +29,12 @@ public partial class Building : IWorkSource
         }
     }
 
-    enum BuildingState
+    enum BuildingState: int
     {
-        Init,
-        Designed,
-        UnderConstruction,
-        Build
+        Init = 0,
+        Designed = 1,
+        UnderConstruction = 2,
+        Build = 3
         //upgrading? destroyed? - pro kazdy stav by mela byt vlastni grafika
     };
 

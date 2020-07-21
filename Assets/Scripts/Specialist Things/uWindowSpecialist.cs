@@ -110,12 +110,11 @@ public class uWindowSpecialist : MonoBehaviour
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
     }
 
-    private void CalcProgressAndState(float remainingTime, float fullTimeToBuild)
+    private void CalcProgressAndState(float remainingTime, float fullTimeToBuild, int state)
     {
-        //this.percentHealth = spec.PercentHealth;
-        //this.percentStamina = spec.PercentStamina;
-        //healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
-        //staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+        int result = (int)(remainingTime / fullTimeToBuild) * 100;
+        this.progressBarText.text = result.ToString();
+        this.stateBarText.text = SetBuildingState(state);
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -144,14 +143,31 @@ public class uWindowSpecialist : MonoBehaviour
         SetStatsPanel(spec);
     }
 
-    public void SetAll(BuildingBlueprint blueprint, float remainingTimeToBuild)
+    public void SetAll(BuildingBlueprint blueprint, int state, float remainingTimeToBuild)
     {
         // budova nema skoro nic .. Musi se pridat..
         this.isActiveBuilding = true;
         SetImage(blueprint); 
-        CalcProgressAndState(remainingTimeToBuild, blueprint.TimeToBuild);
+        CalcProgressAndState(remainingTimeToBuild, blueprint.TimeToBuild, state);
         SetStatsPanel(blueprint);
     }
 
+    private string SetBuildingState(int state)
+    {
+        switch (state)
+        {
+            case 0:
+                return "Init";
+            case 1:
+                return "Designed";
+            case 2:
+                return "UnderConstruction";
+            case 3:
+                return "Build";
+
+            default:
+                return "Empty";
+        }
+    }
     #endregion
 }
