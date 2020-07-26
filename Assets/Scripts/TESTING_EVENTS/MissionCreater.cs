@@ -84,7 +84,7 @@ public class MissionCreater : MonoBehaviour
         XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
 
 
-        allMissions = SerializedMission(XMLLoadedMissions, XMLAdditionalMissionsInformation);
+        allMissions = DeSerializedMission(XMLLoadedMissions, XMLAdditionalMissionsInformation);
 
         // chyby jeste direct a final event...   dodelat...
 
@@ -163,7 +163,7 @@ public class MissionCreater : MonoBehaviour
         return firstOccurrenceEvent;
     }
 
-    public List<Mission> SerializedMission(List<StatsClass> firstStatClass , List<StatsClass> secondStatClass)
+    public List<Mission> DeSerializedMission(List<StatsClass> firstStatClass , List<StatsClass> secondStatClass)
     {
         List<Mission> allMissions = new List<Mission>();
 
@@ -173,7 +173,7 @@ public class MissionCreater : MonoBehaviour
 
             bool success = int.TryParse(item.Title, out int idNumber);
             if(!success)
-                Debug.LogError("Some mission has Error while Serialized id: " + item.Title);
+                Debug.LogError("Some mission has Error while DeSerialized id: " + item.Title);
                // mozna poptremyslet o nejakem zalozním planu když se neco posere..
                // napriklad generovani nejake generické mise.. Nebo tak neco..
 

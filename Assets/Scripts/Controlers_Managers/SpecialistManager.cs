@@ -5,20 +5,24 @@ using UnityEngine;
 
 public class SpecialistManager : MonoBehaviour
 {
+    // tady bude muset byt dalsi list ktery rozlisuje default spec. Od tech so se dostanou az v brubehu hry..
     [Header("Default Specialists")]
     [SerializeField]
     private List<Specialists> defaultSpecialists = new List<Specialists>();
+
 
     [Space]
     [Header("Utility things")]
     [SerializeField]
     private uWindowSpecController specUWindowUi;
 
-
-   // private static List<Specialists> inGameSpecialists = new List<Specialists>();
-
-  //  public static List<Specialists> GetInGameSpecialists { get { return SpecialistManager.inGameSpecialists; }  }
-
+    private SpecialistXmlLoader xmlLoader;
+    
+    private void Awake()
+    {
+        this.xmlLoader = gameObject.GetComponent<SpecialistXmlLoader>();
+        defaultSpecialists = this.xmlLoader.GetSpecialistFromXML();
+    }
     private void Start()
     {
         AddAllSpecialistToUI();
@@ -29,7 +33,6 @@ public class SpecialistManager : MonoBehaviour
         for (int i = 0; i < defaultSpecialists.Count; i++)
         {
             specUWindowUi.AddSpecHolder(defaultSpecialists[i]);
-            AddInGameSpecialist(defaultSpecialists[i]);
         }
     }
 
@@ -37,21 +40,6 @@ public class SpecialistManager : MonoBehaviour
     {
         return defaultSpecialists;
     }
-
-    private void AddInGameSpecialist(Specialists spec)
-    {
-   //     inGameSpecialists.Add(spec);
-    }
-
-    //public void SortList()
-    //{
-    //    SpecialistManager.inGameSpecialist = inGameSpecialist.OrderByDescending(x => x.Kar).ToList();
-
-    //    foreach (var item in SpecialistManager.inGameSpecialist)
-    //    {
-    //        Debug.Log(item.Kar);
-    //    }
-    //}
 
 
 }

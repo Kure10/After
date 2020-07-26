@@ -7,12 +7,16 @@ using UnityEngine.UI;
 [CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
 public class Specialists : ScriptableObject
 {
-    private enum Povolani { Doktor, Vojak, Vojín, Vedec, ZdravotniSestra, Seržant, JadernýFyzik, SpecNaz, Kuchař, Stavitel, Programator };
+    /*  Povolani se nepouziva zatim.. Je to jenom string.. */
+   // private enum Povolani { Doktor, Vojak, Vojín, Vedec, ZdravotniSestra, Seržant, JadernýFyzik, SpecNaz, Kuchař, Stavitel, Programator };
 
     [Header("Identification")]
+    [SerializeField] private long identification = 0;
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private string fullName = "Pavel";
-    [SerializeField] Povolani povolani;
+    // [SerializeField] Povolani povolani;
+    [SerializeField] private string story = "Byl jsme na ceste";
+    [SerializeField] private string povolani = "Zahradnik";
     [SerializeField] private Color backgroundColor;
     [Header("Main attributes")]
     [Range(0, 20)] [SerializeField] private int level = 0;
@@ -30,15 +34,20 @@ public class Specialists : ScriptableObject
     [SerializeField] private int currentHP = 1;
 
 
-    public string FullName { get { return fullName; } }
-    public int Level { get { return level; } }
+    public string FullName { get { return fullName; } set {  this.fullName = value; } }
+    public int Level { get { return level; } set { this.level = value; } }
+    public int Mil { get { return vojak; } set { this.vojak = value; } }
+    public int Scl { get { return vedec; } set { this.vedec = value; } }
+    public int Tel { get { return technik; } set { this.technik = value; } }
+    public int Sol { get { return social; } set { this.social = value; } }
+    public int Kar { get { return karma; } set { this.karma = value; } }
 
-    public int Mil { get { return vojak; } }
-    public int Scl { get { return vedec; } }
-    public int Tel { get { return technik; } }
-    public int Sol { get { return social; } }
-    public int Kar { get { return karma; } }
+    public string Povolani { get { return this.povolani; } set { this.povolani = value; } }
+    public string Story { get { return this.story; } set { this.story = value; } }
 
+    public long Id { get { return this.identification; } set { this.identification = value; } }
+
+    public Sprite Sprite { get { return this.sprite; } set { this.sprite = value; } }
 
     public Color SpecialistColor { get { return this.backgroundColor; } set { this.backgroundColor = value; } }
 
