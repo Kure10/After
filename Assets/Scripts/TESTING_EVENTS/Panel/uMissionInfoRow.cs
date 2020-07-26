@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class uMissionInfoRow : MonoBehaviour
 {
 
-    public int misID;
+    public long misID;
 
     public Text TextString;
 

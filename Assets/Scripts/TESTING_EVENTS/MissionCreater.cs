@@ -171,7 +171,7 @@ public class MissionCreater : MonoBehaviour
         {
             Mission newMission = new Mission(); //Take care Construktor is not empty..
 
-            bool success = int.TryParse(item.Title, out int idNumber);
+            bool success = long.TryParse(item.Title, out long idNumber);
             if(!success)
                 Debug.LogError("Some mission has Error while DeSerialized id: " + item.Title);
                // mozna poptremyslet o nejakem zalozním planu když se neco posere..
