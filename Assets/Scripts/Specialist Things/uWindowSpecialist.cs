@@ -67,8 +67,8 @@ public class uWindowSpecialist : MonoBehaviour
     { 
         set 
         {
-            if (isActiveBuilding == value)
-                return;
+            //if (isActiveBuilding == value)
+            //    return;
 
             if(value == true)
             {
@@ -137,7 +137,7 @@ public class uWindowSpecialist : MonoBehaviour
     #region Public Methods
     public void SetAll(Specialists spec)
     {
-        this.IsBuildingInView = false;
+       // this.IsBuildingInView = false;
         SetImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
@@ -145,7 +145,7 @@ public class uWindowSpecialist : MonoBehaviour
 
     public void SetAll(BuildingBlueprint blueprint, int state, float remainingTimeToBuild)
     {
-        this.IsBuildingInView = true;
+      //  this.IsBuildingInView = true;
         SetImage(blueprint); 
         CalcProgressAndState(remainingTimeToBuild, blueprint.TimeToBuild, state);
         SetStatsPanel(blueprint);
