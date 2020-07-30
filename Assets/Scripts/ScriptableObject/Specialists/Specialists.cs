@@ -7,8 +7,6 @@ using UnityEngine.UI;
 [CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
 public class Specialists : ScriptableObject
 {
-    /*  Povolani se nepouziva zatim.. Je to jenom string.. */
-   // private enum Povolani { Doktor, Vojak, Vojín, Vedec, ZdravotniSestra, Seržant, JadernýFyzik, SpecNaz, Kuchař, Stavitel, Programator };
 
     [Header("Identification")]
     [SerializeField] private long identification = 0;
@@ -33,6 +31,12 @@ public class Specialists : ScriptableObject
     [SerializeField] private int currentStamina = 1;
     [SerializeField] private int currentHP = 1;
 
+    [Header("Additional information")]
+    [SerializeField] private bool isDefault;
+    [SerializeField] private string localization;
+
+
+    #region Properties
 
     public string FullName { get { return fullName; } set {  this.fullName = value; } }
     public int Level { get { return level; } set { this.level = value; } }
@@ -41,6 +45,9 @@ public class Specialists : ScriptableObject
     public int Tel { get { return technik; } set { this.technik = value; } }
     public int Sol { get { return social; } set { this.social = value; } }
     public int Kar { get { return karma; } set { this.karma = value; } }
+
+    public bool IsDefault { get { return this.isDefault; } set { this.isDefault = value; } }
+    public string Localization { get { return this.localization; } set { this.localization = value; } }
 
     public string Povolani { get { return this.povolani; } set { this.povolani = value; } }
     public string Story { get { return this.story; } set { this.story = value; } }
@@ -67,18 +74,20 @@ public class Specialists : ScriptableObject
         }
     }
 
-    // obnova zdravy a staminy neni dodelana v GameDe Doc. zatim
+    #endregion
 
-
-    // tohle se jeste musi rozmyslet jestli to vubec bude tady...
-    private int[] pointPerHour = { 5, 10, 20, 40, 80, 160, 320, 640, 1280, 2560 };
+    #region UnityMethods
 
     private void Awake()
     {
         //povolani = Povolani.Doktor;
-        CalcHealth(level,vojak,technik,vedec,social);
+        CalcHealth(level, vojak, technik, vedec, social);
         CalcStamina(level);
     }
+
+    #endregion
+
+    #region Methods
 
     private void CalcStamina(int lvl)
     {
@@ -90,9 +99,19 @@ public class Specialists : ScriptableObject
         maxHP = 40 + lvl + 4 * mil + 2 * tel + scl + sol;
     }
 
-    public Sprite GetSprite()
+    public void ReCalcAutoStats()
     {
-        return sprite;
+        CalcStamina(this.Level);
+        CalcHealth(this.level, this.Mil, this.Tel, this.Scl, this.Sol);
     }
 
+    public void SetColor(int Red, int Green, int Blue)
+    {
+        this.backgroundColor.r = Red;
+        this.backgroundColor.g = Green;
+        this.backgroundColor.b = Blue;
+        this.backgroundColor.a = 255;
+    }
+
+    #endregion
 }

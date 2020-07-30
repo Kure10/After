@@ -92,7 +92,7 @@ public class uWindowSpecialist : MonoBehaviour
     #region Private Methods
     private void SetImage(Specialists spec)
     {
-        this.image.sprite = spec.GetSprite();
+        this.image.sprite = spec.Sprite;
         if (this.backgroundImage != null)
             this.backgroundImage.color = spec.SpecialistColor;
     }

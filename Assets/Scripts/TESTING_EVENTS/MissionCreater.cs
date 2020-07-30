@@ -13,7 +13,7 @@ public class MissionCreater : MonoBehaviour
     [SerializeField]
     public List<Mission> otherMissions = new List<Mission>();
     private MissionManager missionManager;
-    private ResourceLoader resourceLoader;
+    private ResourceSpriteLoader resourceSpriteLoader;
 
     public Sprite image;
 
@@ -26,7 +26,7 @@ public class MissionCreater : MonoBehaviour
     {
         List<Mission> createdMissions = new List<Mission>();
         this.missionManager = this.GetComponent<MissionManager>();
-        this.resourceLoader = this.GetComponent<ResourceLoader>();
+        this.resourceSpriteLoader = this.GetComponent<ResourceSpriteLoader>();
 
         createdMissions = LoadMissionsFromXML();
 
@@ -142,7 +142,7 @@ public class MissionCreater : MonoBehaviour
     {
         foreach (var item in mis.GetEventsInMission)
         {
-            item.sprite = resourceLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
+            item.sprite = this.resourceSpriteLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
         }
     }
 

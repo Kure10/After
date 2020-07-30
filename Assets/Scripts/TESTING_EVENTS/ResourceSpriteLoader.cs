@@ -3,14 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
-public class ResourceLoader : MonoBehaviour
+public class ResourceSpriteLoader : MonoBehaviour
 {
+   // [Header("Event Sprite")]
     [SerializeField]
     private List<Sprite> eventResources = new List<Sprite>();
+
+   // [Header("Specialist Sprite")]
+    [SerializeField]
+    private List<Sprite> specResources = new List<Sprite>();
+
     [Space]
     [SerializeField] private Sprite defaultResource;
 
+
+    public Sprite LoadSpecialistSprite(string resourceName)
+    {
+        return this.specResources.Find(sprite => sprite.name == resourceName);
+    }
 
     public Sprite FindEventResource (string resourceName)
     {

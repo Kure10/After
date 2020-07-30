@@ -44,6 +44,7 @@ public class SpecialistXmlLoader : MonoBehaviour
     public List<Specialists> DeSerializedSpecialists(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
     {
         List<Specialists> allSpecialists = new List<Specialists>();
+        ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
         foreach (StatsClass item in firstStatClass)
         {
@@ -67,6 +68,26 @@ public class SpecialistXmlLoader : MonoBehaviour
             spec.Sol = item.GetIntStat("SpecSoL");
             spec.Kar = item.GetIntStat("SpecKar");
 
+            int red = item.GetIntStat("SpecColorRed");
+            int green = item.GetIntStat("SpecColorGreen");
+            int blue = item.GetIntStat("SpecColorBlue");
+
+            spec.SetColor(red, green, blue);
+
+            spec.Localization = item.GetStrStat("Location");
+            spec.IsDefault = spec.Localization.StartsWith("START");
+            
+            if (spriteLoader != null)
+            {
+                string spriteName = item.GetStrStat("SpecAvatar");
+                spec.Sprite = spriteLoader.LoadSpecialistSprite(spriteName);
+            }
+            else
+            {
+                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded");
+            }
+
+
             // for data which can be translated
             // pls optimalizovat totto :DDD
             foreach (StatsClass secondItem in secondStatClass)
@@ -81,6 +102,8 @@ public class SpecialistXmlLoader : MonoBehaviour
 
             spec.name = spec.FullName + " - " + spec.Povolani;
           //  spec.Sprite = image; // Todo dodelat .. Image se bude brat s nejakeho poolu..
+
+            spec.ReCalcAutoStats();
 
             allSpecialists.Add(spec);
         }

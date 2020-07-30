@@ -2,16 +2,16 @@
 using UnityEditor;
 using System.IO;
 
-[CustomEditor(typeof(ResourceLoader))]
+[CustomEditor(typeof(ResourceSpriteLoader))]
 public class ResourceLoaderEditor : Editor
 {
     string filePath = "Assets/Scripts/TESTING_EVENTS/Resources";
-    ResourceLoader resourceLoader;
+    ResourceSpriteLoader resourceSpriteLoader;
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        resourceLoader = (ResourceLoader)target;
+        this.resourceSpriteLoader = (ResourceSpriteLoader)target;
 
         EditorGUILayout.Space(15f);
         if (GUILayout.Button("Re-Generate"))
@@ -22,7 +22,7 @@ public class ResourceLoaderEditor : Editor
         EditorGUILayout.Space(8);
         if (GUILayout.Button("Clear"))
         {
-            resourceLoader.ClearEventResources();
+            this.resourceSpriteLoader.ClearEventResources();
         }
 
         EditorGUILayout.Space(8);
@@ -42,12 +42,12 @@ public class ResourceLoaderEditor : Editor
 
         Sprite newDefaultSprite = LoadNewSprite(defaultSpritePath);
         newDefaultSprite.name = fileInfo[0].Name;
-        resourceLoader.SetDefault = newDefaultSprite;
+        this.resourceSpriteLoader.SetDefault = newDefaultSprite;
     }
 
     private void Regenerate()
     {
-        resourceLoader.ClearEventResources();
+        this.resourceSpriteLoader.ClearEventResources();
 
         // otevrit soubor a nahrat ostatni 
 
@@ -63,7 +63,7 @@ public class ResourceLoaderEditor : Editor
             Sprite newSprite = LoadNewSprite(currentFilePath);
             newSprite.name = item.Name;
 
-            resourceLoader.AddEventResource(newSprite);
+            this.resourceSpriteLoader.AddEventResource(newSprite);
         }
 
     }

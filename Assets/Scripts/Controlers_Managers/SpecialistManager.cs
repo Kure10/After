@@ -21,7 +21,8 @@ public class SpecialistManager : MonoBehaviour
     private void Awake()
     {
         this.xmlLoader = gameObject.GetComponent<SpecialistXmlLoader>();
-      //  defaultSpecialists = this.xmlLoader.GetSpecialistFromXML();
+        defaultSpecialists = this.xmlLoader.GetSpecialistFromXML();
+
     }
     private void Start()
     {
@@ -40,6 +41,5 @@ public class SpecialistManager : MonoBehaviour
     {
         return defaultSpecialists;
     }
-
 
 }

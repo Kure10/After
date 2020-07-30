@@ -46,7 +46,7 @@ public class uWindowSpecController : MonoBehaviour
                 activeSpecWindows = activeSpecWindows.OrderBy(x => x.GetPercentHelth).ToList();
                 break;
             default:
-                Debug.Log("tady by se to nikdy nemlo dostat..");
+                Debug.Log("uWindowSpecControllerr Chyba. in order..");
                 break;
         }
 
