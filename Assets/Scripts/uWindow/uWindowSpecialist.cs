@@ -63,7 +63,7 @@ public class uWindowSpecialist : MonoBehaviour
 
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
-    public bool IsBuildingInView
+    public bool IsBuildingSelected
     { 
         set 
         {
@@ -137,7 +137,7 @@ public class uWindowSpecialist : MonoBehaviour
     #region Public Methods
     public void SetAll(Specialists spec)
     {
-       // this.IsBuildingInView = false;
+        this.IsBuildingSelected = false;
         SetImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
@@ -145,7 +145,7 @@ public class uWindowSpecialist : MonoBehaviour
 
     public void SetAll(BuildingBlueprint blueprint, int state, float remainingTimeToBuild)
     {
-      //  this.IsBuildingInView = true;
+        this.IsBuildingSelected = true;
         SetImage(blueprint); 
         CalcProgressAndState(remainingTimeToBuild, blueprint.TimeToBuild, state);
         SetStatsPanel(blueprint);

@@ -9,7 +9,7 @@ public class uWindowSpecController : MonoBehaviour
     [SerializeField] private GameObject panelSpecialist;
 
     private List<Specialists> inGameSpecialist = new List<Specialists>();
-
+    
     private List<uWindowSpecialist> activeSpecWindows = new List<uWindowSpecialist>();
 
     private int lastSortCategory = -1; 
