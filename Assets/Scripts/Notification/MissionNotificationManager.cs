@@ -45,7 +45,7 @@ public class MissionNotificationManager : MonoBehaviour
 
     /*Events*/
 
-    public void OpenMissionPanel(int mission)
+    public void OpenMissionPanel(long missionID)
     {
 
     }

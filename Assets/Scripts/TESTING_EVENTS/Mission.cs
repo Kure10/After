@@ -8,7 +8,7 @@ public class Mission
 {
     #region Fields
 
-    private int id;
+    private long id;
 
     private string _name;
 
@@ -67,7 +67,7 @@ public class Mission
 
     public RegionOperator RegionOperator { get { return this.currentRegionOperator; } set { this.currentRegionOperator = value; } }
 
-    public int Id { get { return this.id; } set { this.id = value; } }
+    public long Id { get { return this.id; } set { this.id = value; } }
 
     public string Name { get { return this._name; } set { this._name = value; } }
 
