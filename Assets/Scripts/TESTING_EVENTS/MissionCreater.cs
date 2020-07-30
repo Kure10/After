@@ -25,8 +25,9 @@ public class MissionCreater : MonoBehaviour
     private void Awake()
     {
         List<Mission> createdMissions = new List<Mission>();
-        this.missionManager = this.GetComponent<MissionManager>();
-        this.resourceSpriteLoader = this.GetComponent<ResourceSpriteLoader>();
+        this.missionManager = this.GetComponent<MissionManager>(); 
+        resourceSpriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+
 
         createdMissions = LoadMissionsFromXML();
 
