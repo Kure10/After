@@ -61,9 +61,6 @@ public class uWindowSelecctedObject : MonoBehaviour
     {
         set
         {
-            if (isActiveBuilding == value)
-                return;
-
             if (value == true)
             {
                 statsBuilding.SetActive(true);
