@@ -48,7 +48,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                     var blueprint = character.GetComponent<Character>();
                     highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                     highlight.gameObject.SetActive(true);
-                    panelUI.GetComponent<uWindowSpecialist>().SetAll(blueprint.GetBlueprint());
+                    panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint.GetBlueprint());
                     panelUI.SetActive(true);
 
                 }
