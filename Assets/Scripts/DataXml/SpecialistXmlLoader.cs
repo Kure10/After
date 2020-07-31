@@ -10,12 +10,12 @@ public class SpecialistXmlLoader : MonoBehaviour
     {
         List<Specialists> createdSpecialists = new List<Specialists>();
 
-        createdSpecialists = LoadMissionsFromXML();
+        createdSpecialists = LoadSpecialistFromXML();
 
         return createdSpecialists;
     }
 
-    public List<Specialists> LoadMissionsFromXML()
+    private List<Specialists> LoadSpecialistFromXML()
     {
         List<StatsClass> XMLLoadedSpecialists = new List<StatsClass>();
         List<StatsClass> XMLAdditionalSpecialistsInformation = new List<StatsClass>();
@@ -41,7 +41,7 @@ public class SpecialistXmlLoader : MonoBehaviour
         return allSpecialists;
     }
 
-    public List<Specialists> DeSerializedSpecialists(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
+    private List<Specialists> DeSerializedSpecialists(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
     {
         List<Specialists> allSpecialists = new List<Specialists>();
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
@@ -57,8 +57,6 @@ public class SpecialistXmlLoader : MonoBehaviour
             // napriklad generovani nejake generické mise.. Nebo tak neco..
 
             spec.Id = idNumber;
-
-
             spec.FullName = item.GetStrStat("SpecName");
             spec.Level = item.GetIntStat("SpecLvL");
 
@@ -71,7 +69,6 @@ public class SpecialistXmlLoader : MonoBehaviour
             int red = item.GetIntStat("SpecColorRed");
             int green = item.GetIntStat("SpecColorGreen");
             int blue = item.GetIntStat("SpecColorBlue");
-
             spec.SetColor(red, green, blue);
 
             spec.Localization = item.GetStrStat("Location");
@@ -84,7 +81,7 @@ public class SpecialistXmlLoader : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded");
+                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
             }
 
 
@@ -98,12 +95,9 @@ public class SpecialistXmlLoader : MonoBehaviour
                     spec.Story = secondItem.GetStrStat("SpecStory");
                 }
             }
-
-
-            spec.name = spec.FullName + " - " + spec.Povolani;
-          //  spec.Sprite = image; // Todo dodelat .. Image se bude brat s nejakeho poolu..
-
+            spec.name = spec.FullName + " - " + spec.Povolani; // for unity inspector.
             spec.ReCalcAutoStats();
+
 
             allSpecialists.Add(spec);
         }

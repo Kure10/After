@@ -16,7 +16,6 @@ public class MissionManager : MonoBehaviour
 
     public Mission currentMission;
 
-
     public void ChoiseMission(RegionOperator regionOperator, bool isExploreMission = false)
     {
         int i = 0;

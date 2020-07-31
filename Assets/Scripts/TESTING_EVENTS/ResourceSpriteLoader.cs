@@ -7,7 +7,10 @@ using System.Linq;
 
 public class ResourceSpriteLoader : MonoBehaviour
 {
-   // [Header("Event Sprite")]
+
+    [SerializeField]
+    private List<Sprite> missionResources = new List<Sprite>();
+    // [Header("Event Sprite")]
     [SerializeField]
     private List<Sprite> eventResources = new List<Sprite>();
 
@@ -22,6 +25,11 @@ public class ResourceSpriteLoader : MonoBehaviour
     public Sprite LoadSpecialistSprite(string resourceName)
     {
         return this.specResources.Find(sprite => sprite.name == resourceName);
+    }
+
+    public Sprite LoadMissionSprite(string resourceName)
+    {
+        return this.missionResources.Find(sprite => sprite.name == resourceName);
     }
 
     public Sprite FindEventResource (string resourceName)

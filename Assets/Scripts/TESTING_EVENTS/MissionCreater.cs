@@ -22,14 +22,15 @@ public class MissionCreater : MonoBehaviour
     [SerializeField] float timeBetweenEvents = 5f;
     [SerializeField] float timeBetweenLastEvent = 3f;
 
+
     private void Awake()
     {
+        MissionXmlLoader xmlLoader = gameObject.GetComponent<MissionXmlLoader>();
         List<Mission> createdMissions = new List<Mission>();
         this.missionManager = this.GetComponent<MissionManager>(); 
         resourceSpriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
-
-        createdMissions = LoadMissionsFromXML();
+        createdMissions = xmlLoader.GetMissionsFromXML();
 
         SortMissions(createdMissions);
 
@@ -64,50 +65,6 @@ public class MissionCreater : MonoBehaviour
         this.missionManager.othersMissions = this.otherMissions;
     }
 
-    public List<Mission> LoadMissionsFromXML()
-    {
-        List<StatsClass> XMLLoadedMissions = new List<StatsClass>();
-        List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
-        List<Mission> allMissions = new List<Mission>();
-
-        string path = "Assets/Data/XML/Testing Mission Data";
-        string fileName = "Missions";
-        string fileNameCZ = "Missions-CZ";
-        ResolveMaster resolveMaster = new ResolveMaster();
-
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
-        resolveMaster.AddDataNode(fileName, firstData);
-
-        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-        resolveMaster.AddDataNode(fileNameCZ, secondData);
-
-        XMLLoadedMissions = resolveMaster.GetDataKeys(fileName);
-        XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
-
-
-        allMissions = DeSerializedMission(XMLLoadedMissions, XMLAdditionalMissionsInformation);
-
-        // chyby jeste direct a final event...   dodelat...
-
-        //for (int i = 0; i < AllLoadedMissions.Count; i++)
-        //{
-        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
-        //}
-
-        //for (int i = 0; i < AllLoadedMissions.Count; i++)
-        //{
-        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
-        //}
-
-        //
-        ResolveSlave slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[0].Title);
-        //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
-        slave.StartResolve();
-        var output = slave.Resolve();
-
-        return allMissions;
-    }
-
     private void AddEventsToMission(Mission mis)
     {
         /* Event set trigger Time*/
@@ -136,7 +93,6 @@ public class MissionCreater : MonoBehaviour
                 item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
             }
         }
-
     }
 
     private void SetEventsImage(Mission mis)
@@ -162,60 +118,6 @@ public class MissionCreater : MonoBehaviour
         }
 
         return firstOccurrenceEvent;
-    }
-
-    public List<Mission> DeSerializedMission(List<StatsClass> firstStatClass , List<StatsClass> secondStatClass)
-    {
-        List<Mission> allMissions = new List<Mission>();
-
-        foreach (StatsClass item in firstStatClass)
-        {
-            Mission newMission = new Mission(); //Take care Construktor is not empty..
-
-            bool success = long.TryParse(item.Title, out long idNumber);
-            if(!success)
-                Debug.LogError("Some mission has Error while DeSerialized id: " + item.Title);
-               // mozna poptremyslet o nejakem zalozním planu když se neco posere..
-               // napriklad generovani nejake generické mise.. Nebo tak neco..
-
-            newMission.Id = idNumber;
-            newMission.Repeate = item.GetIntStat("Repeat");
-            newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
-            string terrains = item.GetStrStat("Terrain");
-            List<string> result = terrains.Split(',').ToList();
-            foreach (var str in result)
-            {
-                Terrain terrain = newMission.ConvertTerrainStringData(str);
-                newMission.AddTerrain(terrain);
-            }
-            newMission.Distance = item.GetIntStat("Time"); // delka mise
-            newMission.SpecMin = item.GetIntStat("SpecMin");
-            newMission.SpecMax = item.GetIntStat("SpecMax");
-            newMission.NeededTransport = item.GetStrStat("Transport");
-            newMission.EventsMin = item.GetIntStat("EventsMin");
-            newMission.EventsMax = item.GetIntStat("EventsMax");
-            newMission.RepeatableIn = item.GetIntStat("IsRepeatable");
-
-            // for data which can be translated
-            foreach (StatsClass secondItem in secondStatClass)
-            {
-                if (item.Title == secondItem.Title)
-                {
-                    newMission.Description = secondItem.GetStrStat("Description");
-                    newMission.Name = secondItem.GetStrStat("Name");
-                    var misType = secondItem.GetStrStat("Type");
-                    newMission.Type = newMission.ConvertMissionTypeStringData(misType);
-                    string mapField = secondItem.GetStrStat("MapField");
-                    newMission.MapField = newMission.ConvertMapFieldStringData(mapField); // mise se vyskuje na teto mape..
-                }
-            }
-
-            newMission.Image = image; // Todo dodelat .. Image se bude brat s nejakeho poolu..
-
-            allMissions.Add(newMission);
-        }
-
-        return allMissions;
     }
 
 }
