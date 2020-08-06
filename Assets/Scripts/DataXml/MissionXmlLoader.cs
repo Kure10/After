@@ -9,11 +9,11 @@ public class MissionXmlLoader : MonoBehaviour
 
     public List<Mission> GetMissionsFromXML()
     {
-        List<Mission> createdSpecialists = new List<Mission>();
+        List<Mission> createdMissions = new List<Mission>();
 
-        createdSpecialists = LoadMissionsFromXML();
+        createdMissions = LoadMissionsFromXML();
 
-        return createdSpecialists;
+        return createdMissions;
     }
 
     private List<Mission> LoadMissionsFromXML()

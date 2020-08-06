@@ -7,6 +7,7 @@ using UnityEngine;
 public class BuildingBlueprint : ScriptableObject
 {
     [Header("Main Settings")]
+    private long id;
     [SerializeField] string buildingName = "Default";
     [SerializeField]
     Sector sector = Sector.ubikace;
@@ -38,8 +39,8 @@ public class BuildingBlueprint : ScriptableObject
     [SerializeField] string textForInfo = "Lazy GameDesign";
 
     public List<RawMaterials> listRawMaterials = new List<RawMaterials>();
-   
 
+    public long Id { get { return this.id; } set { this.id = value; } }
     public string Name { get { return buildingName; } set { buildingName = value; } }
     public int Civil { get { return civilniMaterial; } set { civilniMaterial = value; } }
     public int Tech { get { return technickyMaterial; } set { technickyMaterial = value; } }
