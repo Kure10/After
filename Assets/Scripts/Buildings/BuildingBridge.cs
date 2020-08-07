@@ -48,35 +48,40 @@ public class BuildingBridge : MonoBehaviour
         bou.CacheResourcesControler(resourceControler);
     }
 
+
+    // this method is broken. And obsolete...
     private void ChoiceBuildingHolder (Sector sector, GameObject go)
     {
         switch (sector)
         {
-            case Sector.agregat:
+            case Sector.Cela:
                 go.transform.parent = agregat.transform;
                 break;
-            case Sector.dilna:
+            case Sector.Strojovna:
                 go.transform.parent = dilna.transform;
                 break;
-            case Sector.garaz:
+            case Sector.Garaz:
                 go.transform.parent = garaz.transform;
                 break;
-            case Sector.kaple:
+            case Sector.Kaple:
                 go.transform.parent = kaple.transform;
                 break;
-            case Sector.laborator:
+            case Sector.Strilna:
                 go.transform.parent = laborator.transform;
                 break;
-            case Sector.sklad:
+            case Sector.Sklad:
                 go.transform.parent = sklad.transform;
                 break;
-            case Sector.strilna:
+            case Sector.Dilna:
                 go.transform.parent = strilna.transform;
                 break;
-            case Sector.ubikace:
+            case Sector.Ubikace:
                 go.transform.parent = ubikace.transform;
                 break;
-            case Sector.vezeni:
+            case Sector.Laborator:
+                go.transform.parent = vezeni.transform;
+                break;
+            case Sector.VolnePole:
                 go.transform.parent = vezeni.transform;
                 break;
             default:

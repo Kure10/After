@@ -74,37 +74,31 @@ public class BuildingXmlLoader : MonoBehaviour
             // mozna poptremyslet o nejakem zalozním planu když se neco posere..
             // napriklad generovani nejake generické mise.. Nebo tak neco..
 
-            //newBuilding.Id = idNumber;
-            //newBuilding.Repeate = item.GetIntStat("Repeat");
-            //newBuilding.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
-            //string terrains = item.GetStrStat("Terrain");
-            //List<string> result = terrains.Split(',').ToList();
-            //foreach (var str in result)
-            //{
-            //    Terrain terrain = newMission.ConvertTerrainStringData(str);
-            //    newMission.AddTerrain(terrain);
-            //}
-            //newBuilding.Distance = item.GetIntStat("Time"); // delka mise
-            //newBuilding.SpecMin = item.GetIntStat("SpecMin");
-            //newBuilding.SpecMax = item.GetIntStat("SpecMax");
-            //newBuilding.NeededTransport = item.GetStrStat("Transport");
-            //newBuilding.EventsMin = item.GetIntStat("EventsMin");
-            //newBuilding.EventsMax = item.GetIntStat("EventsMax");
-            //newBuilding.RepeatableIn = item.GetIntStat("IsRepeatable");
+            newBuilding.Id = idNumber;
+
+            string tmp = item.GetStrStat("RoomGroup");
+            newBuilding.Group = newBuilding.ConvertSectorStringData(tmp); 
+            tmp = item.GetStrStat("RoomType");
+            newBuilding.Type = newBuilding.ConvertTypeStringData(tmp);
+
+            newBuilding.TimeToBuild = item.GetIntStat("BuildTime");
+
+            newBuilding.column = item.GetIntStat("SizeA");
+            newBuilding.row = item.GetIntStat("SizeB");
+
+            newBuilding.Civil = item.GetIntStat("PriceCM");
+            newBuilding.Tech = item.GetIntStat("PriceTM");
+            newBuilding.Military = item.GetIntStat("PriceMM");
+            newBuilding.ElectricConsumption = item.GetIntStat("Consumption");
 
             //// for data which can be translated
-            //foreach (StatsClass secondItem in secondStatClass)
-            //{
-            //    if (item.Title == secondItem.Title)
-            //    {
-            //        newBuilding.Description = secondItem.GetStrStat("Description");
-            //        newBuilding.Name = secondItem.GetStrStat("Name");
-            //        var misType = secondItem.GetStrStat("Type");
-            //        newBuilding.Type = newMission.ConvertMissionTypeStringData(misType);
-            //        string mapField = secondItem.GetStrStat("MapField");
-            //        newBuilding.MapField = newMission.ConvertMapFieldStringData(mapField); // mise se vyskuje na teto mape..
-            //    }
-            //}
+            foreach (StatsClass secondItem in secondStatClass)
+            {
+                if (item.Title == secondItem.Title)
+                {
+                    newBuilding.Name = secondItem.GetStrStat("RoomName");
+                }
+            }
 
             //// ToDo doesnt work item.getstrstat(Wrong key) - spatny klic je unvnit neni dodelane od designu
             //if (spriteLoader != null)

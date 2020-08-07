@@ -11,8 +11,8 @@ public class BuildingEditor : Editor
 
     private List<RawMaterials> listRawMaterials = new List<RawMaterials>();
 
-    //[SerializeField] Sector sec = Sector.agregat;
-    //TypeOfBuilding type = TypeOfBuilding.basis;
+    //[SerializeField] Sector sec = Sector.Cela;
+    //TypeOfBuilding type = TypeOfBuilding.Basis;
 
     RawMaterials mat1 = RawMaterials.None;
     RawMaterials mat2 = RawMaterials.None;

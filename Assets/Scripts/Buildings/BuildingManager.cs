@@ -29,15 +29,15 @@ public class BuildingManager : MonoBehaviour
     
     private void SetUpDictionary()
     {
-        backgroundImages.Add(Sector.agregat, sprites[0]);
-        backgroundImages.Add(Sector.dilna, sprites[1]);
-        backgroundImages.Add(Sector.garaz, sprites[2]);
-        backgroundImages.Add(Sector.kaple, sprites[3]);
-        backgroundImages.Add(Sector.laborator, sprites[4]);
-        backgroundImages.Add(Sector.sklad, sprites[5]);
-        backgroundImages.Add(Sector.strilna, sprites[6]);
-        backgroundImages.Add(Sector.ubikace, sprites[7]);
-        backgroundImages.Add(Sector.vezeni, sprites[8]);
+        backgroundImages.Add(Sector.Cela, sprites[0]);
+        backgroundImages.Add(Sector.Strojovna, sprites[1]);
+        backgroundImages.Add(Sector.Garaz, sprites[2]);
+        backgroundImages.Add(Sector.Kaple, sprites[3]);
+        backgroundImages.Add(Sector.Strilna, sprites[4]);
+        backgroundImages.Add(Sector.Sklad, sprites[5]);
+        backgroundImages.Add(Sector.Dilna, sprites[6]);
+        backgroundImages.Add(Sector.Ubikace, sprites[7]);
+        backgroundImages.Add(Sector.Laborator, sprites[8]);
     }
 
     public Sprite GetSprite (Sector sector)

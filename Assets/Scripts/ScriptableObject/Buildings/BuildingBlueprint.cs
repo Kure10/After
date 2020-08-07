@@ -10,9 +10,9 @@ public class BuildingBlueprint : ScriptableObject
     private long id;
     [SerializeField] string buildingName = "Default";
     [SerializeField]
-    Sector sector = Sector.ubikace;
+    Sector sector = Sector.Ubikace;
     [SerializeField]
-    TypeOfBuilding type = TypeOfBuilding.basis;
+    TypeOfBuilding type = TypeOfBuilding.Basis;
     [Tooltip("v sekundach")]
     [SerializeField] float timeToBuild = 20f;
     
@@ -53,6 +53,10 @@ public class BuildingBlueprint : ScriptableObject
     public GameObject Prefab { get { return prefab; } set { prefab = value; } }
     public GameObject ConstructionPrefab { get { return constructionPrefab; } set { constructionPrefab = value; } }
 
+    public Sector Group { get { return this.sector; } set { this.sector = value; } }
+
+    public TypeOfBuilding Type { get { return this.type; } set { this.type = value; } }
+
     public Color BackgroundColor
     {
         get => backgroundColor;
@@ -79,25 +83,52 @@ public class BuildingBlueprint : ScriptableObject
         return sector;
     }
 
-    public void SetSector(Sector sec)
+    public Sector ConvertSectorStringData(string data)
     {
-        sector = sec;
+        switch (data)
+        {
+            case "Ubikace":
+                return Sector.Ubikace;
+            case "Poust":
+                return Sector.Sklad;
+            case "Dzungle":
+                return Sector.Strojovna;
+            case "Lesy":
+                return Sector.Dilna;
+            case "dsad":
+                return Sector.Laborator;
+            case "dsqqad":
+                return Sector.Strilna;
+            case "dasd":
+                return Sector.Cela;
+            case "ddddd":
+                return Sector.Garaz;
+            case "Loueeeky":
+                return Sector.Kaple;
+            default:
+                return Sector.VolnePole;
+
+        }
     }
 
-    public TypeOfBuilding GetTypeOfBuilding()
+    public TypeOfBuilding ConvertTypeStringData(string data)
     {
-        return type;
+        switch (data)
+        {
+            case "RomeCore":
+                return TypeOfBuilding.Basis;
+            case "Poust":
+                return TypeOfBuilding.Extension;
+            default:
+                return TypeOfBuilding.Upgrade;
+        }
     }
 
-    public void SetTypeOfBuilding(TypeOfBuilding tob)
-    {
-        type = tob;
-    }
 
 }
 
-public enum TypeOfBuilding {basis , upgrade , extension};
+public enum TypeOfBuilding {Basis , Extension, Upgrade};
 
-public enum Sector { ubikace, dilna, strilna, sklad, vezeni, laborator, agregat, garaz, kaple};
+public enum Sector { Ubikace, Strojovna, Dilna, Sklad, Laborator, Strilna, Cela, Garaz, Kaple, VolnePole};
 
 public enum RawMaterials { bojler, varic, lednicka, usmernovac, sadaNaradi, sverak, kovadlina , rozsireneNaradi, elektrickeRucniNastroje, strojniZarizeni, automatizacniJednotka, Computer , zakladniNastroje,None };
