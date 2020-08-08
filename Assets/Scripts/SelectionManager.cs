@@ -52,6 +52,15 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                     panelUI.SetActive(true);
 
                 }
+                else
+                {
+                    //building?
+                    var blueprint = character.GetComponent<Building>();
+                    if (blueprint != null)
+                    {
+                        ;
+                    }
+                }
             }
         }
         if (selectedObjects.Count > 0)
