@@ -137,12 +137,12 @@ public class uWindowSelecctedObject : MonoBehaviour
         SetStatsPanel(spec);
     }
 
-    public void SetAll(BuildingBlueprint blueprint, int state, float remainingTimeToBuild)
+    public void SetAll(Building building)
     {
         this.IsBuildingSelected = true;
-        SetImage(blueprint);
-        CalcProgressAndState(remainingTimeToBuild, blueprint.TimeToBuild, state);
-        SetStatsPanel(blueprint);
+        SetImage(building.blueprint);
+        CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
+        SetStatsPanel(building.blueprint);
         // set building Projekt in future
         // set Spec working in building in future.
     }

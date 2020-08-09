@@ -72,12 +72,7 @@ public class BuildingCreator : MonoBehaviour
                     blueprint.transform.position += new Vector3(0, upDiff, 0); 
                     var newBuild = new Building(selectedBuildingBlueprint, blueprint );
                     buildings.Add(newBuild);
-                    if (buildings.Count == 1)
-                    {
-                        //shit got serious, play some music
-                        GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>().PlayDelayed(3);
-                    }
-                    
+                   
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
                 }

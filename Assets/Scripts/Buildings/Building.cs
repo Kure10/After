@@ -13,12 +13,13 @@ public partial class Building : IWorkSource
     private BuildingState _state;
     private ResourceManager resourceManager;
     private TileFactory tileFactory;
-    private readonly BuildingBlueprint blueprint;
+    public readonly BuildingBlueprint blueprint;
     private GameObject prefab;
-    private float timeToBuildRemaining;
+    public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
 
-    private BuildingState State
+
+    public BuildingState State
     {
         get => _state;
         set
@@ -29,7 +30,7 @@ public partial class Building : IWorkSource
         }
     }
 
-    enum BuildingState: int
+    public enum BuildingState: int
     {
         Init = 0,
         Designed = 1,
@@ -43,10 +44,9 @@ public partial class Building : IWorkSource
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
         this.blueprint = blueprint;
-        this.prefab =
-            prefab; //this is ugly hack just to get selected position easily- the prefab is reInstantiated later
+        this.prefab = prefab; //this is ugly hack just to get selected position easily- the prefab is reInstantiated later
         State = BuildingState.Designed;
-        timeToBuildRemaining = blueprint.TimeToBuild;
+        TimeToBuildRemaining = blueprint.TimeToBuild;
         Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
@@ -196,15 +196,15 @@ public partial class Building : IWorkSource
                         if (worker.character.GetCommand() is Build buildCmd)
                         {
                             buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
-                            timeToBuildRemaining -= buildPoints;
+                            TimeToBuildRemaining -= buildPoints;
                         }
                         if (debug % 100 == 0)
                         {
                             Debug.Log(
-                                $"Worker {workerNr}: Time remaining: {timeToBuildRemaining} buildpoints : {buildPoints}");
+                                $"Worker {workerNr}: Time remaining: {TimeToBuildRemaining} buildpoints : {buildPoints}");
                         }
-                        statusHandle.SetHPValue(1 - (timeToBuildRemaining / blueprint.TimeToBuild));
-                        if (timeToBuildRemaining <= 0)
+                        statusHandle.SetHPValue(1 - (TimeToBuildRemaining / blueprint.TimeToBuild));
+                        if (TimeToBuildRemaining <= 0)
                         {
                             State = BuildingState.Build;
                             Workers.Clear();
@@ -277,6 +277,8 @@ public partial class Building : IWorkSource
                 prefab.transform.Find("background").GetComponent<Renderer>().material.color = blueprint.BackgroundColor;
                 statusHandle = prefab.GetComponent<HealthbarHandle>();
                 statusHandle.SetHPValue(0);
+                prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
+
                 break;
             case BuildingState.UnderConstruction:
                 prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,

@@ -40,25 +40,27 @@ public class SelectionManager : MonoBehaviour, IWorkSource
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, maxDist, layerMask))
             {
-                var character = hit.transform.gameObject;
-                var highlight = character.transform.Find("Selection");
+                var hitObject = hit.transform.gameObject;
+                var highlight = hitObject.transform.Find("Selection");
                 if (highlight != null)
                 {
-                    selectedObjects.Add(character);
-                    var blueprint = character.GetComponent<Character>();
-                    highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
-                    highlight.gameObject.SetActive(true);
-                    panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint.GetBlueprint());
-                    panelUI.SetActive(true);
-
+                    selectedObjects.Add(hitObject);
+                    Character blueprint;
+                    if (hitObject.TryGetComponent<Character>(out blueprint))
+                    {
+                        highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
+                        highlight.gameObject.SetActive(true);
+                        panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint.GetBlueprint());
+                        panelUI.SetActive(true);
+                    }
                 }
                 else
                 {
-                    //building?
-                    var blueprint = character.GetComponent<Building>();
-                    if (blueprint != null)
+                    BuildingPointer buildingPointer;
+                    if (hitObject.TryGetComponent<BuildingPointer>(out buildingPointer))
                     {
-                        ;
+                        panelUI.GetComponent<uWindowSelecctedObject>().SetAll(buildingPointer.Building);
+                        panelUI.SetActive(true);
                     }
                 }
             }
