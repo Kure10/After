@@ -9,6 +9,7 @@ public class Region : ScriptableObject
     [SerializeField] private Sprite sprite;
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
+    [SerializeField] private int amountCompletedMissionsToNextRegion = -1;
     private bool isExplored = false;  // Obeven -> na viber jsou misse v Regionu.
     private bool isInShadow = false; //  Pokud je soused isExplored == true , Je v Shadow. OFC pokud sam neni Explored.
     private bool isInDarkness = true; // Počateční stav.  Je neaktivni cerny..
@@ -18,6 +19,11 @@ public class Region : ScriptableObject
     public string RegionName
     {
         get { return this.regionName;}
+    }
+
+    public int AmountToNext
+    {
+        get { return this.amountCompletedMissionsToNextRegion; }
     }
 
     public Sprite GetSprite
@@ -79,5 +85,22 @@ public class Region : ScriptableObject
             item.IsInShadow = true;
         }
     }
+
+    //public bool AreNeighborsRegionEnoughtExplored()
+    //{
+    //    foreach (Region item in neighborhoodRegions)
+    //    {
+    //        if(item.isInDarkness || item.isInShadow)
+    //            continue;
+            
+    //        if(item.)
+
+
+    //    }
+
+
+    //    return false;
+    //}
+
 
 }

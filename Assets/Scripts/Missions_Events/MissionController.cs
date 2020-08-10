@@ -69,7 +69,15 @@ public class MissionController : MonoBehaviour
                 }
                 else
                 {
-                    procesingMission.RegionOperator.CompleteMission(procesingMission);
+                    if (procesingMission.Repeate)
+                    {
+                        // zpusti se cast kodu .. Kde se odpocitava cas znovuopakovatelnost misse.
+                    }
+                    else
+                    {
+                        procesingMission.RegionOperator.CompleteMission();
+                    }
+                    
                 }
                
 

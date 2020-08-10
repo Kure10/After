@@ -16,6 +16,8 @@ public class Mission
 
     private float distance;
 
+    private bool isCompleted = false;
+
     private Sprite image;
 
     private MissionType type;
@@ -87,6 +89,8 @@ public class Mission
     public List<Specialists> GetspecialistOnMission { get { return this.specialistOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
+
+    public bool IsCompleted { get { return this.isCompleted; } set { this.isCompleted = value; } }
 
     public int RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 

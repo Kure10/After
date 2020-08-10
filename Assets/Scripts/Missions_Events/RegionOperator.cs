@@ -48,9 +48,8 @@ public class RegionOperator : MonoBehaviour
     {
         if (this.region.IsInShadow)
         {
-            this.region.IsExplored = true;
-            this.region.RevealNeighbors();
-            this.ActivateAdditionalMissions(true);
+         
+
             regionControler.RefreshRegions();
         }
     }
