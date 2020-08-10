@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MissionManager : MonoBehaviour
 {
 
 
-    [SerializeField]
-    private MissionController theMC;
+    [SerializeField] private MissionController theMC;
 
 
     public List<Mission> exploreMissions = new List<Mission>();
@@ -36,7 +36,7 @@ public class MissionManager : MonoBehaviour
 
     }
 
-    private void ShowMissionPanel(Mission mission,RegionOperator regionOperator)
+    private void ShowMissionPanel(Mission mission, RegionOperator regionOperator)
     {
         theMC.windowMission.MissionName = mission.Name;
         theMC.windowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
@@ -49,7 +49,7 @@ public class MissionManager : MonoBehaviour
         Button startButton = theMC.windowMission.GetStartMissionButton;
 
         startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator); });
+        startButton.onClick.AddListener(delegate() { theMC.StartMission(mission, regionOperator); });
 
         theMC.windowMission.Init();
 
@@ -59,6 +59,24 @@ public class MissionManager : MonoBehaviour
     }
 
 
+    // This method need to be one with ChoiseMission Method
+    public void ChoiseMissionForRegionButton(uWindowMissionButton missionButton,RegionOperator regionOperator)
+    {
+
+        missionButton.CurrentMission = othersMissions.Find(x => x.Id.ToString() == missionButton.StringId);
+
+        // Tedka mužu z listu misi odstranit.. Protože ji asi už tady nebudu potrebovat. 
+        // Je to asi dobra optimalizace...  Uvidime pozdeji.
+        if (missionButton.CurrentMission == null)
+        {
+            Debug.Log("Error in MissionManager.Cs ___ Mission For Button Was not found");
+            return;
+        }
+
+        var tmp = missionButton.gameObject.GetComponent<Button>();
+        tmp.onClick.RemoveAllListeners();
+        tmp.onClick.AddListener(delegate() { ShowMissionPanel(missionButton.CurrentMission, regionOperator);});
+    }
 
 
 

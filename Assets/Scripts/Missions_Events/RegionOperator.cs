@@ -9,7 +9,7 @@ public class RegionOperator : MonoBehaviour
     [SerializeField] Region region;
     [SerializeField] GameObject exploreQuestionButton;
 
-    [SerializeField] List<GameObject> missionsAfterExplore = new List<GameObject>();
+    [SerializeField] List<GameObject> missionsButtonsAfterExplore = new List<GameObject>();
 
     private RegionControler regionControler;
 
@@ -34,6 +34,17 @@ public class RegionOperator : MonoBehaviour
 
 
     public void ExploreRegion()
+    {
+        if (this.region.IsInShadow)
+        {
+            this.region.IsExplored = true;
+            this.region.RevealNeighbors();
+            this.ActivateAdditionalMissions(true);
+            regionControler.RefreshRegions();
+        }
+    }
+
+    public void CompleteMission()
     {
         if (this.region.IsInShadow)
         {
@@ -71,9 +82,15 @@ public class RegionOperator : MonoBehaviour
     private void ActivateAdditionalMissions(bool activate)
     {
 
-        foreach (GameObject item in missionsAfterExplore)
+        foreach (GameObject item in this.missionsButtonsAfterExplore)
         {
             item.SetActive(activate);
+            
+            if (activate)
+            {
+                uWindowMissionButton missionButton = item.GetComponent<uWindowMissionButton>();
+                this.regionControler.AskManagerToMission(missionButton,this);
+            }
         }
     }
 
@@ -97,9 +114,6 @@ public class RegionOperator : MonoBehaviour
         return this.region;
     }
 
-    public void ShowMissionWithID (int id)
-    {
 
-    }
 
 }

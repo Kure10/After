@@ -31,6 +31,8 @@ public class MissionNotificationManager : MonoBehaviour
         GameObject notification = Instantiate(NotificationPrefab, NotificationHolder.position, Quaternion.identity);
         uWindowMissionNotification windowSettings = notification.GetComponent<uWindowMissionNotification>();
 
+        if (windowSettings == null)
+            return;
         windowSettings.Tittle.text = not.tittle;
         windowSettings.SubTittle.text = not.subTittle;
 

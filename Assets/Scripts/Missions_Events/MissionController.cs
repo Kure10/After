@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Experimental.XR;
 
 public class MissionController : MonoBehaviour
 {
@@ -31,11 +32,13 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator)
     {
-        this.windowMission.gameObject.SetActive(false);
-        missinToStart.RegionOperator = regionOperator;
-        missionsInProcces.Add(missinToStart);
-        infoController.InfoRowCreate(missinToStart);
 
+      // if (missinToStart.Type == MissionType.pruzkum)
+
+       this.windowMission.gameObject.SetActive(false);
+       infoController.InfoRowCreate(missinToStart);
+       missinToStart.RegionOperator = regionOperator;
+       missionsInProcces.Add(missinToStart);
     }
 
     public void Update()
@@ -51,6 +54,7 @@ public class MissionController : MonoBehaviour
     {
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
+            Mission procesingMission = missionsInProcces[i];
             float betweenTime = CalculateTime();
             missionsInProcces[i].Distance -= betweenTime;
             infoController.UpdateInfoRows(missionsInProcces);
@@ -58,7 +62,17 @@ public class MissionController : MonoBehaviour
             if (missionsInProcces[i].Distance <= 0)
             {
                 Debug.Log("mission is done");
-                missionsInProcces[i].RegionOperator.ExploreRegion();
+
+                if (procesingMission.Type == MissionType.pruzkum)
+                {
+                    procesingMission.RegionOperator.ExploreRegion();
+                }
+                else
+                {
+                    procesingMission.RegionOperator.CompleteMission(procesingMission);
+                }
+               
+
                 MissionComplete(missionsInProcces[i]);
                 continue;
             }
@@ -105,7 +119,6 @@ public class MissionController : MonoBehaviour
                     EventPanel eventPanel = eventGameObject.GetComponent<EventPanel>();
 
                     
-
 
                     eventGameObject.transform.SetParent(eventHolder);
 

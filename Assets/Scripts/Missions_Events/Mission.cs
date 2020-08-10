@@ -24,7 +24,7 @@ public class Mission
 
     private int eventsMax;
 
-    private int repeat;
+    private bool repeat;
 
     private int repeatableIn;
 
@@ -86,7 +86,7 @@ public class Mission
 
     public List<Specialists> GetspecialistOnMission { get { return this.specialistOnMission; } }
 
-    public int Repeate { get { return this.repeat; } set { this.repeat = value; } }
+    public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 
     public int RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 

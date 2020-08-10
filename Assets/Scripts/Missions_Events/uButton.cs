@@ -5,8 +5,11 @@ using UnityEngine;
 public class uButton : MonoBehaviour
 {
 
-
-    public void Close()
+    public void Anable()
+    {
+        this.gameObject.SetActive(true);
+    }
+    public void Disable()
     {
         this.gameObject.SetActive(false);
     }

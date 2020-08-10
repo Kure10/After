@@ -64,7 +64,7 @@ public class MissionInfoController : MonoBehaviour
             return description;
         }
 
-        description = miss.Name.ToString() + " " + miss.Id + " Time Remains: " + miss.Distance.ToString("N0");
+        description = miss.Name.ToString() +  " Time Remains: " + miss.Distance.ToString("N0");
         return description;
     }
 

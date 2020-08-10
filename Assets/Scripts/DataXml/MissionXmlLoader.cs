@@ -76,7 +76,7 @@ public class MissionXmlLoader : MonoBehaviour
             // napriklad generovani nejake generické mise.. Nebo tak neco..
 
             newMission.Id = idNumber;
-            newMission.Repeate = item.GetIntStat("Repeat");
+            newMission.Repeate = item.GetBoolStat("Repeat");
             newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
             string terrains = item.GetStrStat("Terrain");
             List<string> result = terrains.Split(',').ToList();

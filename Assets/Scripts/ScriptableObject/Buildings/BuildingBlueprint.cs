@@ -87,9 +87,9 @@ public class BuildingBlueprint : ScriptableObject
     {
         switch (data)
         {
-            case "Ubikace":
+            case "EngineRoom":
                 return Sector.Ubikace;
-            case "Poust":
+            case "Store":
                 return Sector.Sklad;
             case "Dzungle":
                 return Sector.Strojovna;

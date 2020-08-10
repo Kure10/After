@@ -69,4 +69,11 @@ public class RegionControler : MonoBehaviour
     {
         missionManager.ChoiseMission(regionOperator , true);
     }
+
+    public void AskManagerToMission(uWindowMissionButton missionButton, RegionOperator regionOperator)
+    {
+        missionManager.ChoiseMissionForRegionButton(missionButton, regionOperator);
+    }
+
+
 }
