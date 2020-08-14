@@ -17,6 +17,7 @@
     <Key v="1" t="Int32" n="EventsMin" />
     <Key v="2" t="Int32" n="EventsMax" />
     <Key v="691200" t="Int32" n="IsRepeatable" />
+    <Key v="P01M01" t="String" n="MissionPointer" />
     <Data n="$E">
       <Data n="0">
         <Key v="1" t="Int32" n="$T" />
@@ -45,17 +46,9 @@
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="Lesy,Louky,Vesnice" t="String" n="Terrain" />
-    <Data n="$E">
-      <Data n="0">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="20203890660776" t="String" n="FinalEvent" />
-      </Data>
-    </Data>
-    <Data n="$C">
-      <Data n="0">
-        <Key v="0" t="String" n="$E" />
-      </Data>
-    </Data>
+    <Key v="P01M00" t="String" n="MissionPointer" />
+    <Data n="$E" />
+    <Data n="$C" />
   </Data>
   <Data n="20205825789652">
     <Key v="Vehicle0" t="String" n="Transport" />
@@ -66,6 +59,7 @@
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="Louky,Lesy" t="String" n="Terrain" />
+    <Key v="P01M02" t="String" n="MissionPointer" />
   </Data>
   <Data n="20205825876349">
     <Key v="Vehicle0" t="String" n="Transport" />
@@ -76,5 +70,6 @@
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="4" t="Int32" n="SpecMax" />
     <Key v="Hory" t="String" n="Terrain" />
+    <Key v="P01M03" t="String" n="MissionPointer" />
   </Data>
 </DataRoot>
