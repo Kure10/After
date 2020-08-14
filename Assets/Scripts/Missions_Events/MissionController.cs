@@ -72,7 +72,7 @@ public class MissionController : MonoBehaviour
             {
                 Debug.Log("mission is done");
 
-                if (procesingMission.Type == MissionType.pruzkum)
+                if (procesingMission.Type == MissionType.pruzkum_oblasti)
                 {
                     procesingMission.RegionOperator.ExploreRegion();
                 }

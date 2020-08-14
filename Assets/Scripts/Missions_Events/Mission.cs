@@ -183,6 +183,8 @@ public class Mission
     {
         switch (data)
         {
+            case "Pruzkum_oblasti":
+                return MissionType.pruzkum_oblasti;
             case "Pruzkum":
                 return MissionType.pruzkum;
             case "SberLov":
@@ -204,6 +206,8 @@ public class Mission
         {
             switch (type)
             {
+                case MissionType.pruzkum_oblasti:
+                    return "pruzkum_oblasti";
                 case MissionType.pruzkum:
                     return "pruzkum";
                 case MissionType.sberLov:
@@ -235,7 +239,7 @@ public enum Terrain { pole , poust , dzungle, les , louky, unknow };
 
 public enum MapField { ring, ctverec, garaz, udoly, peklo , none };
 
-public enum MissionType { pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
+public enum MissionType { pruzkum_oblasti, pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
 
 #endregion
 

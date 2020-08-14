@@ -52,7 +52,7 @@ public class MissionCreater : MonoBehaviour
     {
         foreach (Mission item in createdMissions)
         {
-            if(item.Type == MissionType.pruzkum)
+            if(item.Type == MissionType.pruzkum_oblasti)
                 exploreMissions.Add(item);
             else
                 otherMissions.Add(item);
