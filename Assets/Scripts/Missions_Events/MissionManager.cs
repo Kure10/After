@@ -60,22 +60,22 @@ public class MissionManager : MonoBehaviour
 
 
     // This method need to be one with ChoiseMission Method
-    public void ChoiseMissionForRegionButton(uWindowMissionButton missionButton,RegionOperator regionOperator)
+    public void ChoiseMissionForRegionButton(uButtonAdditionalMission mission,RegionOperator regionOperator)
     {
 
-        missionButton.CurrentMission = othersMissions.Find(x => x.Id.ToString() == missionButton.StringId);
+        mission.CurrentMission = othersMissions.Find(x => x.Id.ToString() == mission.StringId);
 
         // Tedka mužu z listu misi odstranit.. Protože ji asi už tady nebudu potrebovat. 
         // Je to asi dobra optimalizace...  Uvidime pozdeji.
-        if (missionButton.CurrentMission == null)
+        if (mission.CurrentMission == null)
         {
-            Debug.Log("Error in MissionManager.Cs ___ Mission For Button Was not found");
+            Debug.LogError("Error in MissionManager.Cs ___ Mission For Button Was not found");
             return;
         }
 
-        var tmp = missionButton.gameObject.GetComponent<Button>();
-        tmp.onClick.RemoveAllListeners();
-        tmp.onClick.AddListener(delegate() { ShowMissionPanel(missionButton.CurrentMission, regionOperator);});
+        Button additionMissionButton = mission.gameObject.GetComponent<Button>();
+        additionMissionButton.onClick.RemoveAllListeners();
+        additionMissionButton.onClick.AddListener(delegate() { ShowMissionPanel(mission.CurrentMission, regionOperator);});
     }
 
 

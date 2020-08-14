@@ -16,8 +16,6 @@ public class Mission
 
     private float distance;
 
-    private bool isCompleted = false;
-
     private Sprite image;
 
     private MissionType type;
@@ -28,7 +26,9 @@ public class Mission
 
     private bool repeat;
 
-    private int repeatableIn;
+    private bool wasSuccessfullyExecuted = false;
+
+    private float repeatableIn;
 
     private int specMin;
 
@@ -65,6 +65,12 @@ public class Mission
 
     #endregion
 
+    #region PublicFields
+
+    public float RepeatableTime = 0;
+
+    #endregion
+
     #region Properitiers
 
     public RegionOperator RegionOperator { get { return this.currentRegionOperator; } set { this.currentRegionOperator = value; } }
@@ -90,9 +96,9 @@ public class Mission
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 
-    public bool IsCompleted { get { return this.isCompleted; } set { this.isCompleted = value; } }
+    public bool WasSuccessfullyExecuted { get { return this.wasSuccessfullyExecuted; } set { this.wasSuccessfullyExecuted = value; } }
 
-    public int RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
+    public float RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 
     public int SpecMin { get { return this.specMin; } set { this.specMin = value; } }
 
@@ -177,6 +183,8 @@ public class Mission
     {
         switch (data)
         {
+            case "Pruzkum_oblasti":
+                return MissionType.pruzkum_oblasti;
             case "Pruzkum":
                 return MissionType.pruzkum;
             case "SberLov":
@@ -198,6 +206,8 @@ public class Mission
         {
             switch (type)
             {
+                case MissionType.pruzkum_oblasti:
+                    return "pruzkum_oblasti";
                 case MissionType.pruzkum:
                     return "pruzkum";
                 case MissionType.sberLov:
@@ -229,7 +239,7 @@ public enum Terrain { pole , poust , dzungle, les , louky, unknow };
 
 public enum MapField { ring, ctverec, garaz, udoly, peklo , none };
 
-public enum MissionType { pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
+public enum MissionType { pruzkum_oblasti, pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
 
 #endregion
 

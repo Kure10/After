@@ -19,8 +19,20 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            regionOperator.OpenExplorePanel();
-                // leftClick.Invoke();
+            Region regionToExplore = this.regionOperator.GetRegion();
+            if (regionToExplore.AmountToUnlockedNeighborhodRegions <= 0 || regionToExplore.IsStartingRegion)
+            {
+                regionOperator.OpenExplorePanel();
+            }
+            else
+            {
+                Debug.Log("Region " + regionToExplore.RegionName +
+                          "  nelze prozkoumat, neni dokonceno spravne mnozstvi q v okolnim regionu: " +
+                          regionToExplore.AmountToUnlockedNeighborhodRegions);
+            }
+                
+
+            // leftClick.Invoke();
            // Debug.Log("Left Clicked");
         }
         else if (eventData.button == PointerEventData.InputButton.Middle)
