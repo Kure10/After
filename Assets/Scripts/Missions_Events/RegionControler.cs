@@ -41,7 +41,7 @@ public class RegionControler : MonoBehaviour
 
     public void RefreshRegions()
     {
-        foreach (var item in arrayOfregionsOperator)
+        foreach (RegionOperator item in arrayOfregionsOperator)
         {
             var regionImage = item.GetImage();
             var region = item.GetRegion();
@@ -70,9 +70,9 @@ public class RegionControler : MonoBehaviour
         missionManager.ChoiseMission(regionOperator , true);
     }
 
-    public void AskManagerToMission(uWindowMissionButton missionButton, RegionOperator regionOperator)
+    public void AskManagerToMission(uButtonAdditionalMission mission, RegionOperator regionOperator)
     {
-        missionManager.ChoiseMissionForRegionButton(missionButton, regionOperator);
+        missionManager.ChoiseMissionForRegionButton(mission, regionOperator);
     }
 
 

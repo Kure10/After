@@ -16,8 +16,6 @@ public class Mission
 
     private float distance;
 
-    private bool isCompleted = false;
-
     private Sprite image;
 
     private MissionType type;
@@ -28,7 +26,9 @@ public class Mission
 
     private bool repeat;
 
-    private int repeatableIn;
+    private bool wasSuccessfullyExecuted = false;
+
+    private float repeatableIn;
 
     private int specMin;
 
@@ -65,6 +65,12 @@ public class Mission
 
     #endregion
 
+    #region PublicFields
+
+    public float RepeatableTime = 0;
+
+    #endregion
+
     #region Properitiers
 
     public RegionOperator RegionOperator { get { return this.currentRegionOperator; } set { this.currentRegionOperator = value; } }
@@ -90,9 +96,9 @@ public class Mission
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 
-    public bool IsCompleted { get { return this.isCompleted; } set { this.isCompleted = value; } }
+    public bool WasSuccessfullyExecuted { get { return this.wasSuccessfullyExecuted; } set { this.wasSuccessfullyExecuted = value; } }
 
-    public int RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
+    public float RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 
     public int SpecMin { get { return this.specMin; } set { this.specMin = value; } }
 

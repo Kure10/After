@@ -13,6 +13,7 @@ public class MissionController : MonoBehaviour
     [SerializeField] private Transform eventHolder;
 
     public List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
+    public List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
 
     [SerializeField]
     public uWindowMission windowMission;
@@ -48,6 +49,14 @@ public class MissionController : MonoBehaviour
             MissionProcess();
             TryOutbreakEvent();
         }
+
+
+        if (this.missionsInRepate.Count > 0)
+        {
+            CalculateRemainingTimeForRepeatMissions();
+        }
+
+
     }
 
     public void MissionProcess()
@@ -72,23 +81,31 @@ public class MissionController : MonoBehaviour
                     if (procesingMission.Repeate)
                     {
                         // zpusti se cast kodu .. Kde se odpocitava cas znovuopakovatelnost misse.
+
+                        if (!procesingMission.WasSuccessfullyExecuted)
+                        {
+                            procesingMission.WasSuccessfullyExecuted = true;
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id);
+                        }
+
+
                     }
                     else
                     {
-                        procesingMission.RegionOperator.CompleteMission();
+                       // procesingMission.RegionOperator.CompleteMission(false);
                     }
                     
                 }
                
 
-                MissionComplete(missionsInProcces[i]);
+                MissionReward(missionsInProcces[i]);
                 continue;
             }
         }
     }
 
 
-    public void MissionComplete(Mission mission)
+    public void MissionReward(Mission mission)
     {
 
         // delete from info row // pozdeji se asi napise mission complete a bude se cekat na hrace co udela ..
@@ -100,6 +117,14 @@ public class MissionController : MonoBehaviour
         infoController.DeleteFromInfoRow(mission);
     }
 
+    public void MissionRefresh(Mission mission)
+    {
+        
+        mission.RegionOperator.RefreshMissionButton(mission);
+
+        this.missionsInRepate.Remove(mission);
+    }
+
     private float CalculateTime()
     {
         float accumulatedTime = 0;
@@ -107,6 +132,7 @@ public class MissionController : MonoBehaviour
 
         return accumulatedTime;
     }
+
 
     private void TryOutbreakEvent()
     {
@@ -157,6 +183,22 @@ public class MissionController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void CalculateRemainingTimeForRepeatMissions()
+    {
+        for (int i = this.missionsInRepate.Count - 1; i >= 0; i--)
+        {
+
+            missionsInRepate[i].RepeatableTime += CalculateTime();
+
+            if (missionsInRepate[i].RepeatableTime >= missionsInRepate[i].RepeatableIn)
+            {
+                MissionRefresh(missionsInRepate[i]);
+            }
+
+        }
+
     }
 }
 

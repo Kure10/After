@@ -9,7 +9,7 @@ public class RegionOperator : MonoBehaviour
     [SerializeField] Region region;
     [SerializeField] GameObject exploreQuestionButton;
 
-    [SerializeField] List<GameObject> missionsButtonsAfterExplore = new List<GameObject>();
+    [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
     private RegionControler regionControler;
 
@@ -44,13 +44,39 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void CompleteMission()
+    public void CompleteMission(bool isRepeate , long missionID)
     {
-        if (this.region.IsInShadow)
-        {
-         
+        // is repeate budu potrebovat na to abych schoval tlacitko nebo ukazal
 
-            regionControler.RefreshRegions();
+        if (this.region.AmountToUnlockedNeighborhodRegions > 0)
+            this.region.AmountToUnlockedNeighborhodRegions -= 1;
+
+        if (isRepeate)
+        {
+            foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
+            {
+                if (item.CurrentMission.Id == missionID)
+                    item.TemporarilyInactive(true);
+
+            }
+
+        }
+        else
+        {
+            
+        }
+
+        //  regionControler.RefreshRegions();
+        
+    }
+
+    public void RefreshMissionButton(Mission mission)
+    {
+        foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
+        {
+            if (item.CurrentMission.Id == mission.Id)
+                item.TemporarilyInactive(false);
+
         }
     }
 
@@ -81,14 +107,13 @@ public class RegionOperator : MonoBehaviour
     private void ActivateAdditionalMissions(bool activate)
     {
 
-        foreach (GameObject item in this.missionsButtonsAfterExplore)
+        foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
         {
-            item.SetActive(activate);
-            
+            item.Activate(activate);
+
             if (activate)
             {
-                uWindowMissionButton missionButton = item.GetComponent<uWindowMissionButton>();
-                this.regionControler.AskManagerToMission(missionButton,this);
+                this.regionControler.AskManagerToMission(item, this);
             }
         }
     }
