@@ -34,7 +34,7 @@ public class MissionController : MonoBehaviour
     public void StartMission (Mission missinToStart,RegionOperator regionOperator)
     {
 
-      // if (missinToStart.Type == MissionType.pruzkum)
+     
 
        this.windowMission.gameObject.SetActive(false);
        infoController.InfoRowCreate(missinToStart);
@@ -44,7 +44,7 @@ public class MissionController : MonoBehaviour
 
     public void Update()
     {
-        if(missionsInProcces.Count > 0)
+        if(this.missionsInProcces.Count > 0)
         {
             MissionProcess();
             TryOutbreakEvent();
@@ -80,7 +80,7 @@ public class MissionController : MonoBehaviour
                 {
                     if (procesingMission.Repeate)
                     {
-                        // zpusti se cast kodu .. Kde se odpocitava cas znovuopakovatelnost misse.
+                        missionsInRepate.Add(procesingMission);
 
                         if (!procesingMission.WasSuccessfullyExecuted)
                         {
@@ -88,11 +88,11 @@ public class MissionController : MonoBehaviour
                             procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id);
                         }
 
-
                     }
                     else
                     {
-                       // procesingMission.RegionOperator.CompleteMission(false);
+                       
+                      //  procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id);
                     }
                     
                 }

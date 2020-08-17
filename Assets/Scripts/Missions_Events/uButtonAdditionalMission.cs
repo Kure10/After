@@ -38,17 +38,20 @@ public class uButtonAdditionalMission : uButton
         Button additionMissionButton = this.gameObject.GetComponent<Button>();
 
         // nevim jestl si muzu takhle ulozit event .. ?? ,?? Zkusit
+
+        // add grayScale button and other things
+
         if(this.evt == null)
             evt = additionMissionButton.onClick;
 
         if (value)
         {
             additionMissionButton.onClick.RemoveAllListeners();
-            additionMissionButton.onClick = this.evt;
         }
         else
         {
             additionMissionButton.onClick.RemoveAllListeners();
+            additionMissionButton.onClick = this.evt;
         }
 
 

@@ -63,7 +63,8 @@ public class RegionOperator : MonoBehaviour
         }
         else
         {
-            
+            // neni opakovatelne
+           
         }
 
         //  regionControler.RefreshRegions();
