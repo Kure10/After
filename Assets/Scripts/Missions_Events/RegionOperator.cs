@@ -7,6 +7,9 @@ public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] Region region;
+
+    [SerializeField] private string exploreMissionID;
+
     [SerializeField] GameObject exploreQuestionButton;
 
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
@@ -20,7 +23,9 @@ public class RegionOperator : MonoBehaviour
 
     #region Properities
 
-    public bool SetCurrentRegionIsExplored { set { currentRegionIsExplored = value; } } // myslim si ze to budu potrebovat na rozeznani typu misse
+    public bool SetCurrentRegionIsExplored { set { this.currentRegionIsExplored = value; } } // myslim si ze to budu potrebovat na rozeznani typu misse
+
+    public string ExploreMissionID { get { return this.exploreMissionID; } }
 
     #endregion
 
@@ -57,14 +62,12 @@ public class RegionOperator : MonoBehaviour
             {
                 if (item.CurrentMission.Id == missionID)
                     item.TemporarilyInactive(true);
-
             }
 
         }
         else
         {
             // neni opakovatelne
-           
         }
 
         //  regionControler.RefreshRegions();
@@ -101,6 +104,15 @@ public class RegionOperator : MonoBehaviour
         if (this.region.IsExplored || this.region.IsInDarkness)
             return;
 
+        long exploreMissionId;
+        bool result = long.TryParse(exploreMissionID,out exploreMissionId);
+        if (regionControler.AskControllerIsMissionInProgress(exploreMissionId))
+        {
+            // misse je in progrss..... Nedelej nic dvakrat stejna misse in progress
+            // nejaky warning
+            return;
+        }
+
         exploreQuestionButton.SetActive(true);
         exploreQuestionButton.transform.position = Input.mousePosition;
     }
@@ -120,6 +132,7 @@ public class RegionOperator : MonoBehaviour
     }
 
 
+    // v budoucnu Odstranit Script uButtonExploreScript. -> a vymyslet lepsi ovladani odstartovat missy
     public void StartExploreMission()
     {
         regionControler.StartExploreMision(this);

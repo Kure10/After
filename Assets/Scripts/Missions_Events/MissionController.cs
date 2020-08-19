@@ -33,9 +33,6 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator)
     {
-
-     
-
        this.windowMission.gameObject.SetActive(false);
        infoController.InfoRowCreate(missinToStart);
        missinToStart.RegionOperator = regionOperator;
@@ -200,6 +197,18 @@ public class MissionController : MonoBehaviour
         }
 
     }
+
+    public bool IsMissionInProgress(long id)
+    {
+        foreach (Mission item in this.missionsInProcces)
+        {
+            if (id == item.Id)
+                return true;
+        }
+        return false;
+    }
+
+
 }
 
 
