@@ -25,18 +25,6 @@ public class RegionControler : MonoBehaviour
         missionController = FindObjectOfType<MissionController>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void ChangeRegionState(Region region, Image regionImage)
     {
         ChangeColoring(region, regionImage);

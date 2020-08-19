@@ -43,7 +43,7 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             // rightClick.Invoke();
-            regionOperator.CloseExplorePanel();
+          //  regionOperator.CloseExplorePanel();
           //  Debug.Log("Right Clicked");
         }  
     }

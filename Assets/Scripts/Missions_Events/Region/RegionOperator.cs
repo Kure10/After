@@ -128,18 +128,6 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-
-    // v budoucnu Odstranit Script uButtonExploreScript. -> a vymyslet lepsi ovladani odstartovat missy
-    //public void StartExploreMission()
-    //{
-    //    regionControler.StartExploreMision(this);
-    //}
-
-    public void CloseExplorePanel()
-    {
-        this.exploreQuestionButton.SetActive(false);
-    }
-
     public Image GetImage()
     {
         return this.image;
