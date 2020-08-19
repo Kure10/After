@@ -16,14 +16,9 @@ public class RegionOperator : MonoBehaviour
 
     private RegionControler regionControler;
 
-    // info about region
-    private bool currentRegionIsExplored = false; // atim se nepouziva ale asi bude
-
     private Image image;
 
     #region Properities
-
-    public bool SetCurrentRegionIsExplored { set { this.currentRegionIsExplored = value; } } // myslim si ze to budu potrebovat na rozeznani typu misse
 
     public string ExploreMissionID { get { return this.exploreMissionID; } }
 
@@ -113,8 +108,10 @@ public class RegionOperator : MonoBehaviour
             return;
         }
 
-        exploreQuestionButton.SetActive(true);
-        exploreQuestionButton.transform.position = Input.mousePosition;
+        regionControler.StartExploreMision(this);
+
+        //exploreQuestionButton.SetActive(true);
+        //exploreQuestionButton.transform.position = Input.mousePosition;
     }
 
     private void ActivateAdditionalMissions(bool activate)
@@ -133,10 +130,11 @@ public class RegionOperator : MonoBehaviour
 
 
     // v budoucnu Odstranit Script uButtonExploreScript. -> a vymyslet lepsi ovladani odstartovat missy
-    public void StartExploreMission()
-    {
-        regionControler.StartExploreMision(this);
-    }
+    //public void StartExploreMission()
+    //{
+    //    regionControler.StartExploreMision(this);
+    //}
+
     public void CloseExplorePanel()
     {
         this.exploreQuestionButton.SetActive(false);
