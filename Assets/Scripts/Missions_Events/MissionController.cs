@@ -193,9 +193,7 @@ public class MissionController : MonoBehaviour
             {
                 MissionRefresh(missionsInRepate[i]);
             }
-
         }
-
     }
 
     public bool IsMissionInProgress(long id)
