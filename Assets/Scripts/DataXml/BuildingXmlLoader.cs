@@ -38,19 +38,6 @@ public class BuildingXmlLoader : MonoBehaviour
 
         allBuildings = DeSerializedData(XMLLoadedData, XMLAdditionalData);
 
-        // chyby jeste direct a final event...   dodelat...
-
-        //for (int i = 0; i < AllLoadedMissions.Count; i++)
-        //{
-        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
-        //}
-
-        //for (int i = 0; i < AllLoadedMissions.Count; i++)
-        //{
-        //    slave.Add(resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[i].Title));
-        //}
-
-        //
         ResolveSlave slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[0].Title);
         //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
         slave.StartResolve();
@@ -91,6 +78,12 @@ public class BuildingXmlLoader : MonoBehaviour
             newBuilding.Military = item.GetIntStat("PriceMM");
             newBuilding.ElectricConsumption = item.GetIntStat("Consumption");
 
+            // color
+            int red = item.GetIntStat("RoomColorRed");
+            int green = item.GetIntStat("RoomColorGreen");
+            int blue = item.GetIntStat("RoomColorBlue");
+            newBuilding.SetColor(red, green, blue);
+
             //// for data which can be translated
             foreach (StatsClass secondItem in secondStatClass)
             {
@@ -99,6 +92,19 @@ public class BuildingXmlLoader : MonoBehaviour
                     newBuilding.Name = secondItem.GetStrStat("RoomName");
                 }
             }
+
+            if (spriteLoader != null)
+            {
+                string spriteName = item.GetStrStat("RoomPicture");
+                newBuilding.Sprite = spriteLoader.LoadBuildingSprite(spriteName);
+            }
+            else
+            {
+                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
+            }
+
+            
+
 
             //// ToDo doesnt work item.getstrstat(Wrong key) - spatny klic je unvnit neni dodelane od designu
             //if (spriteLoader != null)
