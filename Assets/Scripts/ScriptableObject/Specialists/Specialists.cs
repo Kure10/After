@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
-public class Specialists : ScriptableObject
+//[CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
+[System.Serializable]
+public class Specialists
 {
-
     [Header("Identification")]
     [SerializeField] private long identification = 0;
     [SerializeField] private Sprite sprite = null;
@@ -65,7 +65,6 @@ public class Specialists : ScriptableObject
             return ( (float)currentHP / (float)maxHP ) * 100;
         }
     }
-
     public float PercentStamina
     {
         get

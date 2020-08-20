@@ -93,7 +93,7 @@ public class SpecialistXmlLoader : MonoBehaviour
                     spec.Story = secondItem.GetStrStat("SpecStory");
                 }
             }
-            spec.name = spec.FullName + " - " + spec.Povolani; // for unity inspector.
+           // spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
             spec.ReCalcAutoStats();
 
 
