@@ -18,6 +18,9 @@ public class ResourceSpriteLoader : MonoBehaviour
     [SerializeField]
     private List<Sprite> specResources = new List<Sprite>();
 
+    [SerializeField]
+    private List<Sprite> buildingResources = new List<Sprite>();
+
     [Space]
     [SerializeField] private Sprite defaultResource;
 
@@ -30,6 +33,11 @@ public class ResourceSpriteLoader : MonoBehaviour
     public Sprite LoadMissionSprite(string resourceName)
     {
         return this.missionResources.Find(sprite => sprite.name == resourceName);
+    }
+
+    public Sprite LoadBuildingSprite(string resourceName)
+    {
+        return this.buildingResources.Find(sprite => sprite.name == resourceName);
     }
 
     public Sprite FindEventResource (string resourceName)

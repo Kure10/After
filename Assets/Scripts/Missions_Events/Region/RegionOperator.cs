@@ -7,20 +7,20 @@ public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] Region region;
+
+    [SerializeField] private string exploreMissionID;
+
     [SerializeField] GameObject exploreQuestionButton;
 
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
     private RegionControler regionControler;
 
-    // info about region
-    private bool currentRegionIsExplored = false; // atim se nepouziva ale asi bude
-
     private Image image;
 
     #region Properities
 
-    public bool SetCurrentRegionIsExplored { set { currentRegionIsExplored = value; } } // myslim si ze to budu potrebovat na rozeznani typu misse
+    public string ExploreMissionID { get { return this.exploreMissionID; } }
 
     #endregion
 
@@ -57,13 +57,12 @@ public class RegionOperator : MonoBehaviour
             {
                 if (item.CurrentMission.Id == missionID)
                     item.TemporarilyInactive(true);
-
             }
 
         }
         else
         {
-            
+            // neni opakovatelne
         }
 
         //  regionControler.RefreshRegions();
@@ -100,8 +99,19 @@ public class RegionOperator : MonoBehaviour
         if (this.region.IsExplored || this.region.IsInDarkness)
             return;
 
-        exploreQuestionButton.SetActive(true);
-        exploreQuestionButton.transform.position = Input.mousePosition;
+        long exploreMissionId;
+        bool result = long.TryParse(exploreMissionID,out exploreMissionId);
+        if (regionControler.AskControllerIsMissionInProgress(exploreMissionId))
+        {
+            // misse je in progrss..... Nedelej nic dvakrat stejna misse in progress
+            // nejaky warning
+            return;
+        }
+
+        regionControler.StartExploreMision(this);
+
+        //exploreQuestionButton.SetActive(true);
+        //exploreQuestionButton.transform.position = Input.mousePosition;
     }
 
     private void ActivateAdditionalMissions(bool activate)
@@ -116,16 +126,6 @@ public class RegionOperator : MonoBehaviour
                 this.regionControler.AskManagerToMission(item, this);
             }
         }
-    }
-
-
-    public void StartExploreMission()
-    {
-        regionControler.StartExploreMision(this);
-    }
-    public void CloseExplorePanel()
-    {
-        this.exploreQuestionButton.SetActive(false);
     }
 
     public Image GetImage()

@@ -83,6 +83,14 @@ public class BuildingBlueprint : ScriptableObject
         return sector;
     }
 
+    public void SetColor(int Red, int Green, int Blue)
+    {
+        this.backgroundColor.r = Red;
+        this.backgroundColor.g = Green;
+        this.backgroundColor.b = Blue;
+        this.backgroundColor.a = 255;
+    }
+
     public Sector ConvertSectorStringData(string data)
     {
         switch (data)

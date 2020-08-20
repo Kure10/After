@@ -12,6 +12,7 @@ public class RegionControler : MonoBehaviour
 
     private RegionOperator[] arrayOfregionsOperator;
     private MissionManager missionManager;
+    private MissionController missionController;
 
     //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
     //public delegate void OnExploreButtonClick();
@@ -21,17 +22,7 @@ public class RegionControler : MonoBehaviour
     {
         arrayOfregionsOperator = FindObjectsOfType<RegionOperator>();
         missionManager = GameObject.FindGameObjectWithTag("MissionManager").GetComponent<MissionManager>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        missionController = FindObjectOfType<MissionController>();
     }
 
     public void ChangeRegionState(Region region, Image regionImage)
@@ -67,7 +58,7 @@ public class RegionControler : MonoBehaviour
 
     public void StartExploreMision(RegionOperator regionOperator)
     {
-        missionManager.ChoiseMission(regionOperator , true);
+        missionManager.ChoiseMission(regionOperator, true);
     }
 
     public void AskManagerToMission(uButtonAdditionalMission mission, RegionOperator regionOperator)
@@ -75,5 +66,9 @@ public class RegionControler : MonoBehaviour
         missionManager.ChoiseMissionForRegionButton(mission, regionOperator);
     }
 
+    public bool AskControllerIsMissionInProgress(long missionId)
+    {
+        return missionController.IsMissionInProgress(missionId);
+    }
 
 }

@@ -18,26 +18,29 @@ public class MissionManager : MonoBehaviour
 
     public void ChoiseMission(RegionOperator regionOperator, bool isExploreMission = false)
     {
-        int i = 0;
-        Mission mission = new Mission();
-        // vyber explore missi nebo vsechny ostatni..
-        if (isExploreMission)
-        {
-            i = Random.Range(0, exploreMissions.Count);
-            mission = exploreMissions[i];
-        }
-        else
-        {
-            i = Random.Range(0, othersMissions.Count);
-            mission = othersMissions[i];
-        }
+        Mission choisedMission = FindMissionFromList(regionOperator.ExploreMissionID, isExploreMission);
 
-        ShowMissionPanel(mission, regionOperator);
-
+        ShowMissionPanel(choisedMission, regionOperator);
     }
 
+    // This method need to be one with ChoiseMission Method
+    public void ChoiseMissionForRegionButton(uButtonAdditionalMission mission, RegionOperator regionOperator)
+    {
+        Mission choisedMission = FindMissionFromList(mission.StringId, false);
+
+        Button additionMissionButton = mission.gameObject.GetComponent<Button>();
+        additionMissionButton.onClick.RemoveAllListeners();
+        additionMissionButton.onClick.AddListener(delegate () { ShowMissionPanel(choisedMission, regionOperator); });
+    }
     private void ShowMissionPanel(Mission mission, RegionOperator regionOperator)
     {
+        // tady musi byt check jestli misse už neprobíha..
+        if (this.theMC.IsMissionInProgress(mission.Id))
+        {
+            Debug.LogError("Misse je in progress -> znovu nelze zpustit.");
+            return;
+        }
+
         theMC.windowMission.MissionName = mission.Name;
         theMC.windowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
         theMC.windowMission.MissionDistance = mission.Distance;
@@ -58,26 +61,23 @@ public class MissionManager : MonoBehaviour
         theMC.windowMission.SetActivityMissionPanel = true;
     }
 
-
-    // This method need to be one with ChoiseMission Method
-    public void ChoiseMissionForRegionButton(uButtonAdditionalMission mission,RegionOperator regionOperator)
+    private Mission FindMissionFromList(string missionId, bool isExplorationMission)
     {
-
-        mission.CurrentMission = othersMissions.Find(x => x.Id.ToString() == mission.StringId);
-
+        Mission choisedMission = null;
         // Tedka mužu z listu misi odstranit.. Protože ji asi už tady nebudu potrebovat. 
         // Je to asi dobra optimalizace...  Uvidime pozdeji.
-        if (mission.CurrentMission == null)
-        {
-            Debug.LogError("Error in MissionManager.Cs ___ Mission For Button Was not found");
-            return;
-        }
 
-        Button additionMissionButton = mission.gameObject.GetComponent<Button>();
-        additionMissionButton.onClick.RemoveAllListeners();
-        additionMissionButton.onClick.AddListener(delegate() { ShowMissionPanel(mission.CurrentMission, regionOperator);});
+
+        // missionId je string a porovnavam s longem .. Cheknout jestli funguje.
+        if (isExplorationMission)
+            choisedMission = exploreMissions.Find(x => x.Id.ToString() == missionId);
+        else
+            choisedMission = othersMissions.Find(x => x.Id.ToString() == missionId);
+
+        if (choisedMission == null)
+            Debug.LogError("Error in MissionManager.Cs ___ Mission Was not found in list..");
+
+        return choisedMission;
     }
-
-
 
 }

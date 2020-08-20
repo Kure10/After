@@ -60,11 +60,11 @@ public class MissionInfoController : MonoBehaviour
 
         if (missionComplete)
         {
-            description = miss.Name.ToString() + " Mission Complete! ";
+            description = miss.Name + " Mission Complete! ";
             return description;
         }
 
-        description = miss.Name.ToString() +  " Time Remains: " + miss.Distance.ToString("N0");
+        description = miss.Name +  " Time Remains: " + miss.Distance.ToString("N0");
         return description;
     }
 

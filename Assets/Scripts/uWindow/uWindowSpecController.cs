@@ -22,7 +22,7 @@ public class uWindowSpecController : MonoBehaviour
     public void AddSpecHolder(Specialists spec)
     {
         GameObject ga = Instantiate(panelSpecialist);
-        ga.transform.parent = this.transform;
+        ga.transform.SetParent(this.transform);
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
         activeSpecWindows.Add(uWindowSpec);

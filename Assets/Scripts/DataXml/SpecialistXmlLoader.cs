@@ -84,9 +84,7 @@ public class SpecialistXmlLoader : MonoBehaviour
                 Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
             }
 
-
             // for data which can be translated
-            // pls optimalizovat totto :DDD
             foreach (StatsClass secondItem in secondStatClass)
             {
                 if (item.Title == secondItem.Title)
@@ -95,7 +93,7 @@ public class SpecialistXmlLoader : MonoBehaviour
                     spec.Story = secondItem.GetStrStat("SpecStory");
                 }
             }
-            spec.name = spec.FullName + " - " + spec.Povolani; // for unity inspector.
+           // spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
             spec.ReCalcAutoStats();
 
 
