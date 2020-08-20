@@ -21,7 +21,7 @@ public class BuildingXmlLoader : MonoBehaviour
         List<StatsClass> XMLAdditionalData = new List<StatsClass>();
         List<BuildingBlueprint> allBuildings = new List<BuildingBlueprint>();
 
-        string path = "Assets/Data/XML/Testing Mission Data";
+        string path = "Assets/Data/XML";
         string fileName = "Rooms";
         string fileNameCZ = "Rooms-CZ";
         ResolveMaster resolveMaster = new ResolveMaster();
@@ -38,10 +38,10 @@ public class BuildingXmlLoader : MonoBehaviour
 
         allBuildings = DeSerializedData(XMLLoadedData, XMLAdditionalData);
 
-        ResolveSlave slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[0].Title);
-        //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
-        slave.StartResolve();
-        var output = slave.Resolve();
+        //ResolveSlave slave = resolveMaster.AddDataSlave("Rooms", resolveMaster.GetDataKeys("Rooms")[0].Title);
+        ////slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
+        //slave.StartResolve();
+        //var output = slave.Resolve();
 
         return allBuildings;
     }

@@ -73,7 +73,8 @@ public class BuildingButtonBuilder : MonoBehaviour
         {
             return;
         }
-        BackgroundImage.sprite = bm.GetSprite(buildingBlueprint.GetSector());
+
+        BackgroundImage.sprite =  bm.GetSprite(buildingBlueprint.GetSector()); // buildingBlueprint.Sprite;
 
         BroadcastMessage("CacheBuilding", buildingBlueprint);
     }

@@ -16,6 +16,8 @@ public class BuildingManager : MonoBehaviour
 
     private Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
 
+    private BuildingXmlLoader xmlLoader;
+
     public List<BuildingBlueprint> GetBuildingList()
     {
         return buildings;
@@ -23,10 +25,15 @@ public class BuildingManager : MonoBehaviour
 
     private void Awake()
     {
+        this.xmlLoader = gameObject.GetComponent<BuildingXmlLoader>();
+        buildings = this.xmlLoader.GetBuildingsFromXML();
+
+
         SetUpDictionary();
     }
 
     
+    // obsolete Destroy as soon is posible
     private void SetUpDictionary()
     {
         backgroundImages.Add(Sector.Cela, sprites[0]);
@@ -40,6 +47,7 @@ public class BuildingManager : MonoBehaviour
         backgroundImages.Add(Sector.Laborator, sprites[8]);
     }
 
+    // obsolete Destroy as soon is posible
     public Sprite GetSprite (Sector sector)
     {
         Sprite sprite;
