@@ -25,8 +25,8 @@ public class BuildingManager : MonoBehaviour
 
     private void Awake()
     {
-        this.xmlLoader = gameObject.GetComponent<BuildingXmlLoader>();
-        buildings = this.xmlLoader.GetBuildingsFromXML();
+        //this.xmlLoader = gameObject.GetComponent<BuildingXmlLoader>();
+        //buildings = this.xmlLoader.GetBuildingsFromXML();
 
 
         SetUpDictionary();
