@@ -88,8 +88,7 @@ public class MissionController : MonoBehaviour
                     }
                     else
                     {
-                       
-                      //  procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id);
+                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id);
                     }
                     
                 }
@@ -109,7 +108,7 @@ public class MissionController : MonoBehaviour
         //player gets reward
 
         // more shits
-
+        mission.Distance = mission.InitialDistance;
         missionsInProcces.Remove(mission); 
         infoController.DeleteFromInfoRow(mission);
     }

@@ -69,6 +69,8 @@ public class Mission
 
     public float RepeatableTime = 0;
 
+    private float initialDistance;
+
     #endregion
 
     #region Properitiers
@@ -82,6 +84,8 @@ public class Mission
     public string Description { get { return this.description; } set { this.description = value; } }
 
     public float Distance { get { return this.distance; } set { this.distance = value; } }
+
+    public float InitialDistance { get { return this.initialDistance; } set { this.initialDistance = value; } }
 
     public Sprite Image { get { return this.image; } set { this.image = value; } }
 
@@ -183,7 +187,7 @@ public class Mission
     {
         switch (data)
         {
-            case "Pruzkum_oblasti":
+            case "PruzObl":
                 return MissionType.pruzkum_oblasti;
             case "Pruzkum":
                 return MissionType.pruzkum;

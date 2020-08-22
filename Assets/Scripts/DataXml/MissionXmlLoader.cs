@@ -22,7 +22,7 @@ public class MissionXmlLoader : MonoBehaviour
         List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
         List<Mission> allMissions = new List<Mission>();
 
-        string path = "Assets/Data/XML/Testing Mission Data";
+        string path = "Assets/Data/XML";
         string fileName = "Missions";
         string fileNameCZ = "Missions-CZ";
         ResolveMaster resolveMaster = new ResolveMaster();
@@ -86,12 +86,18 @@ public class MissionXmlLoader : MonoBehaviour
                 newMission.AddTerrain(terrain);
             }
             newMission.Distance = item.GetIntStat("Time"); // delka mise
+            newMission.InitialDistance = newMission.Distance;
             newMission.SpecMin = item.GetIntStat("SpecMin");
             newMission.SpecMax = item.GetIntStat("SpecMax");
             newMission.NeededTransport = item.GetStrStat("Transport");
             newMission.EventsMin = item.GetIntStat("EventsMin");
             newMission.EventsMax = item.GetIntStat("EventsMax");
             newMission.RepeatableIn = item.GetIntStat("IsRepeatable");
+
+            if (newMission.Id == 20203953155497)
+            {
+                Debug.Log("jsem tady");
+            }
 
             // for data which can be translated
             foreach (StatsClass secondItem in secondStatClass)

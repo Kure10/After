@@ -10,8 +10,6 @@ public class RegionOperator : MonoBehaviour
 
     [SerializeField] private string exploreMissionID;
 
-    [SerializeField] GameObject exploreQuestionButton;
-
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
     private RegionControler regionControler;
@@ -48,8 +46,11 @@ public class RegionOperator : MonoBehaviour
     {
         // is repeate budu potrebovat na to abych schoval tlacitko nebo ukazal
 
-        if (this.region.AmountToUnlockedNeighborhodRegions > 0)
-            this.region.AmountToUnlockedNeighborhodRegions -= 1;
+        foreach (Region item in region.neighborhoodRegions)
+        {
+            item.AmountToUnlockedNeighborhodRegions -= 1;
+        }
+
 
         if (isRepeate)
         {
@@ -110,8 +111,6 @@ public class RegionOperator : MonoBehaviour
 
         regionControler.StartExploreMision(this);
 
-        //exploreQuestionButton.SetActive(true);
-        //exploreQuestionButton.transform.position = Input.mousePosition;
     }
 
     private void ActivateAdditionalMissions(bool activate)
