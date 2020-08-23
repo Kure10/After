@@ -57,10 +57,32 @@ public class uButtonAdditionalMission : uButton
 
     }
 
+    public void MissionWasCompleted()
+    {
+        SetColor();
+        Button but = this.GetComponent<Button>();
+        but.onClick.RemoveAllListeners();
+        but.onClick.AddListener(MissionAlreadyDone); // Warning meeesage this mission was already done..
+
+
+    }
+
+
     //void OnEnable()
     //{
     //    Debug.Log("Mission Button was anabled: -> name of mission:  " + this.currentMission.Name);
     //}
 
+    private void SetColor()
+    {
+        Image img = this.GetComponent<Image>();
+        Color col = new Color(155, 155, 155);
+        img.color = col;
+    }
+
+    private void MissionAlreadyDone()
+    {
+        Debug.Log("this mission was done...");
+    }
 
 }

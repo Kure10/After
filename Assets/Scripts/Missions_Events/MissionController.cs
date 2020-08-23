@@ -82,13 +82,16 @@ public class MissionController : MonoBehaviour
                         if (!procesingMission.WasSuccessfullyExecuted)
                         {
                             procesingMission.WasSuccessfullyExecuted = true;
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id,true);
+                        }
+                        else
+                        {
                             procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id);
                         }
-
                     }
                     else
                     {
-                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id);
+                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id,true);
                     }
                     
                 }

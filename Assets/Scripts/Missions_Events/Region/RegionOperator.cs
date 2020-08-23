@@ -42,15 +42,16 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void CompleteMission(bool isRepeate , long missionID)
+    public void CompleteMission(bool isRepeate , long missionID , bool unlockNeighborhodRegions = false)
     {
         // is repeate budu potrebovat na to abych schoval tlacitko nebo ukazal
-
-        foreach (Region item in region.neighborhoodRegions)
+        if(unlockNeighborhodRegions)
         {
-            item.AmountToUnlockedNeighborhodRegions -= 1;
+            foreach (Region item in region.neighborhoodRegions)
+            {
+                item.AmountToUnlockedNeighborhodRegions -= 1;
+            }
         }
-
 
         if (isRepeate)
         {
@@ -63,7 +64,12 @@ public class RegionOperator : MonoBehaviour
         }
         else
         {
-            // neni opakovatelne
+
+            foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
+            {
+                if (item.CurrentMission.Id == missionID)
+                    item.MissionWasCompleted();
+            }
         }
 
         //  regionControler.RefreshRegions();
