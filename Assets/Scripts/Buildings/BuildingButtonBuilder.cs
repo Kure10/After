@@ -76,7 +76,7 @@ public class BuildingButtonBuilder : MonoBehaviour
 
         BackgroundImage.sprite =  bm.GetSprite(buildingBlueprint.GetSector()); // buildingBlueprint.Sprite;
 
-        BroadcastMessage("CacheBuilding", buildingBlueprint);
+        this.GetComponent<BuildingOnUse>().CacheBuilding(buildingBlueprint);
     }
 
 }

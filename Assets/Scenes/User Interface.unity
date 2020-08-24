@@ -219,7 +219,7 @@ PrefabInstance:
     - target: {fileID: 4504078426715387512, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 164.8
       objectReference: {fileID: 0}
     - target: {fileID: 4504078426715387512, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
@@ -3467,7 +3467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 44.45703, y: -40.30139}
+  m_AnchoredPosition: {x: 44.45703, y: -40.300415}
   m_SizeDelta: {x: -88.913, y: -80.61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &327782256
@@ -5071,6 +5071,7 @@ Transform:
   - {fileID: 759535407}
   - {fileID: 65523578}
   - {fileID: 198571428}
+  - {fileID: 644216592}
   m_Father: {fileID: 1128306967}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7658,6 +7659,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 641653998}
   m_CullTransparentMesh: 0
+--- !u!1 &644216591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 644216592}
+  - component: {fileID: 644216593}
+  m_Layer: 0
+  m_Name: BuildingController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &644216592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644216591}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 438348350}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &644216593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644216591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c50d0d8c0b157c478966a82cf323868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ubikace: {fileID: 1510336998}
+  dilna: {fileID: 203312787}
+  sklad: {fileID: 1243951765}
+  strojovna: {fileID: 274614715}
+  strilna: {fileID: 1269666689}
+  vezeni: {fileID: 106265433}
+  laborator: {fileID: 996563828}
+  agregat: {fileID: 40797460}
+  garaz: {fileID: 1314516269}
+  kaple: {fileID: 2077365558}
+  buildingPrefab: {fileID: 4642538365325525972, guid: 68c55deea3924b243bbe5d490cf7b088,
+    type: 3}
 --- !u!1 &648658586
 GameObject:
   m_ObjectHideFlags: 0

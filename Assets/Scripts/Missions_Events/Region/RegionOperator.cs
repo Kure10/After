@@ -64,7 +64,6 @@ public class RegionOperator : MonoBehaviour
         }
         else
         {
-
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
                 if (item.CurrentMission.Id == missionID)
