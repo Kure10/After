@@ -18,7 +18,9 @@ public class MissionManager : MonoBehaviour
 
     public void ChoiseMission(RegionOperator regionOperator, bool isExploreMission = false)
     {
-        Mission choisedMission = FindMissionFromList(regionOperator.ExploreMissionID, isExploreMission);
+        Mission choisedMission = FindMissionWithPointer(regionOperator.Region.MapArena);
+
+       // Mission choisedMission = FindMissionFromList(regionOperator.ExploreMissionID, isExploreMission);
 
         ShowMissionPanel(choisedMission, regionOperator);
     }
@@ -35,7 +37,7 @@ public class MissionManager : MonoBehaviour
     private void ShowMissionPanel(Mission mission, RegionOperator regionOperator)
     {
         // tady musi byt check jestli misse už neprobíha..
-        if (this.theMC.IsMissionInProgress(mission.Id))
+        if (this.theMC.IsMissionInProgress(mission.MissionPointer))
         {
             Debug.LogError("Misse je in progress -> znovu nelze zpustit.");
             return;
@@ -78,6 +80,19 @@ public class MissionManager : MonoBehaviour
             Debug.LogError("Error in MissionManager.Cs ___ Mission Was not found in list..");
 
         return choisedMission;
+    }
+
+    public Mission FindMissionWithPointer(string pointer)
+    {
+        foreach (Mission item in exploreMissions)
+        {
+            if(item.MissionPointer == pointer)
+            {
+                return item;
+            }
+        }
+
+        return null;
     }
 
 }

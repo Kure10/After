@@ -7,9 +7,7 @@ public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField] Region region;
-
-    [SerializeField] private string exploreMissionID;
-
+    [SerializeField] string regionIdentifikator;
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
     private RegionControler regionControler;
@@ -18,16 +16,15 @@ public class RegionOperator : MonoBehaviour
 
     #region Properities
 
-    public string ExploreMissionID { get { return this.exploreMissionID; } }
+    public Region Region { get { return this.region; } set { this.region = value; } }
+
+    public string RegionIdentifikator { get { return this.regionIdentifikator; } set { this.regionIdentifikator = value; } }
 
     #endregion
 
     private void Awake()
     {
         this.regionControler = GameObject.FindObjectOfType<RegionControler>();
-        image = GetComponent<Image>();
-        image.sprite = this.region.GetSprite;
-        InicializationRegion();
     }
 
 
@@ -49,7 +46,7 @@ public class RegionOperator : MonoBehaviour
         {
             foreach (Region item in region.neighborhoodRegions)
             {
-                item.AmountToUnlockedNeighborhodRegions -= 1;
+                item.MissCompReq -= 1;
             }
         }
 
@@ -87,6 +84,9 @@ public class RegionOperator : MonoBehaviour
 
     public void InicializationRegion()
     {
+        this.image = GetComponent<Image>();
+        image.sprite = this.region.Sprite;
+        image.color = new Color(255, 255, 255);
         this.name = this.region.regionName;
         if (this.region.IsStartingRegion)
         {
@@ -105,9 +105,7 @@ public class RegionOperator : MonoBehaviour
         if (this.region.IsExplored || this.region.IsInDarkness)
             return;
 
-        long exploreMissionId;
-        bool result = long.TryParse(exploreMissionID,out exploreMissionId);
-        if (regionControler.AskControllerIsMissionInProgress(exploreMissionId))
+        if (regionControler.AskControllerIsMissionInProgress(region.MapArena))
         {
             // misse je in progrss..... Nedelej nic dvakrat stejna misse in progress
             // nejaky warning

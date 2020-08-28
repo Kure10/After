@@ -34,6 +34,8 @@ public class Mission
 
     private int specMax;
 
+    private string missionPointer;
+
     private string neededTransport; // možna to neni transport co potřebuji ale jaky se na ten event da použit jako bonus.. nevim
 
     private int finalEventId;
@@ -80,6 +82,8 @@ public class Mission
     public long Id { get { return this.id; } set { this.id = value; } }
 
     public string Name { get { return this._name; } set { this._name = value; } }
+
+    public string MissionPointer { get { return this.missionPointer; } set { this.missionPointer = value; } }
 
     public string Description { get { return this.description; } set { this.description = value; } }
 

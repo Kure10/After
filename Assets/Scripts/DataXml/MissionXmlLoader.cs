@@ -93,11 +93,7 @@ public class MissionXmlLoader : MonoBehaviour
             newMission.EventsMin = item.GetIntStat("EventsMin");
             newMission.EventsMax = item.GetIntStat("EventsMax");
             newMission.RepeatableIn = item.GetIntStat("IsRepeatable");
-
-            if (newMission.Id == 20203953155497)
-            {
-                Debug.Log("jsem tady");
-            }
+            newMission.MissionPointer = item.GetStrStat("MissionPointer");
 
             // for data which can be translated
             foreach (StatsClass secondItem in secondStatClass)

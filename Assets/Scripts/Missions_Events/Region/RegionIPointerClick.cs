@@ -20,7 +20,7 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             Region regionToExplore = this.regionOperator.GetRegion();
-            if (regionToExplore.AmountToUnlockedNeighborhodRegions <= 0 || regionToExplore.IsStartingRegion)
+            if (regionToExplore.MissCompReq <= 0 || regionToExplore.IsStartingRegion)
             {
                 regionOperator.OpenExplorePanel();
             }
@@ -28,7 +28,7 @@ public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
             {
                 Debug.Log("Region " + regionToExplore.RegionName +
                           "  nelze prozkoumat, neni dokonceno spravne mnozstvi q v okolnim regionu: " +
-                          regionToExplore.AmountToUnlockedNeighborhodRegions);
+                          regionToExplore.MissCompReq);
             }
                 
 

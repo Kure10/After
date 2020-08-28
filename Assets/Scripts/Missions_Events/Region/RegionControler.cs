@@ -10,9 +10,10 @@ public class RegionControler : MonoBehaviour
     public Color black = new Color(0, 0, 0, 1f);
     public Color idleColor = new Color(1, 1, 1, 1);
 
-    private RegionOperator[] arrayOfregionsOperator;
+    [SerializeField]private RegionOperator[] arrayOfRegionsOperator;
     private MissionManager missionManager;
     private MissionController missionController;
+    private RegionManager regionManager;
 
     //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
     //public delegate void OnExploreButtonClick();
@@ -20,10 +21,12 @@ public class RegionControler : MonoBehaviour
 
     private void Awake()
     {
-        arrayOfregionsOperator = FindObjectsOfType<RegionOperator>();
+        regionManager = FindObjectOfType<RegionManager>();
+       // arrayOfregionsOperator = FindObjectsOfType<RegionOperator>();
         missionManager = GameObject.FindGameObjectWithTag("MissionManager").GetComponent<MissionManager>();
         missionController = FindObjectOfType<MissionController>();
     }
+
 
     public void ChangeRegionState(Region region, Image regionImage)
     {
@@ -32,7 +35,7 @@ public class RegionControler : MonoBehaviour
 
     public void RefreshRegions()
     {
-        foreach (RegionOperator item in arrayOfregionsOperator)
+        foreach (RegionOperator item in arrayOfRegionsOperator)
         {
             var regionImage = item.GetImage();
             var region = item.GetRegion();
@@ -66,9 +69,25 @@ public class RegionControler : MonoBehaviour
         missionManager.ChoiseMissionForRegionButton(mission, regionOperator);
     }
 
-    public bool AskControllerIsMissionInProgress(long missionId)
+    public bool AskControllerIsMissionInProgress(string missionId)
     {
         return missionController.IsMissionInProgress(missionId);
+    }
+
+    public void SetRegions(List<Region> allRegions)
+    {
+        foreach (RegionOperator item in arrayOfRegionsOperator)
+        {
+            foreach (Region reg in allRegions)
+            {
+                if (item.RegionIdentifikator == reg.MapArena)
+                {
+                    item.Region = reg;
+                    item.InicializationRegion();
+                    break;
+                }
+            }
+        }
     }
 
 }

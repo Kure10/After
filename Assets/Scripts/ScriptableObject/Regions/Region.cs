@@ -6,31 +6,41 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "ScriptableObject/Region", fileName = "_NewRegion")]
 public class Region : ScriptableObject
 {
+    private long id;
     [SerializeField] private Sprite sprite;
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
-    [SerializeField] private int amountCompletedMissionsToNextRegion = -1;
+    [SerializeField] private int missCompReq = -1;
     private bool isEnoughtExplored = false;
     private bool isExplored = false;  // Obeven -> na vyber jsou misse v Regionu.
     private bool isInShadow = false; //  Pokud je soused isExplored == true , Je v Shadow. OFC pokud sam neni Explored.
     private bool isInDarkness = true; // Počateční stav.  Je neaktivni cerny..
 
+    private string mapArena;
+    private string mapZoneDif;
+
+    public string MapArena { get { return this.mapArena; } set { this.mapArena = value; } }
+
+    public string MapZoneDif { get { return this.mapZoneDif; } set { this.mapZoneDif = value; } }
+
+    public long Id { get { return this.id; } set { this.id = value; } }
+
     public List<Region> neighborhoodRegions = new List<Region>();
 
-    public string RegionName
+    public List<string> neighborhoodRegionsPointer = new List<string>();
+
+    public string RegionName { get { return this.regionName;} set { this.regionName = value; } }
+
+    public int MissCompReq
     {
-        get { return this.regionName;}
+        get { return this.missCompReq; }
+        set { this.missCompReq = value; }
     }
 
-    public int AmountToUnlockedNeighborhodRegions
+    public Sprite Sprite
     {
-        get { return this.amountCompletedMissionsToNextRegion; }
-        set { this.amountCompletedMissionsToNextRegion = value; }
-    }
-
-    public Sprite GetSprite
-    {
-        get { return sprite; }
+        get { return this.sprite; }
+        set { this.sprite = value; }
     }
 
     public bool IsStartingRegion
@@ -87,22 +97,5 @@ public class Region : ScriptableObject
             item.IsInShadow = true;
         }
     }
-
-    //public bool AreNeighborsRegionEnoughtExplored()
-    //{
-    //    foreach (Region item in neighborhoodRegions)
-    //    {
-    //        if(item.isInDarkness || item.isInShadow)
-    //            continue;
-            
-    //        if(item.)
-
-
-    //    }
-
-
-    //    return false;
-    //}
-
 
 }

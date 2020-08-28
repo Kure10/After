@@ -198,13 +198,14 @@ public class MissionController : MonoBehaviour
         }
     }
 
-    public bool IsMissionInProgress(long id)
+    public bool IsMissionInProgress(string missionPointer)
     {
         foreach (Mission item in this.missionsInProcces)
         {
-            if (id == item.Id)
+            if (missionPointer == item.MissionPointer)
                 return true;
         }
+
         return false;
     }
 
