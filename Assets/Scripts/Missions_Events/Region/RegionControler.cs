@@ -10,10 +10,10 @@ public class RegionControler : MonoBehaviour
     public Color black = new Color(0, 0, 0, 1f);
     public Color idleColor = new Color(1, 1, 1, 1);
 
-    [SerializeField]private RegionOperator[] arrayOfRegionsOperator;
+    [SerializeField] private RegionOperator[] arrayOfRegionsOperator;
     private MissionManager missionManager;
     private MissionController missionController;
-    private RegionManager regionManager;
+    [SerializeField] private RegionManager regionManager;
 
     //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
     //public delegate void OnExploreButtonClick();
@@ -21,8 +21,6 @@ public class RegionControler : MonoBehaviour
 
     private void Awake()
     {
-        regionManager = FindObjectOfType<RegionManager>();
-       // arrayOfregionsOperator = FindObjectsOfType<RegionOperator>();
         missionManager = GameObject.FindGameObjectWithTag("MissionManager").GetComponent<MissionManager>();
         missionController = FindObjectOfType<MissionController>();
     }
@@ -83,11 +81,10 @@ public class RegionControler : MonoBehaviour
                 if (item.RegionIdentifikator == reg.MapArena)
                 {
                     item.Region = reg;
-                    item.InicializationRegion();
+                    item.InicializationRegion(this);
                     break;
                 }
             }
         }
     }
-
 }

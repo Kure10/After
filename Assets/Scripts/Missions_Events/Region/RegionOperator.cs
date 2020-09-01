@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] Region region;
+     private Region region;
     [SerializeField] string regionIdentifikator;
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
@@ -24,9 +24,9 @@ public class RegionOperator : MonoBehaviour
 
     private void Awake()
     {
-        this.regionControler = GameObject.FindObjectOfType<RegionControler>();
+        if(this.regionControler == null)
+            this.regionControler = GameObject.FindObjectOfType<RegionControler>();
     }
-
 
     public void ExploreRegion()
     {
@@ -82,11 +82,14 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void InicializationRegion()
+    public void InicializationRegion(RegionControler regionControler)
     {
+        if (regionControler == null)
+            this.regionControler = regionControler;
+
         this.image = GetComponent<Image>();
         image.sprite = this.region.Sprite;
-        image.color = new Color(255, 255, 255);
+       // image.color = new Color(255, 255, 255, 255);
         this.name = this.region.regionName;
         if (this.region.IsStartingRegion)
         {
@@ -98,6 +101,7 @@ public class RegionOperator : MonoBehaviour
         }
         this.ActivateAdditionalMissions(false);
         regionControler.ChangeRegionState(this.region, this.image);
+        
     }
 
     public void OpenExplorePanel()

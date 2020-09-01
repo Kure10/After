@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class RegionManager : MonoBehaviour
 {
+    [SerializeField] private RegionControler regionControler;
+
     [SerializeField] List<Region> allRegions = new List<Region>();
 
     private RegionXmlLoader xmlLoader;
-    [SerializeField ]private RegionControler regionControler;
+
+
+    public List<Region> AllRegions { get { return allRegions; } }
+
 
     private void Awake()
     {
@@ -15,5 +20,4 @@ public class RegionManager : MonoBehaviour
         allRegions = xmlLoader.GetRegionsFromXml();
         regionControler.SetRegions(allRegions);
     }
-
 }

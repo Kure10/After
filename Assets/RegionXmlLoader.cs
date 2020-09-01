@@ -49,6 +49,20 @@ public class RegionXmlLoader : MonoBehaviour
             {
                 reg.neighborhoodRegionsPointer.Add(result[i].GetStrStat("MapNeighbor"));
             }
+
+            foreach (var item in allRegions)
+            {
+                for (int i = 0; i < reg.neighborhoodRegionsPointer.Count; i++)
+                {
+                    string txt = reg.neighborhoodRegionsPointer[i];
+                    if (txt == item.MapArena)
+                    {
+                        reg.neighborhoodRegions.Add(item);
+                    }
+                }
+            }
+
+
         }
 
         return allRegions;
@@ -76,6 +90,14 @@ public class RegionXmlLoader : MonoBehaviour
             newRegion.MissCompReq = item.GetIntStat("MissCompReq");
             newRegion.MapZoneDif = item.GetStrStat("MapZoneDif");
             newRegion.Sprite = spriteLoader.LoadRegionSprite(regionMapSprite);
+
+            if(newRegion.MapArena == "Pole01")
+            {
+                newRegion.IsStartingRegion = true;
+            }
+
+            newRegion.name = newRegion.MapArena + " - " + newRegion.RegionName;
+
             allRegions.Add(newRegion);
         }
 

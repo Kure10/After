@@ -67,7 +67,7 @@ public class MissionController : MonoBehaviour
 
             if (missionsInProcces[i].Distance <= 0)
             {
-                Debug.Log("mission is done");
+                Debug.Log("mission is done!!!");
 
                 if (procesingMission.Type == MissionType.pruzkum_oblasti)
                 {

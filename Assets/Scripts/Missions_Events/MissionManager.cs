@@ -84,9 +84,12 @@ public class MissionManager : MonoBehaviour
 
     public Mission FindMissionWithPointer(string pointer)
     {
+
+        string subString = pointer.Substring(pointer.Length -2);
+
         foreach (Mission item in exploreMissions)
         {
-            if(item.MissionPointer == pointer)
+            if(item.MissionPointer.Contains(subString))
             {
                 return item;
             }

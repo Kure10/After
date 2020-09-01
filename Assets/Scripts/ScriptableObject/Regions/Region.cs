@@ -46,6 +46,7 @@ public class Region : ScriptableObject
     public bool IsStartingRegion
     {
         get { return isStartingRegion; }
+        set { this.isStartingRegion = value; }
     }
 
     public bool IsInShadow
