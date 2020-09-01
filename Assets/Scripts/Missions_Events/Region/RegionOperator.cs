@@ -55,7 +55,7 @@ public class RegionOperator : MonoBehaviour
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
                 if (item.CurrentMission.Id == missionID)
-                    item.TemporarilyInactive(true);
+                    item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsDeActivate);
             }
 
         }
@@ -64,7 +64,7 @@ public class RegionOperator : MonoBehaviour
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
                 if (item.CurrentMission.Id == missionID)
-                    item.MissionWasCompleted();
+                    item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsAlreadyCompleted);
             }
         }
 
@@ -77,7 +77,7 @@ public class RegionOperator : MonoBehaviour
         foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
         {
             if (item.CurrentMission.Id == mission.Id)
-                item.TemporarilyInactive(false);
+                item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsReActivate);
 
         }
     }
@@ -106,18 +106,32 @@ public class RegionOperator : MonoBehaviour
 
     public void OpenExplorePanel()
     {
-        if (this.region.IsExplored || this.region.IsInDarkness)
+        if (this.region.IsInDarkness)
+        {
+            Debug.Log("Region is in dargknesss  -> ToDo");
             return;
-
-        if (regionControler.AskControllerIsMissionInProgress(region.MapArena))
+        }
+        else if (this.region.IsExplored)
+        {
+            Debug.Log("Region is Explore  -> ToDo");
+            return;
+        }
+        else if (regionControler.AskControllerIsMissionInProgress(region.MapArena))
         {
             // misse je in progrss..... Nedelej nic dvakrat stejna misse in progress
             // nejaky warning
             return;
         }
-
-        regionControler.StartExploreMision(this);
-
+        else if (this.region.MissCompReq <= 0 || this.region.IsStartingRegion)
+        {
+            regionControler.StartExploreMision(this);
+        }
+        else
+        {
+            Debug.Log("Region: " + this.region.RegionName +
+                      "  nelze prozkoumat, neni dokonceno spravne mnozstvi q v okolnim regionu: " +
+                      this.region.MissCompReq);
+        }
     }
 
     private void ActivateAdditionalMissions(bool activate)

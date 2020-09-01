@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class uButtonAdditionalMission : uButton
 {
     [SerializeField] private string missionId;
 
-    private Mission currentMission;
-    private Button.ButtonClickedEvent evt;
+    private Button additionMissionButton;
+
+    private Mission currentMission; // obsolete.. 
 
     #region Properities
     public string StringId
@@ -23,6 +25,12 @@ public class uButtonAdditionalMission : uButton
 
     #endregion Properities
 
+    public void Start()
+    {
+        additionMissionButton = this.GetComponent<Button>();
+    }
+
+
     public void Activate(bool setActive)
     {
         if (setActive)
@@ -32,57 +40,17 @@ public class uButtonAdditionalMission : uButton
 
     }
 
-    public void TemporarilyInactive(bool value)
+    public void ChangeMissionOnClickEvent(UnityAction evt)
     {
-
-        Button additionMissionButton = this.gameObject.GetComponent<Button>();
-
-        // nevim jestl si muzu takhle ulozit event .. ?? ,?? Zkusit
-
-        // add grayScale button and other things
-
-        if(this.evt == null)
-            evt = additionMissionButton.onClick;
-
-        if (value)
-        {
-            additionMissionButton.onClick.RemoveAllListeners();
-        }
-        else
-        {
-            additionMissionButton.onClick.RemoveAllListeners();
-            additionMissionButton.onClick = this.evt;
-        }
-
-
+        additionMissionButton.onClick.RemoveAllListeners();
+        additionMissionButton.onClick.AddListener(evt);
     }
-
-    public void MissionWasCompleted()
-    {
-        SetColor();
-        Button but = this.GetComponent<Button>();
-        but.onClick.RemoveAllListeners();
-        but.onClick.AddListener(MissionAlreadyDone); // Warning meeesage this mission was already done..
-
-
-    }
-
-
-    //void OnEnable()
-    //{
-    //    Debug.Log("Mission Button was anabled: -> name of mission:  " + this.currentMission.Name);
-    //}
 
     private void SetColor()
     {
         Image img = this.GetComponent<Image>();
         Color col = new Color(155, 155, 155);
         img.color = col;
-    }
-
-    private void MissionAlreadyDone()
-    {
-        Debug.Log("this mission was done...");
     }
 
 }

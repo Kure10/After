@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class RegionControler : MonoBehaviour
@@ -15,9 +16,13 @@ public class RegionControler : MonoBehaviour
     private MissionController missionController;
     [SerializeField] private RegionManager regionManager;
 
-    //public static List<uButtonExploreScript> ubes = new List<uButtonExploreScript>();
-    //public delegate void OnExploreButtonClick();
-    //public static event OnExploreButtonClick onClick;
+
+    public UnityAction onButtonIsDeActivate;
+
+    public UnityAction onButtonIsReActivate;
+
+    public UnityAction onButtonIsAlreadyCompleted;
+
 
     private void Awake()
     {
@@ -25,6 +30,12 @@ public class RegionControler : MonoBehaviour
         missionController = FindObjectOfType<MissionController>();
     }
 
+    public void Start()
+    {
+        onButtonIsDeActivate += AdditionMissionIsDisabled;
+        onButtonIsReActivate += AdditionMissionIsReActivate;
+        onButtonIsAlreadyCompleted += AdditionMissionIsAlreadyCompleted;
+    }
 
     public void ChangeRegionState(Region region, Image regionImage)
     {
@@ -87,4 +98,23 @@ public class RegionControler : MonoBehaviour
             }
         }
     }
+
+    #region Event Methods
+
+    public void AdditionMissionIsDisabled ()
+    {
+        Debug.Log("Disabled no action for now...");
+    }
+
+    public void AdditionMissionIsReActivate()
+    {
+        Debug.Log("onButtonIsReActivate no action for now...");
+    }
+
+    public void AdditionMissionIsAlreadyCompleted()
+    {
+        Debug.Log("Mission Was completed...");
+    }
+
+    #endregion
 }
