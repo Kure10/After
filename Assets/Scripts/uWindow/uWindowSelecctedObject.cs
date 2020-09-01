@@ -81,6 +81,7 @@ public class uWindowSelecctedObject : MonoBehaviour
         }
     }
 
+    private Building building;
     #endregion
 
     #region Private Methods
@@ -106,7 +107,7 @@ public class uWindowSelecctedObject : MonoBehaviour
 
     private void CalcProgressAndState(float remainingTime, float fullTimeToBuild, int state)
     {
-        int result = (int)(remainingTime / fullTimeToBuild) * 100;
+        int result = 100 - (int)((remainingTime / fullTimeToBuild) * 100);
         this.progressBarText.text = result.ToString();
         this.stateBarText.text = SetBuildingState(state);
     }
@@ -132,6 +133,7 @@ public class uWindowSelecctedObject : MonoBehaviour
     public void SetAll(Specialists spec)
     {
         this.IsBuildingSelected = false;
+        this.building = null;
         SetImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
@@ -140,13 +142,21 @@ public class uWindowSelecctedObject : MonoBehaviour
     public void SetAll(Building building)
     {
         this.IsBuildingSelected = true;
+        this.building = building;
         SetImage(building.blueprint);
-        CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
         SetStatsPanel(building.blueprint);
         // set building Projekt in future
         // set Spec working in building in future.
     }
 
+    public void Update()
+    {
+        if (building != null)
+        {
+            CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
+        }
+        
+    }
     private string SetBuildingState(int state)
     {
         switch (state)
