@@ -23,6 +23,8 @@ public class RegionControler : MonoBehaviour
 
     public UnityAction onButtonIsAlreadyCompleted;
 
+    public UnityAction<Region> onRegionCounterDecreased;
+
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class RegionControler : MonoBehaviour
         onButtonIsDeActivate += AdditionMissionIsDisabled;
         onButtonIsReActivate += AdditionMissionIsReActivate;
         onButtonIsAlreadyCompleted += AdditionMissionIsAlreadyCompleted;
+        onRegionCounterDecreased += RegionCounterDecreased;
     }
 
     public void ChangeRegionState(Region region, Image regionImage)
@@ -101,7 +104,7 @@ public class RegionControler : MonoBehaviour
 
     #region Event Methods
 
-    public void AdditionMissionIsDisabled ()
+    public void AdditionMissionIsDisabled()
     {
         Debug.Log("Disabled no action for now...");
     }
@@ -114,6 +117,15 @@ public class RegionControler : MonoBehaviour
     public void AdditionMissionIsAlreadyCompleted()
     {
         Debug.Log("Mission Was completed...");
+    }
+
+    public void RegionCounterDecreased(Region reg)
+    {
+        Debug.Log("Mission counter deleted..");
+        foreach (RegionOperator item in arrayOfRegionsOperator)
+        {
+            item.Region.MissCompReq -= 1;
+        }
     }
 
     #endregion

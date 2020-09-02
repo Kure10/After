@@ -11,7 +11,6 @@ public class Region : ScriptableObject
     public string regionName = "NoWhere";
     [SerializeField] private bool isStartingRegion = false;
     [SerializeField] private int missCompReq = -1;
-    private bool isEnoughtExplored = false;
     private bool isExplored = false;  // Obeven -> na vyber jsou misse v Regionu.
     private bool isInShadow = false; //  Pokud je soused isExplored == true , Je v Shadow. OFC pokud sam neni Explored.
     private bool isInDarkness = true; // Počateční stav.  Je neaktivni cerny..

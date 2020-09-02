@@ -39,16 +39,11 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void CompleteMission(bool isRepeate , long missionID , bool unlockNeighborhodRegions = false)
+    public void CompleteMission(bool isRepeate , long missionID , bool missionCompleteConditionCounter = false)
     {
-        // is repeate budu potrebovat na to abych schoval tlacitko nebo ukazal
-        if(unlockNeighborhodRegions)
-        {
-            foreach (Region item in region.neighborhoodRegions)
-            {
-                item.MissCompReq -= 1;
-            }
-        }
+        if(missionCompleteConditionCounter)
+            this.regionControler.onRegionCounterDecreased(this.region);
+
 
         if (isRepeate)
         {
@@ -65,6 +60,7 @@ public class RegionOperator : MonoBehaviour
             {
                 if (item.CurrentMission.Id == missionID)
                     item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsAlreadyCompleted);
+
             }
         }
 
