@@ -14,8 +14,6 @@ public class RegionControler : MonoBehaviour
     [SerializeField] private RegionOperator[] arrayOfRegionsOperator;
     private MissionManager missionManager;
     private MissionController missionController;
-    [SerializeField] private RegionManager regionManager;
-
 
     public UnityAction onButtonIsDeActivate;
 
@@ -71,7 +69,7 @@ public class RegionControler : MonoBehaviour
         }
     }
 
-    public void StartExploreMision(RegionOperator regionOperator)
+    public void StartExplore(RegionOperator regionOperator)
     {
         missionManager.ChoiseMission(regionOperator, true);
     }

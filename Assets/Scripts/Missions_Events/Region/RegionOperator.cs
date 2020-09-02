@@ -52,7 +52,6 @@ public class RegionOperator : MonoBehaviour
                 if (item.CurrentMission.Id == missionID)
                     item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsDeActivate);
             }
-
         }
         else
         {
@@ -107,25 +106,24 @@ public class RegionOperator : MonoBehaviour
             Debug.Log("Region is in dargknesss  -> ToDo");
             return;
         }
-        else if (this.region.IsExplored)
+        if (this.region.IsExplored)
         {
             Debug.Log("Region is Explore  -> ToDo");
             return;
         }
-        else if (regionControler.AskControllerIsMissionInProgress(region.MapArena))
+        if (regionControler.AskControllerIsMissionInProgress(region.MapArena))
         {
-            // misse je in progrss..... Nedelej nic dvakrat stejna misse in progress
-            // nejaky warning
+            Debug.Log("Mission is in progress");
             return;
-        }
-        else if (this.region.MissCompReq <= 0 || this.region.IsStartingRegion)
+        } 
+        if (this.region.MissCompReq <= 0 || this.region.IsStartingRegion)
         {
-            regionControler.StartExploreMision(this);
+            regionControler.StartExplore(this);
         }
         else
         {
             Debug.Log("Region: " + this.region.RegionName +
-                      "  nelze prozkoumat, neni dokonceno spravne mnozstvi q v okolnim regionu: " +
+                      "  nelze prozkoumat, neni dokonceno spravne mnozstvi questu v okolnim regionu: " +
                       this.region.MissCompReq);
         }
     }
