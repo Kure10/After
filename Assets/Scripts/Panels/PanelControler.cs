@@ -13,6 +13,7 @@ public class PanelControler : MonoBehaviour
     void Start()
     {
         SetActiveAll(false);
+        panels[0].transform.parent.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
