@@ -111,7 +111,7 @@ public class DebrisTile : Tile, IWorkSource
             foreach (var possiblePlace in possiblePlaces)
             {
                 path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position), possiblePlace);
-                if (path != null && path.Count > 0) break;
+                if (path != null) break;
             }
             tileFactory.OccupyTile(charPlace);
 
