@@ -82,16 +82,16 @@ public class MissionController : MonoBehaviour
                         if (!procesingMission.WasSuccessfullyExecuted)
                         {
                             procesingMission.WasSuccessfullyExecuted = true;
-                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id,true);
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer, true);
                         }
                         else
                         {
-                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.Id);
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer);
                         }
                     }
                     else
                     {
-                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.Id,true);
+                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.MissionPointer,true);
                     }
                     
                 }
@@ -119,7 +119,7 @@ public class MissionController : MonoBehaviour
     public void MissionRefresh(Mission mission)
     {
         
-        mission.RegionOperator.RefreshMissionButton(mission);
+        mission.RegionOperator.RefreshMissionButton(mission.MissionPointer);
 
         this.missionsInRepate.Remove(mission);
     }

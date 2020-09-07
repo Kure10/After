@@ -6,22 +6,20 @@ using UnityEngine.UI;
 
 public class uButtonAdditionalMission : uButton
 {
-    [SerializeField] private string missionId;
+    [SerializeField] private string missionIdentifikator;
 
     private Button additionMissionButton;
 
-    private Mission currentMission; // obsolete.. 
-
     #region Properities
-    public string StringId
+    public string MissionIdentifikator
     {
-        get { return this.missionId; }
+        get { return this.missionIdentifikator; }
     }
-    public Mission CurrentMission
-    {
-        get { return this.currentMission; }
-        set { this.currentMission = value; }
-    }
+    //public Mission CurrentMission
+    //{
+    //    get { return this.currentMission; }
+    //    set { this.currentMission = value; }
+    //}
 
     #endregion Properities
 

@@ -28,7 +28,9 @@ public class MissionManager : MonoBehaviour
     // This method need to be one with ChoiseMission Method
     public void ChoiseMissionForRegionButton(uButtonAdditionalMission mission, RegionOperator regionOperator)
     {
-        Mission choisedMission = FindMissionFromList(mission.StringId, false);
+        Mission choisedMission = FindMissionFromList(mission.MissionIdentifikator, false);
+
+        Debug.Log(mission.MissionIdentifikator);
 
         Button additionMissionButton = mission.gameObject.GetComponent<Button>();
         additionMissionButton.onClick.RemoveAllListeners();
@@ -63,7 +65,7 @@ public class MissionManager : MonoBehaviour
         theMC.windowMission.SetActivityMissionPanel = true;
     }
 
-    private Mission FindMissionFromList(string missionId, bool isExplorationMission)
+    private Mission FindMissionFromList(string missionIdentifikator, bool isExplorationMission)
     {
         Mission choisedMission = null;
         // Tedka mužu z listu misi odstranit.. Protože ji asi už tady nebudu potrebovat. 
@@ -72,9 +74,9 @@ public class MissionManager : MonoBehaviour
 
         // missionId je string a porovnavam s longem .. Cheknout jestli funguje.
         if (isExplorationMission)
-            choisedMission = exploreMissions.Find(x => x.Id.ToString() == missionId);
+            choisedMission = exploreMissions.Find(x => x.MissionPointer.ToString() == missionIdentifikator);
         else
-            choisedMission = othersMissions.Find(x => x.Id.ToString() == missionId);
+            choisedMission = othersMissions.Find(x => x.MissionPointer.ToString() == missionIdentifikator);
 
         if (choisedMission == null)
             Debug.LogError("Error in MissionManager.Cs ___ Mission Was not found in list..");

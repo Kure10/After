@@ -39,7 +39,7 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void CompleteMission(bool isRepeate , long missionID , bool missionCompleteConditionCounter = false)
+    public void CompleteMission(bool isRepeate , string missionPointer, bool missionCompleteConditionCounter = false)
     {
         if(missionCompleteConditionCounter)
             this.regionControler.onRegionCounterDecreased(this.region);
@@ -49,7 +49,7 @@ public class RegionOperator : MonoBehaviour
         {
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
-                if (item.CurrentMission.Id == missionID)
+                if (item.MissionIdentifikator == missionPointer)
                     item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsDeActivate);
             }
         }
@@ -57,7 +57,7 @@ public class RegionOperator : MonoBehaviour
         {
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
-                if (item.CurrentMission.Id == missionID)
+                if (item.MissionIdentifikator == missionPointer)
                     item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsAlreadyCompleted);
 
             }
@@ -67,11 +67,11 @@ public class RegionOperator : MonoBehaviour
         
     }
 
-    public void RefreshMissionButton(Mission mission)
+    public void RefreshMissionButton(string missionIdentifikator)
     {
         foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
         {
-            if (item.CurrentMission.Id == mission.Id)
+            if (item.MissionIdentifikator == missionIdentifikator)
                 item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsReActivate);
 
         }
