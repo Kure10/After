@@ -76,7 +76,7 @@ public class MissionXmlLoader : MonoBehaviour
             // napriklad generovani nejake generické mise.. Nebo tak neco..
 
             newMission.Id = idNumber;
-            newMission.Repeate = item.GetBoolStat("Repeat");
+            newMission.Repeate = item.GetBoolStat("Repeatable");
             newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
             string terrains = item.GetStrStat("Terrain");
             List<string> result = terrains.Split(',').ToList();
@@ -92,7 +92,7 @@ public class MissionXmlLoader : MonoBehaviour
             newMission.NeededTransport = item.GetStrStat("Transport");
             newMission.EventsMin = item.GetIntStat("EventsMin");
             newMission.EventsMax = item.GetIntStat("EventsMax");
-            newMission.RepeatableIn = item.GetIntStat("IsRepeatable");
+            newMission.RepeatableIn = item.GetIntStat("RepTime");
             newMission.MissionPointer = item.GetStrStat("MissionPointer");
 
             // for data which can be translated

@@ -17,7 +17,7 @@ public class RegionControler : MonoBehaviour
 
     public UnityAction onButtonIsDeActivate;
 
-    public UnityAction onButtonIsReActivate;
+  //  public UnityAction<uButtonAdditionalMission, RegionOperator> onButtonIsReActivate;
 
     public UnityAction onButtonIsAlreadyCompleted;
 
@@ -33,7 +33,6 @@ public class RegionControler : MonoBehaviour
     public void Start()
     {
         onButtonIsDeActivate += AdditionMissionIsDisabled;
-        onButtonIsReActivate += AdditionMissionIsReActivate;
         onButtonIsAlreadyCompleted += AdditionMissionIsAlreadyCompleted;
         onRegionCounterDecreased += RegionCounterDecreased;
     }
@@ -105,11 +104,6 @@ public class RegionControler : MonoBehaviour
     public void AdditionMissionIsDisabled()
     {
         Debug.Log("Disabled no action for now...");
-    }
-
-    public void AdditionMissionIsReActivate()
-    {
-        Debug.Log("onButtonIsReActivate no action for now...");
     }
 
     public void AdditionMissionIsAlreadyCompleted()

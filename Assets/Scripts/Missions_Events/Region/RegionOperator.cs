@@ -67,12 +67,16 @@ public class RegionOperator : MonoBehaviour
         
     }
 
-    public void RefreshMissionButton(string missionIdentifikator)
+    public void RefreshMissionButton(Mission mission)
     {
         foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
         {
-            if (item.MissionIdentifikator == missionIdentifikator)
-                item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsReActivate);
+            if (item.MissionIdentifikator == mission.MissionPointer)
+            {
+                this.regionControler.AskManagerToMission(item, this);
+                //item.ChangeMissionOnClickEvent(() => this.regionControler.AdditionMissionIsReActivate(item, this));
+            }
+                
 
         }
     }

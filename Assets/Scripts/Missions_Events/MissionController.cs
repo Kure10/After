@@ -112,6 +112,10 @@ public class MissionController : MonoBehaviour
 
         // more shits
         mission.Distance = mission.InitialDistance;
+        foreach (var item in mission.GetEventsInMission)
+        {
+            item.wasTriggered = false;
+        }
         missionsInProcces.Remove(mission); 
         infoController.DeleteFromInfoRow(mission);
     }
@@ -119,7 +123,7 @@ public class MissionController : MonoBehaviour
     public void MissionRefresh(Mission mission)
     {
         
-        mission.RegionOperator.RefreshMissionButton(mission.MissionPointer);
+        mission.RegionOperator.RefreshMissionButton(mission);
 
         this.missionsInRepate.Remove(mission);
     }
