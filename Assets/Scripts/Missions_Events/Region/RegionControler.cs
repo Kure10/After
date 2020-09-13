@@ -108,7 +108,8 @@ public class RegionControler : MonoBehaviour
     public void AdditionMissionIsDisabled()
     {
         Debug.Log("Disabled no action for now...");
-        Instantiate(this.eventNotification,this.eventNotificationHolder.transform.position,Quaternion.identity);
+        var notification = Instantiate(this.eventNotification,this.transform.position,Quaternion.identity);
+        notification.transform.SetParent(this.eventNotificationHolder.transform);
     }
 
     public void AdditionMissionIsAlreadyCompleted()
