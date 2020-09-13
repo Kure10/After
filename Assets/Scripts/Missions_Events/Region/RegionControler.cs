@@ -15,6 +15,10 @@ public class RegionControler : MonoBehaviour
     private MissionManager missionManager;
     private MissionController missionController;
 
+    [SerializeField] private GameObject eventNotificationHolder;
+
+    [SerializeField] private GameObject eventNotification;
+
     public UnityAction onButtonIsDeActivate;
 
   //  public UnityAction<uButtonAdditionalMission, RegionOperator> onButtonIsReActivate;
@@ -104,6 +108,7 @@ public class RegionControler : MonoBehaviour
     public void AdditionMissionIsDisabled()
     {
         Debug.Log("Disabled no action for now...");
+        Instantiate(this.eventNotification,this.eventNotificationHolder.transform.position,Quaternion.identity);
     }
 
     public void AdditionMissionIsAlreadyCompleted()
