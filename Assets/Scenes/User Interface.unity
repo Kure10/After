@@ -480,6 +480,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4924494117877427920, guid: fde4650cf3b237e4384dcc5c27dbb9ee,
         type: 3}
+    - target: {fileID: 1155578084270133871, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: notificationControler
+      value: 
+      objectReference: {fileID: 1646863085}
     - target: {fileID: 1792991243525531781, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_RootOrder
@@ -581,6 +586,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5295283499020698889, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: eventNotification
+      value: 
+      objectReference: {fileID: 4924494117877427920, guid: fde4650cf3b237e4384dcc5c27dbb9ee,
+        type: 3}
     - target: {fileID: 6355372674728383536, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18025,6 +18036,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragParent: 1
   parent: {fileID: 0}
+--- !u!114 &1646863085 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5295283499020698889, guid: 16e9399128ada0f48a962c60c79583fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 22574044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6519b0e34ccae1f4bb11eac87b25dd37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1655887543
 GameObject:
   m_ObjectHideFlags: 0
