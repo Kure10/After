@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class uButton : MonoBehaviour
+public class uButton : MonoBehaviour 
 {
 
     public void Anable()

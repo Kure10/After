@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class uButtonAdditionalMission : uButton
+public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointerExitHandler
 {
     [SerializeField] private string missionIdentifikator;
 
@@ -80,6 +81,30 @@ public class uButtonAdditionalMission : uButton
         }
     }
 
+
+    public void ChangeHighlightAnim()
+    {
+
+        switch (this.currentState)
+        {
+            case ButtonState.Available:
+                animator.SetTrigger("HighlightedNotPulsing");
+                Debug.Log("jsem tady");
+                break;
+            case ButtonState.InProgress:
+                animator.SetTrigger("Highlighted");
+                break;
+            case ButtonState.Executed:
+                animator.SetTrigger("HighlightedNotPulsing");
+                break;
+            case ButtonState.InRepeatPeriod:
+                animator.SetTrigger("HighlightedNotPulsing");
+                break;
+            default:
+                break;
+        }
+    }
+
     private void ReserAllTrigers()
     {
         animator.ResetTrigger("RepatTimeOut");
@@ -88,6 +113,23 @@ public class uButtonAdditionalMission : uButton
         animator.ResetTrigger("FinishedButIsRepeat");
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ChangeHighlightAnim();
+        Debug.Log("someanim");
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        
+        animator.SetTrigger("Normal");
+        Debug.Log("normal");
+    }
+
+    
+
+
+
     public enum ButtonState
     {
         Available,
@@ -95,5 +137,7 @@ public class uButtonAdditionalMission : uButton
         Executed,
         InRepeatPeriod
     }
+
+    
 
 }
