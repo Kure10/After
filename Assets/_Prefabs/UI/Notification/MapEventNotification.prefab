@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25.8, y: 0}
-  m_SizeDelta: {x: 550, y: 80}
+  m_AnchoredPosition: {x: 220.5, y: 0}
+  m_SizeDelta: {x: 1200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &7318803757954606100
 Animator:
@@ -69,8 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde89da06baedb64ca59b5e7e441043c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeToFadeIn: 2
-  TimeToFadeOut: 8
+  messageText: {fileID: 3891734389762750887}
 --- !u!1 &6794520274439387655
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +82,7 @@ GameObject:
   - component: {fileID: 8581445537985823143}
   - component: {fileID: 3891734389762750887}
   m_Layer: 5
-  m_Name: Text
+  m_Name: NotificationMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

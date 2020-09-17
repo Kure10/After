@@ -26,17 +26,17 @@ public class MissionManager : MonoBehaviour
     }
 
     // This method need to be one with ChoiseMission Method
-    public void ChoiseMissionForRegionButton(uButtonAdditionalMission mission, RegionOperator regionOperator)
+    public void ChoiseMissionForRegionButton(uButtonAdditionalMission button, RegionOperator regionOperator)
     {
-        Mission choisedMission = FindMissionFromList(mission.MissionIdentifikator, false);
+        Mission choisedMission = FindMissionFromList(button.MissionIdentifikator, false);
 
-        Debug.Log(mission.MissionIdentifikator);
+        Debug.Log(button.MissionIdentifikator);
 
-        Button additionMissionButton = mission.gameObject.GetComponent<Button>();
+        Button additionMissionButton = button.gameObject.GetComponent<Button>();
         additionMissionButton.onClick.RemoveAllListeners();
-        additionMissionButton.onClick.AddListener(delegate () { ShowMissionPanel(choisedMission, regionOperator); });
+        additionMissionButton.onClick.AddListener(delegate () { ShowMissionPanel(choisedMission, regionOperator, button); });
     }
-    private void ShowMissionPanel(Mission mission, RegionOperator regionOperator)
+    private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null )
     {
         // tady musi byt check jestli misse už neprobíha..
         if (this.theMC.IsMissionInProgress(mission.MissionPointer))
@@ -56,7 +56,7 @@ public class MissionManager : MonoBehaviour
         Button startButton = theMC.windowMission.GetStartMissionButton;
 
         startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(delegate() { theMC.StartMission(mission, regionOperator); });
+        startButton.onClick.AddListener(delegate() { theMC.StartMission(mission, regionOperator, missionButton); });
 
         theMC.windowMission.Init();
 

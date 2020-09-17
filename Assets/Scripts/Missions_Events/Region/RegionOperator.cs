@@ -50,7 +50,12 @@ public class RegionOperator : MonoBehaviour
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
                 if (item.MissionIdentifikator == missionPointer)
-                    item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsDeActivate);
+                {
+                    item.ChangeCurrentState(uButtonAdditionalMission.ButtonState.InRepeatPeriod);
+
+                }
+                Debug.Log("ToDo");
+                // item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsDeActivate); ToDo ukaze se panel s missi atd.
             }
         }
         else
@@ -58,7 +63,11 @@ public class RegionOperator : MonoBehaviour
             foreach (uButtonAdditionalMission item in this.uButtAdditionalMission)
             {
                 if (item.MissionIdentifikator == missionPointer)
+                {
                     item.ChangeMissionOnClickEvent(this.regionControler.onButtonIsAlreadyCompleted);
+                    item.ChangeCurrentState(uButtonAdditionalMission.ButtonState.Executed);
+                }
+
 
             }
         }
@@ -75,6 +84,7 @@ public class RegionOperator : MonoBehaviour
             {
                 this.regionControler.AskManagerToMission(item, this);
                 //item.ChangeMissionOnClickEvent(() => this.regionControler.AdditionMissionIsReActivate(item, this));
+                item.ChangeCurrentState(uButtonAdditionalMission.ButtonState.Available);
             }
                 
 
@@ -126,9 +136,7 @@ public class RegionOperator : MonoBehaviour
         }
         else
         {
-            Debug.Log("Region: " + this.region.RegionName +
-                      "  nelze prozkoumat, neni dokonceno spravne mnozstvi questu v okolnim regionu: " +
-                      this.region.MissCompReq);
+            this.regionControler.onRegionCounterLimitWasNotReached(this);
         }
     }
 

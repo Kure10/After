@@ -31,12 +31,16 @@ public class MissionController : MonoBehaviour
 
 
 
-    public void StartMission (Mission missinToStart,RegionOperator regionOperator)
+    public void StartMission (Mission missinToStart,RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
        this.windowMission.gameObject.SetActive(false);
        infoController.InfoRowCreate(missinToStart);
        missinToStart.RegionOperator = regionOperator;
        missionsInProcces.Add(missinToStart);
+        if (missionButton != null)
+        {
+            missionButton.ChangeCurrentState(uButtonAdditionalMission.ButtonState.InProgress);
+        }
     }
 
     public void Update()
@@ -122,7 +126,7 @@ public class MissionController : MonoBehaviour
 
     public void MissionRefresh(Mission mission)
     {
-        
+        mission.RepeatableTime = 0;
         mission.RegionOperator.RefreshMissionButton(mission);
 
         this.missionsInRepate.Remove(mission);

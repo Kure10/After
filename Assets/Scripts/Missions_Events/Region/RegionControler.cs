@@ -15,9 +15,7 @@ public class RegionControler : MonoBehaviour
     private MissionManager missionManager;
     private MissionController missionController;
 
-    [SerializeField] private GameObject eventNotificationHolder;
-
-    [SerializeField] private GameObject eventNotification;
+    [SerializeField] private MissionMapNotificationControler notificationControler;
 
     public UnityAction onButtonIsDeActivate;
 
@@ -26,6 +24,8 @@ public class RegionControler : MonoBehaviour
     public UnityAction onButtonIsAlreadyCompleted;
 
     public UnityAction<Region> onRegionCounterDecreased;
+
+    public UnityAction<RegionOperator> onRegionCounterLimitWasNotReached;
 
 
     private void Awake()
@@ -39,6 +39,7 @@ public class RegionControler : MonoBehaviour
         onButtonIsDeActivate += AdditionMissionIsDisabled;
         onButtonIsAlreadyCompleted += AdditionMissionIsAlreadyCompleted;
         onRegionCounterDecreased += RegionCounterDecreased;
+        onRegionCounterLimitWasNotReached += RegionCounterLimitNotReached;
     }
 
     public void ChangeRegionState(Region region, Image regionImage)
@@ -77,9 +78,9 @@ public class RegionControler : MonoBehaviour
         missionManager.ChoiseMission(regionOperator, true);
     }
 
-    public void AskManagerToMission(uButtonAdditionalMission mission, RegionOperator regionOperator)
+    public void AskManagerToMission(uButtonAdditionalMission button, RegionOperator regionOperator)
     {
-        missionManager.ChoiseMissionForRegionButton(mission, regionOperator);
+        missionManager.ChoiseMissionForRegionButton(button, regionOperator);
     }
 
     public bool AskControllerIsMissionInProgress(string missionId)
@@ -108,8 +109,6 @@ public class RegionControler : MonoBehaviour
     public void AdditionMissionIsDisabled()
     {
         Debug.Log("Disabled no action for now...");
-        var notification = Instantiate(this.eventNotification,this.transform.position,Quaternion.identity);
-        notification.transform.SetParent(this.eventNotificationHolder.transform);
     }
 
     public void AdditionMissionIsAlreadyCompleted()
@@ -124,6 +123,13 @@ public class RegionControler : MonoBehaviour
         {
             item.Region.MissCompReq -= 1;
         }
+    }
+
+    public void RegionCounterLimitNotReached(RegionOperator regionOperator)
+    {
+        Debug.Log("Mission counter deleted..");
+
+        notificationControler.AddNotification(regionOperator);
     }
 
     #endregion
