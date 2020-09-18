@@ -49,7 +49,7 @@ public class MissionManager : MonoBehaviour
         // tady musi byt check jestli misse už neprobíha..
         if (this.theMC.IsMissionInProgress(mission.MissionPointer))
         {
-            //theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inRepeatTime;
+            theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inProgress;
         }
         else if (this.theMC.IsMissionInRepeatPeriod(mission.MissionPointer))
         {

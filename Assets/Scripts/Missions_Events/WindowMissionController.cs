@@ -32,6 +32,8 @@ public class WindowMissionController : MonoBehaviour
                     uWindow.ButtonStartText = "Mission aktivni za: " + currentMission.RepeatableTime;
                 break;
             case MissionPanelState.inProgress:
+                if (currentMission != null)
+                    uWindow.ButtonStartText = "Zrusit missi";
                 break;
             case MissionPanelState.notComplete:
                 break;

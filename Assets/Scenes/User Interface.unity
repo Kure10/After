@@ -223,6 +223,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 510257482974535325, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: m_Name
+      value: ActiveButtonText
+      objectReference: {fileID: 0}
     - target: {fileID: 644670571534678687, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: regionIdentifikator
@@ -565,6 +570,11 @@ PrefabInstance:
       propertyPath: notificationControler
       value: 
       objectReference: {fileID: 1646863085}
+    - target: {fileID: 1155578085180982308, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: buttonActiveText
+      value: 
+      objectReference: {fileID: 849467457}
     - target: {fileID: 1542816965380991339, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -874,6 +884,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -222
+      objectReference: {fileID: 0}
+    - target: {fileID: 4150057654986617786, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: m_Name
+      value: CancelButtonText
       objectReference: {fileID: 0}
     - target: {fileID: 4333126921749820704, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
@@ -2225,7 +2240,7 @@ MonoBehaviour:
   eventPanel: {fileID: 2962061535376110073, guid: 65b84b81998b6d14db614d69973df165,
     type: 3}
   eventHolder: {fileID: 1453279356}
-  windowMission: {fileID: 2064485225}
+  windowMissionController: {fileID: 990602000}
 --- !u!1 &73410385
 GameObject:
   m_ObjectHideFlags: 0
@@ -10501,6 +10516,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80e2d5f09fc4374d969ff10f12428b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &849467457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4546497181321143315, guid: 16e9399128ada0f48a962c60c79583fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 22574044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &880866209
 GameObject:
   m_ObjectHideFlags: 0
@@ -11963,6 +11990,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &990602000 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1661604367064122825, guid: 16e9399128ada0f48a962c60c79583fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 22574044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b501b607de5c374aa65f0528ccdea6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &995186800
 GameObject:
   m_ObjectHideFlags: 0

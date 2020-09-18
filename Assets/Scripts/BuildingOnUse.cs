@@ -41,6 +41,7 @@ public class BuildingOnUse : MonoBehaviour
             {
                 buildingCreator.CreateBuilding(currentBuildingBlueprint);
                 panelControler.DisableAllPanels(); // disable all open panels. Pak tu dam current. Kdyby se nejak rozsirila hra.
+                CameraMovement.MovementAllEnable(true);
             }
             else
             {
