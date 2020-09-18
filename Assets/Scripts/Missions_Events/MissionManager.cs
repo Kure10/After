@@ -36,33 +36,38 @@ public class MissionManager : MonoBehaviour
         additionMissionButton.onClick.RemoveAllListeners();
         additionMissionButton.onClick.AddListener(delegate () { ShowMissionPanel(choisedMission, regionOperator, button); });
     }
-    private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null )
+    private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
+
+        theMC.windowMissionController.SetUpWindow(mission);
+
+        Button startButton = theMC.windowMissionController.GetWindowButton();
+
+        startButton.onClick.RemoveAllListeners();
+
+
         // tady musi byt check jestli misse už neprobíha..
         if (this.theMC.IsMissionInProgress(mission.MissionPointer))
         {
-            Debug.LogError("Misse je in progress -> znovu nelze zpustit.");
-            return;
+            //theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inRepeatTime;
+        }
+        else if (this.theMC.IsMissionInRepeatPeriod(mission.MissionPointer))
+        {
+            theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inRepeatTime;
+        }
+        else
+        {
+            theMC.windowMissionController.State = WindowMissionController.MissionPanelState.normal;
+            startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
-        theMC.windowMission.MissionName = mission.Name;
-        theMC.windowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
-        theMC.windowMission.MissionDistance = mission.Distance;
-        theMC.windowMission.MissionLevel = mission.LevelOfDangerous;
-        theMC.windowMission.MissionTerrainList = mission.GetEmergingTerrains;
-        theMC.windowMission.MissionTime = mission.MissionTime;
-        theMC.windowMission.Sprite = mission.Image;
 
-        Button startButton = theMC.windowMission.GetStartMissionButton;
 
-        startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(delegate() { theMC.StartMission(mission, regionOperator, missionButton); });
-
-        theMC.windowMission.Init();
+        theMC.windowMissionController.Init();
 
         currentMission = mission;
 
-        theMC.windowMission.SetActivityMissionPanel = true;
+        theMC.windowMissionController.SetActivePanel(true);
     }
 
     private Mission FindMissionFromList(string missionIdentifikator, bool isExplorationMission)

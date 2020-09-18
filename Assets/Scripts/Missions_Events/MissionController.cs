@@ -16,7 +16,7 @@ public class MissionController : MonoBehaviour
     public List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
 
     [SerializeField]
-    public uWindowMission windowMission;
+    public WindowMissionController windowMissionController;
 
     private TimeControl theTC;
     private PanelTime thePT;
@@ -33,7 +33,7 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
-       this.windowMission.gameObject.SetActive(false);
+       this.windowMissionController.SetActivePanel(false);
        infoController.InfoRowCreate(missinToStart);
        missinToStart.RegionOperator = regionOperator;
        missionsInProcces.Add(missinToStart);
@@ -217,6 +217,16 @@ public class MissionController : MonoBehaviour
         return false;
     }
 
+    public bool IsMissionInRepeatPeriod(string missionPointer)
+    {
+        foreach (Mission item in this.missionsInRepate)
+        {
+            if (missionPointer == item.MissionPointer)
+                return true;
+        }
+
+        return false;
+    }
 
 }
 
