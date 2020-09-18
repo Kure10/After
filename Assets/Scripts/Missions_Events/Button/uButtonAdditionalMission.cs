@@ -13,6 +13,8 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
     private Animator animator;
     private Button additionMissionButton;
 
+    private ButtonState lastState;
+
     private ButtonState currentState;
 
     public ButtonState CurrentState { get { return this.currentState; } }
@@ -26,11 +28,15 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
 
     #endregion Properities
 
+    private void OnEnable()
+    {
+        ChangeCurrentState(this.currentState);
+    }
+
     public void Start()
     {
         animator = this.GetComponent<Animator>();
         additionMissionButton = this.GetComponent<Button>();
-       
     }
 
 
@@ -48,13 +54,6 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
         additionMissionButton.onClick.RemoveAllListeners();
         additionMissionButton.onClick.AddListener(evt);
     }
-
-    //private void SetColor()
-    //{
-    //    Image img = this.GetComponent<Image>();
-    //    Color col = new Color(155, 155, 155);
-    //    img.color = col;
-    //}
 
     public void ChangeCurrentState(ButtonState state)
     {
@@ -121,15 +120,11 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        
         animator.SetTrigger("Normal");
         Debug.Log("normal");
     }
 
     
-
-
-
     public enum ButtonState
     {
         Available,
