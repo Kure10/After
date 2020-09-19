@@ -87,7 +87,7 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
         switch (this.currentState)
         {
             case ButtonState.Available:
-                animator.SetTrigger("HighlightedNotPulsing");
+                animator.SetTrigger("Highlighted");
                 Debug.Log("jsem tady");
                 break;
             case ButtonState.InProgress:
