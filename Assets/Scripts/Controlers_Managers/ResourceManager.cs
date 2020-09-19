@@ -181,7 +181,7 @@ public class ResourceManager : MonoBehaviour
     //Unity editor neumi udel dropmenu s enumama, takze obezlicka pres int, bohuzel
     public void SpawnMaterial(int typ, int amount)
     {
-        SpawnMaterial((Material)typ, amount);
+        SpawnMaterial((Material)typ, amount, new Vector2Int(20,20));
     }
 
     public Resource PickUp(Vector2Int position)
