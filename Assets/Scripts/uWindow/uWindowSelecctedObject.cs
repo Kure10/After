@@ -103,13 +103,16 @@ public class uWindowSelecctedObject : MonoBehaviour
         this.percentStamina = spec.PercentStamina;
         healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+       
     }
 
-    private void CalcProgressAndState(float remainingTime, float fullTimeToBuild, int state)
+    private void CalcProgressAndState(Building b)
     {
-        int result = 100 - (int)((remainingTime / fullTimeToBuild) * 100);
+        int result = 100 - (int)((b.TimeToBuildRemaining/ b.blueprint.TimeToBuild) * 100);
         this.progressBarText.text = result.ToString();
-        this.stateBarText.text = SetBuildingState(state);
+        this.stateBarText.text = SetBuildingState((int)b.State);
+        this.image.sprite = building.blueprint.Sprite;
+        backgroundImage.color = building.blueprint.BackgroundColor;
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -153,7 +156,7 @@ public class uWindowSelecctedObject : MonoBehaviour
     {
         if (building != null)
         {
-            CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
+            CalcProgressAndState(building);
         }
         
     }
