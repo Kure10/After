@@ -49,6 +49,7 @@ public class DebrisTile : Tile, IWorkSource
             switch (worker.state)
             {
                 case WorkerState.init:
+                    worker.character.State = "Going to remove debris";
                     if (worker.character.Execute() == Result.Success)
                     {
                         //check if on allowed tile (could ended elsewhere if the tile got occupied)
@@ -63,6 +64,7 @@ public class DebrisTile : Tile, IWorkSource
                         }
                         tileFactory.OccupyTile(charPlace);
                         worker.state = WorkerState.working;
+                        worker.character.State = "Clearing debris";
                         worker.character.AddCommand(new Build());
                     }
                     break;

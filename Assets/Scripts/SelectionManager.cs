@@ -48,9 +48,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                     Character blueprint;
                     if (hitObject.TryGetComponent<Character>(out blueprint))
                     {
+                        if (blueprint.GetCommand() == null)
+                        {
+                            blueprint.State = "Waiting";
+                        }
                         highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                         highlight.gameObject.SetActive(true);
-                        panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint.GetBlueprint());
+                        panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint);
                         panelUI.SetActive(true);
                     }
                 }
@@ -125,6 +129,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                             {
                                 person.Register(this);
                                 person.AddCommand(new Move(character, path));
+                                person.State = "Moving";
                             }
                         }
                     }
@@ -140,6 +145,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
         {
             if (character.Execute() == Result.Success)
             {
+                character.State = "Waiting";
                 Unregister(character);
             }
         }

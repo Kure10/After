@@ -47,21 +47,15 @@ public class uWindowSelecctedObject : MonoBehaviour
     private float percentHealth = 0;
     private float percentStamina = 0;
 
-    private bool isActiveBuilding;
-
     // inventory is missiong ... Todo. (if designer will want to.)
 
     #endregion
 
     #region Properity
-    
-    public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
-    public bool IsBuildingSelected
+    void IsBuildingSelected()
     {
-        set
-        {
-            if (value == true)
+            if (building != null)
             {
                 statsBuilding.SetActive(true);
                 barsBuilding.SetActive(true);
@@ -78,10 +72,10 @@ public class uWindowSelecctedObject : MonoBehaviour
                 buildersView.SetActive(false);
 
             }
-        }
     }
 
     private Building building;
+    private Character specialist;
     #endregion
 
     #region Private Methods
@@ -113,6 +107,7 @@ public class uWindowSelecctedObject : MonoBehaviour
         this.stateBarText.text = SetBuildingState((int)b.State);
         this.image.sprite = building.blueprint.Sprite;
         backgroundImage.color = building.blueprint.BackgroundColor;
+        
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -133,23 +128,22 @@ public class uWindowSelecctedObject : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void SetAll(Specialists spec)
+    public void SetAll(Character spec)
     {
-        this.IsBuildingSelected = false;
         this.building = null;
-        SetImage(spec);
-        CalcHealtandStamina(spec);
-        SetStatsPanel(spec);
+        specialist = spec;
+        IsBuildingSelected();
     }
 
     public void SetAll(Building building)
     {
-        this.IsBuildingSelected = true;
         this.building = building;
+        this.specialist = null;
         SetImage(building.blueprint);
         SetStatsPanel(building.blueprint);
         // set building Projekt in future
         // set Spec working in building in future.
+        IsBuildingSelected();
     }
 
     public void Update()
@@ -158,7 +152,14 @@ public class uWindowSelecctedObject : MonoBehaviour
         {
             CalcProgressAndState(building);
         }
-        
+
+        if (specialist != null)
+        {
+            SetImage(specialist.GetBlueprint());
+            CalcHealtandStamina(specialist.GetBlueprint());
+            SetStatsPanel(specialist.GetBlueprint());
+            currentActivity.text = specialist.State;
+        }
     }
     private string SetBuildingState(int state)
     {
