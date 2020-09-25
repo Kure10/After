@@ -56,17 +56,26 @@ public class uWindowSelecctedObject : MonoBehaviour
 
     private bool isActiveBuilding;
 
+   // private BindingList<Specialists> specWorkingOnBuilding = new BindingList<Specialists>();
+
+
+
+
+ 
+
     // inventory is missiong ... Todo. (if designer will want to.)
 
     #endregion
 
     #region Properity
-    
+
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
     public bool IsBuildingSelected
     {
-            if (building != null)
+        set
+        {
+            if (value == true)
             {
                 statsBuilding.SetActive(true);
                 barsBuilding.SetActive(true);
@@ -83,10 +92,10 @@ public class uWindowSelecctedObject : MonoBehaviour
                 buildersView.SetActive(false);
 
             }
+        }
     }
 
     private Building building;
-    private Character specialist;
     #endregion
 
     #region Private Methods
@@ -117,17 +126,13 @@ public class uWindowSelecctedObject : MonoBehaviour
         this.percentStamina = spec.PercentStamina;
         healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
-       
     }
 
-    private void CalcProgressAndState(Building b)
+    private void CalcProgressAndState(float remainingTime, float fullTimeToBuild, int state)
     {
-        int result = 100 - (int)((b.TimeToBuildRemaining/ b.blueprint.TimeToBuild) * 100);
+        int result = 100 - (int)((remainingTime / fullTimeToBuild) * 100);
         this.progressBarText.text = result.ToString();
-        this.stateBarText.text = SetBuildingState((int)b.State);
-        this.image.sprite = building.blueprint.Sprite;
-        backgroundImage.color = building.blueprint.BackgroundColor;
-        
+        this.stateBarText.text = SetBuildingState(state);
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -169,21 +174,23 @@ public class uWindowSelecctedObject : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void SetAll(Character spec)
+    public void SetAll(Specialists spec)
     {
+        this.IsBuildingSelected = false;
         this.building = null;
-        specialist = spec;
-        IsBuildingSelected();
+        SetImage(spec);
+        CalcHealtandStamina(spec);
+        SetStatsPanel(spec);
     }
 
     public void SetAll(Building building) // doplnit list..
     {
+        this.IsBuildingSelected = true;
         this.building = building;
-        this.specialist = null;
         SetImage(building.blueprint);
         SetStatsPanel(building.blueprint);
         // set building Projekt in future
-        // set Spec working in building in future.
+        // SetSpecialist("List");
     }
 
     public void SetSpecialist(List<Specialists> specOnBuilding)
@@ -197,9 +204,15 @@ public class uWindowSelecctedObject : MonoBehaviour
         
         foreach (Specialists spec in specOnBuilding)
         {
-            CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
+            GameObject specView = Instantiate(specialistPreafab, specialistHolder.transform);
+            var window = specView.GetComponent<uWindowSpecialist>();
+            if (window != null)
+                window.SetAll(spec);
+
+            specInfoPlaceHolders.Add(specView);
         }
-        
+
+
     }
 
     public void Update()
