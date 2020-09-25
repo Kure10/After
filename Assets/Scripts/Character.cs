@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     private Command command;
     private Specialists blueprint;
     private IWorkSource source;
+    public string State; //just pure text for now
 
     public void SetBlueprint(Specialists specialist)
     {

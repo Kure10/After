@@ -128,6 +128,7 @@ public partial class Building : IWorkSource
                             //no available material, wait for some to appear in future
                             activeWorker.time = 0;
                             activeWorker.state = WorkerState.wait;
+                            activeWorker.character.State = "Looking for material";
                             //Workers.Remove(worker);
                             break;
                         }
@@ -138,6 +139,7 @@ public partial class Building : IWorkSource
 
                         activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject, pathToMaterial, true));
                         activeWorker.state = WorkerState.empty;
+                        activeWorker.character.State = "Getting material";
                         break;
                     case WorkerState.empty:
                         if (activeWorker.character.Execute() == Result.Success)
@@ -171,6 +173,7 @@ public partial class Building : IWorkSource
                     case WorkerState.drop:
                         activeWorker.character.Execute();
                         activeWorker.state = WorkerState.init;
+                        activeWorker.character.State = "Walking";
                         if (!GetMissingMaterials().Any())
                         {
                             State = BuildingState.UnderConstruction;
@@ -197,6 +200,7 @@ public partial class Building : IWorkSource
                         {
                             buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
                             TimeToBuildRemaining -= buildPoints;
+                            worker.character.State = "Building";
                         }
                         if (debug % 100 == 0)
                         {
@@ -221,6 +225,7 @@ public partial class Building : IWorkSource
                     case WorkerState.init:
                         MoveBack(worker);
                         worker.state = WorkerState.move;
+                        worker.character.State = "Moving";
                         break;
                     case WorkerState.move:
                         if (worker.character.Execute() == Result.Success)
