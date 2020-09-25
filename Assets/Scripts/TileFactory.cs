@@ -34,7 +34,7 @@ public class TileFactory : MonoBehaviour
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         grid = CreateGrid();
         var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
-        var spec = sm.GetSpecialists();
+        var spec = sm.GetStartingSpecialists();
         List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
         foreach (var specialist in spec)
         {

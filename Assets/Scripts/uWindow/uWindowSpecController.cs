@@ -71,39 +71,4 @@ public class uWindowSpecController : MonoBehaviour
 
 
     }
-
-    //public void neco ()
-    //{
-    //    var allSpecialists = SpecialistManager.GetInGameSpecialists;
-    //    allSpecialists = allSpecialists.OrderBy(x => x.Kar).ToList();
-
-    //    uWindowSpecialist[] allChildren = GetComponentsInChildren<uWindowSpecialist>();
-
-    //    int i = 0;
-    //    foreach (var item in allChildren)
-    //    {
-    //        item.SetAll(allSpecialists[i]);
-    //        i++;
-    //    }
-
-   
-    //   // SpecialistManager.inGameSpecialist = inGameSpecialist.OrderByDescending(x => x.Kar).ToList();
-    //}
-
-
-
-    //public void DestroyAllChild ()
-    //{
-    //    int count = transform.childCount;
-    //    for (int i = 0; i < count; i++)
-    //    {
-    //        Transform child = transform.GetChild(i);
-    //        Destroy(child.gameObject);
-    //    }
-    //}
-
-    // ziskat specialisty aktivni..
-    // 0. seradim list specialistu..
-    // 1. najdu vsechny transform child
-    // 2. a nastavim je podle meho listu specialistu znova  (který je seřazen)
 }

@@ -42,4 +42,13 @@ public class SpecialistManager : MonoBehaviour
         return defaultSpecialists;
     }
 
+    public List<Specialists> GetStartingSpecialists()
+    {
+        List<Specialists> startingSpec = new List<Specialists>();
+
+        startingSpec = defaultSpecialists.Where(s => s.Localization == "START").ToList();
+
+        return startingSpec;
+    }
+
 }

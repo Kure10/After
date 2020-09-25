@@ -39,29 +39,36 @@ public class MissionManager : MonoBehaviour
     private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
 
-        theMC.windowMissionController.SetUpWindow(mission);
+        
 
         Button startButton = theMC.windowMissionController.GetWindowButton();
 
         startButton.onClick.RemoveAllListeners();
 
-
-        // tady musi byt check jestli misse už neprobíha..
         if (this.theMC.IsMissionInProgress(mission.MissionPointer))
         {
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inProgress;
+            Debug.Log("in progress");
         }
         else if (this.theMC.IsMissionInRepeatPeriod(mission.MissionPointer))
         {
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inRepeatTime;
+            Debug.Log("in repete period");
+        }
+        else if (mission.WasSuccessfullyExecuted)
+        {
+            theMC.windowMissionController.State = WindowMissionController.MissionPanelState.Complete;
+            Debug.Log("in Completed");
         }
         else
         {
+            Debug.Log("  ani jedno");
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.normal;
             startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
 
+        theMC.windowMissionController.SetUpWindow(mission);
 
         theMC.windowMissionController.Init();
 

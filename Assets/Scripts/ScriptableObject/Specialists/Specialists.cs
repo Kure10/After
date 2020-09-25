@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-//[CreateAssetMenu (menuName = "ScriptableObject/Specialista", fileName = "Specialista") ]
+
 [System.Serializable]
 public class Specialists
 {

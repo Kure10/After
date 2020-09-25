@@ -26,8 +26,6 @@ public class Mission
 
     private bool repeat;
 
-    private bool wasSuccessfullyExecuted = false;
-
     private float repeatableIn;
 
     private int specMin;
@@ -39,6 +37,8 @@ public class Mission
     private string neededTransport; // možna to neni transport co potřebuji ale jaky se na ten event da použit jako bonus.. nevim
 
     private int finalEventId;
+
+    private float initialDistance;
 
     private List<DirectEvents> directEvents = new List<DirectEvents>();
 
@@ -71,7 +71,7 @@ public class Mission
 
     public float RepeatableTime = 0;
 
-    private float initialDistance;
+    public bool WasSuccessfullyExecuted = false;
 
     #endregion
 
@@ -103,8 +103,6 @@ public class Mission
     public List<Specialists> GetspecialistOnMission { get { return this.specialistOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
-
-    public bool WasSuccessfullyExecuted { get { return this.wasSuccessfullyExecuted; } set { this.wasSuccessfullyExecuted = value; } }
 
     public float RepeatableIn { get { return this.repeatableIn; } set { this.repeatableIn = value; } }
 

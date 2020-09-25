@@ -81,8 +81,9 @@ public class MissionController : MonoBehaviour
                 {
                     if (procesingMission.Repeate)
                     {
+                        procesingMission.RepeatableTime = procesingMission.RepeatableIn;
                         missionsInRepate.Add(procesingMission);
-
+                        
                         if (!procesingMission.WasSuccessfullyExecuted)
                         {
                             procesingMission.WasSuccessfullyExecuted = true;
@@ -90,11 +91,12 @@ public class MissionController : MonoBehaviour
                         }
                         else
                         {
-                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer);
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer,true);
                         }
                     }
                     else
                     {
+                        procesingMission.WasSuccessfullyExecuted = true;
                         procesingMission.RegionOperator.CompleteMission(false, procesingMission.MissionPointer,true);
                     }
                     
@@ -126,7 +128,7 @@ public class MissionController : MonoBehaviour
 
     public void MissionRefresh(Mission mission)
     {
-        mission.RepeatableTime = 0;
+       // mission.RepeatableTime = 0;
         mission.RegionOperator.RefreshMissionButton(mission);
 
         this.missionsInRepate.Remove(mission);
@@ -196,14 +198,14 @@ public class MissionController : MonoBehaviour
     {
         for (int i = this.missionsInRepate.Count - 1; i >= 0; i--)
         {
+            missionsInRepate[i].RepeatableTime -= CalculateTime();
 
-            missionsInRepate[i].RepeatableTime += CalculateTime();
-
-            if (missionsInRepate[i].RepeatableTime >= missionsInRepate[i].RepeatableIn)
+            if (missionsInRepate[i].RepeatableTime <= 0)
             {
                 MissionRefresh(missionsInRepate[i]);
             }
         }
+
     }
 
     public bool IsMissionInProgress(string missionPointer)

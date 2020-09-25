@@ -14,6 +14,32 @@ public class WindowMissionController : MonoBehaviour
 
     public MissionPanelState State { set { this.state = value; } }
 
+    public void OnEnable()
+    {
+        switch (this.state)
+        {
+            case MissionPanelState.normal:
+                uWindow.ButtonStartText = "Zacit missi";
+                break;
+            case MissionPanelState.inRepeatTime:
+                if (currentMission != null)
+                    CalcTimeForReactivationMission(currentMission.RepeatableTime);
+                break;
+            case MissionPanelState.inProgress:
+                if (currentMission != null)
+                    uWindow.ButtonStartText = "Zrusit missi";
+                break;
+            case MissionPanelState.Complete:
+                if (currentMission != null)
+                    uWindow.ButtonStartText = "Misse je splnena";
+                break;
+
+            default:
+                break;
+        }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,25 +49,28 @@ public class WindowMissionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (this.state)
-        {
-            case MissionPanelState.normal:
-                break;
-            case MissionPanelState.inRepeatTime:
-                if(currentMission != null)
-                    uWindow.ButtonStartText = "Mission aktivni za: " + currentMission.RepeatableTime;
-                break;
-            case MissionPanelState.inProgress:
-                if (currentMission != null)
-                    uWindow.ButtonStartText = "Zrusit missi";
-                break;
-            case MissionPanelState.notComplete:
-                break;
+       
+    }
 
-            default:
-                break;
-        }
+    private void CalcTimeForReactivationMission(float missionTime)
+    {
+        string missionAvailableIn = null;
 
+        int seconds = (int)(missionTime % 60);
+        int minutes = (int)(missionTime / 60) % 60;
+        int hours = (int)(missionTime / 3600) % 24;
+        int days = (int)(missionTime / 86400);
+
+
+        string sec = seconds.ToString("D2");
+        string min = minutes.ToString("D2");
+        string hour = hours.ToString("D2");
+        string dayS = days.ToString();
+
+
+        missionAvailableIn = $"Misse dostupna za dnu:{dayS} hodin:{hour} min:{min} sec:{sec}";
+
+        uWindow.ButtonStartText = missionAvailableIn;
     }
 
     public void SetUpWindow(Mission mission)
@@ -72,6 +101,6 @@ public class WindowMissionController : MonoBehaviour
         uWindow.SetActivityMissionPanel = value;
     }
 
-    public enum MissionPanelState { normal , inRepeatTime , inProgress , notComplete}
+    public enum MissionPanelState { normal , inRepeatTime , inProgress , Complete}
 
 }
