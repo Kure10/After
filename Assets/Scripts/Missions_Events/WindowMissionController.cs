@@ -83,6 +83,7 @@ public class WindowMissionController : MonoBehaviour
         uWindow.MissionLevel = mission.LevelOfDangerous;
         uWindow.MissionTerrainList = mission.GetEmergingTerrains;
         uWindow.MissionTime = mission.MissionTime;
+        uWindow.DesriptionText = mission.Description;
         uWindow.Sprite = mission.Image;
     }
 

@@ -26,6 +26,8 @@ public class uWindowMission : MonoBehaviour
 
     [SerializeField] private Text labelDistance;
 
+    [SerializeField] private Text textDescription;
+
     [SerializeField] private Text buttonActiveText;
 
     [Header("Button")]
@@ -68,6 +70,8 @@ public class uWindowMission : MonoBehaviour
     {
         set { labelDistance.text = value.ToString(); }
     }
+
+    public string DesriptionText { set { textDescription.text = value; } }
 
     public string ButtonStartText { set { buttonActiveText.text = value; } }
 
