@@ -34,6 +34,12 @@ public class uWindowMission : MonoBehaviour
 
     [SerializeField] private Button buttonStartMission;
 
+    [Header("Specialist")]
+
+    [SerializeField] private GameObject prefab;
+
+    [SerializeField] private GameObject specContent;
+
     [Header("Info")]
 
     [SerializeField] private LevelOfDangerous missionLevel;
@@ -102,6 +108,18 @@ public class uWindowMission : MonoBehaviour
     {
         get { return buttonStartMission; }
         /*set { buttonStartMission = value; }*/
+    }
+
+    public GameObject SpecContent
+    {
+        get { return this.specContent; }
+        set { this.specContent = value; }
+    }
+
+    public GameObject SpecPrefab
+    {
+        get { return this.prefab; }
+        set { this.prefab = value; }
     }
 
     #endregion

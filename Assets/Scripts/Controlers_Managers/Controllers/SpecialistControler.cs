@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class SpecialistControler : MonoBehaviour
 {
-
+    [Space]
+    [Header("Managers")]
     [SerializeField] SpecialistManager specManager;
 
-    public List<Specialists> InGameSpecialists = new List<Specialists>();
+    [Space]
+    [Header("Utility things")]
+    [SerializeField]
+    private uWindowSpecController specUWindowUi;
 
-    public List<Specialists> InMissionSpecialist = new List<Specialists>();
+    private List<Specialists> InGameSpecialists = new List<Specialists>();
+
+    private List<Specialists> InMissionSpecialist = new List<Specialists>();
 
     public List<Specialists> GetStartingSpecialists()
     {
@@ -19,6 +25,25 @@ public class SpecialistControler : MonoBehaviour
         InGameSpecialists.AddRange(startingSpec);
 
         return startingSpec;
+    }
+
+
+    public void AddAllSpecialistToUI()
+    {
+        List<Specialists> playersGainedSpecialist = new List<Specialists>();
+
+        playersGainedSpecialist.AddRange(InGameSpecialists);
+        playersGainedSpecialist.AddRange(InMissionSpecialist);
+
+        for (int i = 0; i < playersGainedSpecialist.Count; i++)
+        {
+            specUWindowUi.AddSpecHolder(playersGainedSpecialist[i]);
+        }
+    }
+
+    public List<Specialists> PassSpecToMissionSelection()
+    {
+        return InGameSpecialists;
     }
 
 }

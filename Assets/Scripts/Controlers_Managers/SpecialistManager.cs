@@ -12,37 +12,12 @@ public class SpecialistManager : MonoBehaviour
     [SerializeField]
     private List<Specialists> allSpecialist = new List<Specialists>();
 
-    [Header("SetUp")]
-    [SerializeField]
-    private SpecialistControler specController;
-
-
-    [Space]
-    [Header("Utility things")]
-    [SerializeField]
-    private uWindowSpecController specUWindowUi;
-
     private SpecialistXmlLoader xmlLoader;
     
     private void Awake()
     {
         this.xmlLoader = gameObject.GetComponent<SpecialistXmlLoader>();
         allSpecialist = this.xmlLoader.GetSpecialistFromXML();
-    }
-
-
-    private void Start()
-    {
-        AddAllSpecialistToUI();
-    }
-
-    // ToDo tohle se musi zmenit..
-    public void AddAllSpecialistToUI()
-    {
-        for (int i = 0; i < allSpecialist.Count; i++)
-        {
-            specUWindowUi.AddSpecHolder(allSpecialist[i]);
-        }
     }
 
     public List<Specialists> GetStartingSpecialists()

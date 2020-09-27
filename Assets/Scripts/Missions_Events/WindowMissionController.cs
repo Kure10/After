@@ -87,6 +87,25 @@ public class WindowMissionController : MonoBehaviour
         uWindow.Sprite = mission.Image;
     }
 
+    public void CreateSpecListForMission (List<Specialists> specList)
+    {
+        var prefab = uWindow.SpecPrefab;
+        var holder = uWindow.SpecContent;
+
+        foreach (Transform item in holder.transform)
+        {
+            Destroy(item);
+        }
+
+        foreach (var item in specList)
+        {
+            var go = Instantiate(prefab, holder.transform);
+            var uWindow = go.GetComponent<uWindowSpecialist>();
+            uWindow.SetAll(item);
+        }
+
+    }
+
     public Button GetWindowButton()
     {
         return uWindow.GetStartMissionButton;
