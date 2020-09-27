@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class SpecialistManager : MonoBehaviour
 {
+    const string StartSpecialistText = "START"; 
+
     // tady bude muset byt dalsi list ktery rozlisuje default spec. Od tech so se dostanou az v brubehu hry..
     [Header("Default Specialists")]
     [SerializeField]
-    private List<Specialists> defaultSpecialists = new List<Specialists>();
+    private List<Specialists> allSpecialist = new List<Specialists>();
+
+    [Header("SetUp")]
+    [SerializeField]
+    private SpecialistControler specController;
 
 
     [Space]
@@ -21,34 +27,28 @@ public class SpecialistManager : MonoBehaviour
     private void Awake()
     {
         this.xmlLoader = gameObject.GetComponent<SpecialistXmlLoader>();
-        defaultSpecialists = this.xmlLoader.GetSpecialistFromXML();
-
+        allSpecialist = this.xmlLoader.GetSpecialistFromXML();
     }
+
+
     private void Start()
     {
         AddAllSpecialistToUI();
     }
 
+    // ToDo tohle se musi zmenit..
     public void AddAllSpecialistToUI()
     {
-        for (int i = 0; i < defaultSpecialists.Count; i++)
+        for (int i = 0; i < allSpecialist.Count; i++)
         {
-            specUWindowUi.AddSpecHolder(defaultSpecialists[i]);
+            specUWindowUi.AddSpecHolder(allSpecialist[i]);
         }
-    }
-
-    public List<Specialists> GetSpecialists()
-    {
-        return defaultSpecialists;
     }
 
     public List<Specialists> GetStartingSpecialists()
     {
         List<Specialists> startingSpec = new List<Specialists>();
-
-        startingSpec = defaultSpecialists.Where(s => s.Localization == "START").ToList();
-
+        startingSpec = allSpecialist.Where(s => s.Localization == StartSpecialistText).ToList();
         return startingSpec;
     }
-
 }

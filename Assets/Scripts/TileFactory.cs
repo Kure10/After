@@ -33,8 +33,8 @@ public class TileFactory : MonoBehaviour
         occupiedTiles = new List<Vector2Int>();
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         grid = CreateGrid();
-        var sm = GameObject.FindGameObjectWithTag("SpecialistManager").GetComponent<SpecialistManager>();
-        var spec = sm.GetStartingSpecialists();
+        var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
+        var spec = specControler.GetStartingSpecialists();
         List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
         foreach (var specialist in spec)
         {
