@@ -18,14 +18,7 @@ public class uWindowSpecController : MonoBehaviour
 
     private void Awake()
     {
-
-        Debug.Log(this.name);
-
-        Debug.Log(this.gameObject.transform.name);
-
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
-
-        
 
         OnClicked += specControler.AddAllSpecialistToUI;
     }
