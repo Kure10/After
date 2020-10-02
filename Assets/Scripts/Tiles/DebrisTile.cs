@@ -109,11 +109,18 @@ public class DebrisTile : Tile, IWorkSource
             var charPlace = Geometry.GridFromPoint(who.transform.position);
             tileFactory.LeaveTile(charPlace);
             var possiblePlaces = GetMiningSpots();
-            var path = new List<Vector2Int>();
+            var path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position),
+                possiblePlaces.First());
             foreach (var possiblePlace in possiblePlaces)
             {
-                path = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position), possiblePlace);
-                if (path != null) break;
+                var shorter = tileFactory.FindPath(Geometry.GridFromPoint(who.gameObject.transform.position),
+                    possiblePlace);
+                if (shorter is null) continue;
+                if (path is null) path = shorter;
+                if (shorter.Count < path.Count)
+                {
+                    path = shorter;
+                }
             }
             tileFactory.OccupyTile(charPlace);
 
