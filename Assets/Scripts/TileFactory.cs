@@ -38,7 +38,7 @@ public class TileFactory : MonoBehaviour
         List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
         foreach (var specialist in spec)
         {
-            var gridPoint = FindFreeTile(specPosition, alreadyPlaced);
+            var gridPoint = FindFreeTile(specPosition, alreadyPlaced).First();
             alreadyPlaced.Add(gridPoint);
             var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
             person.GetComponent<Character>().SetBlueprint(specialist);
@@ -357,12 +357,13 @@ public class TileFactory : MonoBehaviour
     //Finds first emptyTile with no building and no resource box
     public Vector2Int FindFreeTile()
     {
-        return FindFreeTile(new Vector2Int(10, 31));
+        return FindFreeTile(new Vector2Int(10, 31)).First();
     }
 
     //Find first emtyTile but start searching from start point
-    public Vector2Int FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null, bool allowResources = false)
+    public List<Vector2Int> FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null, bool allowResources = false)
     {
+        var ret = new List<Vector2Int>();
         List<Resource> resOnTiles = new List<Resource>();
         if (!allowResources)
         {
@@ -405,16 +406,18 @@ public class TileFactory : MonoBehaviour
                                     break;
                                 }
                             }
-                            if (empty) return Geometry.GridFromPoint(t.tile.transform.position);
+
+                            if (empty)
+                            {
+                               ret.Add(Geometry.GridFromPoint(t.tile.transform.position));
+                            }
                         }
                     }
                 }
             }
             distance++;
         }
-
-        //TODO kdyz nic nenajde, vrat pole mimo bazi
-        return startPoint;
+        return ret;
     }
 
     public List<Vector2Int> GetOccupiedTiles()

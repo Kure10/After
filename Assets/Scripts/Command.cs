@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Command
@@ -79,7 +80,15 @@ public class Move : Command
         
         var forbiddenTiles = tf.GetOccupiedTiles();
             var newPlace = tf.FindFreeTile(mark, forbiddenTiles, true);
-            Path = tf.FindPath(mark, newPlace);
+            Path = tf.FindPath(mark, newPlace.First());
+            foreach (var cand in newPlace)
+            {
+                var shorter = tf.FindPath(mark, cand);
+                if (shorter.Count < Path.Count)
+                {
+                    Path = shorter;
+                }
+            }
             return Result.Running;
     }
     void Step(Vector3 to)
@@ -124,8 +133,7 @@ public class Drop : Command
         }
         else
         {
-            
-            resource.Owner = tf.getTile(tf.FindFreeTile(Geometry.GridFromPoint(Target.transform.position)));
+            resource.Owner = tf.getTile(tf.FindFreeTile(Geometry.GridFromPoint(Target.transform.position)).First());
         }
         return Result.Success;
     }

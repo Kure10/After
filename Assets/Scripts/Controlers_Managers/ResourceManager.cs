@@ -227,7 +227,7 @@ public class ResourceManager : MonoBehaviour
                 SpawnMaterial(typ, amount - 10);
             }
 
-            var coord = tileFactory.FindFreeTile(where);
+            var coord = tileFactory.FindFreeTile(where).First();
             var newResourse = new Resource(amount, typ, tileFactory.getTile(coord));
             resources.Add(newResourse);
         }
