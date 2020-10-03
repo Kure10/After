@@ -5,21 +5,31 @@ using UnityEngine.UI;
 
 public class WindowMissionController : MonoBehaviour
 {
+    [SerializeField] private SpecialistControler theSC;
 
-    [SerializeField] uWindowMission uWindow;
+    [SerializeField] uWindowMission uWindowShowMission;
+
+    [SerializeField] uWindowMissionSpecSelection uWindowSpecSelection;
 
     private MissionPanelState state;
 
     private Mission currentMission;
 
+    private List<Specialists> specialistReadyToMission = new List<Specialists>();
+
+    private List<GameObject> PlusButtons = new List<GameObject>();
+
     public MissionPanelState State { set { this.state = value; } }
+
+    
+
 
     public void OnEnable()
     {
         switch (this.state)
         {
             case MissionPanelState.normal:
-                uWindow.ButtonStartText = "Zacit missi";
+                uWindowShowMission.ButtonStartText = "Zacit missi";
                 break;
             case MissionPanelState.inRepeatTime:
                 if (currentMission != null)
@@ -27,11 +37,11 @@ public class WindowMissionController : MonoBehaviour
                 break;
             case MissionPanelState.inProgress:
                 if (currentMission != null)
-                    uWindow.ButtonStartText = "Zrusit missi";
+                    uWindowShowMission.ButtonStartText = "Zrusit missi";
                 break;
             case MissionPanelState.Complete:
                 if (currentMission != null)
-                    uWindow.ButtonStartText = "Misse je splnena";
+                    uWindowShowMission.ButtonStartText = "Misse je splnena";
                 break;
 
             default:
@@ -49,7 +59,7 @@ public class WindowMissionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     private void CalcTimeForReactivationMission(float missionTime)
@@ -70,55 +80,122 @@ public class WindowMissionController : MonoBehaviour
 
         missionAvailableIn = $"Misse dostupna za dnu:{dayS} hodin:{hour} min:{min} sec:{sec}";
 
-        uWindow.ButtonStartText = missionAvailableIn;
+        uWindowShowMission.ButtonStartText = missionAvailableIn;
     }
 
-    public void SetUpWindow(Mission mission)
+    private void OpenSelectionPanel()
     {
-        this.currentMission = mission;
-
-        uWindow.MissionName = mission.Name;
-        uWindow.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
-        uWindow.MissionDistance = mission.Distance;
-        uWindow.MissionLevel = mission.LevelOfDangerous;
-        uWindow.MissionTerrainList = mission.GetEmergingTerrains;
-        uWindow.MissionTime = mission.MissionTime;
-        uWindow.DesriptionText = mission.Description;
-        uWindow.Sprite = mission.Image;
+        uWindowSpecSelection.gameObject.SetActive(true);
     }
 
-    public void CreateSpecListForMission (List<Specialists> specList)
+    private void PrepairSelectionWindow(List<Specialists> specList)
     {
-        var prefab = uWindow.SpecPrefab;
-        var holder = uWindow.SpecContent;
+        var prefab = this.uWindowSpecSelection.SpecPrefab;
+        var holder = this.uWindowSpecSelection.SpecHolder;
 
         foreach (Transform item in holder.transform)
         {
             Destroy(item);
         }
 
-        foreach (var item in specList)
+        foreach (Specialists item in specList)
         {
             var go = Instantiate(prefab, holder.transform);
             var uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(item);
+
+            var but = go.GetComponent<Button>();
+            if (but != null)
+            {
+                but.onClick.RemoveAllListeners();
+                but.onClick.AddListener( () => AddSpecialistToMission(item));
+            }
+        }
+    }
+
+
+    private void AddSpecialistToMission(Specialists spec)
+    {
+
+        specialistReadyToMission.Add(spec);
+
+        var count = specialistReadyToMission.Count;
+
+        this.uWindowShowMission.SetSpecMinMaxText(count, uWindowShowMission.GetMaxSpecOnMission);
+
+        var plusButtonCount = this.PlusButtons.Count - 1;
+        GameObject goToRemove = this.PlusButtons[plusButtonCount];
+        this.PlusButtons.Remove(goToRemove);
+        Destroy(goToRemove);
+
+        var prefab = this.uWindowSpecSelection.SpecPrefab;
+        var content = this.uWindowShowMission.SpecContent;
+
+        var specGameObject = Instantiate(prefab,content.transform);
+        var uWindow = specGameObject.GetComponent<uWindowSpecialist>();
+        uWindow.SetAll(spec);
+
+        uWindowSpecSelection.gameObject.SetActive(false);
+
+    }
+
+
+    public void SetUpWindow(Mission mission)
+    {
+        // for animation
+        this.currentMission = mission;
+
+        // setup SpecSelectionWindow
+        List<Specialists> spec = this.theSC.PassSpecToMissionSelection();
+        this.PrepairSelectionWindow(spec);
+
+        // setup
+        uWindowShowMission.MissionName = mission.Name;
+        uWindowShowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
+        uWindowShowMission.MissionDistance = mission.Distance;
+        uWindowShowMission.MissionLevel = mission.LevelOfDangerous;
+        uWindowShowMission.MissionTerrainList = mission.GetEmergingTerrains;
+        uWindowShowMission.MissionTime = mission.MissionTime;
+        uWindowShowMission.DesriptionText = mission.Description;
+        uWindowShowMission.Sprite = mission.Image;
+        uWindowShowMission.SetSpecMinMaxText(mission.SpecMin , mission.SpecMax);
+    }
+
+    public void CreateSpecAddButton(Mission mission)
+    {
+        var prefab = uWindowShowMission.SpecPrefab;
+        var holder = uWindowShowMission.SpecContent;
+        var prefabCount = mission.SpecMin + 1;
+
+        foreach (Transform item in holder.transform)
+        {
+            Destroy(item);
+        }
+
+        for (int i = 0; i < prefabCount; i++)
+        {
+            var go = Instantiate(prefab, holder.transform);
+            var button = go.GetComponent<Button>();
+            this.PlusButtons.Add(go);
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OpenSelectionPanel);
         }
 
     }
 
     public Button GetWindowButton()
     {
-        return uWindow.GetStartMissionButton;
+        return uWindowShowMission.GetStartMissionButton;
     }
 
     public void Init()
     {
-        uWindow.Init();
+        uWindowShowMission.Init();
     }
 
     public void SetActivePanel(bool value)
     {
-        uWindow.SetActivityMissionPanel = value;
+        uWindowShowMission.SetActivityMissionPanel = value;
     }
 
     public enum MissionPanelState { normal , inRepeatTime , inProgress , Complete}

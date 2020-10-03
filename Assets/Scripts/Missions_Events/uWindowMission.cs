@@ -30,11 +30,13 @@ public class uWindowMission : MonoBehaviour
 
     [SerializeField] private Text buttonActiveText;
 
+    [SerializeField] private Text specMinMax;
+
     [Header("Button")]
 
     [SerializeField] private Button buttonStartMission;
 
-    [Header("Specialist")]
+    [Header("Specialist Add")]
 
     [SerializeField] private GameObject prefab;
 
@@ -51,6 +53,10 @@ public class uWindowMission : MonoBehaviour
     [SerializeField] private MissionTime missionTime;
 
     #endregion
+
+    private int MaxSpecOnMission = 0;
+    private int MinSpecOnMission = 0;
+
 
     #region Properties
 
@@ -78,6 +84,8 @@ public class uWindowMission : MonoBehaviour
     }
 
     public string DesriptionText { set { textDescription.text = value; } }
+
+    public int GetMaxSpecOnMission { get { return this.MaxSpecOnMission; } }
 
     public string ButtonStartText { set { buttonActiveText.text = value; } }
 
@@ -120,6 +128,14 @@ public class uWindowMission : MonoBehaviour
     {
         get { return this.prefab; }
         set { this.prefab = value; }
+    }
+
+    public void SetSpecMinMaxText(int min , int max)
+    {
+        this.MaxSpecOnMission = max;
+        this.MinSpecOnMission = min;
+
+        this.specMinMax.text = $"{MinSpecOnMission} / {MaxSpecOnMission}";
     }
 
     #endregion

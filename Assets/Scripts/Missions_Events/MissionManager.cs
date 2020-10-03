@@ -9,7 +9,7 @@ public class MissionManager : MonoBehaviour
 
 
     [SerializeField] private MissionController theMC;
-    [SerializeField] private SpecialistControler theSC;
+    //[SerializeField] private SpecialistControler theSC;
 
 
     public List<Mission> exploreMissions = new List<Mission>();
@@ -68,11 +68,13 @@ public class MissionManager : MonoBehaviour
             startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
-        List<Specialists> specForMission = theSC.PassSpecToMissionSelection();
+      //  List<Specialists> specForMission = theSC.PassSpecToMissionSelection();
 
         theMC.windowMissionController.SetUpWindow(mission);
 
-        theMC.windowMissionController.CreateSpecListForMission(specForMission);
+        theMC.windowMissionController.CreateSpecAddButton(mission);
+
+      //  theMC.windowMissionController.CreateSpecListForMission(specForMission);
 
         theMC.windowMissionController.Init();
 
