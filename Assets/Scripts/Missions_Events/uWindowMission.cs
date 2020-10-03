@@ -36,6 +36,8 @@ public class uWindowMission : MonoBehaviour
 
     [SerializeField] private Button buttonStartMission;
 
+    [SerializeField] private Button buttonCloseMission;
+
     [Header("Specialist Add")]
 
     [SerializeField] private GameObject prefab;
@@ -115,7 +117,11 @@ public class uWindowMission : MonoBehaviour
     public Button GetStartMissionButton
     {
         get { return buttonStartMission; }
-        /*set { buttonStartMission = value; }*/
+    }
+
+    public Button GetCloseMissionButton
+    {
+        get { return buttonCloseMission; }
     }
 
     public GameObject SpecContent
@@ -124,7 +130,7 @@ public class uWindowMission : MonoBehaviour
         set { this.specContent = value; }
     }
 
-    public GameObject SpecPrefab
+    public GameObject PlusPrefab
     {
         get { return this.prefab; }
         set { this.prefab = value; }

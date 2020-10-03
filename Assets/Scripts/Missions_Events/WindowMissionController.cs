@@ -17,12 +17,17 @@ public class WindowMissionController : MonoBehaviour
 
     private List<Specialists> specialistReadyToMission = new List<Specialists>();
 
-    private List<GameObject> PlusButtons = new List<GameObject>();
+    private List<GameObject> SiblingsObject = new List<GameObject>();
 
     public MissionPanelState State { set { this.state = value; } }
 
-    
 
+    private void Awake()
+    {
+        var button = uWindowShowMission.GetCloseMissionButton;
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(DisableShowMissionPanel);
+    }
 
     public void OnEnable()
     {
@@ -85,6 +90,8 @@ public class WindowMissionController : MonoBehaviour
 
     private void OpenSelectionPanel()
     {
+        List<Specialists> list = this.theSC.PassSpecToMissionSelection();
+        this.PrepairSelectionWindow(list);
         uWindowSpecSelection.gameObject.SetActive(true);
     }
 
@@ -95,7 +102,7 @@ public class WindowMissionController : MonoBehaviour
 
         foreach (Transform item in holder.transform)
         {
-            Destroy(item);
+            Destroy(item.gameObject);
         }
 
         foreach (Specialists item in specList)
@@ -105,49 +112,176 @@ public class WindowMissionController : MonoBehaviour
             uWindow.SetAll(item);
 
             var but = go.GetComponent<Button>();
-            if (but != null)
+
+            if (but == null)
             {
-                but.onClick.RemoveAllListeners();
-                but.onClick.AddListener( () => AddSpecialistToMission(item));
+                Debug.LogError("Error Nejaky buttonSpecialist prefab nemel button component");
+                continue;
             }
+
+            but.onClick.RemoveAllListeners();
+
+            if (item.isSelectedOnMission)
+            {
+                uWindow.SetSuperimposePanel(true,"Specialista je už vybrat.");
+               // but.onClick.AddListener(() => AddSpecialistToMission(item));
+                // Some Action Todo
+            }
+            else if (item.isOnMission)
+            {
+                uWindow.SetSuperimposePanel(true, "Specialista je na missi.");
+                // Some Action Todo
+            }
+            else
+            {
+                uWindow.SetSuperimposePanel(false);
+                but.onClick.AddListener(() => AddSpecialistToMission(item));
+            }
+
         }
     }
 
 
     private void AddSpecialistToMission(Specialists spec)
     {
+        spec.isSelectedOnMission = true;
 
         specialistReadyToMission.Add(spec);
 
-        var count = specialistReadyToMission.Count;
+        var specCount = specialistReadyToMission.Count;
 
-        this.uWindowShowMission.SetSpecMinMaxText(count, uWindowShowMission.GetMaxSpecOnMission);
+        this.uWindowShowMission.SetSpecMinMaxText(specCount, uWindowShowMission.GetMaxSpecOnMission);
 
-        var plusButtonCount = this.PlusButtons.Count - 1;
-        GameObject goToRemove = this.PlusButtons[plusButtonCount];
-        this.PlusButtons.Remove(goToRemove);
-        Destroy(goToRemove);
+        var siblingsCount = this.SiblingsObject.Count;
+
+        if(siblingsCount > 0)
+        {
+            for (int i = siblingsCount -1  ; i >= 0; i--)
+            {
+                var ob = this.SiblingsObject[i];
+                uWindowSpecialist uWindowspec = ob.GetComponent<uWindowSpecialist>();
+
+                if (uWindowspec == null)
+                {
+                    this.SiblingsObject.Remove(ob);
+                    Destroy(ob.gameObject);
+                    break;
+                }
+            }
+        }
 
         var prefab = this.uWindowSpecSelection.SpecPrefab;
         var content = this.uWindowShowMission.SpecContent;
 
         var specGameObject = Instantiate(prefab,content.transform);
+        specGameObject.transform.SetAsFirstSibling();
+        this.SiblingsObject.Add(specGameObject);
+
         var uWindow = specGameObject.GetComponent<uWindowSpecialist>();
         uWindow.SetAll(spec);
+        uWindow.SetSuperimposePanel(false);
 
         uWindowSpecSelection.gameObject.SetActive(false);
 
+        siblingsCount = this.SiblingsObject.Count;
+
+        Debug.Log("specCount: " + specCount + " siblingsCount: " + siblingsCount +  "  currentMission.SpecMax-> " + currentMission.SpecMax);
+
+        if (siblingsCount < currentMission.SpecMax)
+        {
+            Debug.Log("pridavam kurva");
+            var pref = this.uWindowShowMission.PlusPrefab;
+            var go = Instantiate(pref, content.transform);
+            go.transform.SetAsLastSibling();
+            var button = go.GetComponent<Button>();
+            this.SiblingsObject.Add(go);
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OpenSelectionPanel);
+        }
+
+
+        // deaktivovat button specialisty co byl vybrat..
+        // zmenit barvu.
+
+
+        // setup SpecSelectionWindow
+        //List<Specialists> list = this.theSC.PassSpecToMissionSelection();
+        //this.PrepairSelectionWindow(list);
+    }
+
+    private void RemoveSpecialistToMission(GameObject gameObjectToRemove, Specialists spec)
+    {
+        spec.isSelectedOnMission = false;
+        specialistReadyToMission.Remove(spec);
+
+        var specCount = specialistReadyToMission.Count;
+
+        this.uWindowShowMission.SetSpecMinMaxText(specCount, uWindowShowMission.GetMaxSpecOnMission);
+
+
+        var siblingsCount = this.SiblingsObject.Count;
+
+        if (siblingsCount > 0)
+        {
+            for (int i = siblingsCount - 1; i >= 0; i--)
+            {
+                var ob = this.SiblingsObject[i];
+                uWindowSpecialist uWindowspec = ob.GetComponent<uWindowSpecialist>();
+
+                //if (uWindowspec != null && )
+                //{
+                //    this.SiblingsObject.Remove(ob);
+                //    Destroy(ob.gameObject);
+                //    break;
+                //}
+            }
+        }
+
+
+        var plusButtonCount = this.SiblingsObject.Count;
+        if (plusButtonCount > 0)
+        {
+            GameObject goToRemove = this.SiblingsObject[plusButtonCount - 1];
+            this.SiblingsObject.Remove(goToRemove);
+            Destroy(goToRemove);
+        }
+
+        var prefab = this.uWindowSpecSelection.SpecPrefab;
+        var content = this.uWindowShowMission.SpecContent;
+
+        var specGameObject = Instantiate(prefab, content.transform);
+        specGameObject.transform.SetAsFirstSibling();
+        var uWindow = specGameObject.GetComponent<uWindowSpecialist>();
+        uWindow.SetAll(spec);
+
+        // nastavi u uWindow zakryvaci panel na vypnut..
+        //uWindow.SetSuperimposePanel(false);
+
+        // vypne okno
+        //uWindowSpecSelection.gameObject.SetActive(false);
+
+        plusButtonCount = this.SiblingsObject.Count;
+        int amountOfFullSlots = plusButtonCount + specCount;
+
+        Debug.Log("specCount: " + specCount + " plusButtonCount: " + plusButtonCount + " amountOfFullSlots: " + amountOfFullSlots + "  currentMission.SpecMax-> " + currentMission.SpecMax);
+
+        if (amountOfFullSlots < currentMission.SpecMax)
+        {
+            var pref = this.uWindowShowMission.PlusPrefab;
+            var go = Instantiate(pref, content.transform);
+            go.transform.SetAsLastSibling();
+            var button = go.GetComponent<Button>();
+            this.SiblingsObject.Add(go);
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OpenSelectionPanel);
+        }
     }
 
 
     public void SetUpWindow(Mission mission)
     {
-        // for animation
+        // for text StartButton
         this.currentMission = mission;
-
-        // setup SpecSelectionWindow
-        List<Specialists> spec = this.theSC.PassSpecToMissionSelection();
-        this.PrepairSelectionWindow(spec);
 
         // setup
         uWindowShowMission.MissionName = mission.Name;
@@ -163,20 +297,22 @@ public class WindowMissionController : MonoBehaviour
 
     public void CreateSpecAddButton(Mission mission)
     {
-        var prefab = uWindowShowMission.SpecPrefab;
+        var prefab = uWindowShowMission.PlusPrefab;
         var holder = uWindowShowMission.SpecContent;
         var prefabCount = mission.SpecMin + 1;
 
+        this.SiblingsObject.Clear();
+
         foreach (Transform item in holder.transform)
         {
-            Destroy(item);
+            Destroy(item.gameObject);
         }
 
         for (int i = 0; i < prefabCount; i++)
         {
             var go = Instantiate(prefab, holder.transform);
             var button = go.GetComponent<Button>();
-            this.PlusButtons.Add(go);
+            this.SiblingsObject.Add(go);
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(OpenSelectionPanel);
         }
@@ -197,6 +333,21 @@ public class WindowMissionController : MonoBehaviour
     {
         uWindowShowMission.SetActivityMissionPanel = value;
     }
+
+    private void DisableShowMissionPanel()
+    {
+        foreach (Specialists spec in this.specialistReadyToMission)
+        {
+            if (spec.isSelectedOnMission)
+                spec.isSelectedOnMission = false;
+        }
+
+        this.uWindowShowMission.gameObject.SetActive(false);
+
+        this.SiblingsObject.Clear();
+        this.specialistReadyToMission.Clear();
+    }
+
 
     public enum MissionPanelState { normal , inRepeatTime , inProgress , Complete}
 

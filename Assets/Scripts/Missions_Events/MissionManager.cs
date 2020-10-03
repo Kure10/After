@@ -15,7 +15,7 @@ public class MissionManager : MonoBehaviour
     public List<Mission> exploreMissions = new List<Mission>();
     public List<Mission> othersMissions = new List<Mission>();
 
-    public Mission currentMission;
+  //  public Mission currentMission;
 
     public void ChoiseMission(RegionOperator regionOperator, bool isExploreMission = false)
     {
@@ -78,7 +78,7 @@ public class MissionManager : MonoBehaviour
 
         theMC.windowMissionController.Init();
 
-        currentMission = mission;
+        //this.currentMission = mission;
 
         theMC.windowMissionController.SetActivePanel(true);
     }

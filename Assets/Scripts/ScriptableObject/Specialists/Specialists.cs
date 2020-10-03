@@ -35,6 +35,10 @@ public class Specialists
     [SerializeField] private bool isDefault;
     [SerializeField] private string localization;
 
+    public bool isSelectedOnMission = false;
+    public bool isOnMission = false;
+
+
 
     #region Properties
 
@@ -46,6 +50,8 @@ public class Specialists
     public int Sol { get { return social; } set { this.social = value; } }
     public int Kar { get { return karma; } set { this.karma = value; } }
 
+    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
+    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
     public bool IsDefault { get { return this.isDefault; } set { this.isDefault = value; } }
     public string Localization { get { return this.localization; } set { this.localization = value; } }
 

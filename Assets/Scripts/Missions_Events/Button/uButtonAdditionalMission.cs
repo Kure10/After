@@ -28,6 +28,12 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
 
     #endregion Properities
 
+    private void Awake()
+    {
+        animator = this.GetComponent<Animator>();
+        additionMissionButton = this.GetComponent<Button>();
+    }
+
     private void OnEnable()
     {
         ChangeCurrentState(this.currentState);
@@ -35,8 +41,7 @@ public class uButtonAdditionalMission : uButton , IPointerEnterHandler , IPointe
 
     public void Start()
     {
-        animator = this.GetComponent<Animator>();
-        additionMissionButton = this.GetComponent<Button>();
+        
     }
 
 

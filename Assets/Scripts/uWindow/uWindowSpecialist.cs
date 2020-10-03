@@ -23,8 +23,12 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Text technicianValue;
     [SerializeField] Text scientistValue;
     [SerializeField] Text karmaValue;
-    [Header("Stats")]
+    [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
+
+    [Header("State")]
+    [SerializeField] GameObject selectedPanel;
+    [SerializeField] Text infoText;
 
     /* For now buttons are not used.. waiting for functionality and implementation.....*/
     [Header("Buttons")]
@@ -91,6 +95,13 @@ public class uWindowSpecialist : MonoBehaviour
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
     }
+
+    public void SetSuperimposePanel(bool setActive, string text = " ")
+    {
+        this.selectedPanel.SetActive(setActive);
+        this.infoText.text = text;
+    }
+
 
     #endregion
 }
