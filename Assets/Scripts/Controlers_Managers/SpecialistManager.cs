@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class SpecialistManager : MonoBehaviour
 {
-    const string StartSpecialistText = "START"; 
+    const string StartSpecialistText = "START";
 
-    // tady bude muset byt dalsi list ktery rozlisuje default spec. Od tech so se dostanou az v brubehu hry..
+    
     [Header("Default Specialists")]
     [SerializeField]
     private List<Specialists> allSpecialist = new List<Specialists>();

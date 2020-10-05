@@ -50,7 +50,7 @@ public class Mission
 
     private List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
 
-    private List<Specialists> specialistOnMission = new List<Specialists>();
+    private List<Character> charactersOnMission = new List<Character>();
 
     private RegionOperator currentRegionOperator;
 
@@ -100,7 +100,7 @@ public class Mission
 
     public List<EventBlueprint> GetEventsInMission { get { return this.eventsInMission; } }
 
-    public List<Specialists> SpecialistOnMission { get { return this.specialistOnMission; } }
+    public List<Character> CharactersOnMission { get { return this.charactersOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 
@@ -128,9 +128,9 @@ public class Mission
         this.eventsInMission.Add(_event);
     }
 
-    public void AddSpecialistToMission(List<Specialists> spec)
+    public void AddSpecialistToMission(List<Character> character)
     {
-        this.specialistOnMission.AddRange(spec);
+        this.charactersOnMission.AddRange(character);
     }
 
     public void AddDirectEvent(DirectEvents dirEvent)

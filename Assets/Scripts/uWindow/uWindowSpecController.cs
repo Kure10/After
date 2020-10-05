@@ -33,14 +33,14 @@ public class uWindowSpecController : MonoBehaviour
     // level = 2
     // health = 3
 
-    public void AddSpecHolder(Specialists spec)
+    public void AddSpecHolder(Character character)
     {
         GameObject ga = Instantiate(panelSpecialist);
         ga.transform.SetParent(this.transform);
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
         activeSpecWindows.Add(uWindowSpec);
-        uWindowSpec.SetAll(spec);
+        uWindowSpec.SetAll(character.GetBlueprint());
     }
 
     public void Sort(int currentSortCategory)

@@ -34,15 +34,17 @@ public class TileFactory : MonoBehaviour
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         grid = CreateGrid();
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
-        var spec = specControler.GetStartingSpecialists();
-        List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
-        foreach (var specialist in spec)
-        {
-            var gridPoint = FindFreeTile(specPosition, alreadyPlaced).First();
-            alreadyPlaced.Add(gridPoint);
-            var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
-            person.GetComponent<Character>().SetBlueprint(specialist);
-        }
+        specControler.CreateStartingCharacters(specPosition);
+
+        //var spec = specControler.GetStartedCharacters(specPosition);
+        //List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
+        //foreach (var specialist in spec)
+        //{
+        //    var gridPoint = FindFreeTile(specPosition, alreadyPlaced).First();
+        //    alreadyPlaced.Add(gridPoint);
+        //    var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+        //    person.GetComponent<Character>().SetBlueprint(specialist);
+        //}
 
 
     }

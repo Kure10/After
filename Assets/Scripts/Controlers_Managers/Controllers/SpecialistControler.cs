@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpecialistControler : MonoBehaviour
@@ -8,29 +9,43 @@ public class SpecialistControler : MonoBehaviour
     [Header("Managers")]
     [SerializeField] SpecialistManager specManager;
 
+    [Header("Character Setup")]
+    [SerializeField] TileFactory tileFactory;
+    [SerializeField] GameObject characterPrefab;
+
     [Space]
     [Header("Utility things")]
     [SerializeField]
     private uWindowSpecController specUWindowUi;
 
-    private List<Specialists> InGameSpecialists = new List<Specialists>();
+    private List<Character> InGameSpecialists = new List<Character>();
 
-    private List<Specialists> InMissionSpecialist = new List<Specialists>();
+    private List<Character> InMissionSpecialist = new List<Character>();
 
-    public List<Specialists> GetStartingSpecialists()
+    public void CreateStartingCharacters(Vector2Int charStartingPosition)
     {
         List<Specialists> startingSpec = new List<Specialists>();
-
         startingSpec = specManager.GetStartingSpecialists();
-        InGameSpecialists.AddRange(startingSpec);
 
-        return startingSpec;
+        List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
+        Character character = new Character();
+
+        foreach (var specialist in startingSpec)
+        {
+            var gridPoint = tileFactory.FindFreeTile(charStartingPosition, alreadyPlaced).First();
+            alreadyPlaced.Add(gridPoint);
+            var person = Instantiate(characterPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
+            character = person.GetComponent<Character>();
+            character.SetBlueprint(specialist);
+
+            InGameSpecialists.Add(character);
+        }
     }
 
 
     public void AddAllSpecialistToUI()
     {
-        List<Specialists> playersGainedSpecialist = new List<Specialists>();
+        List<Character> playersGainedSpecialist = new List<Character>();
 
         playersGainedSpecialist.AddRange(InGameSpecialists);
         playersGainedSpecialist.AddRange(InMissionSpecialist);
@@ -41,12 +56,12 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    public List<Specialists> PassSpecToMissionSelection()
+    public List<Character> PassSpecToMissionSelection()
     {
         return InGameSpecialists;
     }
 
-    public void MoveSpecialistToMission(List<Specialists> list )
+    public void MoveSpecialistToMission(List<Character> list )
     {
         foreach (var item in list)
         {
@@ -71,15 +86,6 @@ public class SpecialistControler : MonoBehaviour
                 Debug.LogError("Specialista nebyl prirazen do listu inMissionSpec. Neco se stalo spatne..");
             }
         }
-
-
-        /*For DeBuging ... */
-        foreach (var item in InMissionSpecialist)
-        {
-            Debug.Log(item.FullName);
-        }
-        
-
     }
 
 
