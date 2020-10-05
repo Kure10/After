@@ -40,13 +40,13 @@ public class MissionManager : MonoBehaviour
     private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
 
-
-
         Button startButton = theMC.windowMissionController.GetWindowButton();
 
         startButton.onClick.RemoveAllListeners();
 
-        if (this.theMC.IsMissionInProgress(mission.MissionPointer))
+        bool isMissionInProgress = this.theMC.IsMissionInProgress(mission.MissionPointer);
+
+        if (isMissionInProgress)
         {
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.inProgress;
             Debug.Log("in progress");
@@ -63,16 +63,15 @@ public class MissionManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("  ani jedno");
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.normal;
             startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
       //  List<Specialists> specForMission = theSC.PassSpecToMissionSelection();
 
-        theMC.windowMissionController.SetUpWindow(mission);
+        theMC.windowMissionController.SetUpWindow(mission, isMissionInProgress);
 
-        theMC.windowMissionController.CreateSpecAddButton(mission);
+        //theMC.windowMissionController.CreateSpecAddButton(mission);
 
       //  theMC.windowMissionController.CreateSpecListForMission(specForMission);
 

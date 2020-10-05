@@ -102,6 +102,17 @@ public class uWindowSpecialist : MonoBehaviour
         this.infoText.text = text;
     }
 
+    public void SetActiveSuperimposePanel()
+    {
+        bool state = this.selectedPanel.activeSelf;
+
+        if(state == true)
+            SetSuperimposePanel(false, " ");
+        else
+            SetSuperimposePanel(true, "Specialista byl je vybran");
+    }
+
+
 
     #endregion
 }

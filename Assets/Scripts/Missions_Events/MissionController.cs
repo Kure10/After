@@ -33,10 +33,13 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
-       this.windowMissionController.SetActivePanel(false);
-       infoController.InfoRowCreate(missinToStart);
-       missinToStart.RegionOperator = regionOperator;
-       missionsInProcces.Add(missinToStart);
+
+        missinToStart.AddSpecialistToMission(this.windowMissionController.StartMission());
+        this.windowMissionController.SetActivePanel(false);
+
+        infoController.InfoRowCreate(missinToStart);
+        missinToStart.RegionOperator = regionOperator;
+        missionsInProcces.Add(missinToStart);
         if (missionButton != null)
         {
             missionButton.ChangeCurrentState(uButtonAdditionalMission.ButtonState.InProgress);

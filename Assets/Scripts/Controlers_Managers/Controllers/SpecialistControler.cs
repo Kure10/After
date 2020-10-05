@@ -46,4 +46,41 @@ public class SpecialistControler : MonoBehaviour
         return InGameSpecialists;
     }
 
+    public void MoveSpecialistToMission(List<Specialists> list )
+    {
+        foreach (var item in list)
+        {
+            var spec = InGameSpecialists.Find(x => x == item);
+
+            if (spec != null)
+            {
+                if(InMissionSpecialist.Contains(spec))
+                {
+                    Debug.LogError("Specialista se snazi jit na misi i kdyz uz na nejake je...");
+                    continue;
+                }
+
+                InMissionSpecialist.Add(spec);
+                InGameSpecialists.Remove(spec);
+
+                //ToDo move spec from map TO Mission where ever it is .. :D
+
+            }
+            else
+            {
+                Debug.LogError("Specialista nebyl prirazen do listu inMissionSpec. Neco se stalo spatne..");
+            }
+        }
+
+
+        /*For DeBuging ... */
+        foreach (var item in InMissionSpecialist)
+        {
+            Debug.Log(item.FullName);
+        }
+        
+
+    }
+
+
 }

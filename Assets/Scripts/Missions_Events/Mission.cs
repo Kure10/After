@@ -100,7 +100,7 @@ public class Mission
 
     public List<EventBlueprint> GetEventsInMission { get { return this.eventsInMission; } }
 
-    public List<Specialists> GetspecialistOnMission { get { return this.specialistOnMission; } }
+    public List<Specialists> SpecialistOnMission { get { return this.specialistOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 
@@ -128,9 +128,9 @@ public class Mission
         this.eventsInMission.Add(_event);
     }
 
-    public void AddEventInMissions(Specialists spec)
+    public void AddSpecialistToMission(List<Specialists> spec)
     {
-        this.specialistOnMission.Add(spec);
+        this.specialistOnMission.AddRange(spec);
     }
 
     public void AddDirectEvent(DirectEvents dirEvent)

@@ -35,6 +35,7 @@ public class Specialists
     [SerializeField] private bool isDefault;
     [SerializeField] private string localization;
 
+    public bool isPreSelectedOnMission = false;
     public bool isSelectedOnMission = false;
     public bool isOnMission = false;
 
