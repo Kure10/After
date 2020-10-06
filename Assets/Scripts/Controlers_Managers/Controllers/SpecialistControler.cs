@@ -18,9 +18,15 @@ public class SpecialistControler : MonoBehaviour
     [SerializeField]
     private uWindowSpecController specUWindowUi;
 
-    private List<Character> InGameSpecialists = new List<Character>();
+    public List<Character> InGameSpecialists = new List<Character>();
 
     private List<Character> InMissionSpecialist = new List<Character>();
+
+
+    private List<Character> OutGoingCharacters = new List<Character>();
+
+
+    bool isOnRightPosition = false;
 
     public void CreateStartingCharacters(Vector2Int charStartingPosition)
     {
@@ -63,22 +69,23 @@ public class SpecialistControler : MonoBehaviour
 
     public void MoveSpecialistToMission(List<Character> list )
     {
-        foreach (var item in list)
+        foreach (Character item in list)
         {
-            var spec = InGameSpecialists.Find(x => x == item);
+            Character character = InGameSpecialists.Find(x => x == item);
 
-            if (spec != null)
+            if (character != null)
             {
-                if(InMissionSpecialist.Contains(spec))
+                if(OutGoingCharacters.Contains(character))
                 {
                     Debug.LogError("Specialista se snazi jit na misi i kdyz uz na nejake je...");
                     continue;
                 }
 
-                InMissionSpecialist.Add(spec);
-                InGameSpecialists.Remove(spec);
+                OutGoingCharacters.Add(character);
+               // InGameSpecialists.Remove(character);
 
                 //ToDo move spec from map TO Mission where ever it is .. :D
+                StartCoroutine(oncoroutine(character));
 
             }
             else
@@ -86,6 +93,81 @@ public class SpecialistControler : MonoBehaviour
                 Debug.LogError("Specialista nebyl prirazen do listu inMissionSpec. Neco se stalo spatne..");
             }
         }
+    }
+
+    public void TestMove(List<Character> list)
+    {
+        foreach (Character item in list)
+        {
+            OutGoingCharacters.Add(item);
+            StartCoroutine(oncoroutine(item));
+        }
+            
+    }
+
+
+    IEnumerator oncoroutine(Character character)
+    {
+        Vector2Int coord = new Vector2Int(5, 10);  
+        var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
+        if (path != null)
+        {
+            //Move to target and if the target tile has some default action, add it to stack of actions
+            //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
+            if (character.TryGetComponent(out Character person))
+            {
+                // person.Register(this);
+                person.AddCommand(new Move(character.gameObject, path));
+                person.State = "Moving";
+                var tmp = person.Execute();
+                Debug.Log("Result : "   +  tmp);
+            }
+        }
+
+        yield return new WaitUntil( () => IsSpecReadyToLeave(character) );
+
+    }
+
+
+    public bool IsSpecReadyToLeave(Character character)
+    {
+
+        if(isOnRightPosition)
+        {
+            InGameSpecialists.Remove(character);
+            this.InMissionSpecialist.Add(character);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    private void Update()
+    {
+        if(OutGoingCharacters.Count > 0)
+        {
+            foreach (Character character in OutGoingCharacters)
+            {
+
+                if(true ) /* character pozice je x ,y  -> je na miste kde odejde z mapy.. */
+                {
+                    // tady bude mit každy specialista nejakou primenou true nebo false jestli je nebo neni na pozici kdy ma odejit z mapy..
+                     isOnRightPosition = true;
+                }
+                else
+                {
+                    isOnRightPosition = false;
+                }
+
+
+            }
+
+        }
+
+
     }
 
 

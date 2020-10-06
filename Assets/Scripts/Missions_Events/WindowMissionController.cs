@@ -173,7 +173,6 @@ public class WindowMissionController : MonoBehaviour
     {
         this.charactersReadyToMission.Clear();
         this.charactersReadyToMission.AddRange(this.charactersPreSelectedToMission);
-       //this.charactersReadyToMission = this.charactersPreSelectedToMission;
 
         var specCount = charactersReadyToMission.Count;
 
