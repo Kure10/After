@@ -8863,7 +8863,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   specManager: {fileID: 144845413}
+  selectionManager: {fileID: 436035998}
+  tileFactory: {fileID: 436035999}
+  characterPrefab: {fileID: 1094332557768340970, guid: ea56c39cf29492144bcf8117cf2b0b37,
+    type: 3}
   specUWindowUi: {fileID: 1783814082}
+  InGameSpecialists: []
 --- !u!1 &531692960
 GameObject:
   m_ObjectHideFlags: 0
@@ -11261,6 +11266,7 @@ MonoBehaviour:
     currentHP: 1
     isDefault: 0
     localization: 
+    isPreSelectedOnMission: 0
     isSelectedOnMission: 0
     isOnMission: 0
   arrayOfPanels:

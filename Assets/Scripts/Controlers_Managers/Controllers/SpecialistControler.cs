@@ -8,10 +8,13 @@ public class SpecialistControler : MonoBehaviour
     [Space]
     [Header("Managers")]
     [SerializeField] SpecialistManager specManager;
+    [SerializeField] SelectionManager selectionManager;
 
     [Header("Character Setup")]
     [SerializeField] TileFactory tileFactory;
     [SerializeField] GameObject characterPrefab;
+
+
 
     [Space]
     [Header("Utility things")]
@@ -22,8 +25,10 @@ public class SpecialistControler : MonoBehaviour
 
     private List<Character> InMissionSpecialist = new List<Character>();
 
-
     private List<Character> OutGoingCharacters = new List<Character>();
+
+
+   // private List<Character> characters = new List<Character>();
 
 
     bool isOnRightPosition = false;
@@ -75,17 +80,9 @@ public class SpecialistControler : MonoBehaviour
 
             if (character != null)
             {
-                if(OutGoingCharacters.Contains(character))
-                {
-                    Debug.LogError("Specialista se snazi jit na misi i kdyz uz na nejake je...");
-                    continue;
-                }
-
-                OutGoingCharacters.Add(character);
-               // InGameSpecialists.Remove(character);
-
                 //ToDo move spec from map TO Mission where ever it is .. :D
                 StartCoroutine(oncoroutine(character));
+                OutGoingCharacters.Add(character);
 
             }
             else
@@ -95,14 +92,13 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    public void TestMove(List<Character> list)
+    public void TestMove()
     {
-        foreach (Character item in list)
+        foreach (Character item in InGameSpecialists)
         {
-            OutGoingCharacters.Add(item);
             StartCoroutine(oncoroutine(item));
-        }
-            
+            OutGoingCharacters.Add(item);
+        }       
     }
 
 
@@ -118,9 +114,10 @@ public class SpecialistControler : MonoBehaviour
             {
                 // person.Register(this);
                 person.AddCommand(new Move(character.gameObject, path));
-                person.State = "Moving";
-                var tmp = person.Execute();
-                Debug.Log("Result : "   +  tmp);
+                selectionManager.Register(person);
+                person.State = "Moving To Mission";
+                
+              //  Debug.Log("Result : "   +  tmp);
             }
         }
 
@@ -136,6 +133,7 @@ public class SpecialistControler : MonoBehaviour
         {
             InGameSpecialists.Remove(character);
             this.InMissionSpecialist.Add(character);
+            Debug.Log("jsem tady");
             return true;
         }
         else
@@ -147,27 +145,15 @@ public class SpecialistControler : MonoBehaviour
 
     private void Update()
     {
-        if(OutGoingCharacters.Count > 0)
+
+        foreach (var item in OutGoingCharacters)
         {
-            foreach (Character character in OutGoingCharacters)
+            if(item.State == "Waiting")
             {
-
-                if(true ) /* character pozice je x ,y  -> je na miste kde odejde z mapy.. */
-                {
-                    // tady bude mit každy specialista nejakou primenou true nebo false jestli je nebo neni na pozici kdy ma odejit z mapy..
-                     isOnRightPosition = true;
-                }
-                else
-                {
-                    isOnRightPosition = false;
-                }
-
-
+                isOnRightPosition = true;
             }
 
         }
-
-
     }
 
 
