@@ -81,7 +81,7 @@ public class SpecialistControler : MonoBehaviour
             if (character != null)
             {
                 //ToDo move spec from map TO Mission where ever it is .. :D
-                StartCoroutine(oncoroutine(character));
+                StartCoroutine(OnStartingLeaving(character));
                 OutGoingCharacters.Add(character);
 
             }
@@ -96,13 +96,13 @@ public class SpecialistControler : MonoBehaviour
     {
         foreach (Character item in InGameSpecialists)
         {
-            StartCoroutine(oncoroutine(item));
+            StartCoroutine(OnStartingLeaving(item));
             OutGoingCharacters.Add(item);
         }       
     }
 
 
-    IEnumerator oncoroutine(Character character)
+    IEnumerator OnStartingLeaving(Character character)
     {
         Vector2Int coord = new Vector2Int(5, 10);  
         var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
@@ -146,9 +146,9 @@ public class SpecialistControler : MonoBehaviour
     private void Update()
     {
 
-        foreach (var item in OutGoingCharacters)
+        foreach (Character character in OutGoingCharacters)
         {
-            if(item.State == "Waiting")
+            if(character.State == "Waiting")
             {
                 isOnRightPosition = true;
             }
