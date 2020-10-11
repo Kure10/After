@@ -14,12 +14,13 @@ public class SpecialistControler : MonoBehaviour
     [SerializeField] TileFactory tileFactory;
     [SerializeField] GameObject characterPrefab;
 
-
-
     [Space]
     [Header("Utility things")]
     [SerializeField]
     private uWindowSpecController specUWindowUi;
+
+    public delegate void OnCharacterLeaveCoreGame();
+    public static OnCharacterLeaveCoreGame onCharacterLeaveCoreGame;
 
     public List<Character> InGameSpecialists = new List<Character>();
 
@@ -27,11 +28,6 @@ public class SpecialistControler : MonoBehaviour
 
     private List<Character> OutGoingCharacters = new List<Character>();
 
-
-   // private List<Character> characters = new List<Character>();
-
-
-    bool isOnRightPosition = false;
 
     public void CreateStartingCharacters(Vector2Int charStartingPosition)
     {
@@ -52,7 +48,6 @@ public class SpecialistControler : MonoBehaviour
             InGameSpecialists.Add(character);
         }
     }
-
 
     public void AddAllSpecialistToUI()
     {
@@ -80,10 +75,8 @@ public class SpecialistControler : MonoBehaviour
 
             if (character != null)
             {
-                //ToDo move spec from map TO Mission where ever it is .. :D
-                StartCoroutine(OnStartingLeaving(character));
                 OutGoingCharacters.Add(character);
-
+                this.OrderCharactersLeave(character);
             }
             else
             {
@@ -92,69 +85,62 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    public void TestMove()
+    public void OrderCharactersLeave(Character character)
     {
-        foreach (Character item in InGameSpecialists)
-        {
-            StartCoroutine(OnStartingLeaving(item));
-            OutGoingCharacters.Add(item);
-        }       
-    }
-
-
-    IEnumerator OnStartingLeaving(Character character)
-    {
-        Vector2Int coord = new Vector2Int(5, 10);  
+        Vector2Int coord = new Vector2Int(5, 10);
         var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
         if (path != null)
         {
-            //Move to target and if the target tile has some default action, add it to stack of actions
-            //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
             if (character.TryGetComponent(out Character person))
             {
                 // person.Register(this);
                 person.AddCommand(new Move(character.gameObject, path));
-                selectionManager.Register(person);
+
                 person.State = "Moving To Mission";
-                
-              //  Debug.Log("Result : "   +  tmp);
             }
         }
-
-        yield return new WaitUntil( () => IsSpecReadyToLeave(character) );
-
     }
 
 
-    public bool IsSpecReadyToLeave(Character character)
-    {
+    //IEnumerator OnStartingLeaving(Character character)
+    //{
+    //    Vector2Int coord = new Vector2Int(5, 10);
+    //    var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
+    //    if (path != null)
+    //    {
+    //        //Move to target and if the target tile has some default action, add it to stack of actions
+    //        //Debris is unwalkable, but for the purpose of cleaning, you can enter at first field
+    //        if (character.TryGetComponent(out Character person))
+    //        {
+    //            // person.Register(this);
+    //            person.AddCommand(new Move(character.gameObject, path));
+    //            selectionManager.Register(person);
+    //            person.State = "Moving To Mission";
 
-        if(isOnRightPosition)
-        {
-            InGameSpecialists.Remove(character);
-            this.InMissionSpecialist.Add(character);
-            Debug.Log("jsem tady");
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    //            //  Debug.Log("Result : "   +  tmp);
+    //        }
+    //    }
 
-    }
+    //    yield return new WaitUntil(() => IsSpecReadyToLeave(character));
+
+    //}
 
     private void Update()
     {
 
         foreach (Character character in OutGoingCharacters)
         {
-            if(character.State == "Waiting")
+            var tmp = character.Execute();
+            if (tmp == Result.Success /*== "Waiting"*/)
             {
-                isOnRightPosition = true;
+                // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
+                onCharacterLeaveCoreGame(); 
             }
 
         }
     }
+
+
 
 
 }

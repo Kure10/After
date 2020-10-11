@@ -36,7 +36,7 @@ public class TileFactory : MonoBehaviour
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
         specControler.CreateStartingCharacters(specPosition);
 
-        specControler.TestMove();
+      //  specControler.TestMove();
 
         //var spec = specControler.GetStartedCharacters(specPosition);
         //List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
