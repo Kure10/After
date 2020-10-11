@@ -11,8 +11,7 @@ public class WindowMissionController : MonoBehaviour
 
     [SerializeField] uWindowMissionSpecSelection uWindowSpecSelection;
 
-    
-
+ 
     private MissionPanelState state;
 
     private Mission currentMission;
@@ -154,9 +153,9 @@ public class WindowMissionController : MonoBehaviour
                 uWindow.SetSuperimposePanel(true,"Specialista je už vybran.");
                 but.onClick.AddListener(() => PreSelectSpecialistToMission(character, uWindow));
             }
-            else if (spec.isOnMission)
+            else if (spec.IsOnMission)
             {
-                uWindow.SetSuperimposePanel(true, "Specialista je na missi.");
+                uWindow.SetSuperimposePanel(true, "Specialista je na misi.");
                 // Some Action Todo
             }
             else
@@ -291,10 +290,6 @@ public class WindowMissionController : MonoBehaviour
 
     public List<Character> StartMission()
     {
-        foreach (var item in this.charactersReadyToMission)
-        {
-            item.GetBlueprint().isOnMission = true;
-        }
 
         this.theSC.MoveSpecialistToMission(this.charactersReadyToMission);
 

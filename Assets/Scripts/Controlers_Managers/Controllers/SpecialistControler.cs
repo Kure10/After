@@ -101,6 +101,22 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+
+        foreach (Character character in OutGoingCharacters)
+        {
+            var tmp = character.Execute();
+            if (tmp == Result.Success /*== "Waiting"*/)
+            {
+                // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
+                character.GetBlueprint().IsOnMission = true;
+                onCharacterLeaveCoreGame?.Invoke();
+            }
+
+        }
+    }
+
 
     //IEnumerator OnStartingLeaving(Character character)
     //{
@@ -124,23 +140,5 @@ public class SpecialistControler : MonoBehaviour
     //    yield return new WaitUntil(() => IsSpecReadyToLeave(character));
 
     //}
-
-    private void Update()
-    {
-
-        foreach (Character character in OutGoingCharacters)
-        {
-            var tmp = character.Execute();
-            if (tmp == Result.Success /*== "Waiting"*/)
-            {
-                // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
-                onCharacterLeaveCoreGame(); 
-            }
-
-        }
-    }
-
-
-
 
 }

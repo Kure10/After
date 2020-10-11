@@ -37,7 +37,7 @@ public class Specialists
 
     public bool isPreSelectedOnMission = false;
     public bool isSelectedOnMission = false;
-    public bool isOnMission = false;
+    private bool isOnMission = false;
 
 
 
@@ -51,9 +51,10 @@ public class Specialists
     public int Sol { get { return social; } set { this.social = value; } }
     public int Kar { get { return karma; } set { this.karma = value; } }
 
-    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
-    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
     public bool IsDefault { get { return this.isDefault; } set { this.isDefault = value; } }
+    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
+    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
+    
     public string Localization { get { return this.localization; } set { this.localization = value; } }
 
     public string Povolani { get { return this.povolani; } set { this.povolani = value; } }
@@ -78,6 +79,24 @@ public class Specialists
         {
             return ( (float)currentStamina / (float)maxStamina ) * 100;
         }
+    }
+
+    public bool IsOnMission
+    {
+        get 
+        {
+            return this.isOnMission; 
+        }
+        set 
+        {
+            if (value)
+            {
+                this.isPreSelectedOnMission = false;
+                this.isSelectedOnMission = false;
+                this.isOnMission = value;
+            }
+            
+        } 
     }
 
     #endregion

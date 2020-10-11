@@ -12,8 +12,8 @@ public class MissionController : MonoBehaviour
     [SerializeField] private GameObject eventPanel;
     [SerializeField] private Transform eventHolder;
 
-    public List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
-    public List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
+    private List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
+    private List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
 
     [SerializeField]
     public WindowMissionController windowMissionController;
@@ -118,6 +118,12 @@ public class MissionController : MonoBehaviour
 
         // delete from info row // pozdeji se asi napise mission complete a bude se cekat na hrace co udela ..
         //player gets reward
+        Debug.Log("Mission Finished -> " + mission.Name);
+        
+        foreach (var item in mission.CharactersOnMission)
+        {
+            Debug.Log("name: " + item.GetBlueprint().FullName);
+        }
 
         // more shits
         mission.Distance = mission.InitialDistance;
