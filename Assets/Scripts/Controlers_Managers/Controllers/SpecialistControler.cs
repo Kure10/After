@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class SpecialistControler : MonoBehaviour
 {
-    [Space]
-    [Header("Managers")]
-    [SerializeField] SpecialistManager specManager;
+    [Space] [Header("Managers")] [SerializeField]
+    SpecialistManager specManager;
+
     [SerializeField] SelectionManager selectionManager;
 
-    [Header("Character Setup")]
-    [SerializeField] TileFactory tileFactory;
+    [Header("Character Setup")] [SerializeField]
+    TileFactory tileFactory;
+
     [SerializeField] GameObject characterPrefab;
 
-    [Space]
-    [Header("Utility things")]
-    [SerializeField]
+    [Space] [Header("Utility things")] [SerializeField]
     private uWindowSpecController specUWindowUi;
 
     public delegate void OnCharacterLeaveCoreGame();
+
     public static OnCharacterLeaveCoreGame onCharacterLeaveCoreGame;
 
     public List<Character> InGameSpecialists = new List<Character>();
@@ -67,7 +67,7 @@ public class SpecialistControler : MonoBehaviour
         return InGameSpecialists;
     }
 
-    public void MoveSpecialistToMission(List<Character> list )
+    public void MoveSpecialistToMission(List<Character> list)
     {
         foreach (Character item in list)
         {
@@ -94,9 +94,8 @@ public class SpecialistControler : MonoBehaviour
             if (character.TryGetComponent(out Character person))
             {
                 // person.Register(this);
-                person.AddCommand(new Move(character.gameObject, path));
+                person.AddCommand(new MoveOutside(character.gameObject, path));
 
-                person.State = "Moving To Mission";
             }
         }
     }
@@ -142,3 +141,4 @@ public class SpecialistControler : MonoBehaviour
     //}
 
 }
+

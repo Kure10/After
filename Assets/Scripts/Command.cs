@@ -16,6 +16,15 @@ public enum Result
     Running
 }
 
+public class MoveOutside : Move
+{
+    
+    public MoveOutside(GameObject target, List<Vector2Int> path, bool ignoreMark = false) : base(target, path, ignoreMark)
+    {
+        
+    }
+}
+
 public class Move : Command
 {
     public List<Vector2Int> Path;

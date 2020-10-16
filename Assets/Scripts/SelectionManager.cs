@@ -48,10 +48,12 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                     Character blueprint;
                     if (hitObject.TryGetComponent<Character>(out blueprint))
                     {
-                        if (blueprint.GetCommand() == null)
+                        var cmd = blueprint.GetCommand();
+                        if (cmd == null)
                         {
                             blueprint.State = "Waiting";
                         }
+                        if (cmd is MoveOutside) return;
                         highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                         highlight.gameObject.SetActive(true);
                         //panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint);
