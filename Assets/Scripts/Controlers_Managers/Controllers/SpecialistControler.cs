@@ -111,6 +111,7 @@ public class SpecialistControler : MonoBehaviour
                 // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
                 character.GetBlueprint().IsOnMission = true;
                 onCharacterLeaveCoreGame?.Invoke();
+                character.transform.gameObject.SetActive(false);
             }
 
         }
