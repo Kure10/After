@@ -31,8 +31,6 @@ public class MissionManager : MonoBehaviour
     {
         Mission choisedMission = FindMissionFromList(button.MissionIdentifikator, false);
 
-        Debug.Log(button.MissionIdentifikator);
-
         Button additionMissionButton = button.gameObject.GetComponent<Button>();
         additionMissionButton.onClick.RemoveAllListeners();
         additionMissionButton.onClick.AddListener(delegate () { ShowMissionPanel(choisedMission, regionOperator, button); });

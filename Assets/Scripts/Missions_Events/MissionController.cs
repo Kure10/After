@@ -18,6 +18,9 @@ public class MissionController : MonoBehaviour
     [SerializeField]
     public WindowMissionController windowMissionController;
 
+    [SerializeField]
+    private SpecialistControler specialistControler;
+
     private TimeControl theTC;
     private PanelTime thePT;
     private MissionNotificationManager notificationMissionManager;
@@ -107,6 +110,9 @@ public class MissionController : MonoBehaviour
                
 
                 MissionReward(missionsInProcces[i]);
+
+                specialistControler.CharacterOnMissionReturn(procesingMission.CharactersOnMission);
+                // ToDo Specialiste se obeví..
                 continue;
             }
         }

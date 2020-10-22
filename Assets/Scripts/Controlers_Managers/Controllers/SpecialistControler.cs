@@ -93,29 +93,47 @@ public class SpecialistControler : MonoBehaviour
         {
             if (character.TryGetComponent(out Character person))
             {
-                // person.Register(this);
                 person.AddCommand(new MoveOutside(character.gameObject, path));
-
             }
+        }
+    }
+
+    public void CharacterOnMissionReturn( List <Character> incomingCharacters)
+    {
+        for (int i = incomingCharacters.Count - 1; i >= 0; i--)
+        {
+            var character = incomingCharacters[i];
+
+            character.transform.gameObject.SetActive(true);
+
+            this.InGameSpecialists.Add(character);
+            this.InMissionSpecialist.Remove(character);
+
+            // todo Character comeBack. From mission....
         }
     }
 
     private void Update()
     {
-
-        foreach (Character character in OutGoingCharacters)
+        for (int i = OutGoingCharacters.Count -1 ; i >= 0 ; i--)
         {
+            Character character = OutGoingCharacters[i];
+
             var tmp = character.Execute();
             if (tmp == Result.Success /*== "Waiting"*/)
             {
                 // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
                 character.GetBlueprint().IsOnMission = true;
-                onCharacterLeaveCoreGame?.Invoke();
+                onCharacterLeaveCoreGame?.Invoke(); // Zatim nema využití.. Ale bude.
                 character.transform.gameObject.SetActive(false);
-            }
 
+                this.InMissionSpecialist.Add(character);
+                OutGoingCharacters.Remove(character);
+            }
         }
     }
+
+
 
 
     //IEnumerator OnStartingLeaving(Character character)

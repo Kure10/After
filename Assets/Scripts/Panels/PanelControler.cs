@@ -89,6 +89,7 @@ public class PanelControler : MonoBehaviour
 
     public void CloseThisPanel(GameObject gameObject)
     {
+        CameraMovement.MovementAllEnable(true);
         gameObject.SetActive(false);
     }
 
