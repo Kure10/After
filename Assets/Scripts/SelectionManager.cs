@@ -56,7 +56,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                         if (cmd is MoveOutside) return;
                         highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
                         highlight.gameObject.SetActive(true);
-                        //panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint);
+                        panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint);
                         panelUI.SetActive(true);
                     }
                 }

@@ -54,28 +54,15 @@ public class uWindowSelecctedObject : MonoBehaviour
     private float percentHealth = 0;
     private float percentStamina = 0;
 
-    private bool isActiveBuilding;
-
-   // private BindingList<Specialists> specWorkingOnBuilding = new BindingList<Specialists>();
-
-
-
-
- 
-
     // inventory is missiong ... Todo. (if designer will want to.)
 
     #endregion
 
     #region Properity
 
-    public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
-
-    public bool IsBuildingSelected
+    void IsBuildingSelected()
     {
-        set
-        {
-            if (value == true)
+            if (building != null)
             {
                 statsBuilding.SetActive(true);
                 barsBuilding.SetActive(true);
@@ -92,22 +79,13 @@ public class uWindowSelecctedObject : MonoBehaviour
                 buildersView.SetActive(false);
 
             }
-        }
     }
 
     private Building building;
+    private Character specialist;
     #endregion
 
     #region Private Methods
-
-    private void Awake()
-    {
-        //specWorkingOnBuilding.ListChanged += delegate (object sender, ListChangedEventArgs args)
-        //{
-        //    nedasco();
-        //};
-    }
-
     private void SetImage(Specialists spec)
     {
         this.image.sprite = spec.Sprite;
@@ -126,13 +104,17 @@ public class uWindowSelecctedObject : MonoBehaviour
         this.percentStamina = spec.PercentStamina;
         healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+       
     }
 
-    private void CalcProgressAndState(float remainingTime, float fullTimeToBuild, int state)
+    private void CalcProgressAndState(Building b)
     {
-        int result = 100 - (int)((remainingTime / fullTimeToBuild) * 100);
+        int result = 100 - (int)((b.TimeToBuildRemaining/ b.blueprint.TimeToBuild) * 100);
         this.progressBarText.text = result.ToString();
-        this.stateBarText.text = SetBuildingState(state);
+        this.stateBarText.text = SetBuildingState((int)b.State);
+        this.image.sprite = building.blueprint.Sprite;
+        backgroundImage.color = building.blueprint.BackgroundColor;
+        
     }
 
     private void SetStatsPanel(Specialists spec)
@@ -150,7 +132,42 @@ public class uWindowSelecctedObject : MonoBehaviour
     {
         buildingName.text = build.Name;
     }
+    #endregion
 
+    #region Public Methods
+    public void SetAll(Character spec)
+    {
+        this.building = null;
+        specialist = spec;
+        IsBuildingSelected();
+    }
+
+    public void SetAll(Building building)
+    {
+        this.building = building;
+        this.specialist = null;
+        SetImage(building.blueprint);
+        SetStatsPanel(building.blueprint);
+        // set building Projekt in future
+        // set Spec working in building in future.
+        IsBuildingSelected();
+    }
+
+    public void Update()
+    {
+        if (building != null)
+        {
+            CalcProgressAndState(building);
+        }
+
+        if (specialist != null)
+        {
+            SetImage(specialist.GetBlueprint());
+            CalcHealtandStamina(specialist.GetBlueprint());
+            SetStatsPanel(specialist.GetBlueprint());
+            currentActivity.text = specialist.State;
+        }
+    }
     private string SetBuildingState(int state)
     {
         switch (state)
@@ -168,31 +185,6 @@ public class uWindowSelecctedObject : MonoBehaviour
                 return "Empty";
         }
     }
-
-
-
-    #endregion
-
-    #region Public Methods
-    public void SetAll(Specialists spec)
-    {
-        this.IsBuildingSelected = false;
-        this.building = null;
-        SetImage(spec);
-        CalcHealtandStamina(spec);
-        SetStatsPanel(spec);
-    }
-
-    public void SetAll(Building building) // doplnit list..
-    {
-        this.IsBuildingSelected = true;
-        this.building = building;
-        SetImage(building.blueprint);
-        SetStatsPanel(building.blueprint);
-        // set building Projekt in future
-        // SetSpecialist("List");
-    }
-
     public void SetSpecialist(List<Specialists> specOnBuilding)
     {
         //foreach (var item in specInfoPlaceHolders)
@@ -211,17 +203,6 @@ public class uWindowSelecctedObject : MonoBehaviour
 
             specInfoPlaceHolders.Add(specView);
         }
-
-
     }
-
-    public void Update()
-    {
-        if (building != null)
-        {
-            CalcProgressAndState(building.TimeToBuildRemaining, building.blueprint.TimeToBuild, (int) building.State);
-        }
-    }
-
     #endregion
 }
