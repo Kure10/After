@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -151,6 +152,13 @@ public class uWindowSelecctedObject : MonoBehaviour
         // set building Projekt in future
         // set Spec working in building in future.
         IsBuildingSelected();
+        var workers = building.getWorkers();
+        var charsInBuilding = new List<Specialists>();
+        foreach (var character in workers)
+        {
+            charsInBuilding.Add(character.character.GetBlueprint());
+        }
+        SetSpecialist(charsInBuilding); 
     }
 
     public void Update()
@@ -187,10 +195,10 @@ public class uWindowSelecctedObject : MonoBehaviour
     }
     public void SetSpecialist(List<Specialists> specOnBuilding)
     {
-        //foreach (var item in specInfoPlaceHolders)
-        //{
-        //    Destroy(item);
-        //}
+        foreach (var item in specInfoPlaceHolders.ToArray())
+        {
+            Destroy(item);
+        }
 
         specInfoPlaceHolders.Clear();
         

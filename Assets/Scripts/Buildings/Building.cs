@@ -18,6 +18,10 @@ public partial class Building : IWorkSource
     public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
 
+    public List<Worker> getWorkers()
+    {
+        return Workers;
+    }
 
     public BuildingState State
     {
@@ -291,6 +295,7 @@ public partial class Building : IWorkSource
                 resourceManager.GetResourcesForOwner(this).ForEach(res => res.Amount = 0);
                 statusHandle = prefab.GetComponent<HealthbarHandle>();
                 statusHandle.SetHPValue(0);
+                prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
                 break;
             case BuildingState.Build:
                 Object.Destroy(prefab);
