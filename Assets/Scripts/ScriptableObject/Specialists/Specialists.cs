@@ -95,6 +95,10 @@ public class Specialists
                 this.isSelectedOnMission = false;
                 this.isOnMission = value;
             }
+            else
+            {
+                this.isOnMission = value;
+            }
             
         } 
     }

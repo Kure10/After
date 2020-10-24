@@ -20,7 +20,18 @@ public class uWindowSpecController : MonoBehaviour
     {
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
 
+        OnClicked += this.ClearPreviousCharacters;
         OnClicked += specControler.AddAllSpecialistToUI;
+    }
+
+    private void ClearPreviousCharacters()
+    {
+        foreach (var item in activeSpecWindows)
+        {
+            Destroy(item.transform.gameObject);
+        }
+
+        activeSpecWindows.Clear();
     }
 
     private void OnEnable()

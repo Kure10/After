@@ -22,7 +22,7 @@ public class SpecialistControler : MonoBehaviour
 
     public static OnCharacterLeaveCoreGame onCharacterLeaveCoreGame;
 
-    public List<Character> InGameSpecialists = new List<Character>();
+    private List<Character> InGameSpecialists = new List<Character>();
 
     private List<Character> InMissionSpecialist = new List<Character>();
 
@@ -51,14 +51,13 @@ public class SpecialistControler : MonoBehaviour
 
     public void AddAllSpecialistToUI()
     {
-        List<Character> playersGainedSpecialist = new List<Character>();
+        List<Character> collectedCharactersInGame = new List<Character>();
 
-        playersGainedSpecialist.AddRange(InGameSpecialists);
-        playersGainedSpecialist.AddRange(InMissionSpecialist);
+        collectedCharactersInGame.AddRange(this.ReturnAllCharactersInGame());
 
-        for (int i = 0; i < playersGainedSpecialist.Count; i++)
+        for (int i = 0; i < collectedCharactersInGame.Count; i++)
         {
-            specUWindowUi.AddSpecHolder(playersGainedSpecialist[i]);
+            specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
         }
     }
 
@@ -75,7 +74,9 @@ public class SpecialistControler : MonoBehaviour
 
             if (character != null)
             {
-                OutGoingCharacters.Add(character);
+                this.OutGoingCharacters.Add(character);
+                this.InGameSpecialists.Remove(character);
+
                 this.OrderCharactersLeave(character);
             }
             else
@@ -85,18 +86,7 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    public void OrderCharactersLeave(Character character)
-    {
-        Vector2Int coord = new Vector2Int(5, 10);
-        var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
-        if (path != null)
-        {
-            if (character.TryGetComponent(out Character person))
-            {
-                person.AddCommand(new MoveOutside(character.gameObject, path));
-            }
-        }
-    }
+    
 
     public void CharacterOnMissionReturn( List <Character> incomingCharacters)
     {
@@ -106,6 +96,8 @@ public class SpecialistControler : MonoBehaviour
 
             character.transform.gameObject.SetActive(true);
 
+            character.GetBlueprint().IsOnMission = false;
+
             this.InGameSpecialists.Add(character);
             this.InMissionSpecialist.Remove(character);
 
@@ -113,7 +105,9 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    private void Update()
+    #region Private Methods
+
+    void Update()
     {
         for (int i = OutGoingCharacters.Count -1 ; i >= 0 ; i--)
         {
@@ -128,13 +122,37 @@ public class SpecialistControler : MonoBehaviour
                 character.transform.gameObject.SetActive(false);
 
                 this.InMissionSpecialist.Add(character);
-                OutGoingCharacters.Remove(character);
+                this.OutGoingCharacters.Remove(character);
             }
         }
     }
 
+    private void OrderCharactersLeave(Character character)
+    {
+        Vector2Int coord = new Vector2Int(5, 10);
+        var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
+        if (path != null)
+        {
+            if (character.TryGetComponent(out Character person))
+            {
+                person.AddCommand(new MoveOutside(character.gameObject, path));
+            }
+        }
+    }
 
+    private List<Character> ReturnAllCharactersInGame ()
+    {
+        List<Character> characters = new List<Character>();
 
+        characters.AddRange(InGameSpecialists);
+        characters.AddRange(InMissionSpecialist);
+        characters.AddRange(OutGoingCharacters);
+
+        return characters;
+
+    }
+
+    #endregion
 
     //IEnumerator OnStartingLeaving(Character character)
     //{
