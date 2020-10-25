@@ -7,7 +7,6 @@
     <Key v="B4,B9" t="String" n="-2" />
   </Data>
   <Data n="20203901833497">
-    <Key v="2" t="Int32" n="Difficulty" />
     <Key v="Lesy,Louky" t="String" n="Terrain" />
     <Key v="28800" t="Int32" n="Time" />
     <Key v="2" t="Int32" n="SpecMin" />
@@ -18,6 +17,8 @@
     <Key v="P01M01" t="String" n="MissionPointer" />
     <Key v="1" t="Int32" n="Repeatable" />
     <Key v="345600" t="Int32" n="RepTime" />
+    <Key v="1" t="Int32" n="DifficultyMin" />
+    <Key v="2" t="Int32" n="DifficultyMax" />
     <Data n="$E">
       <Data n="0">
         <Key v="1" t="Int32" n="$T" />
@@ -41,12 +42,13 @@
   <Data n="20203953155497">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="1" t="Int32" n="EventsMin" />
-    <Key v="1" t="Int32" n="Difficulty" />
     <Key v="86400" t="Int32" n="Time" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="Lesy,Louky,Vesnice" t="String" n="Terrain" />
     <Key v="P01M00" t="String" n="MissionPointer" />
+    <Key v="1" t="Int32" n="DifficultyMin" />
+    <Key v="1" t="Int32" n="DifficultyMax" />
     <Data n="$E" />
     <Data n="$C" />
   </Data>
@@ -54,45 +56,49 @@
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="3" t="Int32" n="Difficulty" />
     <Key v="21600" t="Int32" n="Time" />
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="Louky,Lesy" t="String" n="Terrain" />
     <Key v="P01M02" t="String" n="MissionPointer" />
+    <Key v="1" t="Int32" n="DifficultyMin" />
+    <Key v="3" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20205825876349">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="4" t="Int32" n="Difficulty" />
     <Key v="39600" t="Int32" n="Time" />
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="4" t="Int32" n="SpecMax" />
     <Key v="Hory" t="String" n="Terrain" />
     <Key v="P01M03" t="String" n="MissionPointer" />
+    <Key v="2" t="Int32" n="DifficultyMin" />
+    <Key v="4" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662102762">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P02M00" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="3" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="115200" t="Int32" n="Time" />
     <Key v="Lesy" t="String" n="Terrain" />
+    <Key v="1" t="Int32" n="DifficultyMin" />
+    <Key v="3" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264197737">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P02M01" t="String" n="MissionPointer" />
     <Key v="3" t="Int32" n="EventsMin" />
     <Key v="5" t="Int32" n="EventsMax" />
-    <Key v="6" t="Int32" n="Difficulty" />
     <Key v="67200" t="Int32" n="Time" />
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="4" t="Int32" n="SpecMax" />
     <Key v="Lesy" t="String" n="Terrain" />
+    <Key v="4" t="Int32" n="DifficultyMin" />
+    <Key v="6" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264319084">
     <Key v="Vehicle0" t="String" n="Transport" />
@@ -101,20 +107,22 @@
     <Key v="3" t="Int32" n="SpecMax" />
     <Key v="1" t="Int32" n="EventsMin" />
     <Key v="2" t="Int32" n="EventsMax" />
-    <Key v="3" t="Int32" n="Difficulty" />
     <Key v="79200" t="Int32" n="Time" />
     <Key v="Lesy" t="String" n="Terrain" />
+    <Key v="1" t="Int32" n="DifficultyMin" />
+    <Key v="3" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662233625">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P03M00" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="3" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="115200" t="Int32" n="Time" />
     <Key v="Lesy,Vesnice" t="String" n="Terrain" />
+    <Key v="2" t="Int32" n="DifficultyMin" />
+    <Key v="3" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264401678">
     <Key v="Vehicle0" t="String" n="Transport" />
@@ -122,99 +130,108 @@
     <Key v="P03M01" t="String" n="MissionPointer" />
     <Key v="1" t="Int32" n="EventsMin" />
     <Key v="2" t="Int32" n="EventsMax" />
-    <Key v="2" t="Int32" n="Difficulty" />
     <Key v="36000" t="Int32" n="Time" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
+    <Key v="2" t="Int32" n="DifficultyMin" />
+    <Key v="2" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264444960">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P03M02" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="4" t="Int32" n="EventsMax" />
-    <Key v="7" t="Int32" n="Difficulty" />
     <Key v="100800" t="Int32" n="Time" />
     <Key v="3" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="Lesy,Vesnice" t="String" n="Terrain" />
+    <Key v="5" t="Int32" n="DifficultyMin" />
+    <Key v="7" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662170715">
     <Key v="VehicleA" t="String" n="Transport" />
     <Key v="P04M00" t="String" n="MissionPointer" />
     <Key v="3" t="Int32" n="EventsMin" />
     <Key v="4" t="Int32" n="EventsMax" />
-    <Key v="5" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="144000" t="Int32" n="Time" />
     <Key v="Lesy,Vesnice" t="String" n="Terrain" />
+    <Key v="3" t="Int32" n="DifficultyMin" />
+    <Key v="5" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662291228">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P05M00" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="3" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="115200" t="Int32" n="Time" />
     <Key v="Lesy,Vesnice" t="String" n="Terrain" />
+    <Key v="2" t="Int32" n="DifficultyMin" />
+    <Key v="3" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264505001">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="3" t="Int32" n="EventsMin" />
     <Key v="4" t="Int32" n="EventsMax" />
-    <Key v="5" t="Int32" n="Difficulty" />
     <Key v="50400" t="Int32" n="Time" />
     <Key v="2" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="Lesy,Vesnice" t="String" n="Terrain" />
     <Key v="P05M01" t="String" n="MissionPointer" />
+    <Key v="3" t="Int32" n="DifficultyMin" />
+    <Key v="5" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662027308">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P07M00" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="5" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="115200" t="Int32" n="Time" />
     <Key v="VelkaMesta,Louky" t="String" n="Terrain" />
+    <Key v="3" t="Int32" n="DifficultyMin" />
+    <Key v="5" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264628396">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P07M01" t="String" n="MissionPointer" />
     <Key v="4" t="Int32" n="EventsMin" />
     <Key v="6" t="Int32" n="EventsMax" />
-    <Key v="7" t="Int32" n="Difficulty" />
     <Key v="86400" t="Int32" n="Time" />
     <Key v="4" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="VelkaMesta,MalaMesta,Louky" t="String" n="Terrain" />
     <Key v="1" t="Int32" n="Repeatable" />
     <Key v="864000" t="Int32" n="RepTime" />
+    <Key v="5" t="Int32" n="DifficultyMin" />
+    <Key v="7" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20207264714159">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P07M02" t="String" n="MissionPointer" />
     <Key v="3" t="Int32" n="EventsMin" />
     <Key v="5" t="Int32" n="EventsMax" />
-    <Key v="9" t="Int32" n="Difficulty" />
     <Key v="50400" t="Int32" n="Time" />
     <Key v="3" t="Int32" n="SpecMin" />
     <Key v="5" t="Int32" n="SpecMax" />
     <Key v="VelkaMesta,MalaMesta" t="String" n="Terrain" />
+    <Key v="7" t="Int32" n="DifficultyMin" />
+    <Key v="9" t="Int32" n="DifficultyMax" />
   </Data>
   <Data n="20206662328275">
     <Key v="Vehicle0" t="String" n="Transport" />
     <Key v="P13M00" t="String" n="MissionPointer" />
     <Key v="2" t="Int32" n="EventsMin" />
     <Key v="3" t="Int32" n="EventsMax" />
-    <Key v="4" t="Int32" n="Difficulty" />
     <Key v="1" t="Int32" n="SpecMin" />
     <Key v="2" t="Int32" n="SpecMax" />
     <Key v="115200" t="Int32" n="Time" />
     <Key v="Louky,Lesy,Vesnice" t="String" n="Terrain" />
+    <Key v="2" t="Int32" n="DifficultyMin" />
+    <Key v="4" t="Int32" n="DifficultyMax" />
   </Data>
 </DataRoot>
