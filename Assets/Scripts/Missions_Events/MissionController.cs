@@ -16,6 +16,9 @@ public class MissionController : MonoBehaviour
     private List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
 
     [SerializeField]
+    public EventManager eventManager;
+
+    [SerializeField]
     public WindowMissionController windowMissionController;
 
     [SerializeField]
@@ -36,7 +39,7 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
-
+       
         missinToStart.AddSpecialistToMission(this.windowMissionController.StartMission());
         this.windowMissionController.SetActivePanel(false);
 
@@ -133,7 +136,7 @@ public class MissionController : MonoBehaviour
 
         // more shits
         mission.Distance = mission.InitialDistance;
-        foreach (var item in mission.GetEventsInMission)
+        foreach (var item in mission.GetEventsContent)
         {
             item.wasTriggered = false;
         }
@@ -164,10 +167,11 @@ public class MissionController : MonoBehaviour
         {
             int distance = (int)missionsInProcces[i].Distance;
 
-            for (int j = 0; j < missionsInProcces[i].GetEventsInMission.Count; j++)
+            for (int j = 0; j < missionsInProcces[i].GetEventsContent.Count; j++)
             {
                 Mission currentMission = missionsInProcces[i];
-                EventBlueprint currentEvent = currentMission.GetEventsInMission[j];
+                EventContent currentEvent = currentMission.GetEventsContent[j];
+
                 if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
                     currentEvent.wasTriggered = true;
@@ -180,14 +184,22 @@ public class MissionController : MonoBehaviour
 
                     eventGameObject.transform.SetParent(eventHolder);
 
+                    // vyber event
+
+                    // nastav event patricne.
+
+                    StatsClass _event = eventManager.ChoiseRandomEvent(currentMission.DifficultyMin, currentMission.DifficultyMax, currentMission.GetEmergingTerrains);
+
+                  //  _event.GetStrStat();
+
                     /*tohle bude v interni metode.. .. TODO Dodelat pico..*/
 
                     eventPanel.TitleField.text = "ahoj";
                     eventPanel.DescriptionTextField.text = "LOL";
-                    eventPanel.SetSprite = currentEvent.sprite;
+                   // eventPanel.SetSprite = currentEvent.sprite;
 
                     // tohle jeste otestovat .... // ToDo nastavit button akci..
-                    eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField, currentEvent);
+                   // eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField, currentEvent);
 
                     /* reset transform .. */
                     RectTransform rect = eventGameObject.GetComponent<RectTransform>();

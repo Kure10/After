@@ -110,13 +110,6 @@ public class WindowMissionController : MonoBehaviour
 
         this.charactersPreSelectedToMission.Clear();
 
-
-        //foreach (var item in characterList)
-        //{
-        //    Debug.Log("PreSelected : " + item.isPreSelectedOnMission + " isSelectedOnMission : " + item.isSelectedOnMission);
-        //}
-
-
         foreach (Transform item in holder.transform)
         {
             Destroy(item.gameObject);
@@ -305,9 +298,9 @@ public class WindowMissionController : MonoBehaviour
         uWindowShowMission.MissionName = mission.Name;
         uWindowShowMission.MissionType = mission.ConvertMissionTypeStringData(mission.Type);
         uWindowShowMission.MissionDistance = mission.Distance;
-        uWindowShowMission.MissionLevel = mission.LevelOfDangerous;
+       // uWindowShowMission.MissionLevel = LevelOfDangerous.jedna; //mission.LevelOfDangerous; // obtiznost misse pak dodelat..
         uWindowShowMission.MissionTerrainList = mission.GetEmergingTerrains;
-        uWindowShowMission.MissionTime = mission.MissionTime;
+       // uWindowShowMission.MissionTime = MissionTime.akorat; // ToDo // mission.MissionTime;
         uWindowShowMission.DesriptionText = mission.Description;
         uWindowShowMission.Sprite = mission.Image;
         

@@ -46,13 +46,11 @@ public class uWindowMission : MonoBehaviour
 
     [Header("Info")]
 
-    [SerializeField] private LevelOfDangerous missionLevel;
+    //[SerializeField] private LevelOfDangerous missionLevel;
 
    // [SerializeField] private Terrain missionEnviroment;
 
     [SerializeField] private List<Terrain> emergingTerrains = new List<Terrain>();
-
-    [SerializeField] private MissionTime missionTime;
 
     #endregion
 
@@ -91,11 +89,11 @@ public class uWindowMission : MonoBehaviour
 
     public string ButtonStartText { set { buttonActiveText.text = value; } }
 
-    public LevelOfDangerous MissionLevel
-    {
-        get { return missionLevel; }
-        set { missionLevel = value; }
-    }
+    //public LevelOfDangerous MissionLevel
+    //{
+    //    get { return missionLevel; }
+    //    set { missionLevel = value; }
+    //}
 
     public List<Terrain> MissionTerrainList
     {
@@ -103,11 +101,11 @@ public class uWindowMission : MonoBehaviour
         set { emergingTerrains = value; }
     }
 
-    public MissionTime MissionTime
-    {
-        get { return missionTime; }
-        set { missionTime = value; }
-    }
+    //public MissionTime MissionTime
+    //{
+    //    get { return missionTime; }
+    //    set { missionTime = value; }
+    //}
 
     public bool SetActivityMissionPanel
     {
@@ -153,72 +151,11 @@ public class uWindowMission : MonoBehaviour
         this.emergingTerrains.Add(terrain);
     }
 
-    public void RefreshDangerousLevel()
-    {
-        switch (missionLevel)
-        {
-            case LevelOfDangerous.jedna:
-                labelLevel.text = "jedna";
-                break;
-            case LevelOfDangerous.dva:
-                labelLevel.text = "dva";
-                break;
-            case LevelOfDangerous.tri:
-                labelLevel.text = "tri";
-                break;
-        }
-    }
-
-    public void RefreshMissionEnviroment()
-    {
-        // vypis je TMP -> konečný format se pořesí v průběhu..
-        foreach (var item in emergingTerrains)
-        {
-            switch (item)
-            {
-                case Terrain.pole:
-                    labelEnviroment.text += "pole ";
-                    break;
-                case Terrain.poust:
-                    labelEnviroment.text += "poust ";
-                    break;
-                case Terrain.dzungle:
-                    labelEnviroment.text += "dzungle ";
-                    break;
-                case Terrain.les:
-                    labelEnviroment.text += "les ";
-                    break;
-            }
-        }
-
-
-    }
-
-    public void RefreshMissionTime()
-    {
-        switch (missionTime)
-        {
-            case MissionTime.malo:
-                labelTime.text = "malo";
-                break;
-            case MissionTime.akorat:
-                labelTime.text = "akorat";
-                break;
-            case MissionTime.stredne:
-                labelTime.text = "stredne";
-                break;
-            case MissionTime.hodne:
-                labelTime.text = "hodne";
-                break;
-        }    
-    }
-
-
     public void Init()
     {
-        RefreshDangerousLevel();
-        RefreshMissionEnviroment();
-        RefreshMissionTime();
+        //RefreshDangerousLevel();
+        //RefreshMissionEnviroment();
+        //RefreshMissionTime();
     }
 
 

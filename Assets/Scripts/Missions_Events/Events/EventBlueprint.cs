@@ -5,13 +5,20 @@ using UnityEngine.UI;
 
 public class EventBlueprint
 {
+    public int difficulty;
+
+    public string eventTerrain;
+
+    public string name;
+
+    public long Id;
+    // pro missi  OLD
+
     public bool isEventFinished = false;
 
     public int evocationTime;
 
     public int numberOfOptions;
-
-    public string name;
 
     public Sprite sprite;
 
@@ -22,6 +29,8 @@ public class EventBlueprint
     public bool wasTriggered;
 
     public bool hasAvoidButton; // jestli ma avoid tlacitko..
+
+    // dwada
 
     public List<string> reaction = new List<string>(); // tohle by mohlo byt pro akce.. nejdriv string a pak podle toho udelam akci na button.
 

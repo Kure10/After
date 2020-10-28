@@ -18,7 +18,8 @@ public class Mission
 
     private Sprite image;
 
-    private MissionType type;
+    private MissionType type; /* Todo Informace pro hrace -> definuje final event.
+                                Vlastne je to jenom pro hrace aby vedel co ma ocekavat od misee */
 
     private int eventsMin;
 
@@ -40,29 +41,28 @@ public class Mission
 
     private float initialDistance;
 
+    private int minDifficulty; // obtiznost misse -> z toho se odvozuje obtiznost eventu.
+
+    private int maxDifficulty;
+
     private List<DirectEvents> directEvents = new List<DirectEvents>();
 
-    private MissionTime misTime; // kolik eventu te potka
+    private List<Terrain> emergingTerrains = new List<Terrain>(); // Filtr pro obevujícíse eventy na misi 
 
-    private LevelOfDangerous levelOfDangerous; // jak jsou tezke eventy // i finalni event
+    private List<EventContent> eventsContents = new List<EventContent>();
 
-    private List<Terrain> emergingTerrains = new List<Terrain>(); // filtr pro nahodny víběr eventu....
-
-    private List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
+    //private List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
 
     private List<Character> charactersOnMission = new List<Character>();
 
     private RegionOperator currentRegionOperator;
-
-    private MapField mapField;
 
     #endregion
 
     #region Constructor
     public Mission()
     {
-        misTime = MissionTime.akorat;
-        levelOfDangerous = LevelOfDangerous.dva;
+        
     }
 
     #endregion
@@ -72,6 +72,8 @@ public class Mission
     public float RepeatableTime = 0;
 
     public bool WasSuccessfullyExecuted = false;
+
+    //public int finalNumberOfEvents = 0;
 
     #endregion
 
@@ -93,13 +95,18 @@ public class Mission
 
     public Sprite Image { get { return this.image; } set { this.image = value; } }
 
-    public MissionType Type { get { return this.type; } set { this.type = value; } }
+    public MissionType Type { get { return this.type; } set { this.type = value; } } 
 
     public int EventsMin { get { return this.eventsMin; } set { this.eventsMin = value; } }
     public int EventsMax { get { return this.eventsMax; } set { this.eventsMax = value; } }
 
-    public List<EventBlueprint> GetEventsInMission { get { return this.eventsInMission; } }
+    public int DifficultyMin { get { return this.minDifficulty; } set { this.minDifficulty = value; } }
 
+    public int DifficultyMax { get { return this.maxDifficulty; } set { this.maxDifficulty = value; } }
+
+    // public List<EventBlueprint> GetEventsInMission { get { return this.eventsInMission; } }
+
+    public List<EventContent> GetEventsContent { get { return this.eventsContents; } }
     public List<Character> CharactersOnMission { get { return this.charactersOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
@@ -116,16 +123,19 @@ public class Mission
 
     public int FinalEventID { get { return this.finalEventId; } set { this.finalEventId = value; } }
 
-    public MissionTime MissionTime { get { return this.misTime; } set { this.misTime = value; } }
-    public LevelOfDangerous LevelOfDangerous { get { return this.levelOfDangerous; } set { this.levelOfDangerous = value; } }
     public List<Terrain> GetEmergingTerrains { get { return this.emergingTerrains; } }
-    public MapField MapField { get { return this.mapField; } set { this.mapField = value; } }
+
     #endregion
 
     #region Methods
-    public void AddEventInMissions(EventBlueprint _event)
+    //public void AddEventInMissions(EventBlueprint _event)
+    //{
+    //    this.eventsInMission.Add(_event);
+    //}
+
+    public void AddNewEventContent(EventContent _eventContent)
     {
-        this.eventsInMission.Add(_event);
+        this.eventsContents.Add(_eventContent);
     }
 
     public void AddSpecialistToMission(List<Character> character)
@@ -152,36 +162,20 @@ public class Mission
     {
         switch (data)
         {
-            case "Pole":
-                return Terrain.pole;
-            case "Poust":
-                return Terrain.poust;
-            case "Dzungle":
-                return Terrain.dzungle;
+            case "Hory":
+                return Terrain.Hory;
             case "Lesy":
-                return Terrain.les;
+                return Terrain.Lesy;
             case "Louky":
-                return Terrain.louky;
+                return Terrain.Louky;
+            case "MalaMesta":
+                return Terrain.MalaMesta;
+            case "VelkaMEsta":
+                return Terrain.VelkaMesta;
+            case "Vesnice":
+                return Terrain.Vesnice;
             default:
-                return Terrain.unknow;
-        }
-    }
-    public MapField ConvertMapFieldStringData(string data)
-    {
-        switch (data)
-        {
-            case "Udoly":
-                return MapField.udoly;
-            case "Peklo":
-                return MapField.peklo;
-            case "Ring":
-                return MapField.ring;
-            case "Ctverec":
-                return MapField.ctverec;
-            case "Garaz":
-                return MapField.garaz;
-            default:
-                return MapField.none;
+                return Terrain.Unknow;
         }
     }
 
@@ -235,16 +229,11 @@ public class Mission
 
 }
 
-
 #region Enum 
-public enum MissionTime { malo, akorat, stredne, hodne }; // tohle se zmeni
 
-public enum LevelOfDangerous { jedna = 1, dva = 2 , tri = 3 };
+public enum Terrain { Hory, Lesy, Louky, MalaMesta, VelkaMesta, Vesnice, Unknow };
 
-public enum Terrain { pole , poust , dzungle, les , louky, unknow };
-
-public enum MapField { ring, ctverec, garaz, udoly, peklo , none };
-
+/* info pro hrace -> co ma ocekavat od misse.*/
 public enum MissionType { pruzkum_oblasti, pruzkum, sberLov, skavender, zachrana, zajmutiNempritele, odlakaniHordy, neznamyCil };
 
 #endregion

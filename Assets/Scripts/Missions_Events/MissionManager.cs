@@ -38,9 +38,9 @@ public class MissionManager : MonoBehaviour
     private void ShowMissionPanel(Mission mission, RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
 
-        Button startButton = theMC.windowMissionController.GetWindowButton();
+        Button startMissionButton = theMC.windowMissionController.GetWindowButton();
 
-        startButton.onClick.RemoveAllListeners();
+        startMissionButton.onClick.RemoveAllListeners();
 
         bool isMissionInProgress = this.theMC.IsMissionInProgress(mission.MissionPointer);
 
@@ -62,7 +62,8 @@ public class MissionManager : MonoBehaviour
         else
         {
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.normal;
-            startButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
+            startMissionButton.onClick.AddListener(delegate () { SetAmountOfEvents(mission); });
+            startMissionButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
       //  List<Specialists> specForMission = theSC.PassSpecToMissionSelection();
@@ -73,7 +74,7 @@ public class MissionManager : MonoBehaviour
 
       //  theMC.windowMissionController.CreateSpecListForMission(specForMission);
 
-        theMC.windowMissionController.Init();
+        theMC.windowMissionController.Init(); // ToDo.. look inside..
 
         //this.currentMission = mission;
 
@@ -113,6 +114,12 @@ public class MissionManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void SetAmountOfEvents(Mission mission)
+    {
+        MissionCreater creator = GetComponent<MissionCreater>();
+        creator.AddEventsToMission(mission);
     }
 
 }

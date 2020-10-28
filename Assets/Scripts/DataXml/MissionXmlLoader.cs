@@ -77,7 +77,10 @@ public class MissionXmlLoader : MonoBehaviour
 
             newMission.Id = idNumber;
             newMission.Repeate = item.GetBoolStat("Repeatable");
-            newMission.LevelOfDangerous = (LevelOfDangerous)item.GetIntStat("Difficulty");
+
+            newMission.DifficultyMax = item.GetIntStat("DifficultyMax");
+            newMission.DifficultyMin = item.GetIntStat("DifficultyMin");
+
             string terrains = item.GetStrStat("Terrain");
             List<string> result = terrains.Split(',').ToList();
             foreach (var str in result)
@@ -92,6 +95,10 @@ public class MissionXmlLoader : MonoBehaviour
             newMission.NeededTransport = item.GetStrStat("Transport");
             newMission.EventsMin = item.GetIntStat("EventsMin");
             newMission.EventsMax = item.GetIntStat("EventsMax");
+
+            if (newMission.EventsMin > newMission.EventsMax)
+                newMission.EventsMax = newMission.EventsMin;
+
             newMission.RepeatableIn = item.GetIntStat("RepTime");
             newMission.MissionPointer = item.GetStrStat("MissionPointer");
 
@@ -104,12 +111,9 @@ public class MissionXmlLoader : MonoBehaviour
                     newMission.Name = secondItem.GetStrStat("Name");
                     var misType = secondItem.GetStrStat("Type");
                     newMission.Type = newMission.ConvertMissionTypeStringData(misType);
-                    string mapField = secondItem.GetStrStat("MapField");
-                    newMission.MapField = newMission.ConvertMapFieldStringData(mapField); // mise se vyskuje na teto mape..
                 }
             }
 
-            // ToDo doesnt work item.getstrstat(Wrong key) - spatny klic je unvnit neni dodelane od designu
             if (spriteLoader != null)
             {
                 string spriteName = item.GetStrStat("MisImage");
