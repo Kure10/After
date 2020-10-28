@@ -79,7 +79,16 @@ public class DebrisTile : Tile, IWorkSource
                     {
                         //done, we're depleted
                         var amount = rnd.Next(5, 10);
-                        resourceManager.SpawnMaterial(amount % 2 == 0 ? ResourceManager.Material.Civilni : ResourceManager.Material.Technicky, amount, Geometry.GridFromPoint(worker.character.transform.position));
+                        var res = new ResourceManager.ResourceAmount();
+                        if (amount % 2 == 0)
+                        {
+                            res.Civilian += amount;
+                        }
+                        else
+                        {
+                            res.Technical += amount;
+                        }
+                        resourceManager.SpawnResource(res, Geometry.GridFromPoint(worker.character.transform.position));
                         depleted = true;
                         break;
                     }

@@ -16,7 +16,6 @@ public class BuildingController : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
-    private ResourceControler resourceControler;
     private BuildingManager buildingManager;
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
@@ -24,7 +23,6 @@ public class BuildingController : MonoBehaviour
     private void Awake()
     {
         buildingManager = FindObjectOfType<BuildingManager>();
-        resourceControler = FindObjectOfType<ResourceControler>();
         AddAllBuildings();
     }
 
@@ -46,7 +44,6 @@ public class BuildingController : MonoBehaviour
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
         bbb.BuildingChangeStats(buildingBlueprint, buildingManager);
         BuildingOnUse bou = go.GetComponent<BuildingOnUse>();
-        bou.CacheResourcesControler(resourceControler);
     }
 
 

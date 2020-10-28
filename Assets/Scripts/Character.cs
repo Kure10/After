@@ -1,15 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Resources;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IResourceHolder
 {
 
     private Command command;
     private Specialists blueprint;
     private IWorkSource source;
     public string State; //just pure text for now
+
+    public Character()
+    {
+        Amount = new ResourceManager.ResourceAmount();
+    }
 
     public void SetBlueprint(Specialists specialist)
     {
@@ -62,5 +68,25 @@ public class Character : MonoBehaviour
         }
 
         return false;
+    }
+
+    public ResourceManager.ResourceAmount Amount { get; set; }
+
+    public void Set(ResourceManager.ResourceAmount amount)
+    {
+        Amount = amount;
+    }
+
+    public ResourceManager.ResourceAmount Add(ResourceManager.ResourceAmount amount)
+    {
+        Amount += amount;
+        GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
+        return new ResourceManager.ResourceAmount();//TODO ma vracet zbytek - tzn. kdyz pridas 11 resourcu, 1 vrat, bo unese jen 10
+    }
+
+    public ResourceManager.ResourceAmount Remove(ResourceManager.ResourceAmount amount)
+    {
+        Amount -= amount;
+        return amount; //TODO vrat skutecny pocet ziskanych resources
     }
 }

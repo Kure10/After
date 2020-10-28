@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BuildingOnUse : MonoBehaviour
 {
     private BuildingBlueprint currentBuildingBlueprint;
-    private ResourceControler resourceControler;
     private BuildingCreator buildingCreator;
     private PanelControler panelControler;
 
@@ -22,12 +21,6 @@ public class BuildingOnUse : MonoBehaviour
     {
         currentBuildingBlueprint = buildingBlueprint;
     }
-
-    public void CacheResourcesControler(ResourceControler rc)
-    {
-        resourceControler = rc;
-    }
-
     public void SetButtonEvent()
     {
         Button button = GetComponent<Button>();

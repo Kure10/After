@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Resources;
 using UnityEngine;
 
 public abstract class Command
@@ -115,35 +116,49 @@ public class PickUp : Command
     public override Result Execute()
     {
         var resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
-        var resource = resourceManager.PickUp(Geometry.GridFromPoint(Target.transform.position));
-        if (resource == null) return Result.Failure;
-        var character = Target.GetComponent<Character>();
-        resource.Owner = character;
-        return Result.Success;
+        var tileFactory = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
+        var pickupPoint = tileFactory.getTile(Geometry.GridFromPoint(Target.transform.position));
+        if (pickupPoint is IResourceHolder tile)
+        {
+            
+            var character = Target.GetComponent<Character>() as IResourceHolder;
+            resourceManager.Transfer(tile, character, tile.Amount);
+            return Result.Success;
+        }
+        return Result.Failure;
     }
 }
 public class Drop : Command
 {
+    private readonly ResourceManager resourceManager;
+    private readonly TileFactory tileFactory;
     public Drop(GameObject target)
     {
         Target = target;
+        tileFactory = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
+        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
     }
     public override Result Execute()
     {
-        var resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
-        var resource = resourceManager.GetResource(Target.GetComponent<Character>());
-        if (resource == null) return Result.Failure;
-        var tf = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<TileFactory>();
-        var dropPoint = tf.getTile(Geometry.GridFromPoint(Target.transform.position));
+        Character owner = Target.GetComponent<Character>();
+        if (owner == null) return Result.Failure;
+        var dropPoint = tileFactory.getTile(Geometry.GridFromPoint(Target.transform.position));
         if (!(dropPoint is Tile t)) return Result.Failure;
+        IResourceHolder target = null;
         if (t.building != null)
         {
-            resource.Owner = t.building;
+            if(t.building is IResourceHolder rh)
+            {
+                target = rh;
+            }
         }
         else
         {
-            resource.Owner = tf.getTile(tf.FindFreeTile(Geometry.GridFromPoint(Target.transform.position)).First());
+            target = tileFactory.getTile(tileFactory.FindFreeTile(Geometry.GridFromPoint(Target.transform.position)).First()) as IResourceHolder;
         }
+
+        if (target is null) return Result.Failure;
+        resourceManager.Transfer(owner, target, owner.Amount);
         return Result.Success;
     }
 }
@@ -167,7 +182,6 @@ public class Build : Command
     public float GetBuildPoints(int techLevel)
     {
         var ret = (accumulatedTime / 10f + techLevel) * 10f;
-        Debug.Log(accumulatedTime + "Accumulated time");
         accumulatedTime = 0;
         return ret;
     }

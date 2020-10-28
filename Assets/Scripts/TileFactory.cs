@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Win32;
+using Resources;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -368,11 +369,6 @@ public class TileFactory : MonoBehaviour
     public List<Vector2Int> FindFreeTile(Vector2Int startPoint, [CanBeNull] List<Vector2Int> forbiddenTiles = null, bool allowResources = false)
     {
         var ret = new List<Vector2Int>();
-        List<Resource> resOnTiles = new List<Resource>();
-        if (!allowResources)
-        {
-            resOnTiles = rm.resources == null ? new List<Resource>() : rm.resources.Where(r => r.Owner is Tile).ToList();
-        }
 
         int distance = 0;
         while (distance < 20)
@@ -401,13 +397,15 @@ public class TileFactory : MonoBehaviour
                                     empty = false;
                                 }
                             }
-                                
-                            foreach (var res in resOnTiles)
+
+                            if (!allowResources)
                             {
-                                if (res.Owner == t)
+                                if (t is IResourceHolder resHolder)
                                 {
-                                    empty = false;
-                                    break;
+                                    if (!resHolder.Amount.Empty())
+                                    {
+                                        empty = false;
+                                    }
                                 }
                             }
 

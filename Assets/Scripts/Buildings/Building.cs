@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Resources;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public partial class Building : IWorkSource
+public partial class Building : IWorkSource, IResourceHolder
 {
     private List<Worker> Workers;
     private BuildingState _state;
@@ -54,7 +55,7 @@ public partial class Building : IWorkSource
         Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
-
+        Amount = new ResourceManager.ResourceAmount();
     }
 
 
@@ -111,8 +112,8 @@ public partial class Building : IWorkSource
                         break;
                     case WorkerState.init:
                         var charPosition = Geometry.GridFromPoint(activeWorker.character.transform.position);
-                        var missingMaterials = GetMissingMaterials();
-                        if (!missingMaterials.Any())
+                        var missingMaterials = GetMissingResources();
+                        if (missingMaterials.Empty())
                         {
                             activeWorker.time = 0;
                             activeWorker.character.AddCommand(new Build());
@@ -120,14 +121,9 @@ public partial class Building : IWorkSource
                             return;
                         }
 
-                        Resource tile = null;
-                        foreach (var missingMaterial in missingMaterials)
-                        {
-                            tile = resourceManager.Nearest(charPosition, missingMaterial);
-                            if (tile != null) break;
-                        }
+                        var tile = resourceManager.Nearest(charPosition, missingMaterials);
 
-                        if (tile == null)
+                        if (tile == Vector2Int.Max(default, default))
                         {
                             //no available material, wait for some to appear in future
                             activeWorker.time = 0;
@@ -137,9 +133,7 @@ public partial class Building : IWorkSource
                             break;
                         }
 
-                        var nearestRes = (Tile) tile.Owner; //TODO pro vsechny matrose
-                        var nearest = new Vector2Int(nearestRes.x, nearestRes.y);
-                        var pathToMaterial = tileFactory.FindPath(charPosition, nearest);
+                        var pathToMaterial = tileFactory.FindPath(charPosition, tile);
 
                         activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject, pathToMaterial, true));
                         activeWorker.state = WorkerState.empty;
@@ -178,11 +172,9 @@ public partial class Building : IWorkSource
                         activeWorker.character.Execute();
                         activeWorker.state = WorkerState.init;
                         activeWorker.character.State = "Walking";
-                        if (!GetMissingMaterials().Any())
+                        if (GetMissingResources().Empty())
                         {
                             State = BuildingState.UnderConstruction;
-                            var hpPosition = Camera.main.WorldToScreenPoint(prefab.transform.position);
-                            var canvas = GameObject.FindGameObjectWithTag("Canvas").transform.GetComponent<Canvas>();
                             statusHandle.SetHPValue(0);
                         }
 
@@ -254,20 +246,12 @@ public partial class Building : IWorkSource
             pathFromMatToBuilding));
     }
 
-    private List<ResourceManager.Material> GetMissingMaterials()
+    private ResourceManager.ResourceAmount GetMissingResources()
     {
-        var missing = new List<ResourceManager.Material>();
-        var onSiteResources = resourceManager.GetResourcesForOwner(this);
-        var civil = blueprint.Civil - onSiteResources.Where(r => r.Material == ResourceManager.Material.Civilni)
-                        .Select(r => r.Amount).Sum();
-        if (civil > 0) missing.Add(ResourceManager.Material.Civilni);
-        var military = blueprint.Military - onSiteResources
-                           .Where(res => res.Material == ResourceManager.Material.Vojensky).Select(r => r.Amount).Sum();
-        if (military > 0) missing.Add(ResourceManager.Material.Vojensky);
-        var technicky = blueprint.Tech - onSiteResources
-                            .Where(res => res.Material == ResourceManager.Material.Technicky).Select(r => r.Amount)
-                            .Sum();
-        if (technicky > 0) missing.Add(ResourceManager.Material.Technicky);
+        var missing = new ResourceManager.ResourceAmount();
+        missing.Civilian = blueprint.Civil - Amount.Civilian;
+        missing.Military = blueprint.Military - Amount.Military;
+        missing.Technical = blueprint.Tech - Amount.Technical;
         return missing;
     }
 
@@ -287,12 +271,13 @@ public partial class Building : IWorkSource
                 statusHandle = prefab.GetComponent<HealthbarHandle>();
                 statusHandle.SetHPValue(0);
                 prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
-
+                Amount = new ResourceManager.ResourceAmount();
                 break;
             case BuildingState.UnderConstruction:
                 prefab = Object.Instantiate(blueprint.ConstructionPrefab, prefab.transform.position,
                     prefab.transform.rotation);
-                resourceManager.GetResourcesForOwner(this).ForEach(res => res.Amount = 0);
+                Set(new ResourceManager.ResourceAmount());
+                resourceManager.ResourceAmountChanged();
                 statusHandle = prefab.GetComponent<HealthbarHandle>();
                 statusHandle.SetHPValue(0);
                 prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
@@ -300,6 +285,7 @@ public partial class Building : IWorkSource
             case BuildingState.Build:
                 Object.Destroy(prefab);
                 prefab = Object.Instantiate(blueprint.Prefab, prefab.transform.position, prefab.transform.rotation);
+                prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
                 break;
             default: break; //TODO
         }
@@ -310,5 +296,28 @@ public partial class Building : IWorkSource
         var position = prefab.transform.position;
         return new Vector3(position.x + Random.Range(-0.4f, 0.4f), position.y + 0.5f,
             position.z + Random.Range(-0.4f, 0.4f));
+    }
+
+    public ResourceManager.ResourceAmount Amount { get; set; }
+    public void Set(ResourceManager.ResourceAmount amount)
+    {
+        Amount = amount;
+    }
+
+    public ResourceManager.ResourceAmount Add(ResourceManager.ResourceAmount amount)
+    {
+        Amount += amount;
+        resourceManager.Register(this);
+        return new ResourceManager.ResourceAmount();
+    }
+
+    public ResourceManager.ResourceAmount Remove(ResourceManager.ResourceAmount amount)
+    {
+        Amount -= amount;
+        if (Amount.Empty())
+        {
+            resourceManager.Unregister(this);
+        }
+        return amount;
     }
 }
