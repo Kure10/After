@@ -18,6 +18,7 @@ public partial class Building : IWorkSource, IResourceHolder
     private GameObject prefab;
     public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
+    private List<Resource> resources;
 
     public List<Worker> getWorkers()
     {
@@ -48,14 +49,16 @@ public partial class Building : IWorkSource, IResourceHolder
 
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
+        Workers = new List<Worker>();
+        resources = new List<Resource>();
+        _amount = new ResourceManager.ResourceAmount();
+        Amount = new ResourceManager.ResourceAmount();
         this.blueprint = blueprint;
         this.prefab = prefab; //this is ugly hack just to get selected position easily- the prefab is reInstantiated later
         State = BuildingState.Designed;
         TimeToBuildRemaining = blueprint.TimeToBuild;
-        Workers = new List<Worker>();
         resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>();
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
-        Amount = new ResourceManager.ResourceAmount();
     }
 
 
@@ -291,14 +294,70 @@ public partial class Building : IWorkSource, IResourceHolder
         }
     }
 
-    public Vector3 GetPosition()
+    private int nextField = 0;
+    public Vector3 GetPosition(int field = 0)
     {
+        var maxField = blueprint.row * blueprint.column;
+        if (field == 0)
+        {
+            nextField = resources.Count % maxField;
+        }
+        else
+        {
+            nextField = field;
+        }
         var position = prefab.transform.position;
-        return new Vector3(position.x + Random.Range(-0.4f, 0.4f), position.y + 0.5f,
-            position.z + Random.Range(-0.4f, 0.4f));
+        int rotation = (int) (prefab.transform.rotation.eulerAngles.y / 90);
+        //x = row, y = column
+        var x = nextField % blueprint.row;
+        var y = nextField % blueprint.column;
+        float xx, zz;
+        switch (rotation)
+                {
+                    case 0: xx = position.x + x; zz = position.z + y; break;
+                    case 1: xx = position.x + y; zz = position.z - x; break;
+                    case 2: xx = position.x - x; zz = position.z - y; break;
+                    default: xx = position.x - y; zz = position.z + x; break;
+                }
+
+        return new Vector3( xx, position.y + 0.5f,
+            zz);
     }
 
-    public ResourceManager.ResourceAmount Amount { get; set; }
+    public void RedrawResources()
+    {
+        foreach (var resource in resources)
+        {
+            resource.Amount = 0;
+        }
+        resources.Clear();
+        var remaining = Amount;
+        while (remaining.Civilian > 0)
+        {
+            var toStack = remaining.Civilian > 10 ? 10 : remaining.Civilian;
+            resources.Add(new Resource(toStack, ResourceManager.Material.Civilni, this));
+            remaining.Civilian -= toStack;
+        }
+        while (remaining.Technical> 0)
+        {
+            var toStack = remaining.Technical > 10 ? 10 : remaining.Technical;
+            resources.Add(new Resource(toStack, ResourceManager.Material.Technicky, this));
+            remaining.Technical -= toStack;
+        }
+    }
+
+    private ResourceManager.ResourceAmount _amount;
+
+    public ResourceManager.ResourceAmount Amount
+    {
+        get => _amount;
+        set
+        {
+            _amount = value;
+            RedrawResources(); 
+        }
+    }
+
     public void Set(ResourceManager.ResourceAmount amount)
     {
         Amount = amount;
