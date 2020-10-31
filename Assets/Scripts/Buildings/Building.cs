@@ -287,6 +287,8 @@ public partial class Building : IWorkSource, IResourceHolder
                 break;
             case BuildingState.Build:
                 Object.Destroy(prefab);
+                Set(new ResourceManager.ResourceAmount());
+                resourceManager.ResourceAmountChanged();
                 prefab = Object.Instantiate(blueprint.Prefab, prefab.transform.position, prefab.transform.rotation);
                 prefab.transform.Find("Selection").GetComponent<BuildingPointer>().Building = this;
                 break;

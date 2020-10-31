@@ -120,9 +120,11 @@ public class PickUp : Command
         var pickupPoint = tileFactory.getTile(Geometry.GridFromPoint(Target.transform.position));
         if (pickupPoint is IResourceHolder tile)
         {
-            
             var character = Target.GetComponent<Character>() as IResourceHolder;
-            resourceManager.Transfer(tile, character, tile.Amount);
+            var pickedUp = tile.Remove(tile.Amount);
+            if (pickedUp.Empty()) return Result.Failure;
+            var surplus = character.Add(pickedUp);
+            tile.Add(surplus);            
             return Result.Success;
         }
         return Result.Failure;
@@ -158,7 +160,12 @@ public class Drop : Command
         }
 
         if (target is null) return Result.Failure;
-        resourceManager.Transfer(owner, target, owner.Amount);
+        var surplus = target.Add(owner.Amount);
+        owner.Set(surplus);
+        if (!surplus.Empty())
+        {
+            return Result.Failure;
+        }
         return Result.Success;
     }
 }

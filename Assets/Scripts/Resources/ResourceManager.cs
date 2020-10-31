@@ -334,10 +334,4 @@ public class ResourceManager : MonoBehaviour
         return resourceHolders.Where(r => r.Amount.HasAny(amount)).ToList();
     }
 
-    public void Transfer(IResourceHolder src, IResourceHolder dst, ResourceAmount resourceAmount)
-    {
-        //TODO kontroly jesli to ma etc
-        src.Remove(resourceAmount);
-        dst.Add(resourceAmount);
-    }
 }
