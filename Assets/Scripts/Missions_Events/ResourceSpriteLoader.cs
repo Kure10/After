@@ -48,19 +48,19 @@ public class ResourceSpriteLoader : MonoBehaviour
         return this.regionResources.Find(sprite => sprite.name == resourceName);
     }
 
-    public Sprite FindEventResource (string resourceName)
+    public Sprite LoadEventSprite(string resourceName)
     {
-        Sprite tex = defaultResource;
+        Sprite sprite = defaultResource;
 
         for (int i = 0; i < eventResources.Count; i++)
         {
             if(resourceName == eventResources[i].name)
             {
-                tex = eventResources[i];
+                sprite = eventResources[i];
             } 
         }
 
-        return tex;
+        return sprite;
     }
 
     public void ClearEventResources ()

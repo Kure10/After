@@ -15,6 +15,8 @@ public class PanelTime : MonoBehaviour
     private int _timeStatus;
     private bool paused;
     private float blinkingTime = 0f;
+
+    public bool IsPaused { get { return this.paused; } }
     private int timeStatus
     {
         get => _timeStatus;
@@ -65,11 +67,18 @@ public class PanelTime : MonoBehaviour
     void OnDestroy()
     {
         TimeControl.OnTimeChanged -= TimeChanged;
-
     }
 
-    public void Pause()
+    public void Pause(bool forcePause = false)
     {
+        if(forcePause)
+        {
+            blinkingTime = 0;
+            paused = true;
+            TimeControl.IsTimeBlocked = true;
+            TimeControl.SetTime(0);
+        }
+
         if (TimeControl.IsTimeBlocked)
             return;
 

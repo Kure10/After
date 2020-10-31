@@ -30,13 +30,11 @@ public class BuildingXmlLoader : MonoBehaviour
         resolveMaster.AddDataNode(fileName, firstData);
 
         Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-        resolveMaster.AddDataNode(fileNameCZ, secondData);
+        resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedData = resolveMaster.GetDataKeys(fileName);
-        XMLAdditionalData = resolveMaster.GetDataKeys(fileNameCZ);
 
-
-        allBuildings = DeSerializedData(XMLLoadedData, XMLAdditionalData);
+        allBuildings = DeSerializedData(XMLLoadedData);
 
         //ResolveSlave slave = resolveMaster.AddDataSlave("Rooms", resolveMaster.GetDataKeys("Rooms")[0].Title);
         ////slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
@@ -46,7 +44,7 @@ public class BuildingXmlLoader : MonoBehaviour
         return allBuildings;
     }
 
-    private List<BuildingBlueprint> DeSerializedData(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
+    private List<BuildingBlueprint> DeSerializedData(List<StatsClass> firstStatClass)
     {
         List<BuildingBlueprint> allMissions = new List<BuildingBlueprint>();
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
@@ -85,13 +83,8 @@ public class BuildingXmlLoader : MonoBehaviour
             newBuilding.SetColor(red, green, blue);
 
             //// for data which can be translated
-            foreach (StatsClass secondItem in secondStatClass)
-            {
-                if (item.Title == secondItem.Title)
-                {
-                    newBuilding.Name = secondItem.GetStrStat("RoomName");
-                }
-            }
+            newBuilding.Name = item.GetStrStat("RoomName");
+
 
             if (spriteLoader != null)
             {

@@ -31,13 +31,12 @@ public class MissionXmlLoader : MonoBehaviour
         resolveMaster.AddDataNode(fileName, firstData);
 
         Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-        resolveMaster.AddDataNode(fileNameCZ, secondData);
+        resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedMissions = resolveMaster.GetDataKeys(fileName);
-        XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
 
 
-        allMissions = DeSerializedMission(XMLLoadedMissions, XMLAdditionalMissionsInformation);
+        allMissions = DeSerializedMission(XMLLoadedMissions);
 
         // chyby jeste direct a final event...   dodelat...
 
@@ -52,15 +51,15 @@ public class MissionXmlLoader : MonoBehaviour
         //}
 
         //
+
         ResolveSlave slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[0].Title);
-        //slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
         slave.StartResolve();
         var output = slave.Resolve();
 
         return allMissions;
     }
 
-    private List<Mission> DeSerializedMission(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
+    private List<Mission> DeSerializedMission(List<StatsClass> firstStatClass)
     {
         List<Mission> allMissions = new List<Mission>();
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
@@ -103,17 +102,11 @@ public class MissionXmlLoader : MonoBehaviour
             newMission.MissionPointer = item.GetStrStat("MissionPointer");
 
             // for data which can be translated
-            foreach (StatsClass secondItem in secondStatClass)
-            {
-                if (item.Title == secondItem.Title)
-                {
-                    newMission.Description = secondItem.GetStrStat("Description");
-                    newMission.Name = secondItem.GetStrStat("Name");
-                    var misType = secondItem.GetStrStat("Type");
-                    newMission.Type = newMission.ConvertMissionTypeStringData(misType);
-                }
-            }
-
+            newMission.Description = item.GetStrStat("Description");
+            newMission.Name = item.GetStrStat("Name");
+            var misType = item.GetStrStat("Type");
+            newMission.Type = newMission.ConvertMissionTypeStringData(misType);
+            
             if (spriteLoader != null)
             {
                 string spriteName = item.GetStrStat("MisImage");

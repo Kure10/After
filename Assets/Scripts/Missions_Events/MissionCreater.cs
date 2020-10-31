@@ -66,32 +66,7 @@ public class MissionCreater : MonoBehaviour
 
         firstOccurrenceEvent = SetEventTimeInMission(mis, firstOccurrenceEvent, eventOccurrenceRange);
 
-        /* Event Image*/
-
-       // SetEventsImage(mis);
-
-        /* Event text answers for buttons */
-
-        //foreach (EventContent item in mis.GetEventsContent)
-        //{
-        //    item.hasAvoidButton = true; // testing
-        //    /*checknout jestli funguje..*/
-        //    item.numberOfOptions = 1; // todo spatne..
-
-        //    for (int i = 0; i < item.answerTextField.Length; i++)
-        //    {
-        //        item.answerTextField[i] = "Answer number: " + i;  // tady se vyplni odpovedi na kazdy button.. ToDO dodelat až budu mit zkama vyplnit..
-        //    }
-        //}
     }
-
-    //private void SetEventsImage(Mission mis)
-    //{
-    //    foreach (var item in mis.GetEventsContent)
-    //    {
-    //        item.sprite = this.resourceSpriteLoader.FindEventResource("smile.jpg"); // Todo je tu cela cesta name.jpg  - mozna by to slo udelat bet .jpg
-    //    }
-    //}
 
     private float SetEventTimeInMission(Mission mis, float firstOccurrenceEvent, float eventOccurrenceRange)
     {

@@ -1,22 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ResolveMachine;
 
 public class EventCreater : MonoBehaviour
 {
     private EventManager eventManager;
-    private ResourceSpriteLoader resourceSpriteLoader;
+
+    internal ResolveMaster resolveMaster = new ResolveMaster();
 
     void Awake()
     {
+        
         EventXmlLoader xmlLoader = gameObject.GetComponent<EventXmlLoader>();
         List<StatsClass> createdEvents = new List<StatsClass>();
         this.eventManager = this.GetComponent<EventManager>();
-        resourceSpriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+        
 
         createdEvents = xmlLoader.GetEventsFromXML();
-
-
 
         PassMissionToManager(createdEvents);
     }

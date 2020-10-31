@@ -29,11 +29,11 @@ public class RegionXmlLoader : MonoBehaviour
         Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
         resolveMaster.AddDataNode(fileName, firstData);
 
-       // Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-       // resolveMaster.AddDataNode(fileNameCZ, secondData);
+        // Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
+        // resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedRegions = resolveMaster.GetDataKeys(fileName);
-       // XMLAdditionalMissionsInformation = resolveMaster.GetDataKeys(fileNameCZ);
+
 
 
         allRegions = DeSerializedRegions(XMLLoadedRegions);

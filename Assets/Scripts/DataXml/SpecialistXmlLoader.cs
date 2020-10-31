@@ -31,17 +31,16 @@ public class SpecialistXmlLoader : MonoBehaviour
         resolveMaster.AddDataNode(fileName, firstData);
 
         Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-        resolveMaster.AddDataNode(fileNameCZ, secondData);
+        resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedSpecialists = resolveMaster.GetDataKeys(fileName);
-        XMLAdditionalSpecialistsInformation = resolveMaster.GetDataKeys(fileNameCZ);
 
-        allSpecialists = DeSerializedSpecialists(XMLLoadedSpecialists, XMLAdditionalSpecialistsInformation);
+        allSpecialists = DeSerializedSpecialists(XMLLoadedSpecialists);
 
         return allSpecialists;
     }
 
-    private List<Specialists> DeSerializedSpecialists(List<StatsClass> firstStatClass, List<StatsClass> secondStatClass)
+    private List<Specialists> DeSerializedSpecialists(List<StatsClass> firstStatClass)
     {
         List<Specialists> allSpecialists = new List<Specialists>();
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
@@ -85,15 +84,9 @@ public class SpecialistXmlLoader : MonoBehaviour
             }
 
             // for data which can be translated
-            foreach (StatsClass secondItem in secondStatClass)
-            {
-                if (item.Title == secondItem.Title)
-                {
-                    spec.Povolani = secondItem.GetStrStat("SpecClass");
-                    spec.Story = secondItem.GetStrStat("SpecStory");
-                }
-            }
-           // spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
+            spec.Povolani = item.GetStrStat("SpecClass");
+            spec.Story = item.GetStrStat("SpecStory");
+            // spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
             spec.ReCalcAutoStats();
 
 

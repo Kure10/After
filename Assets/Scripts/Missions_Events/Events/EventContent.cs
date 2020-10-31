@@ -6,11 +6,13 @@ public class EventContent
 {
     public int evocationTime;
 
-    public bool isEventFinished = false;
+    private bool isEventFinished = false;
 
     public bool wasTriggered;
 
     private List<StatsClass> curentEventInfo = new List<StatsClass>();
+
+    public bool IsEventFinished { get { return this.isEventFinished; } set { this.isEventFinished = value; } }
 
     public void AddStatClass(StatsClass statClass)
     {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ResolveMachine;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
@@ -9,24 +10,22 @@ public class MissionController : MonoBehaviour
 {
 
     public MissionInfoController infoController;  /* tohle pak asi bude neco jako missionViewControler  Nebo tak neco aby se staral o misse na view casti */
-    [SerializeField] private GameObject eventPanel;
-    [SerializeField] private Transform eventHolder;
-
+    
     private List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
     private List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
 
-    [SerializeField]
-    public EventManager eventManager;
+    [SerializeField] public WindowMissionController windowMissionController;
 
-    [SerializeField]
-    public WindowMissionController windowMissionController;
+    [SerializeField] private SpecialistControler specialistControler;
 
-    [SerializeField]
-    private SpecialistControler specialistControler;
+    [SerializeField] private EventController eventController;
 
     private TimeControl theTC;
     private PanelTime thePT;
     private MissionNotificationManager notificationMissionManager;
+
+
+    
 
     private void Awake()
     {
@@ -54,19 +53,19 @@ public class MissionController : MonoBehaviour
 
     public void Update()
     {
-        if(this.missionsInProcces.Count > 0)
+        if(!this.thePT.IsPaused)
         {
-            MissionProcess();
-            TryOutbreakEvent();
+            if (this.missionsInProcces.Count > 0)
+            {
+                MissionProcess();
+                TryOutbreakEvent();
+            }
+
+            if (this.missionsInRepate.Count > 0)
+            {
+                CalculateRemainingTimeForRepeatMissions();
+            }
         }
-
-
-        if (this.missionsInRepate.Count > 0)
-        {
-            CalculateRemainingTimeForRepeatMissions();
-        }
-
-
     }
 
     public void MissionProcess()
@@ -175,44 +174,20 @@ public class MissionController : MonoBehaviour
                 if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
                 {
                     currentEvent.wasTriggered = true;
-                    this.thePT.Pause(); // toto je mozna spatne :D musim se nad tím zamyslet co vsechno dela pause.
-
-                    GameObject eventGameObject = Instantiate(this.eventPanel, this.eventHolder.transform.position, Quaternion.identity);
-                    EventPanel eventPanel = eventGameObject.GetComponent<EventPanel>();
-
                     
 
-                    eventGameObject.transform.SetParent(eventHolder);
+                    eventController.EventTrigered(currentMission);
 
-                    // vyber event
-
-                    // nastav event patricne.
-
-                    StatsClass _event = eventManager.ChoiseRandomEvent(currentMission.DifficultyMin, currentMission.DifficultyMax, currentMission.GetEmergingTerrains);
-
-                  //  _event.GetStrStat();
-
-                    /*tohle bude v interni metode.. .. TODO Dodelat pico..*/
-
-                    eventPanel.TitleField.text = "ahoj";
-                    eventPanel.DescriptionTextField.text = "LOL";
-                   // eventPanel.SetSprite = currentEvent.sprite;
-
-                    // tohle jeste otestovat .... // ToDo nastavit button akci..
-                   // eventPanel.CreateOptions(currentEvent.numberOfOptions, currentEvent.answerTextField, currentEvent);
-
-                    /* reset transform .. */
-                    RectTransform rect = eventGameObject.GetComponent<RectTransform>();
-                    rect.offsetMin = new Vector2(0, 0);
-                    rect.offsetMax = new Vector2(0, 0);
-                    eventGameObject.transform.localScale = new Vector3(1, 1, 1);
+                    EventController.isEventRunning = true;
 
 
                     /* Create Notifiction*/
                     this.notificationMissionManager.CreateNewNotification(currentMission); // neni dokonceno
 
                     /* Time blocked*/
-                    TimeControl.IsTimeBlocked = true;
+                    this.thePT.Pause(true);
+                    
+                    
 
                     /*-------*/
                     Debug.Log("Event Triggerd");
@@ -256,7 +231,6 @@ public class MissionController : MonoBehaviour
 
         return false;
     }
-
 }
 
 

@@ -51,8 +51,6 @@ public class Mission
 
     private List<EventContent> eventsContents = new List<EventContent>();
 
-    //private List<EventBlueprint> eventsInMission = new List<EventBlueprint>();
-
     private List<Character> charactersOnMission = new List<Character>();
 
     private RegionOperator currentRegionOperator;
@@ -72,8 +70,6 @@ public class Mission
     public float RepeatableTime = 0;
 
     public bool WasSuccessfullyExecuted = false;
-
-    //public int finalNumberOfEvents = 0;
 
     #endregion
 

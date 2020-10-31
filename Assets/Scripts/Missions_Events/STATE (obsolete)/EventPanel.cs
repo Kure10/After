@@ -1,152 +1,106 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class EventPanel : MonoBehaviour
 {
     [Header("Main Setting")]
 
-    private Sprite sprite;  // Main Image of Event
+    [SerializeField] private Text titleField; 
 
-    [SerializeField]
-    private Text titleField; 
+    [SerializeField] private Text descriptionTextField;
 
-    [SerializeField]
-    private Text descriptionTextField;
+    [SerializeField] private Image sprite;
 
     [Header("Designer Settings")]
 
-    [SerializeField]
-    private string eventName;
+    [SerializeField] private string eventName;
 
-    [SerializeField]
-    private int nameFontSize = 22;
+    [SerializeField] private int nameFontSize = 22;
 
-    [SerializeField]
-    private int fontSize = 25;
-
-
+    [SerializeField] private int fontSize = 25;
 
     [TextArea(5, 10)]
-    [SerializeField]
-    private string description; // this is only for testing purposes (for Game Designer or Artist..)
+    [SerializeField] private string description; 
+
 
     [Header("Buttons")]
 
+    [SerializeField] GameObject buttonPrefab;
     
-    private int numberOfOptions; // prozatím public
+    [SerializeField] GameObject buttonHolder;
 
-    [SerializeField]
-    private Button origin; // This is origin Button like a template
+    [Header("Testing_")]
 
-    [SerializeField]
-    private GameObject optionParrent; // just a holder for options
+    [SerializeField] Text battleType;
+
+    [SerializeField] Text BattleDif;
+
+    [SerializeField] Text MinEnemyNumber;
+
+    [SerializeField] Text MonsterDifMax;
+
+    [SerializeField] Text MonsterID;
+
+    [SerializeField] Text BeastNumber;
+
 
     #region Properities
 
+    /* prop are for Editor..  */
     public string EventName { get { return eventName; } }
     public string Description { get { return description; } }
     public Text DescriptionTextField { get { return descriptionTextField; } }
-
-    public Sprite SetSprite
-    {
-        set { this.sprite = value; }
-    }
-
     public Text TitleField { get { return this.titleField; } }
     public int FontSize { get { return fontSize; } set { fontSize = value; } }
-
     public int NameFontSize { get { return nameFontSize; } set { nameFontSize = value; } }
 
     #endregion
 
-    public void CreateOptions(int numberOfOptions, string[] optionsTextField, EventBlueprint currentEvent)
+    public void SetupEventInfo (string _name, string _description , Sprite _sprite)
     {
-        this.numberOfOptions = numberOfOptions;
-
-        SetUpAvoidButton(currentEvent);
-
-        if (numberOfOptions == 1)
-        {
-            SetupOrigin(optionsTextField[0]);
-        }
-        else if (numberOfOptions > 1)
-        {
-            SetupOrigin(optionsTextField[0]);
-            AddNewOptions(optionsTextField);
-        }
-        else
-        {
-            Debug.LogError("number of options is less than 1. Must be 1 and more !");
-        }
+        this.eventName = _name;
+        this.description = _description;
+        this.sprite.sprite = _sprite;
     }
 
-    private void AddNewOptions(string[] optionsTextField)
+
+    public void CreateButon(UnityAction evt, string text)
     {
-        for (int i = 1; i < numberOfOptions; i++)
+        var gameObjectButton = Instantiate(this.buttonPrefab, this.transform.position, Quaternion.identity);
+        gameObjectButton.transform.SetParent(buttonHolder.transform);
+
+        var eventButton = gameObjectButton.GetComponent<EventButton>();
+        eventButton.Text.text = text;
+        eventButton.ButtonControler.onClick.RemoveAllListeners();
+        eventButton.ButtonControler.onClick.AddListener(evt);
+    }
+
+    public void DestroyAllButtons()
+    {
+        foreach (Transform child in buttonHolder.transform)
         {
-            SetupOption(optionsTextField[i]);
+            GameObject.Destroy(child.gameObject);
         }
     }
 
-    private void SetupOrigin(string textButton)
+    public void TestingFight(string _battleType, int _BattleDif, int _MinEnemyNumber, int _MonsterDifMax)
     {
-        Button button = this.origin.GetComponent<Button>();
-        Image image = this.origin.GetComponent<Image>();
-        Text buttonText = this.origin.GetComponentInChildren<Text>();
-
-        //  button.onClick.AddListener(); 
-        //  image.color; 
-
-        buttonText.text = textButton;
-
+        this.battleType.text = "battle type: " + _battleType;
+        this.BattleDif.text = "battleDif: " + _BattleDif;
+        this.MinEnemyNumber.text = "min enemy number: " +  _MinEnemyNumber;
+        this.MonsterDifMax.text ="monsterDif max: "  + _MonsterDifMax;
 
     }
 
-    private void SetupOption(string text)
+    public void TestingMonster (string _MonsterID, int _BeastNumber)
     {
-        Button newButton;
-        newButton = Instantiate(origin, this.transform.position, Quaternion.identity);
-        newButton.transform.SetParent(this.optionParrent.transform);
-
-        Button button = newButton.GetComponent<Button>();
-        Image image = newButton.GetComponent<Image>();
-        Text buttonTextField = newButton.GetComponentInChildren<Text>();
-
-        //  button.onClick.AddListener(); 
-        //  image.color; 
-
-        buttonTextField.text = text;
+        this.MonsterID.text = "monster ID: " + _MonsterID;
+        this.BeastNumber.text = "beast number: " + _BeastNumber;
     }
 
-    private void SetUpAvoidButton(EventBlueprint currentEvent)
-    {
-        if(currentEvent.hasAvoidButton)
-        {
-            Button newButton;
-            newButton = Instantiate(origin, this.transform.position, Quaternion.identity);
-            newButton.transform.SetParent(this.optionParrent.transform);
-
-            Button button = newButton.GetComponent<Button>();
-            Image image = newButton.GetComponent<Image>();
-            Text buttonTextField = newButton.GetComponentInChildren<Text>();
-
-            button.onClick.AddListener(() => Avoid(currentEvent)); ; 
-            //  image.color; 
-
-            buttonTextField.text = "Avoid";
-           // button.onClick.AddListener
-        }    
-    }
-
-    private void Avoid (EventBlueprint currentEvent)
-    {
-        currentEvent.isEventFinished = true;
-
-        TimeControl.IsTimeBlocked = false; // nebezpečné :D
-
-        Destroy(this.gameObject);
-    }
 
 }
+
