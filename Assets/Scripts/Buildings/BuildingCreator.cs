@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Boo.Lang.Environments;
+using Buildings;
 using UnityEngine;
 
 public class BuildingCreator : MonoBehaviour
@@ -14,18 +15,19 @@ public class BuildingCreator : MonoBehaviour
     private int rotation;
     private TileFactory tileFactory;
 
-    private List<Building> buildings;
+    private List<IWorkSource> buildings;
     // Start is called before the first frame update
     void Start()
     {
         tileFactory = GameObject.FindGameObjectWithTag("TileFactory").transform.GetComponent<TileFactory>();
-        buildings = new List<Building>();
+        buildings = new List<IWorkSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
         buildings?.ForEach(b=>b.Update());
+        
 
         if (blueprint != null)
         {
@@ -70,7 +72,17 @@ public class BuildingCreator : MonoBehaviour
                     float upDiff = 0.04f;
 
                     blueprint.transform.position += new Vector3(0, upDiff, 0); 
-                    var newBuild = new Building(selectedBuildingBlueprint, blueprint );
+                    //TODO create proper Factory for this
+                    Building newBuild;
+                    if (selectedBuildingBlueprint.Name == "Sklad")
+                    {
+                        newBuild = new Warehouse(selectedBuildingBlueprint, blueprint );
+                    }
+                    else
+                    {
+                        newBuild = new Building(selectedBuildingBlueprint, blueprint );
+                        
+                    }
                     buildings.Add(newBuild);
                    
                     tileFactory.AddBuilding(buildingGrid, newBuild);

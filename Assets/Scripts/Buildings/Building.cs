@@ -8,12 +8,12 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public partial class Building : IWorkSource, IResourceHolder
+public class Building : IWorkSource, IResourceHolder
 {
     private List<Worker> Workers;
     private BuildingState _state;
-    private ResourceManager resourceManager;
-    private TileFactory tileFactory;
+    protected ResourceManager resourceManager;
+    protected TileFactory tileFactory;
     public readonly BuildingBlueprint blueprint;
     private GameObject prefab;
     public float TimeToBuildRemaining;
@@ -240,7 +240,7 @@ public partial class Building : IWorkSource, IResourceHolder
         }
     }
 
-    private void MoveBack(Worker activeWorker)
+    protected void MoveBack(Worker activeWorker)
     {
         var buildingPosition = Geometry.GridFromPoint(this.prefab.transform.position);
         var pathFromMatToBuilding = tileFactory.FindPath(
