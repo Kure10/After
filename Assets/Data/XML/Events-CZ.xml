@@ -7,6 +7,10 @@
       <Data n="0">
         <Key v="Vrhnout se na ní" t="String" n="Option" />
       </Data>
+      <Data n="4">
+        <Key v="O zombíka méně" t="String" n="TitleTextWindow" />
+        <Key v="Tak zombík to měl rychle za sebou. No svět je hned o něco krásnější .)" t="String" n="TextWindow" />
+      </Data>
       <Data n="5">
         <Key v="Úspěšné plížení" t="String" n="TitleTextWindow" />
         <Key v="Některým tvým specialistům se povedlo k zombíkovi nepozoravně připlížit. Tito specialisté dostávají dočasně perk &quot;První úder&quot;" t="String" n="TextWindow" />
@@ -18,12 +22,16 @@
         <Key v="Oblastí si to špacíruje jeden zombík, blbě čumí a neměl by problém se mu vyhnout. Nicméně každej si rád zabije zombii..." t="String" n="TextWindow" />
         <Key v="Potulná zombie" t="String" n="TitleTextWindow" />
       </Data>
-      <Data n="14">
+      <Data n="15">
         <Key v="Neúspěšné plížení" t="String" n="TitleTextWindow" />
         <Key v="Přepad skončil fiaskem, zombík si vás všiml a bez caviků zaútočil." t="String" n="TextWindow" />
       </Data>
-      <Data n="15">
+      <Data n="16">
         <Key v="Obejít zombii obloukem" t="String" n="Option" />
+      </Data>
+      <Data n="19">
+        <Key v="Zombík &quot;žije&quot;" t="String" n="TitleTextWindow" />
+        <Key v="Zombíka jste nechali zombíkem a pokračujete dál ve své cestě..." t="String" n="TextWindow" />
       </Data>
     </Data>
   </Data>
@@ -277,8 +285,37 @@
     </Data>
   </Data>
   <Data n="20207222591637">
-    <Key v="Lesní chata" t="String" n="Name" />
+    <Key v="Chata Rossie" t="String" n="Name" />
     <Key v="Mezi stromy je vidět nějaké stavení. Vypadá to na malou lesní chatu." t="String" n="Description" />
+    <Data n="$E">
+      <Data n="1">
+        <Key v="Odejít" t="String" n="Option" />
+      </Data>
+      <Data n="3">
+        <Key v="Zamčená chata" t="String" n="TitleTextWindow" />
+        <Key v="Obhlédli jste chatu. A vypadá opuštěně. Okna jsou zatlučená a tak nezbývá, než vzít za dveře. Ty jsou bohužel zamčené. Bude třeba je vypáčit." t="String" n="TextWindow" />
+      </Data>
+      <Data n="4">
+        <Key v="Vylomit dveře (násilně)" t="String" n="Option" />
+      </Data>
+      <Data n="9">
+        <Key v="Vypáčit zámek (mechanika)" t="String" n="Option" />
+      </Data>
+      <Data n="13">
+        <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="14">
+        <Key v="Opuštěná chata" t="String" n="TitleTextWindow" />
+        <Key v="Nedaleko před sebou vidíte malou chatku. Na první pohled se zdá opuštěná." t="String" n="TextWindow" />
+      </Data>
+      <Data n="16">
+        <Key v="Ignorovat chatu" t="String" n="Option" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208412048071">
+    <Key v="Pobořená chata" t="String" n="Name" />
+    <Key v="Rozbořená chata s pokladem" t="String" n="Description" />
     <Data n="$E">
       <Data n="2">
         <Key v="Ach ta nepozornost" t="String" n="TitleTextWindow" />
@@ -288,14 +325,17 @@
         <Key v="Štěstí v neštěstí" t="String" n="TitleTextWindow" />
         <Key v="Chata je bohužel prázdná. Navíc byla velmi nestabilní a při průzkumu se uvolnilo několik prken a spadla na specialisty. Naštěstí ti rychle zareagovali a nikdo nepřišel k úhoně." t="String" n="TextWindow" />
       </Data>
-      <Data n="11">
+      <Data n="8">
+        <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="10">
         <Key v="Štěstí a bystré oko" t="String" n="TitleTextWindow" />
         <Key v="Chata byla bohužel prázdná. Navíc je velmi nestabilní a při průzkumu se uvolnilo několik prken a spadla na specialisty. Naštěstí ti rychle zareagovali a nikdo nepřišel k úhoně. &#xA;Spadlá prkna posléze odhadlila, že je zde skrytý sklep. Můžeš se rozhodnout ho prozkoumat. Ale z hlediska statiky chaty to může být dosti riskantní." t="String" n="TextWindow" />
       </Data>
-      <Data n="12">
+      <Data n="11">
         <Key v="Opustit chatu" t="String" n="Option" />
       </Data>
-      <Data n="13">
+      <Data n="12">
         <Key v="Odchod z chaty" t="String" n="TitleTextWindow" />
         <Key v="Chatu jsi nechal chatou a vydal ses dál ke svému cíli." t="String" n="TextWindow" />
       </Data>
@@ -344,32 +384,95 @@
         <Key v="Úspěšná záchrana" t="String" n="TitleTextWindow" />
         <Key v="Specialistu se naštěstí podařilo vykopat včas, stále žije. Nicméně akce si vyžádala své a specialista utrpěl další zranění." t="String" n="TextWindow" />
       </Data>
-      <Data n="42">
+      <Data n="41">
+        <Key v="Opuštěná chata" t="String" n="TitleTextWindow" />
+        <Key v="Nedaleko před sebou vidíte malou chatku. Zdá se mírně pobořená a zchátrlalá." t="String" n="TextWindow" />
+      </Data>
+      <Data n="43">
         <Key v="Úspěšná záchrana" t="String" n="TitleTextWindow" />
         <Key v="Specialistu se naštěstí podařilo vykopat včas, stále žije. Akce byla rychlá a svižná, takže specialista vyvázl bez dalších zranění. Nyní nezbývá nic jiného, než se vydat dál..." t="String" n="TextWindow" />
       </Data>
-      <Data n="43">
-        <Key v="Odejít" t="String" n="Option" />
+      <Data n="44">
+        <Key v="Ignorovat chatu" t="String" n="Option" />
       </Data>
-      <Data n="45">
-        <Key v="Zamčená chata" t="String" n="TitleTextWindow" />
-        <Key v="Obhlédli jste chatu. A vypadá opuštěně. Okna jsou zatlučená a tak nezbývá, než vzít za dveře. Ty jsou bohužel zamčené. Bude třeba je vypáčit." t="String" n="TextWindow" />
+      <Data n="47">
+        <Key v="A šli dál" t="String" n="TitleTextWindow" />
+        <Key v="Chatu jste nechali chatou a obešli jí obloukem. Výprava nyní pokračuje..." t="String" n="TextWindow" />
       </Data>
-      <Data n="46">
-        <Key v="Vylomit dveře (násilně)" t="String" n="Option" />
-      </Data>
-      <Data n="51">
-        <Key v="Vypáčit zámek (mechanika)" t="String" n="Option" />
-      </Data>
-      <Data n="55">
+    </Data>
+  </Data>
+  <Data n="20208412217424">
+    <Key v="&quot;Obydlená chata&quot;" t="String" n="Name" />
+    <Key v="Chata je otevřená, ale čekají v ní nepřátelé..." t="String" n="Description" />
+    <Data n="$E">
+      <Data n="0">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
       </Data>
-      <Data n="56">
+      <Data n="1">
         <Key v="Opuštěná chata" t="String" n="TitleTextWindow" />
         <Key v="Nedaleko před sebou vidíte malou chatku. Na první pohled se zdá opuštěná." t="String" n="TextWindow" />
       </Data>
-      <Data n="58">
+      <Data n="3">
+        <Key v="A šli dál" t="String" n="TitleTextWindow" />
+        <Key v="Chatu jste nechali chatou a obešli jí obloukem. Výprava nyní pokračuje..." t="String" n="TextWindow" />
+      </Data>
+      <Data n="6">
         <Key v="Ignorovat chatu" t="String" n="Option" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208412217975">
+    <Key v="Opuštěná chata - uzamčená" t="String" n="Name" />
+    <Key v="Mezi stromy je vidět nějaké stavení. Vypadá to na malou lesní chatu." t="String" n="Description" />
+    <Data n="$E">
+      <Data n="1">
+        <Key v="Ignorovat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="2">
+        <Key v="A šli dál" t="String" n="TitleTextWindow" />
+        <Key v="Chatu jste nechali chatou a obešli jí obloukem. Výprava nyní pokračuje..." t="String" n="TextWindow" />
+      </Data>
+      <Data n="5">
+        <Key v="Opuštěná chata" t="String" n="TitleTextWindow" />
+        <Key v="Nedaleko před sebou vidíte malou chatku. Na první pohled se zdá opuštěná." t="String" n="TextWindow" />
+      </Data>
+      <Data n="6">
+        <Key v="Odejít" t="String" n="Option" />
+      </Data>
+      <Data n="8">
+        <Key v="Dveře vylomené" t="String" n="TitleTextWindow" />
+        <Key v="Výborně, zabrali jste z plných sil a dveře se s lupnutím povedlo vylomit. Nyní můžete chatu konečně prozkoumat." t="String" n="TextWindow" />
+      </Data>
+      <Data n="9">
+        <Key v="Raději odejít" t="String" n="Option" />
+      </Data>
+      <Data n="10">
+        <Key v="Zamčená chata" t="String" n="TitleTextWindow" />
+        <Key v="Obhlédli jste chatu. A vypadá opuštěně. Okna jsou zatlučená a tak nezbývá, než vzít za dveře. Ty jsou bohužel zamčené. Bude třeba je vypáčit." t="String" n="TextWindow" />
+      </Data>
+      <Data n="11">
+        <Key v="Vylomit dveře (násilně)" t="String" n="Option" />
+      </Data>
+      <Data n="15">
+        <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="19">
+        <Key v="Pevné dveře" t="String" n="TitleTextWindow" />
+        <Key v="Dveře jsou asi penvější, než se původně zdálo. Pokus o vypáčení končí nezdarem." t="String" n="TextWindow" />
+      </Data>
+      <Data n="23">
+        <Key v="Dveře vypáčené" t="String" n="TitleTextWindow" />
+        <Key v="Výborně, zámek nebyl nijak složitý. Bez větších problémů se ho povedlo vypáčit. Nyní můžete prozkoumat chatu." t="String" n="TextWindow" />
+      </Data>
+      <Data n="24">
+        <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="29">
+        <Key v="Vypáčit zámek (mechanika)" t="String" n="Option" />
+      </Data>
+      <Data n="34">
+        <Key v="Složitý zámek" t="String" n="TitleTextWindow" />
+        <Key v="Zámek je bohužel nad naše síly, musíme se zkusit dovnitř dostat jinak..." t="String" n="TextWindow" />
       </Data>
     </Data>
   </Data>

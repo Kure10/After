@@ -4,9 +4,119 @@
     <Key v="B4,B8" t="String" n="-1" />
     <Key v="B4,B9" t="String" n="-2" />
   </Data>
-  <Data n="20207221188252">
-    <Key v="Skříň na potraviny" t="String" n="ContainerName" />
-    <Key v="2" t="Int32" n="ConainerLevel" />
+  <Data n="20208413895270">
+    <Key v="Opuštěná chata I" t="String" n="ContainerName" />
+    <Key v="1" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContUni" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435391936">
+    <Key v="Opuštěné vozidlo I" t="String" n="ContainerName" />
+    <Key v="1" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContCM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435415597">
+    <Key v="Skříň na potraviny I" t="String" n="ContainerName" />
+    <Key v="1" t="Int32" n="ConainerLevel" />
     <Key v="ContF" t="String" n="ConainerType" />
     <Key v="Common" t="String" n="ContainerRarite" />
     <Data n="$E">
@@ -21,50 +131,13 @@
         <Key v="1" t="Int32" n="$T" />
         <Key v="50" t="Int32" n="DropChance" />
         <Key v="20203948682800" t="String" n="DropItem" />
-        <Key v="2" t="Int32" n="ItemsCountMin" />
-        <Key v="4" t="Int32" n="ItemsCountMax" />
-      </Data>
-    </Data>
-    <Data n="$C">
-      <Data n="0">
-        <Key v="0" t="String" n="$E" />
-      </Data>
-      <Data n="1">
-        <Key v="1" t="String" n="$E" />
-      </Data>
-    </Data>
-  </Data>
-  <Data n="20207221624991">
-    <Key v="Opuštěné auto" t="String" n="ContainerName" />
-    <Key v="1" t="Int32" n="ConainerLevel" />
-    <Key v="Common" t="String" n="ContainerRarite" />
-    <Key v="ContCM" t="String" n="ConainerType" />
-    <Data n="$E">
-      <Data n="0">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="100" t="Decimal" n="DropChance" />
-        <Key v="20203978442136" t="String" n="DropItem" />
-        <Key v="2" t="Int32" n="ItemsCountMin" />
-        <Key v="4" t="Int32" n="ItemsCountMax" />
-      </Data>
-      <Data n="1">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="50" t="Int32" n="DropChance" />
-        <Key v="20203978442136" t="String" n="DropItem" />
         <Key v="1" t="Int32" n="ItemsCountMin" />
         <Key v="2" t="Int32" n="ItemsCountMax" />
       </Data>
       <Data n="2">
         <Key v="1" t="Int32" n="$T" />
-        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="25" t="Int32" n="DropChance" />
         <Key v="20203948682800" t="String" n="DropItem" />
-        <Key v="1" t="Int32" n="ItemsCountMin" />
-        <Key v="2" t="Int32" n="ItemsCountMax" />
-      </Data>
-      <Data n="3">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="100" t="Decimal" n="DropChance" />
-        <Key v="20203978444588" t="String" n="DropItem" />
         <Key v="1" t="Int32" n="ItemsCountMin" />
         <Key v="2" t="Int32" n="ItemsCountMax" />
       </Data>
@@ -79,13 +152,400 @@
       <Data n="2">
         <Key v="2" t="String" n="$E" />
       </Data>
+    </Data>
+  </Data>
+  <Data n="20208435425923">
+    <Key v="Bedna se zbraněmi I" t="String" n="ContainerName" />
+    <Key v="1" t="Int32" n="ConainerLevel" />
+    <Key v="Rare" t="String" n="ContainerRarite" />
+    <Key v="ContMM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435444881">
+    <Key v="Vrak vozidla I" t="String" n="ContainerName" />
+    <Key v="1" t="Int32" n="ConainerLevel" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Key v="ContTM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20207221188252">
+    <Key v="Skříň na potraviny II" t="String" n="ContainerName" />
+    <Key v="2" t="Int32" n="ConainerLevel" />
+    <Key v="ContF" t="String" n="ConainerType" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435344860">
+    <Key v="Opuštěná chata II" t="String" n="ContainerName" />
+    <Key v="2" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContUni" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435425810">
+    <Key v="Bedna se zbraněmi II" t="String" n="ContainerName" />
+    <Key v="2" t="Int32" n="ConainerLevel" />
+    <Key v="Rare" t="String" n="ContainerRarite" />
+    <Key v="ContMM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435444793">
+    <Key v="Vrak vozidla II" t="String" n="ContainerName" />
+    <Key v="2" t="Int32" n="ConainerLevel" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Key v="ContTM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="1" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
       <Data n="3">
         <Key v="3" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
+  <Data n="20208435875785">
+    <Key v="Opuštěné vozidlo II" t="String" n="ContainerName" />
+    <Key v="2" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContCM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
   <Data n="20207222025936">
-    <Key v="Vrak vozidla" t="String" n="ContainerName" />
+    <Key v="Vrak vozidla III" t="String" n="ContainerName" />
     <Key v="3" t="Int32" n="ConainerLevel" />
     <Key v="Common" t="String" n="ContainerRarite" />
     <Key v="ContTM" t="String" n="ConainerType" />
@@ -95,35 +555,35 @@
         <Key v="100" t="Decimal" n="DropChance" />
         <Key v="20203978444588" t="String" n="DropItem" />
         <Key v="3" t="Int32" n="ItemsCountMin" />
-        <Key v="5" t="Int32" n="ItemsCountMax" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
       </Data>
       <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
         <Key v="1" t="Int32" n="$T" />
         <Key v="100" t="Decimal" n="DropChance" />
         <Key v="20203978449705" t="String" n="DropItem" />
         <Key v="1" t="Int32" n="ItemsCountMin" />
         <Key v="2" t="Int32" n="ItemsCountMax" />
       </Data>
-      <Data n="2">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="50" t="Int32" n="DropChance" />
-        <Key v="20203978444588" t="String" n="DropItem" />
-        <Key v="2" t="Int32" n="ItemsCountMin" />
-        <Key v="4" t="Int32" n="ItemsCountMax" />
-      </Data>
-      <Data n="3">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="50" t="Int32" n="DropChance" />
-        <Key v="20203978442136" t="String" n="DropItem" />
-        <Key v="2" t="Int32" n="ItemsCountMin" />
-        <Key v="4" t="Int32" n="ItemsCountMax" />
-      </Data>
       <Data n="4">
         <Key v="1" t="Int32" n="$T" />
         <Key v="50" t="Int32" n="DropChance" />
         <Key v="20203978449705" t="String" n="DropItem" />
         <Key v="1" t="Int32" n="ItemsCountMin" />
-        <Key v="2" t="Int32" n="ItemsCountMax" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
       </Data>
     </Data>
     <Data n="$C">
@@ -131,13 +591,13 @@
         <Key v="0" t="String" n="$E" />
       </Data>
       <Data n="1">
-        <Key v="1" t="String" n="$E" />
+        <Key v="3" t="String" n="$E" />
       </Data>
       <Data n="2">
-        <Key v="2" t="String" n="$E" />
+        <Key v="1" t="String" n="$E" />
       </Data>
       <Data n="3">
-        <Key v="3" t="String" n="$E" />
+        <Key v="2" t="String" n="$E" />
       </Data>
       <Data n="4">
         <Key v="4" t="String" n="$E" />
@@ -145,7 +605,7 @@
     </Data>
   </Data>
   <Data n="20207342602476">
-    <Key v="Bedna se zbraněmi" t="String" n="ContainerName" />
+    <Key v="Bedna se zbraněmi III" t="String" n="ContainerName" />
     <Key v="3" t="Int32" n="ConainerLevel" />
     <Key v="Rare" t="String" n="ContainerRarite" />
     <Key v="ContMM" t="String" n="ConainerType" />
@@ -162,34 +622,28 @@
         <Key v="50" t="Int32" n="DropChance" />
         <Key v="20203978444588" t="String" n="DropItem" />
         <Key v="2" t="Int32" n="ItemsCountMin" />
-        <Key v="5" t="Int32" n="ItemsCountMax" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
       </Data>
       <Data n="2">
         <Key v="1" t="Int32" n="$T" />
         <Key v="100" t="Int32" n="DropChance" />
         <Key v="20203978446648" t="String" n="DropItem" />
-        <Key v="5" t="Int32" n="ItemsCountMin" />
-        <Key v="10" t="Int32" n="ItemsCountMax" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
       </Data>
       <Data n="3">
         <Key v="1" t="Int32" n="$T" />
-        <Key v="75" t="Int32" n="DropChance" />
+        <Key v="50" t="Int32" n="DropChance" />
         <Key v="20203978446648" t="String" n="DropItem" />
-        <Key v="5" t="Int32" n="ItemsCountMin" />
-        <Key v="10" t="Int32" n="ItemsCountMax" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
       </Data>
       <Data n="4">
         <Key v="1" t="Int32" n="$T" />
-        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="25" t="Int32" n="DropChance" />
         <Key v="20203978446648" t="String" n="DropItem" />
-        <Key v="5" t="Int32" n="ItemsCountMin" />
-        <Key v="10" t="Int32" n="ItemsCountMax" />
-      </Data>
-      <Data n="5">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="100" t="Decimal" n="DropChance" />
-        <Key v="1" t="Int32" n="ItemsCountMin" />
-        <Key v="2" t="Int32" n="ItemsCountMax" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
       </Data>
     </Data>
     <Data n="$C">
@@ -208,8 +662,1065 @@
       <Data n="4">
         <Key v="4" t="String" n="$E" />
       </Data>
+    </Data>
+  </Data>
+  <Data n="20208435345285">
+    <Key v="Opuštěná chata III" t="String" n="ContainerName" />
+    <Key v="3" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContUni" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435875994">
+    <Key v="Opuštěné vozidlo III" t="String" n="ContainerName" />
+    <Key v="3" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContCM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="3" t="String" n="$E" />
+      </Data>
       <Data n="5">
         <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="8" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435415255">
+    <Key v="Skříň na potraviny III" t="String" n="ContainerName" />
+    <Key v="3" t="Int32" n="ConainerLevel" />
+    <Key v="ContF" t="String" n="ConainerType" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435526298">
+    <Key v="Opuštěná chata IV" t="String" n="ContainerName" />
+    <Key v="4" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContUni" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="6" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="9">
+        <Key v="8" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435875894">
+    <Key v="Opuštěné vozidlo IV" t="String" n="ContainerName" />
+    <Key v="4" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContCM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="8" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="9">
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="10">
+        <Key v="10" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435415005">
+    <Key v="Skříň na potraviny IV" t="String" n="ContainerName" />
+    <Key v="4" t="Int32" n="ConainerLevel" />
+    <Key v="ContF" t="String" n="ConainerType" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435439542">
+    <Key v="Vrak vozidla IV" t="String" n="ContainerName" />
+    <Key v="4" t="Int32" n="ConainerLevel" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Key v="ContTM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435700143">
+    <Key v="Bedna se zbraněmi IV" t="String" n="ContainerName" />
+    <Key v="4" t="Int32" n="ConainerLevel" />
+    <Key v="Rare" t="String" n="ContainerRarite" />
+    <Key v="ContMM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208436032571">
+    <Key v="Opuštěné vozidlo V" t="String" n="ContainerName" />
+    <Key v="5" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContCM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="8" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="9">
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="10">
+        <Key v="10" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435574984">
+    <Key v="Opuštěná chata V" t="String" n="ContainerName" />
+    <Key v="5" t="Int32" n="ConainerLevel" />
+    <Key v="Uncommon" t="String" n="ContainerRarite" />
+    <Key v="ContUni" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="8" t="Int32" n="ItemsCountMin" />
+        <Key v="16" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978442136" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="6">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="5" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="11">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="2" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="9">
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="10">
+        <Key v="8" t="String" n="$E" />
+      </Data>
+      <Data n="11">
+        <Key v="11" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435414700">
+    <Key v="Skříň na potraviny V" t="String" n="ContainerName" />
+    <Key v="5" t="Int32" n="ConainerLevel" />
+    <Key v="ContF" t="String" n="ConainerType" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="5" t="Int32" n="ItemsCountMin" />
+        <Key v="10" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203948682800" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435444689">
+    <Key v="Vrak vozidla V" t="String" n="ContainerName" />
+    <Key v="5" t="Int32" n="ConainerLevel" />
+    <Key v="Common" t="String" n="ContainerRarite" />
+    <Key v="ContTM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="8" t="Int32" n="ItemsCountMin" />
+        <Key v="16" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="2" t="Int32" n="ItemsCountMin" />
+        <Key v="4" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978449705" t="String" n="DropItem" />
+        <Key v="1" t="Int32" n="ItemsCountMin" />
+        <Key v="3" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208435719146">
+    <Key v="Bedna se zbraněmi V" t="String" n="ContainerName" />
+    <Key v="5" t="Int32" n="ConainerLevel" />
+    <Key v="Rare" t="String" n="ContainerRarite" />
+    <Key v="ContMM" t="String" n="ConainerType" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Decimal" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="4" t="Int32" n="ItemsCountMin" />
+        <Key v="8" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978444588" t="String" n="DropItem" />
+        <Key v="3" t="Int32" n="ItemsCountMin" />
+        <Key v="6" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="100" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="8" t="Int32" n="ItemsCountMin" />
+        <Key v="16" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="50" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="6" t="Int32" n="ItemsCountMin" />
+        <Key v="12" t="Int32" n="ItemsCountMax" />
+      </Data>
+      <Data n="5">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="25" t="Int32" n="DropChance" />
+        <Key v="20203978446648" t="String" n="DropItem" />
+        <Key v="6" t="Int32" n="ItemsCountMin" />
+        <Key v="12" t="Int32" n="ItemsCountMax" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="2" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
