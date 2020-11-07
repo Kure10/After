@@ -90,16 +90,22 @@ public class Move : Command
         
         var forbiddenTiles = tf.GetOccupiedTiles();
             var newPlace = tf.FindFreeTile(mark, forbiddenTiles, true);
-            Path = tf.FindPath(mark, newPlace.First());
-            foreach (var cand in newPlace)
+            if (newPlace.Count > 0)
             {
-                var shorter = tf.FindPath(mark, cand);
-                if (shorter.Count < Path.Count)
+                Path = tf.FindPath(mark, newPlace.First());
+                foreach (var cand in newPlace)
                 {
-                    Path = shorter;
+                    var shorter = tf.FindPath(mark, cand);
+                    if (shorter.Count < Path.Count)
+                    {
+                        Path = shorter;
+                    }
                 }
+
+                return Result.Running;
             }
-            return Result.Running;
+
+            return Result.Failure;
     }
     void Step(Vector3 to)
     {
