@@ -312,7 +312,7 @@ public class Building : IWorkSource, IResourceHolder
         int rotation = (int) (prefab.transform.rotation.eulerAngles.y / 90);
         //x = row, y = column
         var x = nextField % blueprint.row;
-        var y = nextField % blueprint.column;
+        var y = (nextField / blueprint.row) % blueprint.column;
         float xx, zz;
         switch (rotation)
                 {
