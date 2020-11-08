@@ -15,10 +15,10 @@ public class Building : IWorkSource, IResourceHolder
     protected ResourceManager resourceManager;
     protected TileFactory tileFactory;
     public readonly BuildingBlueprint blueprint;
-    private GameObject prefab;
+    protected GameObject prefab;
     public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
-    private List<Resource> resources;
+    protected List<Resource> resources;
 
     public List<Worker> getWorkers()
     {
@@ -296,7 +296,7 @@ public class Building : IWorkSource, IResourceHolder
         }
     }
 
-    private int nextField = 0;
+    protected int nextField = 0;
     public Vector3 GetPosition(int field = 0)
     {
         var maxField = blueprint.row * blueprint.column;
@@ -345,6 +345,24 @@ public class Building : IWorkSource, IResourceHolder
             var toStack = remaining.Technical > 10 ? 10 : remaining.Technical;
             resources.Add(new Resource(toStack, ResourceManager.Material.Technicky, this));
             remaining.Technical -= toStack;
+        }
+        while (remaining.Food> 0)
+        {
+            var toStack = remaining.Food> 10 ? 10 : remaining.Food;
+            resources.Add(new Resource(toStack, ResourceManager.Material.Potraviny, this));
+            remaining.Food -= toStack;
+        }
+        while (remaining.Fuel > 0)
+        {
+            var toStack = remaining.Fuel> 10 ? 10 : remaining.Fuel;
+            resources.Add(new Resource(toStack, ResourceManager.Material.Pohonne, this));
+            remaining.Fuel -= toStack;
+        }
+        while (remaining.Military> 0)
+        {
+            var toStack = remaining.Military> 10 ? 10 : remaining.Military;
+            resources.Add(new Resource(toStack, ResourceManager.Material.Vojensky, this));
+            remaining.Military-= toStack;
         }
     }
 

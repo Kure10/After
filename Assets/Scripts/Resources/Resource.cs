@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Buildings;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 public class Resource
@@ -53,7 +54,12 @@ public class Resource
 
         if (Owner is Building b)
         {
-            prefab = Object.Instantiate(ResourceManager.GetPrefab(newAmount, Material), b.GetPosition(), Quaternion.identity);
+            var position = b.GetPosition();
+            if (Owner is Warehouse w)
+            {
+                position = w.GetPosition();
+            } //meh, don't know why this don't get overrided, temporary hack
+            prefab = Object.Instantiate(ResourceManager.GetPrefab(newAmount, Material), position, Quaternion.identity);
         }
     }
 }

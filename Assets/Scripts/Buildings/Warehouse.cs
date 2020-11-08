@@ -121,5 +121,55 @@ namespace Buildings
                 }
             }
         }
+    public new Vector3 GetPosition(int field = 0)
+    {
+        if (State == BuildingState.Build)
+        {
+            var row = blueprint.row * 2;
+            var column = blueprint.column * 2;
+            var maxField = row * column;
+            if (field == 0)
+            {
+                nextField = resources.Count % maxField;
+            }
+            else
+            {
+                nextField = field;
+            }
+
+            var position = prefab.transform.position;
+            int rotation = (int) (prefab.transform.rotation.eulerAngles.y / 90);
+            //x = row, y = column
+            var x = nextField % row;
+            var y = (nextField / row) % column;
+            float xx, zz;
+            var fx = x * 0.5f;
+            var fy = y * 0.5f;
+            switch (rotation)
+            {
+                case 0:
+                    xx = position.x + fx;
+                    zz = position.z + fy;
+                    break;
+                case 1:
+                    xx = position.x + fy;
+                    zz = position.z - fx;
+                    break;
+                case 2:
+                    xx = position.x - fx;
+                    zz = position.z - fy;
+                    break;
+                default:
+                    xx = position.x - fy;
+                    zz = position.z + fx;
+                    break;
+            }
+
+            return new Vector3(xx - 0.25f, position.y + 0.5f,
+                zz - 0.25f );
+        }
+
+        return base.GetPosition(field);
+    }
     }
 }
