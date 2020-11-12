@@ -807,7 +807,7 @@
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
-        <Key v="800" t="Int32" n="TimeDelay" />
+        <Key v="600" t="Int32" n="TimeDelay" />
       </Data>
       <Data n="3">
         <Key v="3" t="Int32" n="$T" />
@@ -835,9 +835,17 @@
       </Data>
       <Data n="8">
         <Key v="1" t="Int32" n="$T" />
-        <Key v="Ambush" t="String" n="OptionType" />
+        <Key v="Confirm" t="String" n="OptionType" />
       </Data>
       <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Ambush" t="String" n="OptionType" />
+      </Data>
+      <Data n="11">
         <Key v="4" t="Int32" n="$T" />
         <Key v="SpecActive" t="String" n="TestTarget" />
         <Key v="Pokus o přepad" t="String" n="TestName" />
@@ -849,11 +857,11 @@
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
       </Data>
-      <Data n="10">
+      <Data n="12">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="11">
+      <Data n="13">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -861,35 +869,39 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="12">
+      <Data n="14">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="1800" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="13">
+      <Data n="15">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddEventEnd" />
       </Data>
-      <Data n="14">
+      <Data n="16">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="15">
+      <Data n="17">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="16">
+      <Data n="18">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="19">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="17">
+      <Data n="20">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="3600" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="18">
+      <Data n="21">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -897,23 +909,27 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="19">
+      <Data n="22">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="23">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
       </Data>
     </Data>
     <Data n="$C">
       <Data n="0">
-        <Key v="10" t="String" n="$S" />
+        <Key v="12" t="String" n="$S" />
         <Key v="0" t="String" n="$E" />
       </Data>
       <Data n="1">
-        <Key v="10" t="String" n="$S" />
-        <Key v="8" t="String" n="$E" />
+        <Key v="12" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
       </Data>
       <Data n="2">
-        <Key v="10" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
+        <Key v="12" t="String" n="$S" />
+        <Key v="19" t="String" n="$E" />
       </Data>
       <Data n="3">
         <Key v="0" t="String" n="$S" />
@@ -924,23 +940,23 @@
         <Key v="2" t="String" n="$E" />
       </Data>
       <Data n="5">
-        <Key v="16" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
+        <Key v="19" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
       </Data>
       <Data n="6">
-        <Key v="8" t="String" n="$S" />
-        <Key v="9" t="String" n="$E" />
+        <Key v="10" t="String" n="$S" />
+        <Key v="11" t="String" n="$E" />
       </Data>
       <Data n="7">
-        <Key v="12" t="String" n="$S" />
-        <Key v="11" t="String" n="$E" />
+        <Key v="14" t="String" n="$S" />
+        <Key v="13" t="String" n="$E" />
       </Data>
       <Data n="8">
         <Key v="7" t="String" n="$S" />
         <Key v="3" t="String" n="$E" />
       </Data>
       <Data n="9">
-        <Key v="11" t="String" n="$S" />
+        <Key v="13" t="String" n="$S" />
         <Key v="6" t="String" n="$E" />
       </Data>
       <Data n="10">
@@ -948,51 +964,67 @@
         <Key v="5" t="String" n="$E" />
       </Data>
       <Data n="11">
-        <Key v="14" t="String" n="$S" />
-        <Key v="15" t="String" n="$E" />
+        <Key v="16" t="String" n="$S" />
+        <Key v="17" t="String" n="$E" />
       </Data>
       <Data n="12">
-        <Key v="17" t="String" n="$S" />
-        <Key v="18" t="String" n="$E" />
+        <Key v="20" t="String" n="$S" />
+        <Key v="21" t="String" n="$E" />
       </Data>
       <Data n="13">
         <Key v="2" t="String" n="$S" />
         <Key v="4" t="String" n="$E" />
       </Data>
       <Data n="14">
-        <Key v="10" t="String" n="$E" />
+        <Key v="12" t="String" n="$E" />
       </Data>
       <Data n="15">
         <Key v="5" t="String" n="$S" />
-        <Key v="7" t="String" n="$E" />
+        <Key v="8" t="String" n="$E" />
       </Data>
       <Data n="16">
-        <Key v="15" t="String" n="$S" />
-        <Key v="3" t="String" n="$E" />
+        <Key v="17" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
       </Data>
       <Data n="17">
-        <Key v="11" t="String" n="$S" />
-        <Key v="14" t="String" n="$E" />
+        <Key v="13" t="String" n="$S" />
+        <Key v="16" t="String" n="$E" />
       </Data>
       <Data n="18">
-        <Key v="18" t="String" n="$S" />
-        <Key v="19" t="String" n="$E" />
+        <Key v="21" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="19">
-        <Key v="9" t="String" n="$S" />
-        <Key v="12" t="String" n="$E" />
+        <Key v="11" t="String" n="$S" />
+        <Key v="14" t="String" n="$E" />
       </Data>
       <Data n="20">
         <Key v="3" t="String" n="$S" />
         <Key v="1" t="String" n="$E" />
       </Data>
       <Data n="21">
-        <Key v="19" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="22" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="22">
+        <Key v="23" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+      <Data n="23">
+        <Key v="8" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="24">
+        <Key v="18" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="25">
         <Key v="4" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="26">
+        <Key v="9" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -1088,10 +1120,14 @@
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="12">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="13">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="13">
+      <Data n="14">
         <Key v="2" t="Int32" n="$T" />
         <Key v="BattleAmbush" t="String" n="BattleType" />
         <Key v="2" t="Int32" n="MonsterDiffMax" />
@@ -1100,21 +1136,25 @@
         <Key v="2" t="Int32" n="BattleDiff" />
         <Key v="KindObsessed,KindDemons" t="String" n="EnemyKinds" />
       </Data>
-      <Data n="14">
+      <Data n="15">
         <Key v="6" t="Int32" n="$T" />
         <Key v="FailRatio" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="15">
+      <Data n="16">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="16">
+      <Data n="17">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="18">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddEventEnd" />
       </Data>
-      <Data n="17">
+      <Data n="19">
         <Key v="2" t="Int32" n="$T" />
         <Key v="BattleAmbush" t="String" n="BattleType" />
         <Key v="2" t="Int32" n="MonsterDiffMax" />
@@ -1123,13 +1163,13 @@
         <Key v="3" t="Int32" n="BattleDiff" />
         <Key v="KindObsessed,KindDemons" t="String" n="EnemyKinds" />
       </Data>
-      <Data n="18">
+      <Data n="20">
         <Key v="6" t="Int32" n="$T" />
         <Key v="FailRatio" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="19">
+      <Data n="21">
         <Key v="2" t="Int32" n="$T" />
         <Key v="BattleAmbush" t="String" n="BattleType" />
         <Key v="2" t="Int32" n="MonsterDiffMax" />
@@ -1138,17 +1178,21 @@
         <Key v="4" t="Int32" n="BattleDiff" />
         <Key v="KindObsessed,KindDemons" t="String" n="EnemyKinds" />
       </Data>
-      <Data n="20">
+      <Data n="22">
         <Key v="6" t="Int32" n="$T" />
         <Key v="FailRatio" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="3" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="21">
+      <Data n="23">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="22">
+      <Data n="24">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="25">
         <Key v="2" t="Int32" n="$T" />
         <Key v="BattleAmbush" t="String" n="BattleType" />
         <Key v="2" t="Int32" n="MonsterDiffMax" />
@@ -1157,27 +1201,31 @@
         <Key v="5" t="Int32" n="BattleDiff" />
         <Key v="KindObsessed,KindDemons" t="String" n="EnemyKinds" />
       </Data>
-      <Data n="23">
+      <Data n="26">
         <Key v="6" t="Int32" n="$T" />
         <Key v="FailRatio" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="4" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="24">
+      <Data n="27">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="25">
+      <Data n="28">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="26">
+      <Data n="29">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
         <Key v="-1200" t="Int32" n="SecAtrChange" />
+      </Data>
+      <Data n="30">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
       </Data>
     </Data>
     <Data n="$C">
@@ -1193,20 +1241,20 @@
         <Key v="5" t="String" n="$E" />
       </Data>
       <Data n="3">
-        <Key v="15" t="String" n="$S" />
-        <Key v="2" t="String" n="$E" />
+        <Key v="17" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="4">
-        <Key v="15" t="String" n="$S" />
-        <Key v="18" t="String" n="$E" />
+        <Key v="17" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
       </Data>
       <Data n="5">
-        <Key v="15" t="String" n="$S" />
-        <Key v="14" t="String" n="$E" />
+        <Key v="17" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
       </Data>
       <Data n="6">
-        <Key v="15" t="String" n="$S" />
-        <Key v="20" t="String" n="$E" />
+        <Key v="17" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
       </Data>
       <Data n="7">
         <Key v="8" t="String" n="$S" />
@@ -1217,12 +1265,12 @@
         <Key v="8" t="String" n="$E" />
       </Data>
       <Data n="9">
-        <Key v="15" t="String" n="$S" />
-        <Key v="23" t="String" n="$E" />
+        <Key v="16" t="String" n="$S" />
+        <Key v="17" t="String" n="$E" />
       </Data>
       <Data n="10">
-        <Key v="21" t="String" n="$S" />
-        <Key v="10" t="String" n="$E" />
+        <Key v="23" t="String" n="$S" />
+        <Key v="24" t="String" n="$E" />
       </Data>
       <Data n="11">
         <Key v="10" t="String" n="$S" />
@@ -1230,27 +1278,27 @@
       </Data>
       <Data n="12">
         <Key v="1" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="13">
-        <Key v="13" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="14" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="14">
-        <Key v="17" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="19" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="15">
-        <Key v="19" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="21" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="16">
-        <Key v="22" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="25" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="17">
         <Key v="10" t="String" n="$S" />
-        <Key v="12" t="String" n="$E" />
+        <Key v="13" t="String" n="$E" />
       </Data>
       <Data n="18">
         <Key v="6" t="String" n="$S" />
@@ -1258,7 +1306,7 @@
       </Data>
       <Data n="19">
         <Key v="6" t="String" n="$S" />
-        <Key v="24" t="String" n="$E" />
+        <Key v="27" t="String" n="$E" />
       </Data>
       <Data n="20">
         <Key v="0" t="String" n="$S" />
@@ -1269,20 +1317,20 @@
         <Key v="1" t="String" n="$E" />
       </Data>
       <Data n="22">
-        <Key v="23" t="String" n="$S" />
-        <Key v="22" t="String" n="$E" />
+        <Key v="26" t="String" n="$S" />
+        <Key v="25" t="String" n="$E" />
       </Data>
       <Data n="23">
-        <Key v="20" t="String" n="$S" />
-        <Key v="19" t="String" n="$E" />
+        <Key v="22" t="String" n="$S" />
+        <Key v="21" t="String" n="$E" />
       </Data>
       <Data n="24">
-        <Key v="14" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="15" t="String" n="$S" />
+        <Key v="14" t="String" n="$E" />
       </Data>
       <Data n="25">
-        <Key v="18" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
+        <Key v="20" t="String" n="$S" />
+        <Key v="19" t="String" n="$E" />
       </Data>
       <Data n="26">
         <Key v="9" t="String" n="$S" />
@@ -1293,28 +1341,44 @@
         <Key v="9" t="String" n="$E" />
       </Data>
       <Data n="28">
-        <Key v="24" t="String" n="$S" />
-        <Key v="25" t="String" n="$E" />
+        <Key v="27" t="String" n="$S" />
+        <Key v="28" t="String" n="$E" />
       </Data>
       <Data n="29">
-        <Key v="25" t="String" n="$S" />
-        <Key v="26" t="String" n="$E" />
+        <Key v="28" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
       </Data>
       <Data n="30">
         <Key v="11" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
+        <Key v="12" t="String" n="$E" />
       </Data>
       <Data n="31">
-        <Key v="26" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
+        <Key v="29" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
       </Data>
       <Data n="32">
         <Key v="8" t="String" n="$S" />
-        <Key v="15" t="String" n="$E" />
+        <Key v="16" t="String" n="$E" />
       </Data>
       <Data n="33">
-        <Key v="12" t="String" n="$S" />
+        <Key v="13" t="String" n="$S" />
         <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="34">
+        <Key v="30" t="String" n="$S" />
+        <Key v="29" t="String" n="$E" />
+      </Data>
+      <Data n="35">
+        <Key v="24" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="36">
+        <Key v="17" t="String" n="$S" />
+        <Key v="26" t="String" n="$E" />
+      </Data>
+      <Data n="37">
+        <Key v="12" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -1399,22 +1463,30 @@
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="12">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="13">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="13">
+      <Data n="14">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="14">
+      <Data n="15">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="16">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="15">
+      <Data n="17">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="16">
+      <Data n="18">
         <Key v="4" t="Int32" n="$T" />
         <Key v="1" t="Decimal" n="TestRateMod" />
         <Key v="Sneaking" t="String" n="TestType" />
@@ -1426,17 +1498,17 @@
         <Key v="Ukrytí" t="String" n="TestName" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
       </Data>
-      <Data n="17">
+      <Data n="19">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddEventEnd" />
       </Data>
-      <Data n="18">
+      <Data n="20">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="3200" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="19">
+      <Data n="21">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -1444,29 +1516,33 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="20">
+      <Data n="22">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
       </Data>
-      <Data n="21">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
-      <Data n="22">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
       <Data n="23">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="24">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="25">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="26">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="24">
+      <Data n="27">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="7200" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="25">
+      <Data n="28">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -1486,7 +1562,7 @@
       </Data>
       <Data n="2">
         <Key v="7" t="String" n="$S" />
-        <Key v="23" t="String" n="$E" />
+        <Key v="26" t="String" n="$E" />
       </Data>
       <Data n="3">
         <Key v="8" t="String" n="$S" />
@@ -1497,8 +1573,8 @@
         <Key v="2" t="String" n="$E" />
       </Data>
       <Data n="5">
-        <Key v="23" t="String" n="$S" />
-        <Key v="24" t="String" n="$E" />
+        <Key v="26" t="String" n="$S" />
+        <Key v="27" t="String" n="$E" />
       </Data>
       <Data n="6">
         <Key v="5" t="String" n="$S" />
@@ -1509,8 +1585,8 @@
         <Key v="9" t="String" n="$E" />
       </Data>
       <Data n="8">
-        <Key v="13" t="String" n="$S" />
-        <Key v="1" t="String" n="$E" />
+        <Key v="12" t="String" n="$S" />
+        <Key v="8" t="String" n="$E" />
       </Data>
       <Data n="9">
         <Key v="9" t="String" n="$S" />
@@ -1521,12 +1597,12 @@
         <Key v="3" t="String" n="$E" />
       </Data>
       <Data n="11">
-        <Key v="12" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="13" t="String" n="$S" />
+        <Key v="14" t="String" n="$E" />
       </Data>
       <Data n="12">
-        <Key v="24" t="String" n="$S" />
-        <Key v="25" t="String" n="$E" />
+        <Key v="27" t="String" n="$S" />
+        <Key v="28" t="String" n="$E" />
       </Data>
       <Data n="13">
         <Key v="2" t="String" n="$S" />
@@ -1537,19 +1613,19 @@
       </Data>
       <Data n="15">
         <Key v="3" t="String" n="$S" />
-        <Key v="8" t="String" n="$E" />
+        <Key v="12" t="String" n="$E" />
       </Data>
       <Data n="16">
         <Key v="7" t="String" n="$S" />
-        <Key v="15" t="String" n="$E" />
+        <Key v="17" t="String" n="$E" />
       </Data>
       <Data n="17">
         <Key v="9" t="String" n="$S" />
-        <Key v="12" t="String" n="$E" />
+        <Key v="13" t="String" n="$E" />
       </Data>
       <Data n="18">
-        <Key v="25" t="String" n="$S" />
-        <Key v="22" t="String" n="$E" />
+        <Key v="28" t="String" n="$S" />
+        <Key v="25" t="String" n="$E" />
       </Data>
       <Data n="19">
         <Key v="6" t="String" n="$S" />
@@ -1560,44 +1636,56 @@
         <Key v="1" t="String" n="$E" />
       </Data>
       <Data n="21">
-        <Key v="15" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
-      </Data>
-      <Data n="22">
-        <Key v="16" t="String" n="$S" />
-        <Key v="20" t="String" n="$E" />
-      </Data>
-      <Data n="23">
-        <Key v="18" t="String" n="$S" />
-        <Key v="19" t="String" n="$E" />
-      </Data>
-      <Data n="24">
-        <Key v="20" t="String" n="$S" />
+        <Key v="17" t="String" n="$S" />
         <Key v="18" t="String" n="$E" />
       </Data>
+      <Data n="22">
+        <Key v="18" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
+      </Data>
+      <Data n="23">
+        <Key v="20" t="String" n="$S" />
+        <Key v="21" t="String" n="$E" />
+      </Data>
+      <Data n="24">
+        <Key v="22" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
+      </Data>
       <Data n="25">
-        <Key v="16" t="String" n="$S" />
-        <Key v="14" t="String" n="$E" />
+        <Key v="18" t="String" n="$S" />
+        <Key v="16" t="String" n="$E" />
       </Data>
       <Data n="26">
-        <Key v="14" t="String" n="$S" />
+        <Key v="16" t="String" n="$S" />
         <Key v="1" t="String" n="$E" />
       </Data>
       <Data n="27">
-        <Key v="19" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="21" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="28">
         <Key v="11" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
+        <Key v="24" t="String" n="$E" />
       </Data>
       <Data n="29">
-        <Key v="21" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
+        <Key v="25" t="String" n="$S" />
+        <Key v="24" t="String" n="$E" />
       </Data>
       <Data n="30">
-        <Key v="22" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
+        <Key v="23" t="String" n="$S" />
+        <Key v="24" t="String" n="$E" />
+      </Data>
+      <Data n="31">
+        <Key v="14" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+      <Data n="32">
+        <Key v="15" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="33">
+        <Key v="24" t="String" n="$S" />
+        <Key v="19" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -2784,38 +2872,42 @@
         <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
       <Data n="4">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddEventEnd" />
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
       </Data>
       <Data n="5">
         <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
+        <Key v="1" t="Int32" n="AddEventEnd" />
       </Data>
       <Data n="6">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="7">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="7">
+      <Data n="8">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
       </Data>
-      <Data n="8">
+      <Data n="9">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="9">
+      <Data n="10">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="10">
+      <Data n="11">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="11">
+      <Data n="12">
         <Key v="1" t="Int32" n="$T" />
         <Key v="SpecAct" t="String" n="OptionType" />
       </Data>
-      <Data n="12">
+      <Data n="13">
         <Key v="4" t="Int32" n="$T" />
         <Key v="4" t="Int32" n="TestRateMod" />
         <Key v="Leverage" t="String" n="TestType" />
@@ -2827,13 +2919,13 @@
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="2" t="Int32" n="SpecTestNumMax" />
       </Data>
-      <Data n="13">
+      <Data n="14">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="600" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="14">
+      <Data n="15">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -2841,30 +2933,26 @@
         <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
         <Key v="-5500" t="Int32" n="SecAtrChange" />
       </Data>
-      <Data n="15">
+      <Data n="16">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Explore" t="String" n="OptionType" />
       </Data>
-      <Data n="16">
+      <Data n="17">
         <Key v="-1" t="Int32" n="$T" />
         <Key v="G4" t="String" n="GT" />
       </Data>
-      <Data n="17">
+      <Data n="18">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="18">
+      <Data n="19">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435415597" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="19">
+      <Data n="20">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
-      </Data>
-      <Data n="20">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="21">
         <Key v="5" t="Int32" n="$T" />
@@ -2872,21 +2960,29 @@
       </Data>
       <Data n="22">
         <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="23">
+        <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435415597" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="23">
+      <Data n="24">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="24">
+      <Data n="25">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208413895270" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="25">
+      <Data n="26">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="27">
         <Key v="4" t="Int32" n="$T" />
         <Key v="1" t="Decimal" n="TestRateMod" />
         <Key v="Scavenging" t="String" n="TestType" />
@@ -2898,19 +2994,19 @@
         <Key v="9" t="Int32" n="TestDiff" />
         <Key v="TeL,ScL" t="String" n="TestAtribute" />
       </Data>
-      <Data n="26">
+      <Data n="28">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
       </Data>
-      <Data n="27">
+      <Data n="29">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="28">
+      <Data n="30">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Explore" t="String" n="OptionType" />
       </Data>
-      <Data n="29">
+      <Data n="31">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -2919,24 +3015,24 @@
         <Key v="-1200" t="Int32" n="SecAtrChangeMin" />
         <Key v="-2400" t="Int32" n="SecAtrChangeMax" />
       </Data>
-      <Data n="30">
+      <Data n="32">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="3600" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="31">
+      <Data n="33">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20207221188252" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="32">
+      <Data n="34">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="33">
+      <Data n="35">
         <Key v="4" t="Int32" n="$T" />
         <Key v="2" t="Int32" n="TestRateMod" />
         <Key v="LockPicking" t="String" n="TestType" />
@@ -2947,17 +3043,17 @@
         <Key v="TeL" t="String" n="TestAtribute" />
         <Key v="Vypáčení dveří od chaty" t="String" n="TestName" />
       </Data>
-      <Data n="34">
+      <Data n="36">
         <Key v="1" t="Int32" n="$T" />
         <Key v="SpecAct" t="String" n="OptionType" />
       </Data>
-      <Data n="35">
+      <Data n="37">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="1800" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="36">
+      <Data n="38">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -2965,35 +3061,39 @@
         <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
         <Key v="-600" t="Int32" n="SecAtrChange" />
       </Data>
-      <Data n="37">
+      <Data n="39">
         <Key v="-1" t="Int32" n="$T" />
         <Key v="G4" t="String" n="GT" />
       </Data>
-      <Data n="38">
+      <Data n="40">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208413895270" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="39">
+      <Data n="41">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="40">
+      <Data n="42">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="41">
+      <Data n="43">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="44">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20207221188252" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="42">
+      <Data n="45">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="43">
+      <Data n="46">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435344860" t="String" n="AddDirectCont" />
@@ -3001,59 +3101,59 @@
     </Data>
     <Data n="$C">
       <Data n="0">
-        <Key v="5" t="String" n="$E" />
+        <Key v="6" t="String" n="$E" />
       </Data>
       <Data n="1">
-        <Key v="5" t="String" n="$S" />
+        <Key v="6" t="String" n="$S" />
         <Key v="0" t="String" n="$E" />
       </Data>
       <Data n="2">
-        <Key v="5" t="String" n="$S" />
-        <Key v="15" t="String" n="$E" />
+        <Key v="6" t="String" n="$S" />
+        <Key v="16" t="String" n="$E" />
       </Data>
       <Data n="3">
-        <Key v="15" t="String" n="$S" />
-        <Key v="10" t="String" n="$E" />
-      </Data>
-      <Data n="4">
         <Key v="16" t="String" n="$S" />
         <Key v="11" t="String" n="$E" />
       </Data>
-      <Data n="5">
-        <Key v="10" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
-      </Data>
-      <Data n="6">
-        <Key v="10" t="String" n="$S" />
-        <Key v="6" t="String" n="$E" />
-      </Data>
-      <Data n="7">
-        <Key v="6" t="String" n="$S" />
-        <Key v="4" t="String" n="$E" />
-      </Data>
-      <Data n="8">
-        <Key v="34" t="String" n="$S" />
-        <Key v="33" t="String" n="$E" />
-      </Data>
-      <Data n="9">
-        <Key v="11" t="String" n="$S" />
+      <Data n="4">
+        <Key v="17" t="String" n="$S" />
         <Key v="12" t="String" n="$E" />
       </Data>
-      <Data n="10">
+      <Data n="5">
+        <Key v="11" t="String" n="$S" />
+        <Key v="17" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="11" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="7" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="36" t="String" n="$S" />
+        <Key v="35" t="String" n="$E" />
+      </Data>
+      <Data n="9">
         <Key v="12" t="String" n="$S" />
         <Key v="13" t="String" n="$E" />
       </Data>
-      <Data n="11">
+      <Data n="10">
         <Key v="13" t="String" n="$S" />
         <Key v="14" t="String" n="$E" />
       </Data>
+      <Data n="11">
+        <Key v="14" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
       <Data n="12">
-        <Key v="33" t="String" n="$S" />
-        <Key v="35" t="String" n="$E" />
+        <Key v="35" t="String" n="$S" />
+        <Key v="37" t="String" n="$E" />
       </Data>
       <Data n="13">
-        <Key v="35" t="String" n="$S" />
-        <Key v="36" t="String" n="$E" />
+        <Key v="37" t="String" n="$S" />
+        <Key v="38" t="String" n="$E" />
       </Data>
       <Data n="14">
         <Key v="0" t="String" n="$S" />
@@ -3072,148 +3172,160 @@
         <Key v="4" t="String" n="$E" />
       </Data>
       <Data n="18">
-        <Key v="10" t="String" n="$S" />
-        <Key v="37" t="String" n="$E" />
-      </Data>
-      <Data n="19">
-        <Key v="37" t="String" n="$S" />
-        <Key v="34" t="String" n="$E" />
-      </Data>
-      <Data n="20">
-        <Key v="14" t="String" n="$S" />
-        <Key v="7" t="String" n="$E" />
-      </Data>
-      <Data n="21">
-        <Key v="14" t="String" n="$S" />
-        <Key v="19" t="String" n="$E" />
-      </Data>
-      <Data n="22">
-        <Key v="19" t="String" n="$S" />
-        <Key v="20" t="String" n="$E" />
-      </Data>
-      <Data n="23">
-        <Key v="20" t="String" n="$S" />
-        <Key v="10" t="String" n="$E" />
-      </Data>
-      <Data n="24">
-        <Key v="7" t="String" n="$S" />
-        <Key v="8" t="String" n="$E" />
-      </Data>
-      <Data n="25">
-        <Key v="36" t="String" n="$S" />
-        <Key v="26" t="String" n="$E" />
-      </Data>
-      <Data n="26">
-        <Key v="36" t="String" n="$S" />
+        <Key v="11" t="String" n="$S" />
         <Key v="39" t="String" n="$E" />
       </Data>
-      <Data n="27">
+      <Data n="19">
         <Key v="39" t="String" n="$S" />
-        <Key v="40" t="String" n="$E" />
+        <Key v="36" t="String" n="$E" />
       </Data>
-      <Data n="28">
-        <Key v="40" t="String" n="$S" />
-        <Key v="10" t="String" n="$E" />
+      <Data n="20">
+        <Key v="15" t="String" n="$S" />
+        <Key v="8" t="String" n="$E" />
       </Data>
-      <Data n="29">
-        <Key v="26" t="String" n="$S" />
-        <Key v="27" t="String" n="$E" />
+      <Data n="21">
+        <Key v="15" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
       </Data>
-      <Data n="30">
-        <Key v="8" t="String" n="$S" />
-        <Key v="28" t="String" n="$E" />
+      <Data n="22">
+        <Key v="20" t="String" n="$S" />
+        <Key v="21" t="String" n="$E" />
       </Data>
-      <Data n="31">
-        <Key v="8" t="String" n="$S" />
-        <Key v="9" t="String" n="$E" />
-      </Data>
-      <Data n="32">
-        <Key v="27" t="String" n="$S" />
-        <Key v="28" t="String" n="$E" />
-      </Data>
-      <Data n="33">
-        <Key v="27" t="String" n="$S" />
-        <Key v="9" t="String" n="$E" />
-      </Data>
-      <Data n="34">
-        <Key v="9" t="String" n="$S" />
-        <Key v="4" t="String" n="$E" />
-      </Data>
-      <Data n="35">
-        <Key v="25" t="String" n="$S" />
-        <Key v="30" t="String" n="$E" />
-      </Data>
-      <Data n="36">
-        <Key v="28" t="String" n="$S" />
-        <Key v="25" t="String" n="$E" />
-      </Data>
-      <Data n="37">
-        <Key v="30" t="String" n="$S" />
-        <Key v="29" t="String" n="$E" />
-      </Data>
-      <Data n="38">
-        <Key v="29" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
-      </Data>
-      <Data n="39">
-        <Key v="29" t="String" n="$S" />
-        <Key v="23" t="String" n="$E" />
-      </Data>
-      <Data n="40">
-        <Key v="29" t="String" n="$S" />
-        <Key v="32" t="String" n="$E" />
-      </Data>
-      <Data n="41">
-        <Key v="29" t="String" n="$S" />
-        <Key v="42" t="String" n="$E" />
-      </Data>
-      <Data n="42">
-        <Key v="17" t="String" n="$S" />
-        <Key v="18" t="String" n="$E" />
-      </Data>
-      <Data n="43">
-        <Key v="23" t="String" n="$S" />
-        <Key v="22" t="String" n="$E" />
-      </Data>
-      <Data n="44">
-        <Key v="41" t="String" n="$S" />
+      <Data n="23">
+        <Key v="42" t="String" n="$S" />
         <Key v="43" t="String" n="$E" />
       </Data>
-      <Data n="45">
+      <Data n="24">
+        <Key v="8" t="String" n="$S" />
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="25">
+        <Key v="38" t="String" n="$S" />
+        <Key v="28" t="String" n="$E" />
+      </Data>
+      <Data n="26">
+        <Key v="38" t="String" n="$S" />
+        <Key v="41" t="String" n="$E" />
+      </Data>
+      <Data n="27">
+        <Key v="41" t="String" n="$S" />
+        <Key v="42" t="String" n="$E" />
+      </Data>
+      <Data n="28">
+        <Key v="21" t="String" n="$S" />
+        <Key v="43" t="String" n="$E" />
+      </Data>
+      <Data n="29">
+        <Key v="28" t="String" n="$S" />
+        <Key v="29" t="String" n="$E" />
+      </Data>
+      <Data n="30">
+        <Key v="9" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
+      </Data>
+      <Data n="31">
+        <Key v="9" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="32">
+        <Key v="29" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
+      </Data>
+      <Data n="33">
+        <Key v="29" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="34">
+        <Key v="10" t="String" n="$S" />
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="35">
+        <Key v="27" t="String" n="$S" />
+        <Key v="32" t="String" n="$E" />
+      </Data>
+      <Data n="36">
+        <Key v="30" t="String" n="$S" />
+        <Key v="27" t="String" n="$E" />
+      </Data>
+      <Data n="37">
         <Key v="32" t="String" n="$S" />
         <Key v="31" t="String" n="$E" />
       </Data>
-      <Data n="46">
-        <Key v="22" t="String" n="$S" />
+      <Data n="38">
+        <Key v="31" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
+      </Data>
+      <Data n="39">
+        <Key v="31" t="String" n="$S" />
         <Key v="24" t="String" n="$E" />
       </Data>
+      <Data n="40">
+        <Key v="31" t="String" n="$S" />
+        <Key v="34" t="String" n="$E" />
+      </Data>
+      <Data n="41">
+        <Key v="31" t="String" n="$S" />
+        <Key v="45" t="String" n="$E" />
+      </Data>
+      <Data n="42">
+        <Key v="18" t="String" n="$S" />
+        <Key v="19" t="String" n="$E" />
+      </Data>
+      <Data n="43">
+        <Key v="24" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
+      </Data>
+      <Data n="44">
+        <Key v="44" t="String" n="$S" />
+        <Key v="46" t="String" n="$E" />
+      </Data>
+      <Data n="45">
+        <Key v="34" t="String" n="$S" />
+        <Key v="33" t="String" n="$E" />
+      </Data>
+      <Data n="46">
+        <Key v="23" t="String" n="$S" />
+        <Key v="25" t="String" n="$E" />
+      </Data>
       <Data n="47">
-        <Key v="42" t="String" n="$S" />
-        <Key v="41" t="String" n="$E" />
+        <Key v="45" t="String" n="$S" />
+        <Key v="44" t="String" n="$E" />
       </Data>
       <Data n="48">
-        <Key v="31" t="String" n="$S" />
-        <Key v="38" t="String" n="$E" />
+        <Key v="33" t="String" n="$S" />
+        <Key v="40" t="String" n="$E" />
       </Data>
       <Data n="49">
-        <Key v="18" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="19" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="50">
-        <Key v="24" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="25" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="51">
-        <Key v="38" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="40" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="52">
-        <Key v="43" t="String" n="$S" />
-        <Key v="21" t="String" n="$E" />
+        <Key v="46" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
       <Data n="53">
-        <Key v="21" t="String" n="$S" />
-        <Key v="4" t="String" n="$E" />
+        <Key v="22" t="String" n="$S" />
+        <Key v="26" t="String" n="$E" />
+      </Data>
+      <Data n="54">
+        <Key v="4" t="String" n="$S" />
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="55">
+        <Key v="43" t="String" n="$S" />
+        <Key v="11" t="String" n="$E" />
+      </Data>
+      <Data n="56">
+        <Key v="26" t="String" n="$S" />
+        <Key v="5" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -3363,47 +3475,63 @@
         <Key v="1" t="Int32" n="PerkValue" />
       </Data>
       <Data n="23">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="24">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="24">
+      <Data n="25">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435344860" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="25">
+      <Data n="26">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435415597" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="26">
+      <Data n="27">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435425923" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="27">
+      <Data n="28">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="28">
+      <Data n="29">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddEventEnd" />
+      </Data>
+      <Data n="30">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="31">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="29">
+      <Data n="32">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="30">
+      <Data n="33">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="34">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="2" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="31">
+      <Data n="35">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddPerk" />
         <Key v="Specialist" t="String" n="PerkTarget" />
@@ -3411,25 +3539,17 @@
         <Key v="1" t="Int32" n="SuccRateValue" />
         <Key v="-2" t="Int32" n="PerkValue" />
       </Data>
-      <Data n="32">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddEventEnd" />
-      </Data>
-      <Data n="33">
+      <Data n="36">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="34">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
-      <Data n="35">
+      <Data n="37">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="2400" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="36">
+      <Data n="38">
         <Key v="5" t="Int32" n="$T" />
         <Key v="Stamina" t="String" n="SecAtr" />
         <Key v="-500" t="Int32" n="SecAtrChange" />
@@ -3437,38 +3557,38 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="37">
+      <Data n="39">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
     </Data>
     <Data n="$C">
       <Data n="0">
-        <Key v="29" t="String" n="$E" />
+        <Key v="33" t="String" n="$E" />
       </Data>
       <Data n="1">
-        <Key v="29" t="String" n="$S" />
-        <Key v="37" t="String" n="$E" />
+        <Key v="33" t="String" n="$S" />
+        <Key v="39" t="String" n="$E" />
       </Data>
       <Data n="2">
-        <Key v="29" t="String" n="$S" />
+        <Key v="33" t="String" n="$S" />
         <Key v="15" t="String" n="$E" />
       </Data>
       <Data n="3">
-        <Key v="35" t="String" n="$S" />
-        <Key v="34" t="String" n="$E" />
-      </Data>
-      <Data n="4">
-        <Key v="36" t="String" n="$S" />
-        <Key v="35" t="String" n="$E" />
-      </Data>
-      <Data n="5">
-        <Key v="34" t="String" n="$S" />
-        <Key v="32" t="String" n="$E" />
-      </Data>
-      <Data n="6">
         <Key v="37" t="String" n="$S" />
         <Key v="36" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="38" t="String" n="$S" />
+        <Key v="37" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="30" t="String" n="$S" />
+        <Key v="29" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="39" t="String" n="$S" />
+        <Key v="38" t="String" n="$E" />
       </Data>
       <Data n="7">
         <Key v="15" t="String" n="$S" />
@@ -3492,11 +3612,11 @@
       </Data>
       <Data n="12">
         <Key v="16" t="String" n="$S" />
-        <Key v="27" t="String" n="$E" />
+        <Key v="28" t="String" n="$E" />
       </Data>
       <Data n="13">
         <Key v="16" t="String" n="$S" />
-        <Key v="30" t="String" n="$E" />
+        <Key v="34" t="String" n="$E" />
       </Data>
       <Data n="14">
         <Key v="2" t="String" n="$S" />
@@ -3507,8 +3627,8 @@
         <Key v="10" t="String" n="$E" />
       </Data>
       <Data n="16">
-        <Key v="30" t="String" n="$S" />
-        <Key v="31" t="String" n="$E" />
+        <Key v="34" t="String" n="$S" />
+        <Key v="35" t="String" n="$E" />
       </Data>
       <Data n="17">
         <Key v="3" t="String" n="$S" />
@@ -3519,16 +3639,16 @@
         <Key v="19" t="String" n="$E" />
       </Data>
       <Data n="19">
-        <Key v="27" t="String" n="$S" />
+        <Key v="28" t="String" n="$S" />
         <Key v="19" t="String" n="$E" />
       </Data>
       <Data n="20">
-        <Key v="31" t="String" n="$S" />
+        <Key v="35" t="String" n="$S" />
         <Key v="19" t="String" n="$E" />
       </Data>
       <Data n="21">
         <Key v="19" t="String" n="$S" />
-        <Key v="22" t="String" n="$E" />
+        <Key v="23" t="String" n="$E" />
       </Data>
       <Data n="22">
         <Key v="20" t="String" n="$S" />
@@ -3540,15 +3660,15 @@
       </Data>
       <Data n="24">
         <Key v="21" t="String" n="$S" />
-        <Key v="28" t="String" n="$E" />
+        <Key v="31" t="String" n="$E" />
       </Data>
       <Data n="25">
-        <Key v="28" t="String" n="$S" />
-        <Key v="33" t="String" n="$E" />
+        <Key v="31" t="String" n="$S" />
+        <Key v="32" t="String" n="$E" />
       </Data>
       <Data n="26">
-        <Key v="33" t="String" n="$S" />
-        <Key v="32" t="String" n="$E" />
+        <Key v="32" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
       </Data>
       <Data n="27">
         <Key v="22" t="String" n="$S" />
@@ -3572,7 +3692,7 @@
       </Data>
       <Data n="32">
         <Key v="7" t="String" n="$S" />
-        <Key v="23" t="String" n="$E" />
+        <Key v="24" t="String" n="$E" />
       </Data>
       <Data n="33">
         <Key v="0" t="String" n="$S" />
@@ -3595,16 +3715,16 @@
         <Key v="13" t="String" n="$E" />
       </Data>
       <Data n="38">
-        <Key v="23" t="String" n="$S" />
-        <Key v="24" t="String" n="$E" />
-      </Data>
-      <Data n="39">
         <Key v="24" t="String" n="$S" />
         <Key v="25" t="String" n="$E" />
       </Data>
-      <Data n="40">
+      <Data n="39">
         <Key v="25" t="String" n="$S" />
         <Key v="26" t="String" n="$E" />
+      </Data>
+      <Data n="40">
+        <Key v="26" t="String" n="$S" />
+        <Key v="27" t="String" n="$E" />
       </Data>
       <Data n="41">
         <Key v="1" t="String" n="$S" />
@@ -3620,11 +3740,19 @@
       </Data>
       <Data n="44">
         <Key v="14" t="String" n="$S" />
-        <Key v="32" t="String" n="$E" />
+        <Key v="30" t="String" n="$E" />
       </Data>
       <Data n="45">
-        <Key v="26" t="String" n="$S" />
+        <Key v="27" t="String" n="$S" />
         <Key v="14" t="String" n="$E" />
+      </Data>
+      <Data n="46">
+        <Key v="36" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
+      </Data>
+      <Data n="47">
+        <Key v="23" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -3652,16 +3780,20 @@
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="4">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="4">
+      <Data n="5">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="5">
+      <Data n="6">
         <Key v="4" t="Int32" n="$T" />
         <Key v="3" t="Int32" n="TestRateMod" />
         <Key v="Scavenging" t="String" n="TestType" />
@@ -3673,13 +3805,13 @@
         <Key v="5" t="Int32" n="SpecTestNumMax" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
       </Data>
-      <Data n="6">
+      <Data n="7">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="7200" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="7">
+      <Data n="8">
         <Key v="5" t="Int32" n="$T" />
         <Key v="Stamina" t="String" n="SecAtr" />
         <Key v="-1800" t="Int32" n="SecAtrChange" />
@@ -3687,51 +3819,55 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="8">
+      <Data n="9">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Explore" t="String" n="OptionType" />
       </Data>
-      <Data n="9">
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="11">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
-      </Data>
-      <Data n="10">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
-      <Data n="11">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="Avoid" t="String" n="OptionType" />
       </Data>
       <Data n="12">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="13">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Avoid" t="String" n="OptionType" />
+      </Data>
+      <Data n="14">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="15">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddEventEnd" />
       </Data>
-      <Data n="14">
+      <Data n="16">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="DirectMU" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
-      </Data>
-      <Data n="15">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
-      <Data n="16">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="Explore" t="String" n="OptionType" />
       </Data>
       <Data n="17">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="18">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Explore" t="String" n="OptionType" />
+      </Data>
+      <Data n="19">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="20">
         <Key v="4" t="Int32" n="$T" />
         <Key v="1" t="Decimal" n="TestRateMod" />
         <Key v="Scavenging" t="String" n="TestType" />
@@ -3746,44 +3882,48 @@
         <Key v="Průzkum sklepa" t="String" n="TestName" />
         <Key v="Je třeba vybrat jednoho specialistu, který se protáhne do pobořeného sklepa" t="String" n="Description" />
       </Data>
-      <Data n="19">
+      <Data n="21">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="20">
+      <Data n="22">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="21">
+      <Data n="23">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddContainer" />
         <Key v="20208435425810" t="String" n="AddDirectCont" />
       </Data>
-      <Data n="22">
+      <Data n="24">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="2400" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="23">
+      <Data n="25">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="26">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="24">
+      <Data n="27">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="25">
+      <Data n="28">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
       </Data>
-      <Data n="26">
+      <Data n="29">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="27">
+      <Data n="30">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Hp" t="String" n="SecAtr" />
@@ -3792,17 +3932,17 @@
         <Key v="-20" t="Int32" n="SecAtrChangeMin" />
         <Key v="-30" t="Int32" n="SecAtrChangeMax" />
       </Data>
-      <Data n="28">
+      <Data n="31">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="29">
+      <Data n="32">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="Specialist" />
         <Key v="Busy" t="String" n="SpecSort" />
         <Key v="1" t="Int32" n="SpecDefSelect" />
       </Data>
-      <Data n="30">
+      <Data n="33">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Stamina" t="String" n="SecAtr" />
@@ -3811,7 +3951,7 @@
         <Key v="-4000" t="Int32" n="SecAtrChangeMin" />
         <Key v="-8000" t="Int32" n="SecAtrChangeMax" />
       </Data>
-      <Data n="31">
+      <Data n="34">
         <Key v="4" t="Int32" n="$T" />
         <Key v="3" t="Int32" n="TestRateMod" />
         <Key v="DiggBuild" t="String" n="TestType" />
@@ -3825,24 +3965,9 @@
         <Key v="6" t="Int32" n="TestDiff" />
         <Key v="Vyproštění specialisty" t="String" n="TestName" />
       </Data>
-      <Data n="32">
+      <Data n="35">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Failure" t="String" n="Result" />
-      </Data>
-      <Data n="33">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTextWindow" />
-      </Data>
-      <Data n="34">
-        <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="Specialist" />
-        <Key v="Fired" t="String" n="SpecSort" />
-        <Key v="Sklep_chata_01" t="String" n="TestID" />
-        <Key v="1" t="Int32" n="SpecDefID" />
-      </Data>
-      <Data n="35">
-        <Key v="1" t="Int32" n="$T" />
-        <Key v="SpecAct" t="String" n="OptionType" />
       </Data>
       <Data n="36">
         <Key v="5" t="Int32" n="$T" />
@@ -3850,21 +3975,40 @@
       </Data>
       <Data n="37">
         <Key v="5" t="Int32" n="$T" />
-        <Key v="1" t="Int32" n="AddTimeChange" />
-        <Key v="Delay" t="String" n="TimeChange" />
-        <Key v="3600" t="Int32" n="TimeDelay" />
+        <Key v="1" t="Int32" n="Specialist" />
+        <Key v="Fired" t="String" n="SpecSort" />
+        <Key v="Sklep_chata_01" t="String" n="TestID" />
+        <Key v="1" t="Int32" n="SpecDefID" />
       </Data>
       <Data n="38">
-        <Key v="6" t="Int32" n="$T" />
-        <Key v="Success" t="String" n="Result" />
-        <Key v="DirectMU" t="String" n="MuDef" />
-        <Key v="1" t="Int32" n="MuDefValue" />
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="SpecAct" t="String" n="OptionType" />
       </Data>
       <Data n="39">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
       <Data n="40">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTimeChange" />
+        <Key v="Delay" t="String" n="TimeChange" />
+        <Key v="3600" t="Int32" n="TimeDelay" />
+      </Data>
+      <Data n="41">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="42">
+        <Key v="6" t="Int32" n="$T" />
+        <Key v="Success" t="String" n="Result" />
+        <Key v="DirectMU" t="String" n="MuDef" />
+        <Key v="1" t="Int32" n="MuDefValue" />
+      </Data>
+      <Data n="43">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="44">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddSecAtr" />
         <Key v="Hp" t="String" n="SecAtr" />
@@ -3873,25 +4017,33 @@
         <Key v="RangeID" t="String" n="SecAtrChangeTarg" />
         <Key v="Sklep_chata_01" t="String" n="TestID" />
       </Data>
-      <Data n="41">
+      <Data n="45">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="46">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="42">
+      <Data n="47">
         <Key v="6" t="Int32" n="$T" />
         <Key v="Success" t="String" n="Result" />
         <Key v="MUBiggerThan" t="String" n="MuDef" />
         <Key v="1" t="Int32" n="MuDefValue" />
       </Data>
-      <Data n="43">
+      <Data n="48">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
-      <Data n="44">
+      <Data n="49">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="50">
         <Key v="1" t="Int32" n="$T" />
         <Key v="Avoid" t="String" n="OptionType" />
       </Data>
-      <Data n="45">
+      <Data n="51">
         <Key v="5" t="Int32" n="$T" />
         <Key v="Stamina" t="String" n="SecAtr" />
         <Key v="-500" t="Int32" n="SecAtrChange" />
@@ -3899,56 +4051,56 @@
         <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
         <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
       </Data>
-      <Data n="46">
+      <Data n="52">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTimeChange" />
         <Key v="Delay" t="String" n="TimeChange" />
         <Key v="2400" t="Int32" n="TimeDelay" />
       </Data>
-      <Data n="47">
+      <Data n="53">
         <Key v="5" t="Int32" n="$T" />
         <Key v="1" t="Int32" n="AddTextWindow" />
       </Data>
     </Data>
     <Data n="$C">
       <Data n="0">
-        <Key v="41" t="String" n="$E" />
+        <Key v="46" t="String" n="$E" />
       </Data>
       <Data n="1">
-        <Key v="41" t="String" n="$S" />
-        <Key v="44" t="String" n="$E" />
+        <Key v="46" t="String" n="$S" />
+        <Key v="50" t="String" n="$E" />
       </Data>
       <Data n="2">
-        <Key v="41" t="String" n="$S" />
-        <Key v="8" t="String" n="$E" />
-      </Data>
-      <Data n="3">
-        <Key v="6" t="String" n="$S" />
+        <Key v="46" t="String" n="$S" />
         <Key v="9" t="String" n="$E" />
       </Data>
+      <Data n="3">
+        <Key v="7" t="String" n="$S" />
+        <Key v="11" t="String" n="$E" />
+      </Data>
       <Data n="4">
-        <Key v="6" t="String" n="$S" />
-        <Key v="3" t="String" n="$E" />
+        <Key v="7" t="String" n="$S" />
+        <Key v="4" t="String" n="$E" />
       </Data>
       <Data n="5">
-        <Key v="6" t="String" n="$S" />
+        <Key v="7" t="String" n="$S" />
         <Key v="0" t="String" n="$E" />
       </Data>
       <Data n="6">
-        <Key v="5" t="String" n="$S" />
-        <Key v="7" t="String" n="$E" />
+        <Key v="6" t="String" n="$S" />
+        <Key v="8" t="String" n="$E" />
       </Data>
       <Data n="7">
-        <Key v="8" t="String" n="$S" />
-        <Key v="5" t="String" n="$E" />
+        <Key v="9" t="String" n="$S" />
+        <Key v="6" t="String" n="$E" />
       </Data>
       <Data n="8">
-        <Key v="18" t="String" n="$S" />
-        <Key v="14" t="String" n="$E" />
+        <Key v="20" t="String" n="$S" />
+        <Key v="16" t="String" n="$E" />
       </Data>
       <Data n="9">
-        <Key v="7" t="String" n="$S" />
-        <Key v="6" t="String" n="$E" />
+        <Key v="8" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
       </Data>
       <Data n="10">
         <Key v="0" t="String" n="$S" />
@@ -3956,187 +4108,211 @@
       </Data>
       <Data n="11">
         <Key v="2" t="String" n="$S" />
-        <Key v="1" t="String" n="$E" />
+        <Key v="3" t="String" n="$E" />
       </Data>
       <Data n="12">
         <Key v="1" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="15" t="String" n="$E" />
       </Data>
       <Data n="13">
-        <Key v="3" t="String" n="$S" />
-        <Key v="4" t="String" n="$E" />
+        <Key v="4" t="String" n="$S" />
+        <Key v="5" t="String" n="$E" />
       </Data>
       <Data n="14">
-        <Key v="4" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="10" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
       </Data>
       <Data n="15">
-        <Key v="9" t="String" n="$S" />
-        <Key v="10" t="String" n="$E" />
-      </Data>
-      <Data n="16">
-        <Key v="17" t="String" n="$S" />
-        <Key v="22" t="String" n="$E" />
-      </Data>
-      <Data n="17">
-        <Key v="10" t="String" n="$S" />
-        <Key v="16" t="String" n="$E" />
-      </Data>
-      <Data n="18">
-        <Key v="10" t="String" n="$S" />
-        <Key v="11" t="String" n="$E" />
-      </Data>
-      <Data n="19">
-        <Key v="16" t="String" n="$S" />
-        <Key v="17" t="String" n="$E" />
-      </Data>
-      <Data n="20">
-        <Key v="12" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="21">
         <Key v="11" t="String" n="$S" />
         <Key v="12" t="String" n="$E" />
       </Data>
-      <Data n="22">
-        <Key v="18" t="String" n="$S" />
-        <Key v="25" t="String" n="$E" />
+      <Data n="16">
+        <Key v="19" t="String" n="$S" />
+        <Key v="24" t="String" n="$E" />
       </Data>
-      <Data n="23">
+      <Data n="17">
+        <Key v="12" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
+      </Data>
+      <Data n="18">
+        <Key v="12" t="String" n="$S" />
+        <Key v="13" t="String" n="$E" />
+      </Data>
+      <Data n="19">
         <Key v="18" t="String" n="$S" />
         <Key v="19" t="String" n="$E" />
       </Data>
-      <Data n="24">
-        <Key v="25" t="String" n="$S" />
-        <Key v="26" t="String" n="$E" />
+      <Data n="20">
+        <Key v="14" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
       </Data>
-      <Data n="25">
-        <Key v="27" t="String" n="$S" />
-        <Key v="29" t="String" n="$E" />
+      <Data n="21">
+        <Key v="13" t="String" n="$S" />
+        <Key v="14" t="String" n="$E" />
       </Data>
-      <Data n="26">
-        <Key v="26" t="String" n="$S" />
-        <Key v="27" t="String" n="$E" />
-      </Data>
-      <Data n="27">
-        <Key v="28" t="String" n="$S" />
-        <Key v="35" t="String" n="$E" />
-      </Data>
-      <Data n="28">
-        <Key v="29" t="String" n="$S" />
+      <Data n="22">
+        <Key v="20" t="String" n="$S" />
         <Key v="28" t="String" n="$E" />
       </Data>
-      <Data n="29">
-        <Key v="31" t="String" n="$S" />
-        <Key v="37" t="String" n="$E" />
-      </Data>
-      <Data n="30">
-        <Key v="32" t="String" n="$S" />
-        <Key v="33" t="String" n="$E" />
-      </Data>
-      <Data n="31">
-        <Key v="33" t="String" n="$S" />
-        <Key v="34" t="String" n="$E" />
-      </Data>
-      <Data n="32">
-        <Key v="30" t="String" n="$S" />
-        <Key v="32" t="String" n="$E" />
-      </Data>
-      <Data n="33">
-        <Key v="34" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="34">
-        <Key v="30" t="String" n="$S" />
-        <Key v="38" t="String" n="$E" />
-      </Data>
-      <Data n="35">
-        <Key v="38" t="String" n="$S" />
-        <Key v="39" t="String" n="$E" />
-      </Data>
-      <Data n="36">
-        <Key v="39" t="String" n="$S" />
-        <Key v="40" t="String" n="$E" />
-      </Data>
-      <Data n="37">
-        <Key v="40" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="38">
-        <Key v="30" t="String" n="$S" />
-        <Key v="42" t="String" n="$E" />
-      </Data>
-      <Data n="39">
-        <Key v="42" t="String" n="$S" />
-        <Key v="43" t="String" n="$E" />
-      </Data>
-      <Data n="40">
-        <Key v="43" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="41">
-        <Key v="14" t="String" n="$S" />
-        <Key v="15" t="String" n="$E" />
-      </Data>
-      <Data n="42">
-        <Key v="15" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="43">
-        <Key v="19" t="String" n="$S" />
-        <Key v="20" t="String" n="$E" />
-      </Data>
-      <Data n="44">
+      <Data n="23">
         <Key v="20" t="String" n="$S" />
         <Key v="21" t="String" n="$E" />
       </Data>
-      <Data n="45">
-        <Key v="21" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="46">
-        <Key v="22" t="String" n="$S" />
-        <Key v="18" t="String" n="$E" />
-      </Data>
-      <Data n="47">
+      <Data n="24">
         <Key v="28" t="String" n="$S" />
-        <Key v="23" t="String" n="$E" />
+        <Key v="29" t="String" n="$E" />
       </Data>
-      <Data n="48">
+      <Data n="25">
+        <Key v="30" t="String" n="$S" />
+        <Key v="32" t="String" n="$E" />
+      </Data>
+      <Data n="26">
+        <Key v="29" t="String" n="$S" />
+        <Key v="30" t="String" n="$E" />
+      </Data>
+      <Data n="27">
+        <Key v="31" t="String" n="$S" />
+        <Key v="38" t="String" n="$E" />
+      </Data>
+      <Data n="28">
+        <Key v="32" t="String" n="$S" />
+        <Key v="31" t="String" n="$E" />
+      </Data>
+      <Data n="29">
+        <Key v="34" t="String" n="$S" />
+        <Key v="40" t="String" n="$E" />
+      </Data>
+      <Data n="30">
         <Key v="35" t="String" n="$S" />
         <Key v="36" t="String" n="$E" />
       </Data>
-      <Data n="49">
-        <Key v="36" t="String" n="$S" />
-        <Key v="31" t="String" n="$E" />
+      <Data n="31">
+        <Key v="45" t="String" n="$S" />
+        <Key v="44" t="String" n="$E" />
       </Data>
-      <Data n="50">
-        <Key v="23" t="String" n="$S" />
-        <Key v="24" t="String" n="$E" />
+      <Data n="32">
+        <Key v="33" t="String" n="$S" />
+        <Key v="35" t="String" n="$E" />
       </Data>
-      <Data n="51">
-        <Key v="24" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
-      </Data>
-      <Data n="52">
+      <Data n="33">
         <Key v="37" t="String" n="$S" />
-        <Key v="30" t="String" n="$E" />
+        <Key v="15" t="String" n="$E" />
       </Data>
-      <Data n="53">
-        <Key v="44" t="String" n="$S" />
+      <Data n="34">
+        <Key v="33" t="String" n="$S" />
+        <Key v="42" t="String" n="$E" />
+      </Data>
+      <Data n="35">
+        <Key v="42" t="String" n="$S" />
+        <Key v="43" t="String" n="$E" />
+      </Data>
+      <Data n="36">
+        <Key v="43" t="String" n="$S" />
         <Key v="45" t="String" n="$E" />
       </Data>
-      <Data n="54">
-        <Key v="45" t="String" n="$S" />
-        <Key v="46" t="String" n="$E" />
+      <Data n="37">
+        <Key v="44" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
       </Data>
-      <Data n="55">
-        <Key v="46" t="String" n="$S" />
+      <Data n="38">
+        <Key v="33" t="String" n="$S" />
         <Key v="47" t="String" n="$E" />
       </Data>
-      <Data n="56">
+      <Data n="39">
         <Key v="47" t="String" n="$S" />
-        <Key v="13" t="String" n="$E" />
+        <Key v="48" t="String" n="$E" />
+      </Data>
+      <Data n="40">
+        <Key v="49" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+      <Data n="41">
+        <Key v="16" t="String" n="$S" />
+        <Key v="17" t="String" n="$E" />
+      </Data>
+      <Data n="42">
+        <Key v="17" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="43">
+        <Key v="21" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
+      </Data>
+      <Data n="44">
+        <Key v="22" t="String" n="$S" />
+        <Key v="25" t="String" n="$E" />
+      </Data>
+      <Data n="45">
+        <Key v="23" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+      <Data n="46">
+        <Key v="24" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
+      </Data>
+      <Data n="47">
+        <Key v="31" t="String" n="$S" />
+        <Key v="26" t="String" n="$E" />
+      </Data>
+      <Data n="48">
+        <Key v="38" t="String" n="$S" />
+        <Key v="39" t="String" n="$E" />
+      </Data>
+      <Data n="49">
+        <Key v="39" t="String" n="$S" />
+        <Key v="34" t="String" n="$E" />
+      </Data>
+      <Data n="50">
+        <Key v="26" t="String" n="$S" />
+        <Key v="27" t="String" n="$E" />
+      </Data>
+      <Data n="51">
+        <Key v="27" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="52">
+        <Key v="40" t="String" n="$S" />
+        <Key v="33" t="String" n="$E" />
+      </Data>
+      <Data n="53">
+        <Key v="50" t="String" n="$S" />
+        <Key v="51" t="String" n="$E" />
+      </Data>
+      <Data n="54">
+        <Key v="51" t="String" n="$S" />
+        <Key v="52" t="String" n="$E" />
+      </Data>
+      <Data n="55">
+        <Key v="52" t="String" n="$S" />
+        <Key v="53" t="String" n="$E" />
+      </Data>
+      <Data n="56">
+        <Key v="48" t="String" n="$S" />
+        <Key v="49" t="String" n="$E" />
+      </Data>
+      <Data n="57">
+        <Key v="3" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="58">
+        <Key v="5" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="59">
+        <Key v="25" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
+      </Data>
+      <Data n="60">
+        <Key v="53" t="String" n="$S" />
+        <Key v="49" t="String" n="$E" />
+      </Data>
+      <Data n="61">
+        <Key v="36" t="String" n="$S" />
+        <Key v="41" t="String" n="$E" />
+      </Data>
+      <Data n="62">
+        <Key v="41" t="String" n="$S" />
+        <Key v="37" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
