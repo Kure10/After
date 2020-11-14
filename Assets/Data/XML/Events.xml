@@ -36,7 +36,6 @@
         <Key v="ScL,TeL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="5" t="Int32" n="SpecTestNumMax" />
-        <Key v="Hledání zásob" t="String" n="TestName" />
       </Data>
       <Data n="4">
         <Key v="6" t="Int32" n="$T" />
@@ -78,7 +77,6 @@
         <Key v="Scouting" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Výběr průzkumníků" t="String" n="TestName" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="5" t="Int32" n="SpecTestNumMax" />
@@ -263,7 +261,6 @@
         <Key v="Scouting" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Výběr průzkumníků" t="String" n="TestName" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="5" t="Int32" n="SpecTestNumMax" />
       </Data>
@@ -301,7 +298,6 @@
         <Key v="SelectOnly" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="DirectNum" t="String" n="TestTarget" />
-        <Key v="Výběr průzkumníka" t="String" n="TestName" />
         <Key v="1" t="Int32" n="SpecTestNum" />
       </Data>
       <Data n="52">
@@ -386,7 +382,6 @@
         <Key v="15" t="Int32" n="TestDiff" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
-        <Key v="Úhyb" t="String" n="TestName" />
       </Data>
       <Data n="67">
         <Key v="5" t="Int32" n="$T" />
@@ -848,10 +843,249 @@
       <Data n="11">
         <Key v="4" t="Int32" n="$T" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Pokus o přepad" t="String" n="TestName" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="Sneaking" t="String" n="TestType" />
         <Key v="MiL" t="String" n="TestAtribute" />
+        <Key v="3" t="Int32" n="TestDiff" />
+        <Key v="2" t="Int32" n="TestRateMod" />
+        <Key v="1" t="Int32" n="KarmaInfluence" />
+        <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
+        <Key v="1" t="Int32" n="SpecTestNumMin" />
+        <Key v="5" t="Int32" n="SpecTestNumMax" />
+      </Data>
+      <Data n="12">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="13">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddSecAtr" />
+        <Key v="Stamina" t="String" n="SecAtr" />
+        <Key v="-3200" t="Int32" n="SecAtrChange" />
+        <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
+        <Key v="AllActiveSpec" t="String" n="SecAtrChangeTarg" />
+      </Data>
+      <Data n="14">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTimeChange" />
+        <Key v="Delay" t="String" n="TimeChange" />
+        <Key v="1800" t="Int32" n="TimeDelay" />
+      </Data>
+      <Data n="15">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddEventEnd" />
+      </Data>
+      <Data n="16">
+        <Key v="6" t="Int32" n="$T" />
+        <Key v="Failure" t="String" n="Result" />
+      </Data>
+      <Data n="17">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="18">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="19">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Avoid" t="String" n="OptionType" />
+      </Data>
+      <Data n="20">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTimeChange" />
+        <Key v="Delay" t="String" n="TimeChange" />
+        <Key v="3600" t="Int32" n="TimeDelay" />
+      </Data>
+      <Data n="21">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddSecAtr" />
+        <Key v="Stamina" t="String" n="SecAtr" />
+        <Key v="-2000" t="Int32" n="SecAtrChange" />
+        <Key v="ChangeTypeDirect" t="String" n="SecAtrChangeType" />
+        <Key v="AllSpec" t="String" n="SecAtrChangeTarg" />
+      </Data>
+      <Data n="22">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="23">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="12" t="String" n="$S" />
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="12" t="String" n="$S" />
+        <Key v="10" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="12" t="String" n="$S" />
+        <Key v="19" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="0" t="String" n="$S" />
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="4">
+        <Key v="1" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="5">
+        <Key v="19" t="String" n="$S" />
+        <Key v="20" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="10" t="String" n="$S" />
+        <Key v="11" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="14" t="String" n="$S" />
+        <Key v="13" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="7" t="String" n="$S" />
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="9">
+        <Key v="13" t="String" n="$S" />
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="10">
+        <Key v="6" t="String" n="$S" />
+        <Key v="5" t="String" n="$E" />
+      </Data>
+      <Data n="11">
+        <Key v="16" t="String" n="$S" />
+        <Key v="17" t="String" n="$E" />
+      </Data>
+      <Data n="12">
+        <Key v="20" t="String" n="$S" />
+        <Key v="21" t="String" n="$E" />
+      </Data>
+      <Data n="13">
+        <Key v="2" t="String" n="$S" />
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="14">
+        <Key v="12" t="String" n="$E" />
+      </Data>
+      <Data n="15">
+        <Key v="5" t="String" n="$S" />
+        <Key v="8" t="String" n="$E" />
+      </Data>
+      <Data n="16">
+        <Key v="17" t="String" n="$S" />
+        <Key v="18" t="String" n="$E" />
+      </Data>
+      <Data n="17">
+        <Key v="13" t="String" n="$S" />
+        <Key v="16" t="String" n="$E" />
+      </Data>
+      <Data n="18">
+        <Key v="21" t="String" n="$S" />
+        <Key v="22" t="String" n="$E" />
+      </Data>
+      <Data n="19">
+        <Key v="11" t="String" n="$S" />
+        <Key v="14" t="String" n="$E" />
+      </Data>
+      <Data n="20">
+        <Key v="3" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="21">
+        <Key v="22" t="String" n="$S" />
+        <Key v="23" t="String" n="$E" />
+      </Data>
+      <Data n="22">
+        <Key v="23" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+      <Data n="23">
+        <Key v="8" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="24">
+        <Key v="18" t="String" n="$S" />
+        <Key v="7" t="String" n="$E" />
+      </Data>
+      <Data n="25">
+        <Key v="4" t="String" n="$S" />
+        <Key v="9" t="String" n="$E" />
+      </Data>
+      <Data n="26">
+        <Key v="9" t="String" n="$S" />
+        <Key v="15" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208804436884">
+    <Key v="1" t="Int32" n="Difficulty" />
+    <Key v="Hory,Lesy,Louky,MalaMesta,Vesnice,VelkaMesta" t="String" n="EventTerrain" />
+    <Key v="Event_Potulna_zombie" t="String" n="EventPicture" />
+    <Key v="Common" t="String" n="EventRarity" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Attack" t="String" n="OptionType" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="BattleBasic" t="String" n="BattleType" />
+      </Data>
+      <Data n="2">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTimeChange" />
+        <Key v="Delay" t="String" n="TimeChange" />
+        <Key v="600" t="Int32" n="TimeDelay" />
+      </Data>
+      <Data n="3">
+        <Key v="3" t="Int32" n="$T" />
+        <Key v="20203901264861" t="String" n="Monster" />
+        <Key v="1" t="Int32" n="BeastNumber" />
+      </Data>
+      <Data n="4">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="5">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddTextWindow" />
+      </Data>
+      <Data n="6">
+        <Key v="6" t="Int32" n="$T" />
+        <Key v="Success" t="String" n="Result" />
+      </Data>
+      <Data n="7">
+        <Key v="5" t="Int32" n="$T" />
+        <Key v="1" t="Int32" n="AddPerk" />
+        <Key v="Specialist" t="String" n="PerkTarget" />
+        <Key v="FirstStrike" t="String" n="TypePerk" />
+        <Key v="1" t="Int32" n="SuccRateValue" />
+      </Data>
+      <Data n="8">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="9">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Confirm" t="String" n="OptionType" />
+      </Data>
+      <Data n="10">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Ambush" t="String" n="OptionType" />
+      </Data>
+      <Data n="11">
+        <Key v="4" t="Int32" n="$T" />
+        <Key v="RangeNum" t="String" n="TestTarget" />
+        <Key v="Separately" t="String" n="KindTest" />
+        <Key v="Sneaking" t="String" n="TestType" />
+        <Key v="MiL,LvL" t="String" n="TestAtribute" />
         <Key v="3" t="Int32" n="TestDiff" />
         <Key v="2" t="Int32" n="TestRateMod" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
@@ -1075,7 +1309,6 @@
         <Key v="Scouting" t="String" n="TestType" />
         <Key v="Together" t="String" n="KindTest" />
         <Key v="AllGroup" t="String" n="TestTarget" />
-        <Key v="Hlídka a přepad" t="String" n="TestName" />
         <Key v="4" t="Int32" n="TestDiff" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="Při lovení králíků je i jistá šance, že skupina na sebe upozorní a přivolá tak na sebe hněv démonů. Šance, že k něčemu podobnému je dána primárně sumou Karmy skupiny. Základní pravděpodobnost přepadení družiny je „4“. Za každých 5 bodů do mínusu „KAR“ narůstá nebezepčnost o 1 a naopak (minimum 2, maximum není omezené).&#xA;Poté se za každou postavu, která je ve skupině hodí. Cílem je míra neúspěchů. Pokud je více úspěchů, než neúspěchů, k přepadení vůbec nedošlo. Pokud je remíza, či více neúspěchů, došlo k přepadu. Síla přepadu je dána poměrem úspěchů a neúspěchů: „1+n“. Tzn. za remízu je síla přepadu rovna „1“, za míru neúspěchu „1“ je to „2“ a za míru neúspěchu „4“ je to „5“ (maximum).&#xA;Postavy, které jsou na hlídce snižují celkovou nebezpečnost o počet postav na hlídce." t="String" n="Description" />
@@ -1110,7 +1343,6 @@
         <Key v="Hunting" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Lov králíků" t="String" n="TestName" />
         <Key v="5" t="Int32" n="TestDiff" />
         <Key v="MiL,TeL" t="String" n="TestAtribute" />
         <Key v="2" t="Int32" n="SpecTestNumMin" />
@@ -1424,7 +1656,6 @@
       <Data n="6">
         <Key v="4" t="Int32" n="$T" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Pokus o přepad" t="String" n="TestName" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="Sneaking" t="String" n="TestType" />
         <Key v="MiL" t="String" n="TestAtribute" />
@@ -1497,7 +1728,6 @@
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/5]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
         <Key v="3" t="Int32" n="TestDiff" />
-        <Key v="Ukrytí" t="String" n="TestName" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
       </Data>
       <Data n="19">
@@ -1752,7 +1982,6 @@
         <Key v="Repair" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Výběr aktivního specialisty" t="String" n="TestName" />
         <Key v="TeL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="1" t="Int32" n="SpecTestNumMax" />
@@ -1835,7 +2064,6 @@
         <Key v="Repair" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Prohlédnutí vraku" t="String" n="TestName" />
         <Key v="TeL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="1" t="Int32" n="SpecTestNumMax" />
@@ -1938,7 +2166,6 @@
         <Key v="SpecActive" t="String" n="TestTarget" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="4" t="Int32" n="TestDiff" />
-        <Key v="Vyjednávání" t="String" n="TestName" />
         <Key v="SoL" t="String" n="TestAtribute" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
       </Data>
@@ -1973,7 +2200,6 @@
         <Key v="Comunication" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Přemluvit k ústupu" t="String" n="TestName" />
         <Key v="SoL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2005,7 +2231,6 @@
         <Key v="Comunication" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Spojenectví" t="String" n="TestName" />
         <Key v="SoL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2051,7 +2276,6 @@
         <Key v="Battle" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Vytrhnutí zbraně" t="String" n="TestName" />
         <Key v="MiL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2102,7 +2326,6 @@
         <Key v="Battle" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Vytrhnutí zbraně" t="String" n="TestName" />
         <Key v="MiL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2126,7 +2349,6 @@
         <Key v="DirectNum" t="String" n="TestTarget" />
         <Key v="1" t="Int32" n="SpecTestNum" />
         <Key v="Other" t="String" n="TestAtribute" />
-        <Key v="Eskorta" t="String" n="TestName" />
         <Key v="Hráč musí vybrat specialistu, jež bude dohlížet na zajatý subjekt." t="String" n="Description" />
       </Data>
       <Data n="73">
@@ -2165,7 +2387,6 @@
         <Key v="Comunication" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Přemluvit k ústupu" t="String" n="TestName" />
         <Key v="SoL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2209,7 +2430,6 @@
         <Key v="Comunication" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="SpecActive" t="String" n="TestTarget" />
-        <Key v="Spojenectví" t="String" n="TestName" />
         <Key v="SoL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
@@ -2262,7 +2482,6 @@
         <Key v="SpecActive" t="String" n="TestTarget" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="6" t="Int32" n="TestDiff" />
-        <Key v="Vyhrožování" t="String" n="TestName" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
       </Data>
@@ -2917,7 +3136,6 @@
         <Key v="RangeNum" t="String" n="TestTarget" />
         <Key v="6" t="Int32" n="TestDiff" />
         <Key v="TeL,LvL,MiL" t="String" n="TestAtribute" />
-        <Key v="Vypáčení dveří od chaty" t="String" n="TestName" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="2" t="Int32" n="SpecTestNumMax" />
       </Data>
@@ -2992,7 +3210,6 @@
         <Key v="RangeNum" t="String" n="TestTarget" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
         <Key v="4" t="Int32" n="SpecTestNumMax" />
-        <Key v="Průzkum chaty" t="String" n="TestName" />
         <Key v="9" t="Int32" n="TestDiff" />
         <Key v="TeL,ScL" t="String" n="TestAtribute" />
       </Data>
@@ -3043,7 +3260,6 @@
         <Key v="1" t="Int32" n="SpecTestNum" />
         <Key v="3" t="Int32" n="TestDiff" />
         <Key v="TeL" t="String" n="TestAtribute" />
-        <Key v="Vypáčení dveří od chaty" t="String" n="TestName" />
       </Data>
       <Data n="36">
         <Key v="1" t="Int32" n="$T" />
@@ -3431,7 +3647,6 @@
         <Key v="Scavenging" t="String" n="TestType" />
         <Key v="Separately" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Průzkum chaty" t="String" n="TestName" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
         <Key v="5" t="Int32" n="TestDiff" />
         <Key v="1" t="Int32" n="SpecTestNumMin" />
@@ -3801,7 +4016,6 @@
         <Key v="Scavenging" t="String" n="TestType" />
         <Key v="Together" t="String" n="KindTest" />
         <Key v="RangeNum" t="String" n="TestTarget" />
-        <Key v="Průzkum opuštěné chaty" t="String" n="TestName" />
         <Key v="5" t="Int32" n="TestDiff" />
         <Key v="MiL,TeL,LvL" t="String" n="TestAtribute" />
         <Key v="5" t="Int32" n="SpecTestNumMax" />
@@ -3881,7 +4095,6 @@
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="20 = +/- 1" t="String" n="KarmaDescription" />
         <Key v="Sklep_chata_01" t="String" n="TestID" />
-        <Key v="Průzkum sklepa" t="String" n="TestName" />
         <Key v="Je třeba vybrat jednoho specialistu, který se protáhne do pobořeného sklepa" t="String" n="Description" />
       </Data>
       <Data n="21">
@@ -3965,7 +4178,6 @@
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="10=+/-1" t="String" n="KarmaDescription" />
         <Key v="6" t="Int32" n="TestDiff" />
-        <Key v="Vyproštění specialisty" t="String" n="TestName" />
       </Data>
       <Data n="35">
         <Key v="6" t="Int32" n="$T" />

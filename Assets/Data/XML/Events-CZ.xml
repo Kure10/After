@@ -11,6 +11,12 @@
       <Data n="2">
         <Key v="Prozkoumat interiér" t="String" n="Option" />
       </Data>
+      <Data n="3">
+        <Key v="Hledání zásob" t="String" n="TestName" />
+      </Data>
+      <Data n="9">
+        <Key v="Výběr průzkumníků" t="String" n="TestName" />
+      </Data>
       <Data n="11">
         <Key v="Prázdná chata" t="String" n="TitleTextWindow" />
         <Key v="Chata vypadá opuště, dokonce jsou i mírně pootevřené dveře." t="String" n="TextWindow" />
@@ -79,6 +85,9 @@
         <Key v="Průzkum chaty" t="String" n="TitleTextWindow" />
         <Key v="Každopádně po prohledání chaty jsi našel pěknou porci surovin." t="String" n="TextWindow" />
       </Data>
+      <Data n="44">
+        <Key v="Výběr průzkumníků" t="String" n="TestName" />
+      </Data>
       <Data n="45">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
       </Data>
@@ -96,6 +105,9 @@
       <Data n="50">
         <Key v="Dveře" t="String" n="TitleTextWindow" />
         <Key v="Jakmile vemete za kliku a otevřete namíří vám na hlavu dvouhlavňová brokovnice. Před vámi stojí postarší brejlatá dáma v zástěře, která má velmi přísný pohled a rovnou rázně praví:&#xA;&quot;Hej ty, co tady chceš a mluv rychle, nebo to pro tebe dobře nedopadne&quot;." t="String" n="TextWindow" />
+      </Data>
+      <Data n="51">
+        <Key v="Výběr průzkumníka" t="String" n="TestName" />
       </Data>
       <Data n="54">
         <Key v="Zbavit se dětí" t="String" n="Option" />
@@ -118,6 +130,9 @@
       </Data>
       <Data n="65">
         <Key v="Pokusit se dámu zneškodnit" t="String" n="Option" />
+      </Data>
+      <Data n="66">
+        <Key v="Úhyb" t="String" n="TestName" />
       </Data>
       <Data n="68">
         <Key v="Odejít z chaty" t="String" n="Option" />
@@ -155,6 +170,59 @@
       <Data n="10">
         <Key v="Pokusit se zombii přepadnout" t="String" n="Option" />
       </Data>
+      <Data n="11">
+        <Key v="Pokus o přepad" t="String" n="TestName" />
+      </Data>
+      <Data n="12">
+        <Key v="Oblastí si to špacíruje jeden zombík, blbě čumí a neměl by problém se mu vyhnout. Nicméně každej si rád zabije zombii..." t="String" n="TextWindow" />
+        <Key v="Potulná zombie" t="String" n="TitleTextWindow" />
+      </Data>
+      <Data n="17">
+        <Key v="Neúspěšné plížení" t="String" n="TitleTextWindow" />
+        <Key v="Přepad skončil fiaskem, zombík si vás všiml a bez caviků zaútočil." t="String" n="TextWindow" />
+      </Data>
+      <Data n="18">
+        <Key v="OK" t="String" n="Option" />
+      </Data>
+      <Data n="19">
+        <Key v="Obejít zombii obloukem" t="String" n="Option" />
+      </Data>
+      <Data n="22">
+        <Key v="Zombík &quot;žije&quot;" t="String" n="TitleTextWindow" />
+        <Key v="Zombíka jste nechali zombíkem a pokračujete dál ve své cestě..." t="String" n="TextWindow" />
+      </Data>
+      <Data n="23">
+        <Key v="OK" t="String" n="Option" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20208804436884">
+    <Key v="Potulná zombie - kopie" t="String" n="Name" />
+    <Key v="&#xD;Oblastí si to špacíruje jeden zombík, blbě čumí a neměl by být problém se mu vyhnout. Nicméně každej si rád zabije zombii..." t="String" n="Description" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="Vrhnout se na ní" t="String" n="Option" />
+      </Data>
+      <Data n="4">
+        <Key v="O zombíka méně" t="String" n="TitleTextWindow" />
+        <Key v="Tak zombík to měl rychle za sebou. No svět je hned o něco krásnější .)" t="String" n="TextWindow" />
+      </Data>
+      <Data n="5">
+        <Key v="Úspěšné plížení" t="String" n="TitleTextWindow" />
+        <Key v="Některým tvým specialistům se povedlo k zombíkovi nepozoravně připlížit. Tito specialisté dostávají dočasně perk &quot;První úder&quot;" t="String" n="TextWindow" />
+      </Data>
+      <Data n="8">
+        <Key v="OK" t="String" n="Option" />
+      </Data>
+      <Data n="9">
+        <Key v="OK" t="String" n="Option" />
+      </Data>
+      <Data n="10">
+        <Key v="Pokusit se zombii přepadnout" t="String" n="Option" />
+      </Data>
+      <Data n="11">
+        <Key v="Pokus o přepad" t="String" n="TestName" />
+      </Data>
       <Data n="12">
         <Key v="Oblastí si to špacíruje jeden zombík, blbě čumí a neměl by problém se mu vyhnout. Nicméně každej si rád zabije zombii..." t="String" n="TextWindow" />
         <Key v="Potulná zombie" t="String" n="TitleTextWindow" />
@@ -182,12 +250,18 @@
     <Key v="Zaječí nory" t="String" n="Name" />
     <Key v="Procházíte oblastí, kde si zajíci vybudovali své nory.&#xA;Můžete se na chvíli zastavit a pokusit se jich pár ulovit.&#xA;Specialisté, kteří se pokusí nějaké zajíce ulovit bude akce stát jistou dávku staminy. Ostatní zůstanou na hlídce." t="String" n="Description" />
     <Data n="$E">
+      <Data n="5">
+        <Key v="Hlídka a přepad" t="String" n="TestName" />
+      </Data>
       <Data n="6">
         <Key v="Zaječí paseka" t="String" n="TitleTextWindow" />
         <Key v="Skupina dorazila na mýtinu, kde jsou vidět všude hopkající zajíci. Mají zde svá hnízda a nory. Bylo by skoro až tristní nějakého toho zajíce neulovit, nebo se o to alespoň nepokusit.&#xA;Specialisté, kteří se nezúčastní lovu, budou automaticky na hlídce." t="String" n="TextWindow" />
       </Data>
       <Data n="7">
         <Key v="Lovit zajíce" t="String" n="Option" />
+      </Data>
+      <Data n="10">
+        <Key v="Lov králíků" t="String" n="TestName" />
       </Data>
       <Data n="11">
         <Key v="Lov ukončen" t="String" n="TitleTextWindow" />
@@ -236,6 +310,9 @@
       <Data n="5">
         <Key v="Pokusit se o přepad" t="String" n="Option" />
       </Data>
+      <Data n="6">
+        <Key v="Pokus o přepad" t="String" n="TestName" />
+      </Data>
       <Data n="7">
         <Key v="V dálce vidíte menší skupinu nepřátel. Na první pohled se nejedná o žádný větší problém. Nicméně rozhodnutí je na Vás. Je možné skupinku obejít a tím se trochu zdržet. Či na ně zaútočit." t="String" n="TextWindow" />
         <Key v="Malá skupinka nepřátel" t="String" n="TitleTextWindow" />
@@ -256,6 +333,9 @@
       </Data>
       <Data n="17">
         <Key v="Schovat se a počkat" t="String" n="Option" />
+      </Data>
+      <Data n="18">
+        <Key v="Ukrytí" t="String" n="TestName" />
       </Data>
       <Data n="23">
         <Key v="Hlavně nenápadně" t="String" n="TitleTextWindow" />
@@ -299,6 +379,9 @@
         <Key v="Démoni!!!" t="String" n="TitleTextWindow" />
         <Key v="Byla to past. Démoni čekali na hlupáky, kteří půjdou auto prohlédnout a zaútočili ze zálohy." t="String" n="TextWindow" />
       </Data>
+      <Data n="10">
+        <Key v="Výběr aktivního specialisty" t="String" n="TestName" />
+      </Data>
       <Data n="15">
         <Key v="Prohledání auta" t="String" n="TitleTextWindow" />
         <Key v="Na první pohled to vypadá na vrak. &#xA;Vyber postavu, která jej prohlédne. Ostatní zůstanou na hlídce." t="String" n="TextWindow" />
@@ -309,6 +392,9 @@
       </Data>
       <Data n="17">
         <Key v="Bránit se" t="String" n="Option" />
+      </Data>
+      <Data n="23">
+        <Key v="Prohlédnutí vraku" t="String" n="TestName" />
       </Data>
       <Data n="29">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
@@ -329,12 +415,18 @@
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="@SpecialistActive:&#xA;&quot;Heleď, zklidni to. Podívej, všude řáděj démoni a nemá cenu se ještě zabíjet mezi sebou. Dej tu zbraň pryč a nomrálně si promluvíme.&quot;" t="String" n="TextWindow" />
       </Data>
+      <Data n="39">
+        <Key v="Vyjednávání" t="String" n="TestName" />
+      </Data>
       <Data n="43">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="Neznámý cizinec:&#xA;&quot;Ta pistole zůstane přesně tam, kde je. Nicméně máš mojí pozornost, tak tedy poslouchám.&quot;" t="String" n="TextWindow" />
       </Data>
       <Data n="44">
         <Key v="Přemluvit k ústupu" t="String" n="Option" />
+      </Data>
+      <Data n="45">
+        <Key v="Přemluvit k ústupu" t="String" n="TestName" />
       </Data>
       <Data n="46">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
@@ -351,6 +443,9 @@
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="@SpecialistActive:&#xA;Situace je taková, že ty mě máš sice v hrsti, ale já tady nejsem sám. A v tenhle moment na tebe míří moji kámoši. Nicméně to neznamená, že to musí špatně skončit. Podívej, co kdyby ses k nám přidal. Ve více lidech máme větší šanci na přežití. Nejsme úplně malá skupina a s námi určitě přežiješ o něco déle, než takhle sám." t="String" n="TextWindow" />
       </Data>
+      <Data n="51">
+        <Key v="Spojenectví" t="String" n="TestName" />
+      </Data>
       <Data n="53">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="Neznámý cizinec:&#xA;&quot;Popravdě to zní jako celkem dobrej nápad. Společnost přijde v hod. Tak já se k vám teda přidám. Mimochodem, jmenuju se Jimmy Sendler, ale říjekte mi prostě Jimm.&quot;" t="String" n="TextWindow" />
@@ -364,6 +459,9 @@
       </Data>
       <Data n="58">
         <Key v="Odzbrojit nepřítele" t="String" n="Option" />
+      </Data>
+      <Data n="59">
+        <Key v="Vytrhnutí zbraně" t="String" n="TestName" />
       </Data>
       <Data n="61">
         <Key v="Boj" t="String" n="TitleTextWindow" />
@@ -386,8 +484,14 @@
       <Data n="68">
         <Key v="Odzbrojit nepřítele" t="String" n="Option" />
       </Data>
+      <Data n="69">
+        <Key v="Vytrhnutí zbraně" t="String" n="TestName" />
+      </Data>
       <Data n="70">
         <Key v="Zajmout cizince" t="String" n="Option" />
+      </Data>
+      <Data n="72">
+        <Key v="Eskorta" t="String" n="TestName" />
       </Data>
       <Data n="73">
         <Key v="Co dál?" t="String" n="TitleTextWindow" />
@@ -403,6 +507,9 @@
       <Data n="78">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="@SpecialistActive:&#xA;Podívej, nejsem tady ani z daleka sám. Rozhodně ti nevyhrožuju, ale určitě pro tebe bude lepší, když prostě zmizíš." t="String" n="TextWindow" />
+      </Data>
+      <Data n="79">
+        <Key v="Přemluvit k ústupu" t="String" n="TestName" />
       </Data>
       <Data n="82">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
@@ -424,6 +531,9 @@
       <Data n="87">
         <Key v="Vyjednávání" t="String" n="TitleTextWindow" />
         <Key v="@SpecialistActive:&#xA;Dobré, že jsi odložil tu zbraň. Hned se nám bude lépe vyjednávat. Moje spojence, kteří na tebe teď právě míří, nebude tolik svrbět prst na spoušti. Vím, že jsou to teď těžké časy. Těžší, než jsme si kdy dokázali představit. Co bys řekl na to, kdybychom je přečkali společně? Ve více lidech máme větší šanci na přežití. Nejsme úplně malá skupina a s námi určitě přežiješ o něco déle, než takhle sám. Tak co na to říkáš?" t="String" n="TextWindow" />
+      </Data>
+      <Data n="88">
+        <Key v="Spojenectví" t="String" n="TestName" />
       </Data>
       <Data n="89">
         <Key v="Dát všechno" t="String" n="Option" />
@@ -449,6 +559,9 @@
       <Data n="97">
         <Key v="Vyhrožování" t="String" n="TitleTextWindow" />
         <Key v="@SpecialistActive:&#xA;Koukej se uklidit a dej tu bouchačku pryč. Nejsem tady sám a právě tě má na mušce banda mejch kámošů, takže pokud chceš přežít, budeš poslouchyt ty mě." t="String" n="TextWindow" />
+      </Data>
+      <Data n="98">
+        <Key v="Vyhrožování" t="String" n="TestName" />
       </Data>
       <Data n="100">
         <Key v="Vyhrožování" t="String" n="TitleTextWindow" />
@@ -495,6 +608,9 @@
       <Data n="12">
         <Key v="Vylomit dveře (násilně)" t="String" n="Option" />
       </Data>
+      <Data n="13">
+        <Key v="Vypáčení dveří od chaty" t="String" n="TestName" />
+      </Data>
       <Data n="16">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
       </Data>
@@ -509,12 +625,18 @@
       <Data n="26">
         <Key v="OK" t="String" n="Option" />
       </Data>
+      <Data n="27">
+        <Key v="Průzkum chaty" t="String" n="TestName" />
+      </Data>
       <Data n="29">
         <Key v="Dveře vypáčené" t="String" n="TitleTextWindow" />
         <Key v="Výborně, zámek nebyl nijak složitý. Bez větších problémů se ho povedlo vypáčit. Nyní můžete prozkoumat chatu." t="String" n="TextWindow" />
       </Data>
       <Data n="30">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="35">
+        <Key v="Vypáčení dveří od chaty" t="String" n="TestName" />
       </Data>
       <Data n="36">
         <Key v="Vypáčit zámek (mechanika)" t="String" n="Option" />
@@ -541,6 +663,9 @@
       </Data>
       <Data n="15">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
+      </Data>
+      <Data n="16">
+        <Key v="Průzkum chaty" t="String" n="TestName" />
       </Data>
       <Data n="19">
         <Key v="Je to past" t="String" n="TitleTextWindow" />
@@ -591,6 +716,9 @@
         <Key v="Štěstí v neštěstí" t="String" n="TitleTextWindow" />
         <Key v="Chata je bohužel prázdná. Navíc byla velmi nestabilní a při průzkumu se uvolnilo několik prken a spadla na specialisty. Naštěstí ti rychle zareagovali a nikdo nepřišel k úhoně." t="String" n="TextWindow" />
       </Data>
+      <Data n="6">
+        <Key v="Průzkum opuštěné chaty" t="String" n="TestName" />
+      </Data>
       <Data n="9">
         <Key v="Prozkoumat chatu" t="String" n="Option" />
       </Data>
@@ -619,6 +747,9 @@
         <Key v="Průzkum sklepení chaty" t="String" n="TitleTextWindow" />
         <Key v="Vzniklý průlez do sklepa chaty je velmi úzký a projde jím pouze jeden specialista. Budeš muset zvolit, který to bude." t="String" n="TextWindow" />
       </Data>
+      <Data n="20">
+        <Key v="Průzkum sklepa" t="String" n="TestName" />
+      </Data>
       <Data n="22">
         <Key v="Průzkum sklepení chaty" t="String" n="TitleTextWindow" />
         <Key v="Specialista si počínal nad míru opatrně. A jeho snažení nese ovoce. Ve sklepě jsi našel starou bednu se zbrojní výbavou. Vybavení je sice na první pohled v dezolátním stavu, ale po rozebrání z něj bude spousta materiálu." t="String" n="TextWindow" />
@@ -640,6 +771,9 @@
       <Data n="31">
         <Key v="Vyprošťovací akce" t="String" n="TitleTextWindow" />
         <Key v="Nyní se můžeš pokusit specialistu vyprostit a tak ho snad i zachránit. Či ho rovvnou odepsat." t="String" n="TextWindow" />
+      </Data>
+      <Data n="34">
+        <Key v="Vyproštění specialisty" t="String" n="TestName" />
       </Data>
       <Data n="36">
         <Key v="Neúspěšná záchrana" t="String" n="TitleTextWindow" />
