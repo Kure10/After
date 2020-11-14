@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class EventButton : MonoBehaviour
 {
-    [SerializeField] Text text;
+    [SerializeField] Text buttonText;
+
+    [SerializeField] Text buttonDescription;
 
     [SerializeField] Button buttonControler;
 
-    public Text Text { get { return this.text; }}
+    
+
+    public Text ButtonDescription { get { return this.buttonDescription; } }
+
+    public Text Text { get { return this.buttonText; }}
 
     public Button ButtonControler { get { return this.buttonControler; } }
 

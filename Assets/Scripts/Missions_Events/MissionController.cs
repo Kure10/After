@@ -113,7 +113,7 @@ public class MissionController : MonoBehaviour
 
                 MissionReward(missionsInProcces[i]);
 
-                specialistControler.CharacterOnMissionReturn(procesingMission.CharactersOnMission);
+                specialistControler.CharacterOnMissionReturn(procesingMission.GetCharactersOnMission);
                 // ToDo Specialiste se obeví..
                 continue;
             }
@@ -128,7 +128,7 @@ public class MissionController : MonoBehaviour
         //player gets reward
         Debug.Log("Mission Finished -> " + mission.Name);
         
-        foreach (var item in mission.CharactersOnMission)
+        foreach (var item in mission.GetCharactersOnMission)
         {
             Debug.Log("name: " + item.GetBlueprint().FullName);
         }

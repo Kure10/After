@@ -51,7 +51,7 @@ public class uWindowSpecController : MonoBehaviour
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
         activeSpecWindows.Add(uWindowSpec);
-        uWindowSpec.SetAll(character.GetBlueprint());
+        uWindowSpec.SetAll(character);
     }
 
     public void Sort(int currentSortCategory)

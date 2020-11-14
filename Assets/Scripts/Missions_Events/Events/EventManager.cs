@@ -1,11 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ResolveMachine;
+using UnityEngine.Events;
 
 public class EventManager : MonoBehaviour
 {
     public List<StatsClass> allEvents = new List<StatsClass>();
 
+    internal ResolveMaster resolveMaster = new ResolveMaster();
+
+    void Awake()
+    {
+        EventXmlLoader xmlLoader = gameObject.GetComponent<EventXmlLoader>();
+
+        allEvents = xmlLoader.GetEventsFromXML();
+
+        //resolveMaster.ResolveAction
+        ////
+        //resolveMaster.ResolveCondition += OnResolveCondition; //když je podminka.
+        ////
+        //resolveMaster.ResolveAction += OnResolveCondition; // je neco oznacene jako chovani akce..
+    }
 
     public StatsClass ChoiseRandomEvent(int minDifficulty, int maxDifficulty, List<Terrain> occurringTerrains)
     {
@@ -27,5 +43,13 @@ public class EventManager : MonoBehaviour
 
         return statclass;
     }
+
+
+    //public bool OnResolveCondition(string dataNameFile, StatsClass element)
+    //{
+    //    Debug.Log("ahoj");
+
+    //    return true;
+    //}
 
 }

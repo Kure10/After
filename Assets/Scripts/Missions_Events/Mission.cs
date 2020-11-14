@@ -103,7 +103,7 @@ public class Mission
     // public List<EventBlueprint> GetEventsInMission { get { return this.eventsInMission; } }
 
     public List<EventContent> GetEventsContent { get { return this.eventsContents; } }
-    public List<Character> CharactersOnMission { get { return this.charactersOnMission; } }
+    public List<Character> GetCharactersOnMission { get { return this.charactersOnMission; } }
 
     public bool Repeate { get { return this.repeat; } set { this.repeat = value; } }
 

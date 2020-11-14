@@ -125,7 +125,7 @@ public class WindowMissionController : MonoBehaviour
 
             var go = Instantiate(prefab, holder.transform);
             var uWindow = go.GetComponent<uWindowSpecialist>();
-            uWindow.SetAll(spec);
+            uWindow.SetAll(character);
 
             var but = go.GetComponent<Button>();
 
@@ -143,12 +143,12 @@ public class WindowMissionController : MonoBehaviour
 
                 charactersPreSelectedToMission.Add(character);
                 spec.isPreSelectedOnMission = true;
-                uWindow.SetSuperimposePanel(true,"Specialista je už vybran.");
+                uWindow.ActivateCoverPanel("Specialista je už vybran.");
                 but.onClick.AddListener(() => PreSelectSpecialistToMission(character, uWindow));
             }
             else if (spec.IsOnMission)
             {
-                uWindow.SetSuperimposePanel(true, "Specialista je na misi.");
+                uWindow.ActivateCoverPanel("Specialista je na misi.");
                 // Some Action Todo
             }
             else
@@ -195,8 +195,8 @@ public class WindowMissionController : MonoBehaviour
             this.SiblingsObject.Add(specGameObject);
 
             var uWindow = specGameObject.GetComponent<uWindowSpecialist>();
-            uWindow.SetAll(readySpec);
-            uWindow.SetSuperimposePanel(false);
+            uWindow.SetAll(character);
+            uWindow.DeactivateCoverPanel();
 
             Button but = specGameObject.GetComponent<Button>();
             but.onClick.RemoveAllListeners();
@@ -329,7 +329,7 @@ public class WindowMissionController : MonoBehaviour
         Debug.Log("isInProgress: " + isInProgress);
         if(isInProgress)
         {
-            foreach (Character character in mission.CharactersOnMission)
+            foreach (Character character in mission.GetCharactersOnMission)
             {
                 var go = Instantiate(specPrefab, holder.transform);
                 var button = go.GetComponent<Button>();
@@ -337,8 +337,8 @@ public class WindowMissionController : MonoBehaviour
                 button.onClick.RemoveAllListeners();
 
                 var uWindow = go.GetComponent<uWindowSpecialist>();
-                uWindow.SetAll(character.GetBlueprint());
-                uWindow.SetSuperimposePanel(false);
+                uWindow.SetAll(character);
+                uWindow.DeactivateCoverPanel();
 
                 charactersReadyToMission.Add(character);
             }

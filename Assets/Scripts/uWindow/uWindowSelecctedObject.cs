@@ -153,10 +153,10 @@ public class uWindowSelecctedObject : MonoBehaviour
         // set Spec working in building in future.
         IsBuildingSelected();
         var workers = building.getWorkers();
-        var charsInBuilding = new List<Specialists>();
-        foreach (var character in workers)
+        var charsInBuilding = new List<Character>();
+        foreach (Worker character in workers)
         {
-            charsInBuilding.Add(character.character.GetBlueprint());
+            charsInBuilding.Add(character.character);
         }
         SetSpecialist(charsInBuilding); 
     }
@@ -193,7 +193,7 @@ public class uWindowSelecctedObject : MonoBehaviour
                 return "Empty";
         }
     }
-    public void SetSpecialist(List<Specialists> specOnBuilding)
+    public void SetSpecialist(List<Character> specOnBuilding)
     {
         foreach (var item in specInfoPlaceHolders.ToArray())
         {
@@ -202,12 +202,12 @@ public class uWindowSelecctedObject : MonoBehaviour
 
         specInfoPlaceHolders.Clear();
         
-        foreach (Specialists spec in specOnBuilding)
+        foreach (Character character in specOnBuilding)
         {
             GameObject specView = Instantiate(specialistPreafab, specialistHolder.transform);
             var window = specView.GetComponent<uWindowSpecialist>();
             if (window != null)
-                window.SetAll(spec);
+                window.SetAll(character);
 
             specInfoPlaceHolders.Add(specView);
         }

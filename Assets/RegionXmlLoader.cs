@@ -18,13 +18,15 @@ public class RegionXmlLoader : MonoBehaviour
     private List<Region> LoadRegionsFromXml()
     {
         List<StatsClass> XMLLoadedRegions = new List<StatsClass>();
-      //  List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
+        //  List<StatsClass> XMLAdditionalMissionsInformation = new List<StatsClass>();
         List<Region> allRegions = new List<Region>();
 
         string path = "Assets/Data/XML";
         string fileName = "MapZone";
         //string fileNameCZ = "Missions-CZ";
         ResolveMaster resolveMaster = new ResolveMaster();
+
+     
 
         Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
         resolveMaster.AddDataNode(fileName, firstData);
@@ -67,6 +69,8 @@ public class RegionXmlLoader : MonoBehaviour
 
         return allRegions;
     }
+
+
 
     private List<Region> DeSerializedRegions(List<StatsClass> firstStatClass)
     {

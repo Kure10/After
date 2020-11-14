@@ -17,11 +17,11 @@ public class EventPanelEditor : Editor
         if (eventPanel.FontSize > 65)
             eventPanel.FontSize = 65;
 
-        eventPanel.TitleField.fontSize = eventPanel.NameFontSize;
-        eventPanel.DescriptionTextField.fontSize = eventPanel.FontSize;
+      //  eventPanel.TitleField.fontSize = eventPanel.NameFontSize;
+      //  eventPanel.DescriptionTextField.fontSize = eventPanel.FontSize;
 
-        eventPanel.DescriptionTextField.text = eventPanel.Description;
-        eventPanel.TitleField.text = eventPanel.EventName;
+       // eventPanel.DescriptionTextField.text = eventPanel.Description;
+      //  eventPanel.TitleField.text = eventPanel.EventName;
 
     }
 

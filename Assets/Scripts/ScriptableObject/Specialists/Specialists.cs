@@ -18,10 +18,10 @@ public class Specialists
     [SerializeField] private Color backgroundColor;
     [Header("Main attributes")]
     [Range(0, 20)] [SerializeField] private int level = 0;
-    [Range(0,10)] [SerializeField] public int vojak = 0;
-    [Range(0, 10)] [SerializeField] public int vedec = 0;
-    [Range(0, 10)] [SerializeField] public int technik = 0;
-    [Range(0, 10)] [SerializeField] public int social = 0;
+    [Range(0, 10)] [SerializeField] private int vojak = 0;
+    [Range(0, 10)] [SerializeField] private int vedec = 0;
+    [Range(0, 10)] [SerializeField] private int technik = 0;
+    [Range(0, 10)] [SerializeField] private int social = 0;
     [SerializeField] private int karma = 0;
 
     [Header("Health and Stamina")]
@@ -50,6 +50,8 @@ public class Specialists
     public int Tel { get { return technik; } set { this.technik = value; } }
     public int Sol { get { return social; } set { this.social = value; } }
     public int Kar { get { return karma; } set { this.karma = value; } }
+
+    public int Stamina { get { return currentStamina; } set { this.currentStamina = value; } }
 
     public bool IsDefault { get { return this.isDefault; } set { this.isDefault = value; } }
     //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }

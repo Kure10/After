@@ -89,4 +89,33 @@ public class Character : MonoBehaviour, IResourceHolder
         Amount -= amount;
         return amount; //TODO vrat skutecny pocet ziskanych resources
     }
+
+    public void ModifiCharacterAtribute(string atribute, int value)
+    {
+        
+        switch (atribute)
+        {
+            case "Stamina":
+                this.blueprint.Stamina += value;
+                break;
+            case "Mil":
+                this.blueprint.Mil += value;
+                break;
+            case "Sol":
+                this.blueprint.Sol += value;
+                break;
+            case "Tel":
+                this.blueprint.Tel += value;
+                break;
+            case "Kar":
+                this.blueprint.Kar += value;
+                break;
+            case "Scl":
+                this.blueprint.Scl += value;
+                break;
+            default:
+                Debug.LogError("Character Error in: " + this.name);
+                break;
+        }
+    }
 }

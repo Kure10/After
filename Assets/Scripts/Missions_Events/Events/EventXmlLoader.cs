@@ -20,7 +20,7 @@ public class EventXmlLoader : MonoBehaviour
         List<StatsClass> XMLAdditionalEventsInformation = new List<StatsClass>();
         // List<EventBlueprint> allEvents = new List<EventBlueprint>();
 
-        var creator = GetComponent<EventCreater>();
+        var manager = GetComponent<EventManager>();
 
         string path = "Assets/Data/XML";
         string fileName = "Events";
@@ -29,15 +29,18 @@ public class EventXmlLoader : MonoBehaviour
         // ResolveMaster resolveMaster = new ResolveMaster();
 
         Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
-        creator.resolveMaster.AddDataNode(fileName, firstData);
+        manager.resolveMaster.AddDataNode(fileName, firstData);
 
         Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
-        creator.resolveMaster.ModifyDataNode(fileName, secondData);
+        manager.resolveMaster.ModifyDataNode(fileName, secondData);
 
 
-        List<StatsClass> allMyEvents = creator.resolveMaster.GetDataKeys("Events");
+
+        List<StatsClass> allMyEvents = manager.resolveMaster.GetDataKeys("Events");
 
         return allMyEvents;
     }
+
+
 
 }

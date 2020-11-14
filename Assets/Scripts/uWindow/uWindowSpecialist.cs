@@ -26,9 +26,13 @@ public class uWindowSpecialist : MonoBehaviour
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
 
+    [Header("Button")]
+    [SerializeField] Button mainButton;
+
     [Header("State")]
     [SerializeField] GameObject selectedPanel;
     [SerializeField] Text infoText;
+
 
     /* For now buttons are not used.. waiting for functionality and implementation.....*/
     [Header("Buttons")]
@@ -56,6 +60,8 @@ public class uWindowSpecialist : MonoBehaviour
     public float GetHealth { get => int.Parse(this.characterLevel.text); }
 
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
+
+    public Button GetMainButton { get { return this.mainButton; } }
 
     #endregion
 
@@ -89,16 +95,24 @@ public class uWindowSpecialist : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void SetAll(Specialists spec)
+    public void SetAll(Character character)
     {
+        var spec = character.GetBlueprint(); // Todo Je to spatne. musi se brat hodnoty z charakteru
+
         SetImage(spec);
         CalcHealtandStamina(spec);
         SetStatsPanel(spec);
     }
 
-    public void SetSuperimposePanel(bool setActive, string text = " ")
+    public void ActivateCoverPanel(string text = " ")
     {
-        this.selectedPanel.SetActive(setActive);
+        this.selectedPanel.SetActive(true);
+        this.infoText.text = text;
+    }
+
+    public void DeactivateCoverPanel(string text = " ")
+    {
+        this.selectedPanel.SetActive(false);
         this.infoText.text = text;
     }
 
@@ -106,10 +120,10 @@ public class uWindowSpecialist : MonoBehaviour
     {
         bool state = this.selectedPanel.activeSelf;
 
-        if(state == true)
-            SetSuperimposePanel(false, " ");
+        if (state == true)
+            DeactivateCoverPanel();
         else
-            SetSuperimposePanel(true, "Specialista byl je vybran");
+            ActivateCoverPanel("Specialista byl je vybran");
     }
 
 
