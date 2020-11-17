@@ -9,7 +9,7 @@ namespace Buildings
     public class Warehouse : Building, IWorkSource, IResourceHolder
     {
         private List<Worker> workers;
-
+        public static int MaxMaterials = 16;
         public Warehouse(BuildingBlueprint blueprint, GameObject prefab) : base(blueprint, prefab)
         {
             workers = new List<Worker>();
@@ -24,7 +24,14 @@ namespace Buildings
                     switch (worker.state)
                     {
                         case WorkerState.init:
-                            
+
+                            if (resources.Count >= MaxMaterials)
+                            {
+                                worker.state = WorkerState.wait;
+                                Debug.Log("Warehouse is full");
+                                break;
+                                
+                            }
                             var charPosition = Geometry.GridFromPoint(worker.character.transform.position);
                         
                             var filter = new ResourceManager.ResourceAmount();
@@ -93,6 +100,7 @@ namespace Buildings
             {
                 Debug.Log("Warehouse - worker registered");
                 Unregister(character);
+                if (resources.Count >= Warehouse.MaxMaterials) return false;
                 var worker = new Worker();
                 worker.character = character;
                 worker.state = WorkerState.init;
