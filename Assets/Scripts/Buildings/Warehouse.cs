@@ -24,7 +24,14 @@ namespace Buildings
                     switch (worker.state)
                     {
                         case WorkerState.init:
-                            
+
+                            if (resources.Count >= MaxMaterials)
+                            {
+                                worker.state = WorkerState.wait;
+                                Debug.Log("Warehouse is full");
+                                break;
+                                
+                            }
                             var charPosition = Geometry.GridFromPoint(worker.character.transform.position);
                         
                             var filter = new ResourceManager.ResourceAmount();
