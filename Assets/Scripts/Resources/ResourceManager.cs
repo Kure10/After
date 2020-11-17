@@ -182,8 +182,26 @@ public class ResourceManager : MonoBehaviour
     {
         var val = new ResourceAmount();
         val.Food = value;
-
-        SpawnResource(val, defaultSpawnPoint);
+        if (value < 0)
+        {
+            var allFoods = resourceHolders.Where(r => r.Amount.Food > 0);
+            foreach (var f in allFoods.ToList())
+            {
+                val.Food = -value;
+                if (value == 0) break;
+                if (f.Amount.Food < val.Food)
+                {
+                    val.Food = f.Amount.Food;
+                }
+                value += val.Food;
+                f.Remove(val);
+            }
+            ResourceAmountChanged();
+        }
+        else
+        {
+            SpawnResource(val, defaultSpawnPoint);
+        }
     }
     public void IncVojenskyMaterialy(int value)
     {
