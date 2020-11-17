@@ -9,8 +9,14 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private Command command;
     private Specialists blueprint;
+    private CurrentStats curentStats;
     private IWorkSource source;
     public string State; //just pure text for now
+
+
+    public bool PassedTheTest = false;
+
+    public CurrentStats Stats { get { return this.curentStats; } }
 
     public Character()
     {
@@ -20,6 +26,15 @@ public class Character : MonoBehaviour, IResourceHolder
     public void SetBlueprint(Specialists specialist)
     {
         blueprint = specialist;
+
+        curentStats = new CurrentStats();
+        curentStats.level = specialist.Level;
+        curentStats.military = specialist.Mil;
+        curentStats.science = specialist.Scl;
+        curentStats.social = specialist.Sol;
+        curentStats.tech = specialist.Tel;
+        curentStats.karma = specialist.Kar;
+
     }
 
     public Specialists GetBlueprint()
