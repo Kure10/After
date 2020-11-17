@@ -29,7 +29,7 @@ public class EventManager : MonoBehaviour
 
         // ted vybíram jeden porad..
 
-        long id = 20203890660776;
+        long id = 20208804436884;
 
         StatsClass statclass = new StatsClass();
 

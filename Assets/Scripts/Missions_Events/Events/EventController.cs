@@ -16,7 +16,11 @@ public class EventController : MonoBehaviour
 
     private ResourceSpriteLoader spriteLoader;
 
-    List<Character> TestingCharacters = new List<Character>();
+    List<Character> CharactersSelectedForTesting = new List<Character>();
+
+
+    private bool finalTestResult = false;
+    private TestCase tCase;
 
     private void Awake()
     {
@@ -42,6 +46,7 @@ public class EventController : MonoBehaviour
         StatsClass _event = eventManager.ChoiseRandomEvent(mission.DifficultyMin, mission.DifficultyMax, mission.GetEmergingTerrains);
 
         // nastavit obrazek..
+
         var text = _event.GetStrStat("EventPicture");
         Sprite sprite = spriteLoader.LoadEventSprite(text);
 
@@ -73,16 +78,18 @@ public class EventController : MonoBehaviour
         var title = item.Title;
         var number = item.GetIntStat("$T");
 
+      
+
        switch (number)
         {
             case 1:
                 var buttonText = item.GetStrStat("OptionType");
                 var buttonDescription = item.GetStrStat("Option");
-                eventPanel.CreateButon(() => PressEventButton(int.Parse(title), mission), buttonText, buttonDescription);
+                eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), buttonText, buttonDescription);
                 return mission;
             case 2:
-                this.eventPanel.IsBattleOnline = true;
-                eventPanel.CreateButon(() => PressEventButton(int.Parse(title), mission), "Won Battle.." + title,"Tady nic neni proste jsi vyhral..");
+               
+                eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), "Won Battle.." + title,"Tady nic neni proste jsi vyhral..");
                 this.eventPanel.TestingFight(item.GetStrStat("BattleType"), item.GetIntStat("BattleDiff"), item.GetIntStat("MinEnemyNumber"), item.GetIntStat("MonsterDiffMax"));
                 return mission;
             case 3:
@@ -90,14 +97,9 @@ public class EventController : MonoBehaviour
                 return mission;
             case 4:
 
+                tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
 
-
-                this.eventPanel.testingTest.SetActive(false);
-                this.eventPanel.IsBattleOnline = false;
-
-                eventPanel.CreateButon(() => PressEventButton(int.Parse(title), mission), "Start Test.." + title, "Zahajit test.. ..");
-
-                eventPanel.EnableCharacterContent();
+                eventPanel.SetState = EventPanel.PanelStates.Test;
 
                 foreach (Character character in mission.GetCharactersOnMission)
                 {
@@ -109,35 +111,19 @@ public class EventController : MonoBehaviour
                     uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
                 }
 
-
-                Test test = new Test(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
+                 tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
                     item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
                     item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"));
-                
 
-                item.GetStrStat("TestTarget");
+                eventPanel.SetupTestingState(tCase);
 
-                item.GetStrStat("TestName");
-
-                item.GetStrStat("KindTest");
-
-                item.GetStrStat("TestType");
-
-                item.GetStrStat("TestAtribute");
+                eventPanel.GetContinueButton.onClick.RemoveAllListeners();
+                eventPanel.GetContinueButton.onClick.AddListener( ()=> ContinueButton());
 
 
+                // cerna magie vratit se k tomuto
+                eventManager.resolveMaster.ResolveCondition += OnAction;
 
-
-
-                item.GetIntStat("TestDiff");
-
-                item.GetIntStat("TestRateMod");
-
-                item.GetIntStat("KarmaInfluence");
-
-                item.GetStrStat("KarmaDescription");
-
-                this.eventPanel.TestingTest();
 
                 return mission;
             case 5:
@@ -160,6 +146,8 @@ public class EventController : MonoBehaviour
                 }
                 else if (item.GetBoolStat("AddTextWindow"))
                 {
+                    eventPanel.SetState = EventPanel.PanelStates.Selection;
+
                     this.eventPanel.TitleField.text = item.GetStrStat("TitleTextWindow");
                     this.eventPanel.DescriptionTextField.text = item.GetStrStat("TextWindow");
                 }
@@ -205,21 +193,39 @@ public class EventController : MonoBehaviour
         }
     }
 
-    private void PressEventButton(int i, Mission mission)
+    private void SelectionButton(int numberOfBrachToResolve, Mission mission)
     {
         eventPanel.DestroyAllButtons();
 
-        slave.StartResolve(i);
+        slave.StartResolve(numberOfBrachToResolve);
         var output = slave.Resolve();
 
         LoadEventSteps(output, mission);
+    }
+
+    private void ContinueButton()
+    {
+        int selectedCharacters = CharactersSelectedForTesting.Count;
+
+        if (selectedCharacters >= tCase.GetMinCharParticipation && selectedCharacters <= tCase.GetMaxCharParticipation)
+        {
+            finalTestResult = StartTest();
+        }
+        else
+        {
+            // ToDo
+            // vyber spravny pocet charakteru
+        }
+
+        Debug.Log("result of Test " +  finalTestResult);
     }
 
     #region HelpingMethods
 
     private void ModifyAtribute (string type , List<Character> targets , string atribute , int value)
     {
-        // Todo
+        // Todo 
+       
 
         if(type == "ChangeTypeDirect")
         {
@@ -267,55 +273,53 @@ public class EventController : MonoBehaviour
 
     private void SelectCharacterForTest(Character character, uWindowSpecialist uWindow)
     {
-        if (TestingCharacters.Contains(character))
+        if (CharactersSelectedForTesting.Contains(character))
         {
-            TestingCharacters.Remove(character);
+            CharactersSelectedForTesting.Remove(character);
             uWindow.DeactivateCoverPanel();
         }
         else
         {
-            TestingCharacters.Add(character);
+            CharactersSelectedForTesting.Add(character);
             uWindow.ActivateCoverPanel("Specialista je vybran");
         }
     }
 
     #endregion
 
-    public class Test
+    public class TestCase
     {
-        // zeptat se nefa jak se vyhodnocuje uspech atd.. 
-        // jak ma vypadat gui
+        #region Fields
+        private string testName; 
 
-
-        public string testName; // Co to jako je ?? pro hrace ? jestli jo do CZ musi mit preklad.. // musi byt v EventCz
-
-
-        public string testedAtribute;  // muže byt i vic..
-
-        // -------------
+        /*  Testing atributes */
+        private bool isTestingLevel;
+        private bool isTestingSocial;
+        private bool isTestingTechnical;
+        private bool isTestingScience;
+        private bool isTestingMilitary;
 
         private int testDiff;
-
         private int testRateMod;
 
-        private bool karmaInfluence;
+        private bool karmaInfluence; // ToDO Karma is not finish yet
 
         //public string karmaDescription;
 
         private int minimalCharacterParticipation;
-
         private int maximalCharacterParticipation;
+        TestType testType;
+        ClassTest classTest;
+        TestingSubjects subject;
 
-        TestType testType; // Potrebuji vycet vsech moznosti anglicky co me chodi  v XML
+        #endregion
+        // karmaDescription , Todo
+        #region Constructor 
 
-        ClassTest classTest; // to same..
-
-        TestingSubjects subject; // to same..
-
-        public Test(string _testTarget , string _testName , string _kindTest, string _testType ,
-            string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription, int _min , int _max)
+        public TestCase(string _testTarget, string _testName, string _kindTest, string _testType,
+            string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription, int _min, int _max)
         {
-            testType = (TestType) Enum.Parse(typeof(TestType), _testType, true);
+            testType = (TestType)Enum.Parse(typeof(TestType), _testType, true);
             minimalCharacterParticipation = _min;
             maximalCharacterParticipation = _max;
             karmaInfluence = Convert.ToBoolean(_karmaInfluence);
@@ -323,8 +327,12 @@ public class EventController : MonoBehaviour
             testDiff = _testDiff;
             classTest = (ClassTest)Enum.Parse(typeof(ClassTest), _kindTest, true);
             subject = (TestingSubjects)Enum.Parse(typeof(TestingSubjects), _testTarget, true);
+            ChooseTestingSkills(_testAtribute);
+            testName = _testName;
         }
 
+        #endregion
+        #region Properities
         public int GetMaxCharParticipation { get { return this.maximalCharacterParticipation; } }
         public int GetMinCharParticipation { get { return this.minimalCharacterParticipation; } }
         public int GetRateMod { get { return this.testRateMod; } }
@@ -333,29 +341,167 @@ public class EventController : MonoBehaviour
         public TestType GetType { get { return this.testType; } }
         public ClassTest GetClass { get { return this.classTest; } }
         public TestingSubjects GetTestingSubjects { get { return this.subject; } }
+        public string GetName { get { return this.testName; } }
+        public bool IsTestingLevel { get { return this.isTestingLevel; } }
+        public bool IsTestingMilitary { get { return this.isTestingMilitary; } }
+        public bool IsTestingSocial { get { return this.isTestingSocial; } }
+        public bool IsTestingScience { get { return this.isTestingScience; } }
+        public bool IsTestingTechnical { get { return this.isTestingTechnical; } }
 
+        public void ChooseTestingSkills (string _testAtribute)
+        {
+            isTestingLevel =  _testAtribute.Contains("LvL");
+            isTestingMilitary = _testAtribute.Contains("MiL");
+            isTestingScience = _testAtribute.Contains("ScL");
+            isTestingSocial = _testAtribute.Contains("SoL");
+            isTestingTechnical = _testAtribute.Contains("TeL");
+        }
+        #endregion
     }
 
-
+    #region Enums
     public enum TestType
     {
-        Angry,
+        Battle,
+        Comunication,
+        DiggBuild,
+        Gathering,
+        Hunting,
+        Leverage,
+        LockPicking,
+        Repair,
+        Research,
+        Scavenging,
+        Scouting,
+        SelectOnly,
         Sneaking,
-        Sad
     }
 
     public enum ClassTest
     {
-        Angry,
+        Together,
         Separately
     }
 
     public enum TestingSubjects
     {
-        Angry,
-        Separately
+        RangeNum,
+        SpecActive,
+        RangeNumRng,
+        DirectNum,
+        DirectNumRng,
+        AllGroup
     }
 
+    #endregion 
+
+
+
+    public bool StartTest()
+    {
+        bool finalResult;
+
+        if (tCase.GetClass == ClassTest.Separately)
+        {
+            foreach (Character character in CharactersSelectedForTesting)
+            {
+                int dices = CalculateAmountDices(character);
+               character.PassedTheTest = CalculateSuccess(dices);
+            }
+        }
+        else if (tCase.GetClass == ClassTest.Together)
+        {
+            int dices = 0;
+            bool colectiveResult;
+
+            foreach (Character character in CharactersSelectedForTesting)
+                dices += CalculateAmountDices(character);
+
+            colectiveResult = CalculateSuccess(dices);
+
+            foreach (Character character in CharactersSelectedForTesting)
+                character.PassedTheTest = colectiveResult;
+        }
+
+        // ToDo - podminka  Nastaveni priority je dulezitesi prohra || vyhra
+
+        if (true) // pokud alespon jeden prosel, prosli vsichni
+        {
+            finalResult = false;
+
+            foreach (Character character in CharactersSelectedForTesting)
+            {
+                if (character.PassedTheTest == true)
+                    finalResult = true;
+            }
+        }
+        else // pokud alespon jeden selhal , selhali vsichni..
+        {
+            finalResult = true;
+
+            foreach (Character character in CharactersSelectedForTesting)
+            {
+                if (character.PassedTheTest == false)
+                    finalResult = false;
+            }
+        }
+
+        return finalResult;
+    }
+
+    private int CalculateAmountDices(Character character)
+    {
+        int amountDices = 0;
+
+        if (tCase.IsTestingLevel)
+            amountDices += character.Stats.level;
+        if (tCase.IsTestingMilitary)
+            amountDices += character.Stats.military;
+        if (tCase.IsTestingTechnical)
+            amountDices += character.Stats.tech;
+        if (tCase.IsTestingSocial)
+            amountDices += character.Stats.social;
+        if (tCase.IsTestingScience)
+            amountDices += character.Stats.science;
+
+        return amountDices;
+    }
+
+    private bool CalculateSuccess(int amountDices)
+    {
+        bool result;
+        int numberOfIndividualSuccesses = 0;
+        int resultOfOneThrow = 0;
+
+        for (int j = 0; j < amountDices; j++)
+        {
+            resultOfOneThrow += UnityEngine.Random.Range(1, 7);
+
+            if (resultOfOneThrow % 6 == 0)
+            {
+                j--;
+                continue;
+            }
+
+            if (resultOfOneThrow >= tCase.GetDifficulty)
+                numberOfIndividualSuccesses++;
+
+            resultOfOneThrow = 0;
+        }
+
+        int totalNumberOfSuccesses = numberOfIndividualSuccesses / tCase.GetRateMod;
+
+        if (totalNumberOfSuccesses > 0)
+            return true;
+        else
+            return false;
+
+    }
+
+    public bool OnAction(string dataNameFile, StatsClass element)
+    {
+        return finalTestResult;
+    }
 }
 
 

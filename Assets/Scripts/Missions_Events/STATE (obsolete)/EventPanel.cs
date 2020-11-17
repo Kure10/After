@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static EventController;
 
 public class EventPanel : MonoBehaviour
 {
@@ -14,32 +15,62 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] private Image sprite;
 
-    [Header("Designer Settings")]
+    [Header("Sections Panels")]
 
-    [SerializeField] private string eventName;
+    [SerializeField] GameObject testInfoContent;
 
-    [SerializeField] private int nameFontSize = 22;
+    [SerializeField] GameObject selectionCharacterContent;
 
-    [SerializeField] private int fontSize = 25;
+    [SerializeField] GameObject panelButtonNormal;
 
-    [TextArea(5, 10)]
-    [SerializeField] private string description;
+    [SerializeField] GameObject panelButtonTesting;
 
+    [SerializeField] GameObject rateModandDiffGo;
 
-    [Header("Buttons")]
+    [Header("Active Buttons")]
 
-    [SerializeField] GameObject buttonPrefab;
+    [SerializeField] Button continueButton;
+
+    [Header("Information For Player")]
+
+    [SerializeField] Text eventSubTitle;
+
+    [SerializeField] Text diff;
+
+    [SerializeField] Text rateMod;
+
+    [SerializeField] GameObject karma;
+
+    [SerializeField] GameObject separatelyGo;
+
+    [SerializeField] GameObject togetherGo;
+
+    [SerializeField] GameObject[] testingCondition;
+
+    [Header("Holders for Buttons")]
 
     [SerializeField] GameObject buttonHolder;
 
-    [SerializeField] GameObject characterButton;
-
-    [Header("TestCharacers")]
-
     [SerializeField] GameObject characterContent;
 
+    [Header("Prefabs")]
+
+    [SerializeField] GameObject caseButtonPrefab;
+
+    [SerializeField] GameObject characterButtonPrefab;
+
+    [Header("Special - Buttons / Panels")]
+
+    [SerializeField] GameObject legendGo;
+
+
+
+    /* zatim nevim mozna z nebudu potrebovat*/
     List<GameObject> charactersInContent = new List<GameObject>();
 
+    #region Hovna
+    [Space]
+    [Space]
     [Header("Testing_")]
 
     // battle.....
@@ -59,80 +90,77 @@ public class EventPanel : MonoBehaviour
     // Test . . . . .. 
 
     [Space]
-
-    [SerializeField] Text TestTarget;
-
-    [SerializeField] Text TestName;
-
-    [SerializeField] Text KindTes;
-
-    [SerializeField] Text TestType;
-
-    [SerializeField] Text TestAtribute;
-
-    [SerializeField] Text SpecTestNumMin;
-
-    [SerializeField] Text SpecTestNumMax;
-
-    [SerializeField] Text TestDiff;
-
-    [SerializeField] Text TestrateMod;
-
-    [SerializeField] Text KarmaInfluence;
-
-    /*  ---------  */
+    [Space]
+    [Space]
     [Space]
 
     [SerializeField] public GameObject testingBattle;
 
     [SerializeField] public GameObject testingTest;
 
+    #endregion
+
     #region Properities
 
-    /* prop are for Editor..  */
-    public string EventName { get { return eventName; } }
-    public string Description { get { return description; } }
     public Text DescriptionTextField { get { return descriptionTextField; } }
     public Text TitleField { get { return this.titleField; } }
-    public int FontSize { get { return fontSize; } set { fontSize = value; } }
-    public int NameFontSize { get { return nameFontSize; } set { nameFontSize = value; } }
-
     public GameObject GetCharacterTransformContent { get { return this.characterContent; } }
-    public GameObject GetCharacterButtonPrefab { get { return this.characterButton; } }
+    public GameObject GetCharacterButtonPrefab { get { return this.characterButtonPrefab; } }
+    public Button GetContinueButton { get { return this.continueButton; } }
 
-    // public List<GameObject> GetCharactersInContent  { get { return this.charactersInContent; } }
+    #endregion
 
-    // for testing
-    public bool IsBattleOnline
+    public PanelStates SetState
     {
         set
         {
-            if (value)
+            if (PanelStates.Battle == value)
             {
-                testingBattle.SetActive(true);
-               // testingTest.SetActive(false);
+
+                // todo
+            }
+            else if (PanelStates.Test == value)
+            {
+                panelButtonNormal.SetActive(false);
+                testInfoContent.SetActive(true);
+                selectionCharacterContent.SetActive(true);
+                panelButtonTesting.SetActive(true);
+                rateModandDiffGo.SetActive(true);
             }
             else
             {
-                testingBattle.SetActive(false);
-               // testingTest.SetActive(true);
+                panelButtonNormal.SetActive(true);
+                testInfoContent.SetActive(false);
+                selectionCharacterContent.SetActive(false);
+                panelButtonTesting.SetActive(false);
+                rateModandDiffGo.SetActive(false);
             }
         }
     }
 
-    #endregion
+    public void SetupTestingState(TestCase tCase)
+    {
+        IsInvolvedKarma(tCase.GetKarmaInfluence);
+        IsTestedSeparately(tCase.GetClass);
+        diff.text = tCase.GetDifficulty.ToString();
+        rateMod.text = tCase.GetRateMod.ToString();
+        SetupConditionAtributes(tCase);
+        eventSubTitle.text = tCase.GetName;
+    }
+
+   
 
     public void SetupEventInfo(string _name, string _description, Sprite _sprite)
     {
-        this.eventName = _name;
-        this.description = _description;
+        //this.eventName = _name;
+        //this.description = _description;
         this.sprite.sprite = _sprite;
     }
 
 
     public void CreateButon(UnityAction evt, string text, string buttonDescription)
     {
-        var gameObjectButton = Instantiate(this.buttonPrefab, this.transform.position, Quaternion.identity);
+        var gameObjectButton = Instantiate(this.caseButtonPrefab, this.transform.position, Quaternion.identity);
         gameObjectButton.transform.SetParent(buttonHolder.transform);
 
         var eventButton = gameObjectButton.GetComponent<EventButton>();
@@ -150,61 +178,77 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void EnableCharacterContent()
-    {
-        this.characterContent.SetActive(true);
-    }
-
-    public void DisableCharacterContent()
-    {
-        this.characterContent.SetActive(false);
-    }
-
     public void AddCharacterToSelectionContent(GameObject gameObject)
     {
         charactersInContent.Add(gameObject);
     }
 
-
-
-
-
     public void TestingFight(string _battleType, int _BattleDif, int _MinEnemyNumber, int _MonsterDifMax)
     {
         this.battleType.text = "battle type: " + _battleType;
         this.BattleDif.text = "battleDif: " + _BattleDif;
-        this.MinEnemyNumber.text = "min enemy number: " +  _MinEnemyNumber;
-        this.MonsterDifMax.text ="monsterDif max: "  + _MonsterDifMax;
+        this.MinEnemyNumber.text = "min enemy number: " + _MinEnemyNumber;
+        this.MonsterDifMax.text = "monsterDif max: " + _MonsterDifMax;
 
     }
 
-    public void TestingMonster (string _MonsterID, int _BeastNumber)
+    public void TestingMonster(string _MonsterID, int _BeastNumber)
     {
         this.MonsterID.text = "monster ID: " + _MonsterID;
         this.BeastNumber.text = "beast number: " + _BeastNumber;
     }
 
-    public void TestingTest ()
+    public enum PanelStates
     {
-        this.TestTarget.text = "das";
-
-        this.TestName.text = "das";
-
-        this.KindTes.text = "das";
-
-        this.TestType.text = "das";
-
-        this.SpecTestNumMin.text = "das";
-
-        this.SpecTestNumMax.text = "das";
-
-        this.TestDiff.text = "das";
-
-        this.TestrateMod.text = "das";
-
-        this.KarmaInfluence.text = "das";
+        Battle,
+        Test,
+        Selection
     }
 
+    #region Private Methods
+    private void SetupConditionAtributes(TestCase tCase)
+    {
+        testingCondition[0].SetActive(tCase.IsTestingLevel);
+        testingCondition[1].SetActive(tCase.IsTestingMilitary);
+        testingCondition[2].SetActive(tCase.IsTestingScience);
+        testingCondition[3].SetActive(tCase.IsTestingSocial);
+        testingCondition[4].SetActive(tCase.IsTestingTechnical);
+    }
+    private void IsInvolvedKarma(bool value)
+    {
+        if (value == true)
+            karma.SetActive(true);
+        else
+            karma.SetActive(false);
+    }
+    private void IsTestedSeparately(ClassTest classTest)
+    {
+        if (classTest == ClassTest.Separately)
+        {
+            separatelyGo.SetActive(true);
+            togetherGo.SetActive(false);
+        }
+        else
+        {
+            separatelyGo.SetActive(false);
+            togetherGo.SetActive(true);
+        }
+    }
 
+    #endregion
+
+    #region Helping Methods
+
+    public void TurnOnLegend()
+    {
+        legendGo.SetActive(true);
+    }
+
+    public void TurnOffLegend()
+    {
+        legendGo.SetActive(false);
+    }
+
+    #endregion
 }
 
