@@ -1665,6 +1665,7 @@
         <Key v="3" t="Int32" n="TestRateMod" />
         <Key v="1" t="Int32" n="KarmaInfluence" />
         <Key v="- [KAR/10]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
+        <Key v="Success" t="String" n="ResultPriority" />
       </Data>
       <Data n="7">
         <Key v="5" t="Int32" n="$T" />
@@ -1729,6 +1730,7 @@
         <Key v="- [KAR/5]↑ = +/- nebezpečnost" t="String" n="KarmaDescription" />
         <Key v="3" t="Int32" n="TestDiff" />
         <Key v="MiL,LvL" t="String" n="TestAtribute" />
+        <Key v="Failure" t="String" n="ResultPriority" />
       </Data>
       <Data n="19">
         <Key v="5" t="Int32" n="$T" />
@@ -3255,7 +3257,7 @@
         <Key v="4" t="Int32" n="$T" />
         <Key v="2" t="Int32" n="TestRateMod" />
         <Key v="LockPicking" t="String" n="TestType" />
-        <Key v="Separately" t="String" n="KindTest" />
+        <Key v="Together" t="String" n="KindTest" />
         <Key v="DirectNum" t="String" n="TestTarget" />
         <Key v="1" t="Int32" n="SpecTestNum" />
         <Key v="3" t="Int32" n="TestDiff" />
@@ -4087,7 +4089,7 @@
         <Key v="4" t="Int32" n="$T" />
         <Key v="1" t="Decimal" n="TestRateMod" />
         <Key v="Scavenging" t="String" n="TestType" />
-        <Key v="Separately" t="String" n="KindTest" />
+        <Key v="Together" t="String" n="KindTest" />
         <Key v="DirectNum" t="String" n="TestTarget" />
         <Key v="MiL,TeL,LvL" t="String" n="TestAtribute" />
         <Key v="1" t="Int32" n="SpecTestNum" />
