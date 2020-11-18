@@ -33,6 +33,9 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] GameObject selectedPanel;
     [SerializeField] Text infoText;
 
+    [Header("Results")]
+    [SerializeField] GameObject success;
+    [SerializeField] GameObject failure;
 
     /* For now buttons are not used.. waiting for functionality and implementation.....*/
     [Header("Buttons")]
@@ -62,6 +65,21 @@ public class uWindowSpecialist : MonoBehaviour
     public Text SetCurrentActivity { set { currentActivity.text = value.text; } }
 
     public Button GetMainButton { get { return this.mainButton; } }
+
+    public bool IsResultSuccess 
+    { 
+        set
+        { 
+            this.success.SetActive(value);
+            this.failure.SetActive(!value);
+        } 
+    }
+
+    public void TurnOffResult()
+    {
+        this.success.SetActive(false);
+        this.failure.SetActive(false);
+    }
 
     #endregion
 

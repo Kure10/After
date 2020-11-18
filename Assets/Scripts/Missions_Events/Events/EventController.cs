@@ -50,12 +50,14 @@ public class EventController : MonoBehaviour
         var text = _event.GetStrStat("EventPicture");
         Sprite sprite = spriteLoader.LoadEventSprite(text);
 
-        eventPanel.SetupEventInfo(_event.GetStrStat("Name"), _event.GetStrStat("Description"), sprite);
+        eventPanel.SetImage(sprite);
 
         // Work with data..
         slave = eventManager.resolveMaster.AddDataSlave("Events", _event.Title);
         slave.StartResolve();
         Dictionary<string, List<StatsClass>> output = slave.Resolve();
+
+        AddCharactersPrefabFromMissionToEvent(mission);
 
         this.eventPanel.gameObject.SetActive(true);
 
@@ -67,6 +69,16 @@ public class EventController : MonoBehaviour
 
     private void LoadEventSteps(Dictionary<string, List<StatsClass>> output, Mission mission)
     {
+        // windowSpec nastavit na default..
+        foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+        {
+            uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+            Character character = characterInEvent.Value;
+
+            uWindow.TurnOffResult();
+        }
+
+        // Jedu pres vsechny slavy
         foreach (StatsClass item in output["Result"])
         {
             SetNextStepEvent(item,mission);
@@ -90,10 +102,10 @@ public class EventController : MonoBehaviour
             case 2:
                
                 eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), "Won Battle.." + title,"Tady nic neni proste jsi vyhral..");
-                this.eventPanel.TestingFight(item.GetStrStat("BattleType"), item.GetIntStat("BattleDiff"), item.GetIntStat("MinEnemyNumber"), item.GetIntStat("MonsterDiffMax"));
+               // this.eventPanel.TestingFight(item.GetStrStat("BattleType"), item.GetIntStat("BattleDiff"), item.GetIntStat("MinEnemyNumber"), item.GetIntStat("MonsterDiffMax"));
                 return mission;
             case 3:
-                this.eventPanel.TestingMonster(item.GetStrStat("Monster"), item.GetIntStat("BeastNumber"));
+              //  this.eventPanel.TestingMonster(item.GetStrStat("Monster"), item.GetIntStat("BeastNumber"));
                 return mission;
             case 4:
 
@@ -101,19 +113,17 @@ public class EventController : MonoBehaviour
 
                 eventPanel.SetState = EventPanel.PanelStates.Test;
 
-                foreach (Character character in mission.GetCharactersOnMission)
+                foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
                 {
-                    GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab, eventPanel.GetCharacterTransformContent.transform);
-                    uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
-                    uWindow.SetAll(character);
-                    eventPanel.AddCharacterToSelectionContent(go);
+                    uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
                     uWindow.GetMainButton.onClick.RemoveAllListeners();
+                    Character character = characterInEvent.Value;
                     uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
                 }
 
-                 tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
+                tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
                     item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
-                    item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"));
+                    item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"),item.GetStrStat("ResultPriority"));
 
                 eventPanel.SetupTestingState(tCase);
 
@@ -124,7 +134,7 @@ public class EventController : MonoBehaviour
                 eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), mission));
 
                 // cerna magie vratit se k tomuto
-                eventManager.resolveMaster.ResolveCondition += OnAction;
+                eventManager.resolveMaster.ResolveCondition += OncheckTest;
 
 
                 return mission;
@@ -150,12 +160,23 @@ public class EventController : MonoBehaviour
                 {
                     eventPanel.SetState = EventPanel.PanelStates.Selection;
 
+                    this.eventPanel.SelectionInfoText.text = $"Tvoji Speciaiste na misi";
                     this.eventPanel.TitleField.text = item.GetStrStat("TitleTextWindow");
                     this.eventPanel.DescriptionTextField.text = item.GetStrStat("TextWindow");
                 }
                 else if (item.GetBoolStat("AddPerk"))
                 {
+                    foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+                    {
+                        uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+                        Character character = characterInEvent.Value;
 
+                        if (character.PassedTheTest)
+                            uWindow.IsResultSuccess = true;
+                        else
+                            uWindow.IsResultSuccess = false;
+                        
+                    }
                 }
                 else if (item.GetBoolStat("AddSecAtr"))
                 {
@@ -186,6 +207,15 @@ public class EventController : MonoBehaviour
                 return mission;
             case 6:
 
+                foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+                {
+                    uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+                    uWindow.GetMainButton.onClick.RemoveAllListeners();
+                    Character character = characterInEvent.Value;
+                    CharactersSelectedForTesting.Remove(character);
+                    uWindow.DeactivateCoverPanel();
+                }
+
                 return mission;
             default:
                 Debug.LogWarning("Warning event was created with error: " + number + " : " + title);
@@ -213,6 +243,18 @@ public class EventController : MonoBehaviour
         LoadEventSteps(output, mission);
     }
 
+    private void AddCharactersPrefabFromMissionToEvent(Mission mission)
+    {
+        foreach (Character character in mission.GetCharactersOnMission)
+        {
+            GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab, eventPanel.GetCharacterTransformContent.transform);
+            uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
+            uWindow.SetAll(character);
+            eventPanel.AddCharacterToSelectionContent(go, character);
+            uWindow.GetMainButton.onClick.RemoveAllListeners();
+        }
+    }
+
     private void ContinueButton()
     {
         int selectedCharacters = CharactersSelectedForTesting.Count;
@@ -225,7 +267,13 @@ public class EventController : MonoBehaviour
         {
             // ToDo
             // vyber spravny pocet charakteru
+            // nejake hlaska
+            eventPanel.testingTMPinfo.text = "Vyber spravny pocet specialistu.... !!!!";
+            return;
         }
+
+        // ToDo
+        eventPanel.testingTMPinfo.text = this.finalTestResult.ToString();
 
         Debug.Log("result of Test " +  this.finalTestResult);
     }
@@ -311,6 +359,7 @@ public class EventController : MonoBehaviour
 
         private int testDiff;
         private int testRateMod;
+        private string priority;
 
         private bool karmaInfluence; // ToDO Karma is not finish yet
 
@@ -327,7 +376,8 @@ public class EventController : MonoBehaviour
         #region Constructor 
 
         public TestCase(string _testTarget, string _testName, string _kindTest, string _testType,
-            string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription, int _min, int _max)
+            string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription,
+            int _min, int _max, string _resultPriority)
         {
             testType = (TestType)Enum.Parse(typeof(TestType), _testType, true);
             minimalCharacterParticipation = _min;
@@ -339,6 +389,7 @@ public class EventController : MonoBehaviour
             subject = (TestingSubjects)Enum.Parse(typeof(TestingSubjects), _testTarget, true);
             ChooseTestingSkills(_testAtribute);
             testName = _testName;
+            priority = _resultPriority;
         }
 
         #endregion
@@ -357,6 +408,9 @@ public class EventController : MonoBehaviour
         public bool IsTestingSocial { get { return this.isTestingSocial; } }
         public bool IsTestingScience { get { return this.isTestingScience; } }
         public bool IsTestingTechnical { get { return this.isTestingTechnical; } }
+        public string GetPriority { get { return this.priority; } }
+
+
 
         public void ChooseTestingSkills (string _testAtribute)
         {
@@ -405,55 +459,65 @@ public class EventController : MonoBehaviour
 
     #endregion 
 
-
-
     public bool StartTest()
     {
         bool finalResult;
+        bool colectiveResult = false;
 
         if (tCase.GetClass == ClassTest.Separately)
         {
             foreach (Character character in CharactersSelectedForTesting)
             {
-                int dices = CalculateAmountDices(character);
+               int dices = CalculateAmountDices(character);
                character.PassedTheTest = CalculateSuccess(dices);
             }
         }
         else if (tCase.GetClass == ClassTest.Together)
         {
             int dices = 0;
-            bool colectiveResult;
 
             foreach (Character character in CharactersSelectedForTesting)
                 dices += CalculateAmountDices(character);
 
             colectiveResult = CalculateSuccess(dices);
 
+            // vsem se nastaví stejny vysledek
             foreach (Character character in CharactersSelectedForTesting)
                 character.PassedTheTest = colectiveResult;
         }
 
-        // ToDo - podminka  Nastaveni priority je dulezitesi prohra || vyhra
-
-        if (true) // pokud alespon jeden prosel, prosli vsichni
+        if (tCase.GetClass == ClassTest.Separately)
         {
-            finalResult = false;
+            bool everyBodySuccess = true;
+            bool everyBodyFailed = true;
 
             foreach (Character character in CharactersSelectedForTesting)
             {
-                if (character.PassedTheTest == true)
-                    finalResult = true;
+                // Zkouska jestli vsichni maji uspesny vysledek nebo nikdo neuspel.
+                if(character.PassedTheTest == true && everyBodySuccess)
+                    everyBodySuccess = false;
+               
+                if (character.PassedTheTest == false && everyBodyFailed)
+                    everyBodyFailed = false;
+                
             }
+
+            // vsichni uspeli nebo nikdo. Vsichni by meli mit stejny vysledek.
+            if(everyBodySuccess || everyBodyFailed)
+            {
+                finalResult = CharactersSelectedForTesting[0].PassedTheTest;
+                return finalResult;
+            }
+
+            // Pokud jsem tady. Skupina se sklada se clenu co uspeli a aji co neuspeli.
+            if(tCase.GetPriority == "Success") // Alespon jeden uspel. (Staci jeden character aby uspel na celkovy uspech)
+                finalResult = true;
+            else // Alespon jeden neuspel. (Staci jeden character aby neuspel na celkovy neuspech)
+                finalResult = false;
         }
-        else // pokud alespon jeden selhal , selhali vsichni..
+        else
         {
-            finalResult = true;
-
-            foreach (Character character in CharactersSelectedForTesting)
-            {
-                if (character.PassedTheTest == false)
-                    finalResult = false;
-            }
+            finalResult = colectiveResult;
         }
 
         return finalResult;
@@ -508,38 +572,17 @@ public class EventController : MonoBehaviour
 
     }
 
-    public bool OnAction(string dataNameFile, StatsClass element)
+    public bool OncheckTest(string dataNameFile, StatsClass element)
     {
-        bool priorityResult = false;
-
         var tmp = element.GetStrStat("Result");
 
-        if(tmp == "Success")
-        {
-            if (priorityResult)
-            {
-                // beru success
-                return this.finalTestResult;
-            }
-            else
-            {
-
-            }
-        }
+        if(tmp == "Success" && this.finalTestResult)
+            return true;
+        else if  (tmp == "Failure" && !this.finalTestResult)
+            return true;
         else
-        {
-            if (priorityResult)
-            {
-                // beru success
-                return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
+            return false;
 
-        return true; // nevim co tady bude .. Tady to bude komplikovane..
     }
 }
 

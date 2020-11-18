@@ -15,17 +15,15 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] private Image sprite;
 
-    [Header("Sections Panels")]
+    [Header("States Panels")]
 
     [SerializeField] GameObject testInfoContent;
 
     [SerializeField] GameObject selectionCharacterContent;
 
-    [SerializeField] GameObject panelButtonNormal;
+    [SerializeField] GameObject selectionInfoContent;
 
-    [SerializeField] GameObject panelButtonTesting;
-
-    [SerializeField] GameObject rateModandDiffGo;
+    [SerializeField] GameObject testButtonContent;
 
     [Header("Active Buttons")]
 
@@ -38,6 +36,8 @@ public class EventPanel : MonoBehaviour
     [SerializeField] Text diff;
 
     [SerializeField] Text rateMod;
+
+    [SerializeField] Text selectionInfoText;
 
     [SerializeField] GameObject karma;
 
@@ -64,50 +64,27 @@ public class EventPanel : MonoBehaviour
     [SerializeField] GameObject legendGo;
 
 
-    /* zatim nevim mozna z nebudu potrebovat*/
-    List<GameObject> charactersInContent = new List<GameObject>();
+    Dictionary<GameObject, Character> charactersInContent = new Dictionary<GameObject, Character>();
 
-    #region Hovna
     [Space]
     [Space]
     [Header("Testing_")]
 
     [SerializeField] public Button buttonForTMPProceed;
 
-    // battle.....
+    [SerializeField] public Text testingTMPinfo;
 
-    [SerializeField] Text battleType;
 
-    [SerializeField] Text BattleDif;
-
-    [SerializeField] Text MinEnemyNumber;
-
-    [SerializeField] Text MonsterDifMax;
-
-    [SerializeField] Text MonsterID;
-
-    [SerializeField] Text BeastNumber;
-
-    // Test . . . . .. 
-
-    [Space]
-    [Space]
-    [Space]
-    [Space]
-
-    [SerializeField] public GameObject testingBattle;
-
-    [SerializeField] public GameObject testingTest;
-
-    #endregion
 
     #region Properities
 
     public Text DescriptionTextField { get { return descriptionTextField; } }
     public Text TitleField { get { return this.titleField; } }
+    public Text SelectionInfoText { get { return this.selectionInfoText; } }
     public GameObject GetCharacterTransformContent { get { return this.characterContent; } }
     public GameObject GetCharacterButtonPrefab { get { return this.characterButtonPrefab; } }
     public Button GetContinueButton { get { return this.continueButton; } }
+    public Dictionary<GameObject, Character> GetCharactersOnEvent { get { return this.charactersInContent; } }
 
     #endregion
 
@@ -122,23 +99,23 @@ public class EventPanel : MonoBehaviour
             }
             else if (PanelStates.Test == value)
             {
-                panelButtonNormal.SetActive(false);
+               
                 testInfoContent.SetActive(true);
                 selectionCharacterContent.SetActive(true);
-                panelButtonTesting.SetActive(true);
-                rateModandDiffGo.SetActive(true);
+                selectionInfoContent.SetActive(false);
+                testButtonContent.SetActive(true);
             }
             else
             {
-                panelButtonNormal.SetActive(true);
+               
                 testInfoContent.SetActive(false);
-                selectionCharacterContent.SetActive(false);
-                panelButtonTesting.SetActive(false);
-                rateModandDiffGo.SetActive(false);
+                selectionCharacterContent.SetActive(true);
+                selectionInfoContent.SetActive(true);
+                testButtonContent.SetActive(false);
             }
         }
     }
-
+    
     public void SetupTestingState(TestCase tCase)
     {
         IsInvolvedKarma(tCase.GetKarmaInfluence);
@@ -147,17 +124,13 @@ public class EventPanel : MonoBehaviour
         rateMod.text = tCase.GetRateMod.ToString();
         SetupConditionAtributes(tCase);
         eventSubTitle.text = tCase.GetName;
+        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}.";
     }
 
-   
-
-    public void SetupEventInfo(string _name, string _description, Sprite _sprite)
+    public void SetImage(Sprite _sprite)
     {
-        //this.eventName = _name;
-        //this.description = _description;
         this.sprite.sprite = _sprite;
     }
-
 
     public void CreateButon(UnityAction evt, string text, string buttonDescription)
     {
@@ -179,25 +152,25 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void AddCharacterToSelectionContent(GameObject gameObject)
+    public void AddCharacterToSelectionContent(GameObject gameObject,Character character)
     {
-        charactersInContent.Add(gameObject);
+        charactersInContent.Add(gameObject,character);
     }
 
-    public void TestingFight(string _battleType, int _BattleDif, int _MinEnemyNumber, int _MonsterDifMax)
-    {
-        this.battleType.text = "battle type: " + _battleType;
-        this.BattleDif.text = "battleDif: " + _BattleDif;
-        this.MinEnemyNumber.text = "min enemy number: " + _MinEnemyNumber;
-        this.MonsterDifMax.text = "monsterDif max: " + _MonsterDifMax;
+    //public void TestingFight(string _battleType, int _BattleDif, int _MinEnemyNumber, int _MonsterDifMax)
+    //{
+    //    this.battleType.text = "battle type: " + _battleType;
+    //    this.BattleDif.text = "battleDif: " + _BattleDif;
+    //    this.MinEnemyNumber.text = "min enemy number: " + _MinEnemyNumber;
+    //    this.MonsterDifMax.text = "monsterDif max: " + _MonsterDifMax;
 
-    }
+    //}
 
-    public void TestingMonster(string _MonsterID, int _BeastNumber)
-    {
-        this.MonsterID.text = "monster ID: " + _MonsterID;
-        this.BeastNumber.text = "beast number: " + _BeastNumber;
-    }
+    //public void TestingMonster(string _MonsterID, int _BeastNumber)
+    //{
+    //    this.MonsterID.text = "monster ID: " + _MonsterID;
+    //    this.BeastNumber.text = "beast number: " + _BeastNumber;
+    //}
 
     public enum PanelStates
     {
