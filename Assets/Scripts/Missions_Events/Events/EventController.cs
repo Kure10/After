@@ -81,7 +81,7 @@ public class EventController : MonoBehaviour
       
 
        switch (number)
-        {
+       {
             case 1:
                 var buttonText = item.GetStrStat("OptionType");
                 var buttonDescription = item.GetStrStat("Option");
@@ -120,6 +120,8 @@ public class EventController : MonoBehaviour
                 eventPanel.GetContinueButton.onClick.RemoveAllListeners();
                 eventPanel.GetContinueButton.onClick.AddListener( ()=> ContinueButton());
 
+                eventPanel.buttonForTMPProceed.onClick.RemoveAllListeners();
+                eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), mission));
 
                 // cerna magie vratit se k tomuto
                 eventManager.resolveMaster.ResolveCondition += OnAction;
@@ -190,7 +192,15 @@ public class EventController : MonoBehaviour
                 return mission;
 
 
-        }
+       }
+    }
+
+    private void TMP_ProceedButton(int numberOfBrachToResolve, Mission mission)
+    {
+        slave.StartResolve(numberOfBrachToResolve);
+        var output = slave.Resolve();
+
+        LoadEventSteps(output, mission);
     }
 
     private void SelectionButton(int numberOfBrachToResolve, Mission mission)
@@ -209,7 +219,7 @@ public class EventController : MonoBehaviour
 
         if (selectedCharacters >= tCase.GetMinCharParticipation && selectedCharacters <= tCase.GetMaxCharParticipation)
         {
-            finalTestResult = StartTest();
+            this.finalTestResult = StartTest();
         }
         else
         {
@@ -217,7 +227,7 @@ public class EventController : MonoBehaviour
             // vyber spravny pocet charakteru
         }
 
-        Debug.Log("result of Test " +  finalTestResult);
+        Debug.Log("result of Test " +  this.finalTestResult);
     }
 
     #region HelpingMethods
@@ -500,7 +510,36 @@ public class EventController : MonoBehaviour
 
     public bool OnAction(string dataNameFile, StatsClass element)
     {
-        return finalTestResult;
+        bool priorityResult = false;
+
+        var tmp = element.GetStrStat("Result");
+
+        if(tmp == "Success")
+        {
+            if (priorityResult)
+            {
+                // beru success
+                return this.finalTestResult;
+            }
+            else
+            {
+
+            }
+        }
+        else
+        {
+            if (priorityResult)
+            {
+                // beru success
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true; // nevim co tady bude .. Tady to bude komplikovane..
     }
 }
 

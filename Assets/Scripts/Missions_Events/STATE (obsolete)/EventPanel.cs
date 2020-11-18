@@ -64,7 +64,6 @@ public class EventPanel : MonoBehaviour
     [SerializeField] GameObject legendGo;
 
 
-
     /* zatim nevim mozna z nebudu potrebovat*/
     List<GameObject> charactersInContent = new List<GameObject>();
 
@@ -72,6 +71,8 @@ public class EventPanel : MonoBehaviour
     [Space]
     [Space]
     [Header("Testing_")]
+
+    [SerializeField] public Button buttonForTMPProceed;
 
     // battle.....
 
