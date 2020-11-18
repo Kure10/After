@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1959168225210140447}
-  m_Layer: 0
-  m_Name: Barrel
+  m_Layer: 10
+  m_Name: Barrel_F_10_Palivo_mat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,6 +38,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1959168225210140447}
     m_Modifications:
+    - target: {fileID: 2290977050665695356, guid: 81ba91f42f295804d943530364822aad,
+        type: 3}
+      propertyPath: m_Name
+      value: Barrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290977050665695356, guid: 81ba91f42f295804d943530364822aad,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290977050665695356, guid: 81ba91f42f295804d943530364822aad,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2290977050666181724, guid: 81ba91f42f295804d943530364822aad,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -107,11 +122,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: 2290977050665695356, guid: 81ba91f42f295804d943530364822aad,
-        type: 3}
-      propertyPath: m_Name
-      value: Barrel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81ba91f42f295804d943530364822aad, type: 3}
