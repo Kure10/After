@@ -24,6 +24,7 @@ public class WindowMissionController : MonoBehaviour
 
     public MissionPanelState State { set { this.state = value; } }
 
+    public int AmountReadyCharactersToMission { get { return charactersReadyToMission.Count; } }
 
     private void Awake()
     {
@@ -374,6 +375,8 @@ public class WindowMissionController : MonoBehaviour
 
     private void DisableShowMissionPanel()
     {
+        if (uWindowSpecSelection.IsWindowActive) return;        
+        
         foreach (Character character in this.charactersReadyToMission)
         {
             character.GetBlueprint().isSelectedOnMission = false;
