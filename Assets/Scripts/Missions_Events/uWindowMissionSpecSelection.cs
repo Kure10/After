@@ -17,6 +17,8 @@ public class uWindowMissionSpecSelection : MonoBehaviour
 
     [SerializeField] Button back;
 
+    private bool isWindowActive = false;
+
 
     public GameObject SpecPrefab { get { return this.specPrefab; } }
 
@@ -26,7 +28,22 @@ public class uWindowMissionSpecSelection : MonoBehaviour
 
     public Button GetBackButton { get { return this.back; } }
 
+    public bool IsWindowActive { get { return this.isWindowActive; } }
+   
+
    // public string InfoText { get { return this.infoText.text; } set { this.infoText.text = value; } }
+
+    public void ActiveWindow()
+    {
+        this.gameObject.SetActive(true);
+        this.isWindowActive = true;
+    }
+
+    public void DisableWindow()
+    {
+        this.gameObject.SetActive(false);
+        this.isWindowActive = false;
+    }
 
     public void Close()
     {

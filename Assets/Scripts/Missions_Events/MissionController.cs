@@ -20,6 +20,8 @@ public class MissionController : MonoBehaviour
 
     [SerializeField] private EventController eventController;
 
+    [SerializeField] MissionCreater missionCreater;
+
     private TimeControl theTC;
     private PanelTime thePT;
     private MissionNotificationManager notificationMissionManager;
@@ -38,7 +40,10 @@ public class MissionController : MonoBehaviour
 
     public void StartMission (Mission missinToStart,RegionOperator regionOperator, uButtonAdditionalMission missionButton = null)
     {
-       
+        if (windowMissionController.uWindowSpecSelection.IsWindowActive) return;
+
+        missionCreater.AddEventsToMission(missinToStart);
+
         missinToStart.AddSpecialistToMission(this.windowMissionController.StartMission());
         this.windowMissionController.SetActivePanel(false);
 

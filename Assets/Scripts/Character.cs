@@ -14,6 +14,8 @@ public class Character : MonoBehaviour, IResourceHolder
     public string State; //just pure text for now
 
 
+    public int AmountDicesInLastTest = 0;
+    public int AmountSuccessDicesInLastTest = 0;
     public bool PassedTheTest = false;
 
     public CurrentStats Stats { get { return this.curentStats; } }
@@ -21,6 +23,11 @@ public class Character : MonoBehaviour, IResourceHolder
     public Character()
     {
         Amount = new ResourceManager.ResourceAmount();
+    }
+
+    public string GetName()
+    {
+        return blueprint.FullName;
     }
 
     public void SetBlueprint(Specialists specialist)

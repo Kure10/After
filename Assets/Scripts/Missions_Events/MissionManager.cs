@@ -62,7 +62,6 @@ public class MissionManager : MonoBehaviour
         else
         {
             theMC.windowMissionController.State = WindowMissionController.MissionPanelState.normal;
-            startMissionButton.onClick.AddListener(delegate () { SetAmountOfEvents(mission); });
             startMissionButton.onClick.AddListener(delegate () { theMC.StartMission(mission, regionOperator, missionButton); });
         }
 
@@ -114,12 +113,6 @@ public class MissionManager : MonoBehaviour
         }
 
         return null;
-    }
-
-    private void SetAmountOfEvents(Mission mission)
-    {
-        MissionCreater creator = GetComponent<MissionCreater>();
-        creator.AddEventsToMission(mission);
     }
 
 }

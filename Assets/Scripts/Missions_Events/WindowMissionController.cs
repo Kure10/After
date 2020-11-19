@@ -9,7 +9,7 @@ public class WindowMissionController : MonoBehaviour
 
     [SerializeField] uWindowMission uWindowShowMission;
 
-    [SerializeField] uWindowMissionSpecSelection uWindowSpecSelection;
+    [SerializeField] public uWindowMissionSpecSelection uWindowSpecSelection;
 
  
     private MissionPanelState state;
@@ -94,7 +94,7 @@ public class WindowMissionController : MonoBehaviour
     private void OpenSelectionPanel()
     {
         this.PrepairSelectionWindow(this.theSC.PassSpecToMissionSelection());
-        uWindowSpecSelection.gameObject.SetActive(true);
+        uWindowSpecSelection.ActiveWindow();
     }
 
     private void PrepairSelectionWindow(List<Character> characterList)
@@ -203,7 +203,7 @@ public class WindowMissionController : MonoBehaviour
             but.onClick.AddListener(OpenSelectionPanel);
         }
 
-        uWindowSpecSelection.gameObject.SetActive(false);
+        uWindowSpecSelection.DisableWindow();
 
         siblingsCount = this.SiblingsObject.Count;
 
@@ -244,7 +244,7 @@ public class WindowMissionController : MonoBehaviour
             character.GetBlueprint().isSelectedOnMission = true;
         }
 
-        uWindowSpecSelection.gameObject.SetActive(false);
+        uWindowSpecSelection.DisableWindow();
 
     }
 

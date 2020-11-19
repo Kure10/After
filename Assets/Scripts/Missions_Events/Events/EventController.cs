@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ResolveMachine;
 using System;
+using System.Text;
 
 public class EventController : MonoBehaviour
 {
@@ -116,8 +117,8 @@ public class EventController : MonoBehaviour
                 foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
                 {
                     uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
-                    uWindow.GetMainButton.onClick.RemoveAllListeners();
                     Character character = characterInEvent.Value;
+                    uWindow.GetMainButton.onClick.RemoveAllListeners();
                     uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
                 }
 
@@ -126,6 +127,7 @@ public class EventController : MonoBehaviour
                     item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"),item.GetStrStat("ResultPriority"));
 
                 eventPanel.SetupTestingState(tCase);
+                eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
 
                 eventPanel.GetContinueButton.onClick.RemoveAllListeners();
                 eventPanel.GetContinueButton.onClick.AddListener( ()=> ContinueButton());
@@ -175,7 +177,7 @@ public class EventController : MonoBehaviour
                             uWindow.IsResultSuccess = true;
                         else
                             uWindow.IsResultSuccess = false;
-                        
+
                     }
                 }
                 else if (item.GetBoolStat("AddSecAtr"))
@@ -214,6 +216,11 @@ public class EventController : MonoBehaviour
                     Character character = characterInEvent.Value;
                     CharactersSelectedForTesting.Remove(character);
                     uWindow.DeactivateCoverPanel();
+
+                    if (character.PassedTheTest)
+                        uWindow.IsResultSuccess = true;
+                    else
+                        uWindow.IsResultSuccess = false;
                 }
 
                 return mission;
@@ -272,8 +279,21 @@ public class EventController : MonoBehaviour
             return;
         }
 
-        // ToDo
-        eventPanel.testingTMPinfo.text = this.finalTestResult.ToString();
+        // ToDo jenom vypis pro testovani
+        StringBuilder sb = new StringBuilder();
+        sb.Clear();
+
+        foreach (Character item in CharactersSelectedForTesting)
+        {
+            int failure = item.AmountDicesInLastTest - item.AmountSuccessDicesInLastTest;
+            sb.Append(item.GetName() + " " + "měl kostek: " + item.AmountDicesInLastTest + " " +
+                "Z toho uspel: " + item.AmountSuccessDicesInLastTest + " neuspel: " + failure + ".");
+            sb.AppendLine();
+        }
+
+        sb.Append("uplny vysledek: " + this.finalTestResult.ToString());
+
+        eventPanel.testingTMPinfo.text = sb.ToString();
 
         Debug.Log("result of Test " +  this.finalTestResult);
     }
@@ -341,6 +361,9 @@ public class EventController : MonoBehaviour
             CharactersSelectedForTesting.Add(character);
             uWindow.ActivateCoverPanel("Specialista je vybran");
         }
+
+        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
+
     }
 
     #endregion
@@ -463,13 +486,17 @@ public class EventController : MonoBehaviour
     {
         bool finalResult;
         bool colectiveResult = false;
+        int successDices = 0;
 
         if (tCase.GetClass == ClassTest.Separately)
         {
             foreach (Character character in CharactersSelectedForTesting)
             {
-               int dices = CalculateAmountDices(character);
-               character.PassedTheTest = CalculateSuccess(dices);
+                
+                int dices = CalculateAmountDices(character);
+                character.PassedTheTest = CalculateSuccess(dices, out successDices);
+                character.AmountDicesInLastTest = dices;
+                character.AmountSuccessDicesInLastTest = successDices;
             }
         }
         else if (tCase.GetClass == ClassTest.Together)
@@ -479,11 +506,17 @@ public class EventController : MonoBehaviour
             foreach (Character character in CharactersSelectedForTesting)
                 dices += CalculateAmountDices(character);
 
-            colectiveResult = CalculateSuccess(dices);
+
+            colectiveResult = CalculateSuccess(dices, out successDices);
 
             // vsem se nastaví stejny vysledek
             foreach (Character character in CharactersSelectedForTesting)
+            {
                 character.PassedTheTest = colectiveResult;
+                character.AmountDicesInLastTest = dices;
+                character.AmountSuccessDicesInLastTest = successDices;
+            }
+                
         }
 
         if (tCase.GetClass == ClassTest.Separately)
@@ -541,10 +574,11 @@ public class EventController : MonoBehaviour
         return amountDices;
     }
 
-    private bool CalculateSuccess(int amountDices)
+    private bool CalculateSuccess(int amountDices , out int numberOfIndividualSuccesses)
     {
         bool result;
-        int numberOfIndividualSuccesses = 0;
+        int totalNumberOfSuccesses = 0;
+        numberOfIndividualSuccesses = 0;
         int resultOfOneThrow = 0;
 
         for (int j = 0; j < amountDices; j++)
@@ -563,7 +597,13 @@ public class EventController : MonoBehaviour
             resultOfOneThrow = 0;
         }
 
-        int totalNumberOfSuccesses = numberOfIndividualSuccesses / tCase.GetRateMod;
+        if(tCase.GetRateMod == 0)
+        {
+            Debug.LogError("Vole delis nulou ....");
+        }
+
+        totalNumberOfSuccesses = numberOfIndividualSuccesses / tCase.GetRateMod;
+
 
         if (totalNumberOfSuccesses > 0)
             return true;

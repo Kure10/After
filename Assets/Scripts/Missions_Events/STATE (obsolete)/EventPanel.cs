@@ -39,6 +39,8 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] Text selectionInfoText;
 
+    [SerializeField] Text amountCharacterSelectedText;
+
     [SerializeField] GameObject karma;
 
     [SerializeField] GameObject separatelyGo;
@@ -81,6 +83,7 @@ public class EventPanel : MonoBehaviour
     public Text DescriptionTextField { get { return descriptionTextField; } }
     public Text TitleField { get { return this.titleField; } }
     public Text SelectionInfoText { get { return this.selectionInfoText; } }
+    public Text AmountCharacterSelectedText { get { return this.amountCharacterSelectedText; } }
     public GameObject GetCharacterTransformContent { get { return this.characterContent; } }
     public GameObject GetCharacterButtonPrefab { get { return this.characterButtonPrefab; } }
     public Button GetContinueButton { get { return this.continueButton; } }
@@ -124,7 +127,7 @@ public class EventPanel : MonoBehaviour
         rateMod.text = tCase.GetRateMod.ToString();
         SetupConditionAtributes(tCase);
         eventSubTitle.text = tCase.GetName;
-        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}.";
+        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}."; 
     }
 
     public void SetImage(Sprite _sprite)
