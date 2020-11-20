@@ -242,7 +242,9 @@ public class Building : IWorkSource, IResourceHolder
 
     protected void MoveBack(Worker activeWorker)
     {
-        var buildingPosition = Geometry.GridFromPoint(this.prefab.transform.position);
+        int whichone = Workers.BinarySearch(activeWorker) + 1;
+        var buildingPosition = Geometry.GridFromPoint(GetPosition(whichone)); 
+        //var buildingPosition = Geometry.GridFromPoint(this.prefab.transform.position);
         var pathFromMatToBuilding = tileFactory.FindPath(
             Geometry.GridFromPoint(activeWorker.character.transform.position), buildingPosition);
         activeWorker.character.AddCommand(new Move(activeWorker.character.gameObject,
