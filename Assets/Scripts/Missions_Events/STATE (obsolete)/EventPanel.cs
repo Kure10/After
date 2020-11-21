@@ -102,7 +102,6 @@ public class EventPanel : MonoBehaviour
             }
             else if (PanelStates.Test == value)
             {
-               
                 testInfoContent.SetActive(true);
                 selectionCharacterContent.SetActive(true);
                 selectionInfoContent.SetActive(false);
@@ -159,21 +158,6 @@ public class EventPanel : MonoBehaviour
     {
         charactersInContent.Add(gameObject,character);
     }
-
-    //public void TestingFight(string _battleType, int _BattleDif, int _MinEnemyNumber, int _MonsterDifMax)
-    //{
-    //    this.battleType.text = "battle type: " + _battleType;
-    //    this.BattleDif.text = "battleDif: " + _BattleDif;
-    //    this.MinEnemyNumber.text = "min enemy number: " + _MinEnemyNumber;
-    //    this.MonsterDifMax.text = "monsterDif max: " + _MonsterDifMax;
-
-    //}
-
-    //public void TestingMonster(string _MonsterID, int _BeastNumber)
-    //{
-    //    this.MonsterID.text = "monster ID: " + _MonsterID;
-    //    this.BeastNumber.text = "beast number: " + _BeastNumber;
-    //}
 
     public enum PanelStates
     {

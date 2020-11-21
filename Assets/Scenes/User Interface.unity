@@ -2379,7 +2379,7 @@ PrefabInstance:
     - target: {fileID: 4504078426715387512, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 164.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4504078426715387512, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
@@ -4004,6 +4004,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7840780634565747235, guid: 16e9399128ada0f48a962c60c79583fe,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.2000427
+      objectReference: {fileID: 0}
     - target: {fileID: 7909378316575599015, guid: 16e9399128ada0f48a962c60c79583fe,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5162,6 +5167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventManager: {fileID: 699561102}
   eventPanel: {fileID: 487677411}
+  spriteLoader: {fileID: 1246727686}
 --- !u!1 &73410385
 GameObject:
   m_ObjectHideFlags: 0

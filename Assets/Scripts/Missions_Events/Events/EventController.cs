@@ -13,44 +13,26 @@ public class EventController : MonoBehaviour
 
     [SerializeField] EventPanel eventPanel;
 
+    [SerializeField] ResourceSpriteLoader spriteLoader;
+
+
     private ResolveSlave slave;
 
-    private ResourceSpriteLoader spriteLoader;
-
     List<Character> CharactersSelectedForTesting = new List<Character>();
-
 
     private bool finalTestResult = false;
     private TestCase tCase;
 
-    private void Awake()
-    {
-        spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
-    }
+    #region Public Methods
 
     public void EventTrigered(Mission mission)
     {
         // choise Random Event..
         StatsClass _event = eventManager.ChoiseRandomEvent(mission.DifficultyMin, mission.DifficultyMax, mission.GetEmergingTerrains);
 
-        // nastavit obrazek..
-
-        var text = _event.GetStrStat("EventPicture");
-        Sprite sprite = spriteLoader.LoadEventSprite(text);
-
+        // PreWarm Picture
+        Sprite sprite = spriteLoader.LoadEventSprite(_event.GetStrStat("EventPicture"));
         eventPanel.SetImage(sprite);
 
         // Work with data..
@@ -66,7 +48,9 @@ public class EventController : MonoBehaviour
 
     }
 
+    #endregion
 
+    #region Private Methods
 
     private void LoadEventSteps(Dictionary<string, List<StatsClass>> output, Mission mission)
     {
@@ -82,155 +66,229 @@ public class EventController : MonoBehaviour
         // Jedu pres vsechny slavy
         foreach (StatsClass item in output["Result"])
         {
-            SetNextStepEvent(item,mission);
+            SetNextStepEvent(item, mission);
         }
     }
+
 
     private Mission SetNextStepEvent(StatsClass item, Mission mission)
     {
         var title = item.Title;
         var number = item.GetIntStat("$T");
 
-      
-
-       switch (number)
-       {
+        switch (number)
+        {
             case 1:
-                var buttonText = item.GetStrStat("OptionType");
-                var buttonDescription = item.GetStrStat("Option");
-                eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), buttonText, buttonDescription);
+                ProcessOptions(mission, item, title);
                 return mission;
             case 2:
-               
-                eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), "Won Battle.." + title,"Tady nic neni proste jsi vyhral..");
-               // this.eventPanel.TestingFight(item.GetStrStat("BattleType"), item.GetIntStat("BattleDiff"), item.GetIntStat("MinEnemyNumber"), item.GetIntStat("MonsterDiffMax"));
+                ProcessFight(mission, item, title);
                 return mission;
             case 3:
-              //  this.eventPanel.TestingMonster(item.GetStrStat("Monster"), item.GetIntStat("BeastNumber"));
+                ProcessMonster(mission, item, title);
                 return mission;
             case 4:
-
-                tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
-
-                eventPanel.SetState = EventPanel.PanelStates.Test;
-
-                foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
-                {
-                    uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
-                    Character character = characterInEvent.Value;
-                    uWindow.GetMainButton.onClick.RemoveAllListeners();
-                    uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
-                }
-
-                tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
-                    item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
-                    item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"),item.GetStrStat("ResultPriority"));
-
-                eventPanel.SetupTestingState(tCase);
-                eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
-
-                eventPanel.GetContinueButton.onClick.RemoveAllListeners();
-                eventPanel.GetContinueButton.onClick.AddListener( ()=> ContinueButton());
-
-                eventPanel.buttonForTMPProceed.onClick.RemoveAllListeners();
-                eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), mission));
-
-                // cerna magie vratit se k tomuto
-                eventManager.resolveMaster.ResolveCondition += OncheckTest;
-
-
+                ProcessTest(mission, item, title);
                 return mission;
             case 5:
-
-                if (item.GetBoolStat("AddTimeChange"))
-                {
-                    string isDelayed = item.GetStrStat("TimeChange");
-                    int timeDelay = item.GetIntStat("TimeDelay");
-
-                    if(isDelayed == "Delay")
-                        mission.Distance += timeDelay;
-                    else
-                        mission.Distance -= timeDelay;
-
-                }
-                else if (item.GetBoolStat("AddEventEnd"))
-                {
-                    this.eventPanel.gameObject.SetActive(false);
-                    TimeControl.IsTimeBlocked = false;
-                }
-                else if (item.GetBoolStat("AddTextWindow"))
-                {
-                    eventPanel.SetState = EventPanel.PanelStates.Selection;
-
-                    this.eventPanel.SelectionInfoText.text = $"Tvoji Speciaiste na misi";
-                    this.eventPanel.TitleField.text = item.GetStrStat("TitleTextWindow");
-                    this.eventPanel.DescriptionTextField.text = item.GetStrStat("TextWindow");
-                }
-                else if (item.GetBoolStat("AddPerk"))
-                {
-                    foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
-                    {
-                        uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
-                        Character character = characterInEvent.Value;
-
-                        if (character.PassedTheTest)
-                            uWindow.IsResultSuccess = true;
-                        else
-                            uWindow.IsResultSuccess = false;
-
-                    }
-                }
-                else if (item.GetBoolStat("AddSecAtr"))
-                {
-                    // todo when type is "vyber rozsahem" bude chyba poresit..
-
-                    List<Character> afectedCharacters = SelectTarget(item.GetStrStat("SecAtrChangeTarg"), mission);
-
-                    ModifyAtribute(item.GetStrStat("SecAtrChangeType"), afectedCharacters, item.GetStrStat("SecAtr"), item.GetIntStat("SecAtrChange"));
-
-                }
-                else if (item.GetBoolStat("ChangeSource"))
-                {
-
-                }
-                else if (item.GetBoolStat("RngChange"))
-                {
-
-                }
-                else if (item.GetBoolStat("SpecDefSelect"))
-                {
-
-                }
-                else if (item.GetBoolStat("AddContainer"))
-                {
-
-                }
-
+                ProcessChange(mission, item, title);
                 return mission;
             case 6:
-
-                foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
-                {
-                    uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
-                    uWindow.GetMainButton.onClick.RemoveAllListeners();
-                    Character character = characterInEvent.Value;
-                    CharactersSelectedForTesting.Remove(character);
-                    uWindow.DeactivateCoverPanel();
-
-                    if (character.PassedTheTest)
-                        uWindow.IsResultSuccess = true;
-                    else
-                        uWindow.IsResultSuccess = false;
-                }
-
+                ProcessEvaluation(mission, item, title);
                 return mission;
             default:
                 Debug.LogWarning("Warning event was created with error: " + number + " : " + title);
                 return mission;
-
-
-       }
+        }
     }
+
+    private void ProcessOptions(Mission mission,StatsClass item, string title)
+    {
+        var buttonText = item.GetStrStat("OptionType");
+        var buttonDescription = item.GetStrStat("Option");
+        eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), buttonText, buttonDescription);
+    }
+
+    private void ProcessFight(Mission mission, StatsClass item, string title)
+    {
+        eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
+    }
+
+    private void ProcessMonster(Mission mission, StatsClass item, string title)
+    {
+        // Todo
+    }
+
+    private void ProcessTest(Mission mission, StatsClass item, string title)
+    {
+
+        tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
+
+        eventPanel.SetState = EventPanel.PanelStates.Test;
+
+        foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+        {
+            uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+            Character character = characterInEvent.Value;
+            uWindow.GetMainButton.onClick.RemoveAllListeners();
+            uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
+        }
+
+        tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
+            item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
+            item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"), item.GetStrStat("ResultPriority"));
+
+        eventPanel.SetupTestingState(tCase);
+        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
+
+        eventPanel.GetContinueButton.onClick.RemoveAllListeners();
+        eventPanel.GetContinueButton.onClick.AddListener(() => ContinueButton());
+
+        eventPanel.buttonForTMPProceed.onClick.RemoveAllListeners();
+        eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), mission));
+
+        // cerna magie vratit se k tomuto
+        eventManager.resolveMaster.ResolveCondition += OncheckTest;
+    }
+
+    private void ProcessChange(Mission mission, StatsClass item, string title)
+    {
+        if (item.GetBoolStat("AddTimeChange"))
+        {
+            string isDelayed = item.GetStrStat("TimeChange");
+            int timeDelay = item.GetIntStat("TimeDelay");
+
+            if (isDelayed == "Delay")
+                mission.Distance += timeDelay;
+            else
+                mission.Distance -= timeDelay;
+        }
+        else if (item.GetBoolStat("AddTextWindow"))
+        {
+            eventPanel.SetState = EventPanel.PanelStates.Selection;
+
+            this.eventPanel.SelectionInfoText.text = $"Tvoji Speciaiste na misi";
+            this.eventPanel.TitleField.text = item.GetStrStat("TitleTextWindow");
+            this.eventPanel.DescriptionTextField.text = item.GetStrStat("TextWindow");
+        }
+        else if (item.GetBoolStat("AddPerk"))
+        {
+
+        }
+        else if (item.GetBoolStat("AddSecAtr"))
+        {
+            // todo when type is "vyber rozsahem" bude chyba poresit..
+            List<Character> afectedCharacters = SelectTarget(item.GetStrStat("SecAtrChangeTarg"), mission);
+            ModifyAtribute(item.GetStrStat("SecAtrChangeType"), afectedCharacters, item.GetStrStat("SecAtr"), item.GetIntStat("SecAtrChange"));
+        }
+        else if (item.GetBoolStat("ChangeSource"))
+        {
+
+        }
+        else if (item.GetBoolStat("RngChange"))
+        {
+
+        }
+        else if (item.GetBoolStat("SpecDefSelect"))
+        {
+
+        }
+        else if (item.GetBoolStat("AddContainer"))
+        {
+
+        }
+        else if (item.GetBoolStat("AddEventEnd"))
+        {
+            finalTestResult = false;
+            CharactersSelectedForTesting.Clear();
+            this.eventPanel.gameObject.SetActive(false);
+            TimeControl.IsTimeBlocked = false;
+        }
+    }
+
+    private void ProcessEvaluation(Mission mission, StatsClass item, string title)
+    {
+        foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+        {
+            uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+            Character character = characterInEvent.Value;
+            CharactersSelectedForTesting.Remove(character);
+            uWindow.GetMainButton.onClick.RemoveAllListeners();
+            uWindow.DeactivateCoverPanel();
+
+            if (character.PassedTheTest)
+                uWindow.IsResultSuccess = true;
+            else
+                uWindow.IsResultSuccess = false;
+        }
+    }
+
+    private void AddCharactersPrefabFromMissionToEvent(Mission mission)
+    {
+        foreach (Character character in mission.GetCharactersOnMission)
+        {
+            GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab, eventPanel.GetCharacterTransformContent.transform);
+            uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
+            uWindow.SetAll(character);
+            eventPanel.AddCharacterToSelectionContent(go, character);
+            uWindow.GetMainButton.onClick.RemoveAllListeners();
+        }
+    }
+
+    #endregion
+
+    #region Helping Methods
+
+    private void ModifyAtribute (string type , List<Character> targets , string atribute , int value)
+    {
+        // Todo  musim taky rozeznavat jestli charakter uspel nebo neuspel..
+       
+        if(type == "ChangeTypeDirect")
+        {
+            foreach (Character character in targets)
+            {
+                character.ModifiCharacterAtribute(atribute,value);
+            }
+        }
+        else
+        {
+
+        }
+
+    }
+
+    private List<Character> SelectTarget(string target, Mission mission)
+    {
+        //Todo Podle targetu vybere určity počet specialistu......
+
+        if (target == "AllActiveSpec")
+        {
+            return mission.GetCharactersOnMission;
+        }
+        else if (target == "AllSpec")
+        {
+            return mission.GetCharactersOnMission;
+        }
+        else if (target == "OneRanActiveSpec")
+        {
+            return mission.GetCharactersOnMission;
+        }
+        else if (target == "RandomActiveSpec")
+        {
+            return mission.GetCharactersOnMission;
+        }
+        else if (target == "RangeID")
+        {
+            return mission.GetCharactersOnMission;
+        }
+
+        Debug.LogError("Error SelectTarget Atribute Failed. In script: " + this.name);
+        return null;
+    }
+
+    #endregion
+
+    #region Buttons Methods
 
     private void TMP_ProceedButton(int numberOfBrachToResolve, Mission mission)
     {
@@ -250,25 +308,13 @@ public class EventController : MonoBehaviour
         LoadEventSteps(output, mission);
     }
 
-    private void AddCharactersPrefabFromMissionToEvent(Mission mission)
-    {
-        foreach (Character character in mission.GetCharactersOnMission)
-        {
-            GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab, eventPanel.GetCharacterTransformContent.transform);
-            uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
-            uWindow.SetAll(character);
-            eventPanel.AddCharacterToSelectionContent(go, character);
-            uWindow.GetMainButton.onClick.RemoveAllListeners();
-        }
-    }
-
     private void ContinueButton()
     {
         int selectedCharacters = CharactersSelectedForTesting.Count;
 
         if (selectedCharacters >= tCase.GetMinCharParticipation && selectedCharacters <= tCase.GetMaxCharParticipation)
         {
-            this.finalTestResult = StartTest();
+            this.finalTestResult = StartThrowTest();
         }
         else
         {
@@ -287,7 +333,8 @@ public class EventController : MonoBehaviour
         {
             int failure = item.AmountDicesInLastTest - item.AmountSuccessDicesInLastTest;
             sb.Append(item.GetName() + " " + "měl kostek: " + item.AmountDicesInLastTest + " " +
-                "Z toho uspel: " + item.AmountSuccessDicesInLastTest + " neuspel: " + failure + ".");
+                "Z toho uspel: " + item.AmountSuccessDicesInLastTest + " neuspel: " + failure + "." +
+                "---->  uspechy s modifikatore. " + item.AmountSuccessDicesInLastTest / tCase.GetRateMod);
             sb.AppendLine();
         }
 
@@ -295,60 +342,8 @@ public class EventController : MonoBehaviour
 
         eventPanel.testingTMPinfo.text = sb.ToString();
 
-        Debug.Log("result of Test " +  this.finalTestResult);
+        Debug.Log("result of Test " + this.finalTestResult);
     }
-
-    #region HelpingMethods
-
-    private void ModifyAtribute (string type , List<Character> targets , string atribute , int value)
-    {
-        // Todo 
-       
-
-        if(type == "ChangeTypeDirect")
-        {
-            foreach (Character character in targets)
-            {
-                character.ModifiCharacterAtribute(atribute,value);
-            }
-        }
-        else
-        {
-
-        }
-
-    }
-
-    private List<Character> SelectTarget(string target, Mission mission)
-    {
-        //Todo
-
-        if (target == "AllActiveSpec")
-        {
-            return mission.GetCharactersOnMission;
-        }
-        else if(target == "AllSpec")
-        {
-            return mission.GetCharactersOnMission;
-        }
-        else if (target == "sad")
-        {
-            return mission.GetCharactersOnMission;
-        }
-        else if (target == "neewewco")
-        {
-            return mission.GetCharactersOnMission;
-        }
-        else if (target == "rrrr")
-        {
-            return mission.GetCharactersOnMission;
-        }
-
-
-        Debug.LogError("Error selectTarget Method in script: " + this.name);
-        return null;
-    }
-
     private void SelectCharacterForTest(Character character, uWindowSpecialist uWindow)
     {
         if (CharactersSelectedForTesting.Contains(character))
@@ -363,10 +358,11 @@ public class EventController : MonoBehaviour
         }
 
         eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
-
     }
 
     #endregion
+
+    #region Helping Classes
 
     public class TestCase
     {
@@ -433,8 +429,6 @@ public class EventController : MonoBehaviour
         public bool IsTestingTechnical { get { return this.isTestingTechnical; } }
         public string GetPriority { get { return this.priority; } }
 
-
-
         public void ChooseTestingSkills (string _testAtribute)
         {
             isTestingLevel =  _testAtribute.Contains("LvL");
@@ -446,6 +440,7 @@ public class EventController : MonoBehaviour
         #endregion
     }
 
+    #endregion
     #region Enums
     public enum TestType
     {
@@ -480,9 +475,9 @@ public class EventController : MonoBehaviour
         AllGroup
     }
 
-    #endregion 
+    #endregion
 
-    public bool StartTest()
+    private bool StartThrowTest()
     {
         bool finalResult;
         bool colectiveResult = false;

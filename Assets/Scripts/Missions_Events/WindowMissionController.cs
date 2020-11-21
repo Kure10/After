@@ -169,7 +169,7 @@ public class WindowMissionController : MonoBehaviour
 
         var specCount = charactersReadyToMission.Count;
 
-        this.uWindowShowMission.SetSpecMinMaxText(specCount, uWindowShowMission.GetMaxSpecOnMission);
+        this.uWindowShowMission.SetSpecMinMaxText(charactersReadyToMission.Count, uWindowShowMission.GetMaxSpecOnMission);
 
         var siblingsCount = this.SiblingsObject.Count;
 
@@ -307,7 +307,7 @@ public class WindowMissionController : MonoBehaviour
         
         this.CreateSpecAddButton(mission, isInProgress);
 
-        uWindowShowMission.SetSpecMinMaxText(mission.SpecMin, mission.SpecMax);
+        uWindowShowMission.SetSpecMinMaxText(charactersReadyToMission.Count, mission.SpecMax);
 
     }
 
