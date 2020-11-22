@@ -36,6 +36,7 @@ public class uWindowSelecctedObject : MonoBehaviour
     [Header("Building")]
     [SerializeField] GameObject specialistHolder;
     [SerializeField] GameObject specialistPreafab;
+    [SerializeField] Text workingSpecOnBuilding;
 
     [SerializeField] List<GameObject> specInfoPlaceHolders = new List<GameObject>();
     /* For now buttons are not used.. waiting for functionality and implementation.....*/
@@ -133,6 +134,32 @@ public class uWindowSelecctedObject : MonoBehaviour
     {
         buildingName.text = build.Name;
     }
+
+    private void SetSpecialist(List<Character> specOnBuilding)
+    {
+        foreach (GameObject item in specInfoPlaceHolders.ToArray())
+        {
+            Destroy(item);
+        }
+
+        specInfoPlaceHolders.Clear();
+
+        foreach (Character character in specOnBuilding)
+        {
+            GameObject specView = Instantiate(specialistPreafab, specialistHolder.transform);
+            var window = specView.GetComponent<uWindowSpecialist>();
+            if (window != null)
+                window.SetAll(character);
+
+            specInfoPlaceHolders.Add(specView);
+        }
+    }
+
+    private void SetWorkingCharactersOnBuilding(int workingCharactersOnBuilding, int maxCharactersWorking)
+    {
+        this.workingSpecOnBuilding.text = workingCharactersOnBuilding + "/" + maxCharactersWorking;
+    }
+
     #endregion
 
     #region Public Methods
@@ -158,7 +185,8 @@ public class uWindowSelecctedObject : MonoBehaviour
         {
             charsInBuilding.Add(character.character);
         }
-        SetSpecialist(charsInBuilding); 
+        SetSpecialist(charsInBuilding);
+        SetWorkingCharactersOnBuilding(8,9);
     }
 
     public void Update()
@@ -193,24 +221,8 @@ public class uWindowSelecctedObject : MonoBehaviour
                 return "Empty";
         }
     }
-    public void SetSpecialist(List<Character> specOnBuilding)
-    {
-        foreach (var item in specInfoPlaceHolders.ToArray())
-        {
-            Destroy(item);
-        }
 
-        specInfoPlaceHolders.Clear();
-        
-        foreach (Character character in specOnBuilding)
-        {
-            GameObject specView = Instantiate(specialistPreafab, specialistHolder.transform);
-            var window = specView.GetComponent<uWindowSpecialist>();
-            if (window != null)
-                window.SetAll(character);
 
-            specInfoPlaceHolders.Add(specView);
-        }
-    }
+
     #endregion
 }
