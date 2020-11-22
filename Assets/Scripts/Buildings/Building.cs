@@ -19,6 +19,7 @@ public class Building : IWorkSource, IResourceHolder
     public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
     protected List<Resource> resources;
+    protected SelectionManager selectionManager;
     
 
     public List<Worker> getWorkers()
@@ -50,6 +51,7 @@ public class Building : IWorkSource, IResourceHolder
 
     public Building(BuildingBlueprint blueprint, GameObject prefab)
     {
+        selectionManager = GameObject.FindGameObjectWithTag("TileFactory").GetComponent<SelectionManager>();
         Workers = new List<Worker>();
         resources = new List<Resource>();
         _amount = new ResourceManager.ResourceAmount();
@@ -212,6 +214,17 @@ public class Building : IWorkSource, IResourceHolder
                         if (TimeToBuildRemaining <= 0)
                         {
                             State = BuildingState.Build;
+                            var freeTiles =
+                                tileFactory.FindFreeTile(Geometry.GridFromPoint(worker.character.transform.position),
+                                    null, true);
+                            int i = 0;
+                            foreach(var w in Workers)
+                            {
+                                var path = tileFactory.FindPath(Geometry.GridFromPoint(w.character.transform.position), freeTiles[i]);
+                                w.character.AddCommand(new Move(w.character.gameObject, path));
+                                selectionManager.Register(w.character);
+                                i++;
+                            }
                             Workers.Clear();
                         }
                         break;
