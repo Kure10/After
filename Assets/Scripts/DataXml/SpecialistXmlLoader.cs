@@ -87,7 +87,7 @@ public class SpecialistXmlLoader : MonoBehaviour
             spec.Povolani = item.GetStrStat("SpecClass");
             spec.Story = item.GetStrStat("SpecStory");
             // spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
-            spec.ReCalcAutoStats();
+            
 
 
             allSpecialists.Add(spec);

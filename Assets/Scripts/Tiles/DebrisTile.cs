@@ -73,7 +73,7 @@ public class DebrisTile : Tile, IWorkSource
                     float buildPoints = 0;
                     if (worker.character.GetCommand() is Build buildCmd)
                     {
-                        buildPoints = buildCmd.GetBuildPoints(worker.character.GetTechLevel());
+                        buildPoints = buildCmd.GetBuildPoints(worker.character.Stats.tech);
                     }
                     if (DoDamage(buildPoints))
                     {

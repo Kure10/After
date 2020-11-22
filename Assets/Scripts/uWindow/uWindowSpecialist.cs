@@ -91,23 +91,23 @@ public class uWindowSpecialist : MonoBehaviour
             this.backgroundImage.color = spec.SpecialistColor;
     }
 
-    private void CalcHealtandStamina(Specialists spec)
+    private void CalcHealtandStamina(Character character)
     {
-        this.percentHealth = spec.PercentHealth;
-        this.percentStamina = spec.PercentStamina;
-        healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
-        staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+        this.percentHealth = character.LifeEnergy.PercentHealth;
+        this.percentStamina = character.LifeEnergy.PercentStamina;
+        healthBar.transform.localScale = new Vector3(this.percentHealth / 100, 1f, 1f);
+        staminaBar.transform.localScale = new Vector3(this.percentStamina / 100, 1f, 1f);
     }
 
-    private void SetStatsPanel(Specialists spec)
+    private void SetStatsPanel(Character character)
     {
-        characterName.text = spec.FullName.ToString();
-        characterLevel.text = spec.Level.ToString();
-        militaryValue.text = spec.Mil.ToString();
-        scientistValue.text = spec.Scl.ToString();
-        technicianValue.text = spec.Tel.ToString();
-        socialValue.text = spec.Sol.ToString();
-        karmaValue.text = spec.Kar.ToString();
+        characterName.text = character.GetName();
+        characterLevel.text = character.Stats.level.ToString();
+        militaryValue.text = character.Stats.military.ToString();
+        scientistValue.text = character.Stats.science.ToString();
+        technicianValue.text = character.Stats.tech.ToString();
+        socialValue.text = character.Stats.social.ToString();
+        karmaValue.text = character.Stats.karma.ToString();
     }
 
     #endregion
@@ -118,8 +118,8 @@ public class uWindowSpecialist : MonoBehaviour
         var spec = character.GetBlueprint(); // Todo Je to spatne. musi se brat hodnoty z charakteru
 
         SetImage(spec);
-        CalcHealtandStamina(spec);
-        SetStatsPanel(spec);
+        CalcHealtandStamina(character);
+        SetStatsPanel(character);
     }
 
     public void ActivateCoverPanel(string text = " ")

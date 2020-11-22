@@ -10,6 +10,7 @@ public class Character : MonoBehaviour, IResourceHolder
     private Command command;
     private Specialists blueprint;
     private CurrentStats curentStats;
+    private LifeEnergy lifeEnergy;
     private IWorkSource source;
     public string State; //just pure text for now
 
@@ -19,6 +20,7 @@ public class Character : MonoBehaviour, IResourceHolder
     public bool PassedTheTest = false;
 
     public CurrentStats Stats { get { return this.curentStats; } }
+    public LifeEnergy LifeEnergy { get { return this.lifeEnergy; } }
 
     public Character()
     {
@@ -33,14 +35,8 @@ public class Character : MonoBehaviour, IResourceHolder
     public void SetBlueprint(Specialists specialist)
     {
         blueprint = specialist;
-
-        curentStats = new CurrentStats();
-        curentStats.level = specialist.Level;
-        curentStats.military = specialist.Mil;
-        curentStats.science = specialist.Scl;
-        curentStats.social = specialist.Sol;
-        curentStats.tech = specialist.Tel;
-        curentStats.karma = specialist.Kar;
+        curentStats = new CurrentStats(specialist.Level, specialist.Mil, specialist.Sol, specialist.Tel, specialist.Kar, specialist.Scl);
+        lifeEnergy = new LifeEnergy(curentStats);
 
     }
 
@@ -54,11 +50,8 @@ public class Character : MonoBehaviour, IResourceHolder
         return blueprint.SpecialistColor;
     }
 
-    //TODO prozatim - tohle je treba udelat nejak rozumne, ale k tomu je treba pohrabat se v Specialists.cs
-    public int GetTechLevel()
-    {
-        return blueprint.Tel; //TODO hmmm, nejak mizi blueprint,nevim proc
-    }
+    #region Movement Methods
+
     public Result Execute()
     {
         if (command != null)
@@ -112,31 +105,33 @@ public class Character : MonoBehaviour, IResourceHolder
         return amount; //TODO vrat skutecny pocet ziskanych resources
     }
 
+    #endregion
+
     public void ModifiCharacterAtribute(string atribute, int value)
     {
         
         switch (atribute)
         {
             case "Stamina":
-                this.blueprint.Stamina += value;
+                LifeEnergy.CurrentStamina += value;
                 break;
             case "Mil":
-                this.blueprint.Mil += value;
+                Stats.military += value;
                 break;
             case "Sol":
-                this.blueprint.Sol += value;
+                Stats.social += value;
                 break;
             case "Tel":
-                this.blueprint.Tel += value;
+                Stats.tech += value;
                 break;
             case "Kar":
-                this.blueprint.Kar += value;
+                Stats.karma += value;
                 break;
             case "Scl":
-                this.blueprint.Scl += value;
+                Stats.science += value;
                 break;
             default:
-                Debug.LogError("Character Error in: " + this.name);
+                Debug.LogError("Unknow Stats to c hange error in: " + this.name);
                 break;
         }
     }

@@ -24,13 +24,6 @@ public class Specialists
     [Range(0, 10)] [SerializeField] private int social = 0;
     [SerializeField] private int karma = 0;
 
-    [Header("Health and Stamina")]
-    [SerializeField] public int maxStamina;
-    [SerializeField] public int maxHP;
-    [Space]
-    [SerializeField] private int currentStamina = 1;
-    [SerializeField] private int currentHP = 1;
-
     [Header("Additional information")]
     [SerializeField] private bool isDefault;
     [SerializeField] private string localization;
@@ -51,12 +44,8 @@ public class Specialists
     public int Sol { get { return social; } set { this.social = value; } }
     public int Kar { get { return karma; } set { this.karma = value; } }
 
-    public int Stamina { get { return currentStamina; } set { this.currentStamina = value; } }
-
     public bool IsDefault { get { return this.isDefault; } set { this.isDefault = value; } }
-    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
-    //public bool IsOnMission { get { return this.isOnMission; } set { this.isOnMission = value; } }
-    
+
     public string Localization { get { return this.localization; } set { this.localization = value; } }
 
     public string Povolani { get { return this.povolani; } set { this.povolani = value; } }
@@ -67,21 +56,6 @@ public class Specialists
     public Sprite Sprite { get { return this.sprite; } set { this.sprite = value; } }
 
     public Color SpecialistColor { get { return this.backgroundColor; } set { this.backgroundColor = value; } }
-
-    public float PercentHealth
-    {
-        get
-        {
-            return ( (float)currentHP / (float)maxHP ) * 100;
-        }
-    }
-    public float PercentStamina
-    {
-        get
-        {
-            return ( (float)currentStamina / (float)maxStamina ) * 100;
-        }
-    }
 
     public bool IsOnMission
     {
@@ -107,34 +81,7 @@ public class Specialists
 
     #endregion
 
-    #region UnityMethods
-
-    private void Awake()
-    {
-        //povolani = Povolani.Doktor;
-        CalcHealth(level, vojak, technik, vedec, social);
-        CalcStamina(level);
-    }
-
-    #endregion
-
     #region Methods
-
-    private void CalcStamina(int lvl)
-    {
-        maxStamina = 57600 + 2400 * lvl;
-    }
-
-    private void CalcHealth(int lvl, int mil, int tel, int scl, int sol)
-    {
-        maxHP = 40 + lvl + 4 * mil + 2 * tel + scl + sol;
-    }
-
-    public void ReCalcAutoStats()
-    {
-        CalcStamina(this.Level);
-        CalcHealth(this.level, this.Mil, this.Tel, this.Scl, this.Sol);
-    }
 
     public void SetColor(int Red, int Green, int Blue)
     {

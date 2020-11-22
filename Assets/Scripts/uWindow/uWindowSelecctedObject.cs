@@ -83,7 +83,7 @@ public class uWindowSelecctedObject : MonoBehaviour
     }
 
     private Building building;
-    private Character specialist;
+    private Character character;
     #endregion
 
     #region Private Methods
@@ -99,12 +99,12 @@ public class uWindowSelecctedObject : MonoBehaviour
         this.image.sprite = build.Sprite;
     }
 
-    private void CalcHealtandStamina(Specialists spec)
+    private void CalcHealtandStamina(Character character)
     {
-        this.percentHealth = spec.PercentHealth;
-        this.percentStamina = spec.PercentStamina;
-        healthBar.transform.localScale = new Vector3(spec.PercentHealth / 100, 1f, 1f);
-        staminaBar.transform.localScale = new Vector3(spec.PercentStamina / 100, 1f, 1f);
+        this.percentHealth = character.LifeEnergy.PercentHealth;
+        this.percentStamina = character.LifeEnergy.PercentStamina;
+        healthBar.transform.localScale = new Vector3(character.LifeEnergy.PercentHealth / 100, 1f, 1f);
+        staminaBar.transform.localScale = new Vector3(character.LifeEnergy.PercentStamina / 100, 1f, 1f);
        
     }
 
@@ -118,15 +118,15 @@ public class uWindowSelecctedObject : MonoBehaviour
         
     }
 
-    private void SetStatsPanel(Specialists spec)
+    private void SetStatsPanel(Character character)
     {
-        characterName.text = spec.FullName.ToString();
-        characterLevel.text = spec.Level.ToString();
-        militaryValue.text = spec.Mil.ToString();
-        scientistValue.text = spec.Scl.ToString();
-        technicianValue.text = spec.Tel.ToString();
-        socialValue.text = spec.Sol.ToString();
-        karmaValue.text = spec.Kar.ToString();
+        characterName.text = character.GetName();
+        characterLevel.text = character.Stats.level.ToString();
+        militaryValue.text = character.Stats.military.ToString();
+        scientistValue.text = character.Stats.science.ToString();
+        technicianValue.text = character.Stats.tech.ToString();
+        socialValue.text = character.Stats.social.ToString();
+        karmaValue.text = character.Stats.karma.ToString();
     }
 
     private void SetStatsPanel(BuildingBlueprint build)
@@ -139,14 +139,14 @@ public class uWindowSelecctedObject : MonoBehaviour
     public void SetAll(Character spec)
     {
         this.building = null;
-        specialist = spec;
+        character = spec;
         IsBuildingSelected();
     }
 
     public void SetAll(Building building)
     {
         this.building = building;
-        this.specialist = null;
+        this.character = null;
         SetImage(building.blueprint);
         SetStatsPanel(building.blueprint);
         // set building Projekt in future
@@ -168,12 +168,12 @@ public class uWindowSelecctedObject : MonoBehaviour
             CalcProgressAndState(building);
         }
 
-        if (specialist != null)
+        if (character != null)
         {
-            SetImage(specialist.GetBlueprint());
-            CalcHealtandStamina(specialist.GetBlueprint());
-            SetStatsPanel(specialist.GetBlueprint());
-            currentActivity.text = specialist.State;
+            SetImage(character.GetBlueprint());
+            CalcHealtandStamina(character);
+            SetStatsPanel(character);
+            currentActivity.text = character.State;
         }
     }
     private string SetBuildingState(int state)

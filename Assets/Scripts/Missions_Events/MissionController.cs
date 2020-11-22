@@ -143,7 +143,7 @@ public class MissionController : MonoBehaviour
         
         foreach (var item in mission.GetCharactersOnMission)
         {
-            Debug.Log("name: " + item.GetBlueprint().FullName);
+            Debug.Log("name: " + item.GetName());
         }
 
         // more shits
