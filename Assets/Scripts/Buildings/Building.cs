@@ -19,6 +19,7 @@ public class Building : IWorkSource, IResourceHolder
     public float TimeToBuildRemaining;
     private HealthbarHandle statusHandle;
     protected List<Resource> resources;
+    
 
     public List<Worker> getWorkers()
     {
@@ -64,6 +65,7 @@ public class Building : IWorkSource, IResourceHolder
 
     public bool Register(Character character)
     {
+        if (Workers.Count >= blueprint.row * blueprint.column) return false;
         Unregister(character);
         var worker = new Worker();
         worker.character = character;

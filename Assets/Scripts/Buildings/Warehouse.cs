@@ -98,6 +98,7 @@ namespace Buildings
         {
             if (State == BuildingState.Build)
             {
+                if (workers.Count >= blueprint.row * blueprint.column) return false;
                 Debug.Log("Warehouse - worker registered");
                 Unregister(character);
                 if (resources.Count >= Warehouse.MaxMaterials) return false;
