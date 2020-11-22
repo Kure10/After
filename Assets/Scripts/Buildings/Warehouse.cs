@@ -84,9 +84,16 @@ namespace Buildings
                         worker.character.Execute();
                         worker.state = WorkerState.init;
                         break;
+                    case WorkerState.wait:
+                        var position = worker.character.transform.position;
+                        Unregister(worker.character);
+                        var freeTiles = tileFactory.FindFreeTile(Geometry.GridFromPoint(position), null, true);
+                        var path = tileFactory.FindPath(Geometry.GridFromPoint(position), freeTiles.First());
+                        worker.character.AddCommand(new Move(worker.character.gameObject, path));
+                        selectionManager.Register(worker.character);
+                        break;
                     }
                 }
-                workers.RemoveAll(w => w.state == WorkerState.wait);
             }
             else
             {
