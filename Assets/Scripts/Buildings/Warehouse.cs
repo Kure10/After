@@ -114,21 +114,27 @@ namespace Buildings
 
         public new void Unregister(Character character)
         {
-            if (workers.Select(w => w.character).Contains(character))
+            if (State == BuildingState.Build)
             {
-                foreach (var w in workers.ToList())
+                if (workers.Select(w => w.character).Contains(character))
                 {
-                    if (w.character == character)
+                    foreach (var w in workers.ToList())
                     {
-                        if (w.state == WorkerState.full)
+                        if (w.character == character)
                         {
-                            w.character.AddCommand(new Drop(character.gameObject));
-                            w.character.Execute();
+                            if (w.state == WorkerState.full)
+                            {
+                                w.character.AddCommand(new Drop(character.gameObject));
+                                w.character.Execute();
+                            }
+
+                            workers.Remove(w);
                         }
-                        workers.Remove(w);
                     }
                 }
             }
+
+            base.Unregister(character);
         }
     public new Vector3 GetPosition(int field = 0)
     {
