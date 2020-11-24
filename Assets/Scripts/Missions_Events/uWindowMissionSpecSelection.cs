@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class uWindowMissionSpecSelection : MonoBehaviour
 {
 
+
     [SerializeField] GameObject specPrefab;
 
     [SerializeField] GameObject holder;
@@ -16,6 +17,9 @@ public class uWindowMissionSpecSelection : MonoBehaviour
     [SerializeField] Button confirm;
 
     [SerializeField] Button back;
+
+    [Header("Blocker")]
+    [SerializeField] GameObject blocker;
 
     private bool isWindowActive = false;
 
@@ -33,7 +37,7 @@ public class uWindowMissionSpecSelection : MonoBehaviour
 
    // public string InfoText { get { return this.infoText.text; } set { this.infoText.text = value; } }
 
-    public void ActiveWindow()
+    public void ActivateWindow()
     {
         this.gameObject.SetActive(true);
         this.isWindowActive = true;
@@ -55,6 +59,13 @@ public class uWindowMissionSpecSelection : MonoBehaviour
         this.infoText.text = $"{minValue} / {maxValue}"; 
     }
 
+    public void ActivateBlocker()
+    {
+        this.blocker.SetActive(true);
+    }
 
-
+    public void DisableBlocker()
+    {
+        this.blocker.SetActive(false);
+    }
 }

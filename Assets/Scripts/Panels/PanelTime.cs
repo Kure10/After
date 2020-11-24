@@ -71,7 +71,9 @@ public class PanelTime : MonoBehaviour
 
     public void Pause(bool forcePause = false)
     {
-        if(forcePause)
+        if (MenuControler.isInMenu == true) return;
+
+        if (forcePause)
         {
             blinkingTime = 0;
             paused = true;

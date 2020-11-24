@@ -18,6 +18,8 @@ public class EventController : MonoBehaviour
 
     private ResolveSlave slave;
 
+    private ResolveSlave slave2;
+
     List<Character> CharactersSelectedForTesting = new List<Character>();
 
     private bool finalTestResult = false;
@@ -31,7 +33,7 @@ public class EventController : MonoBehaviour
         // choise Random Event..
         StatsClass _event = eventManager.ChoiseRandomEvent(mission.DifficultyMin, mission.DifficultyMax, mission.GetEmergingTerrains);
 
-        // PreWarm Picture
+        // PreWarm Pictureteam
         Sprite sprite = spriteLoader.LoadEventSprite(_event.GetStrStat("EventPicture"));
         eventPanel.SetImage(sprite);
 
@@ -39,6 +41,11 @@ public class EventController : MonoBehaviour
         slave = eventManager.resolveMaster.AddDataSlave("Events", _event.Title);
         slave.StartResolve();
         Dictionary<string, List<StatsClass>> output = slave.Resolve();
+
+        // Work with data..
+        slave2 = eventManager.resolveMaster.AddDataSlave("Events", _event.Title);
+        slave2.StartResolve();
+        Dictionary<string, List<StatsClass>> output2 = slave2.Resolve();
 
         AddCharactersPrefabFromMissionToEvent(mission);
 
@@ -201,6 +208,7 @@ public class EventController : MonoBehaviour
         {
             finalTestResult = false;
             CharactersSelectedForTesting.Clear();
+            RemoveCharactersGameObjectFromEvent();
             this.eventPanel.gameObject.SetActive(false);
             TimeControl.IsTimeBlocked = false;
         }
@@ -233,6 +241,16 @@ public class EventController : MonoBehaviour
             eventPanel.AddCharacterToSelectionContent(go, character);
             uWindow.GetMainButton.onClick.RemoveAllListeners();
         }
+    }
+
+    private void RemoveCharactersGameObjectFromEvent()
+    {
+        foreach (KeyValuePair<GameObject, Character> dic  in eventPanel.GetCharactersOnEvent)
+        {
+            Destroy(dic.Key);
+        }
+
+        eventPanel.GetCharactersOnEvent.Clear();
     }
 
     #endregion

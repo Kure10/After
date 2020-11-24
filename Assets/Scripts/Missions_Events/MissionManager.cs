@@ -7,7 +7,7 @@ using System.Linq;
 public class MissionManager : MonoBehaviour
 {
 
-
+    [SerializeField] private PanelTime time;
     [SerializeField] private MissionController theMC;
     //[SerializeField] private SpecialistControler theSC;
 
@@ -78,6 +78,9 @@ public class MissionManager : MonoBehaviour
         //this.currentMission = mission;
 
         theMC.windowMissionController.SetActivePanel(true);
+        theMC.windowMissionController.ActivateBlocker();
+        this.time.Pause();
+
     }
 
     private Mission FindMissionFromList(string missionIdentifikator, bool isExplorationMission)

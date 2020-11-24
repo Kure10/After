@@ -5,15 +5,22 @@ using UnityEngine.UI;
 
 public class PanelControler : MonoBehaviour
 {
-
+    [SerializeField] PanelTime time;
     [SerializeField] GameObject cheatPanel;
+    [SerializeField] GameObject map;
+    [SerializeField] Button mapButton;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
+    [Space]
+    [SerializeField] GameObject block;
 
     // Start is called before the first frame update
     void Start()
     {
         SetActiveAll(false);
         panels[0].transform.parent.gameObject.SetActive(true);
+
+        mapButton.onClick.RemoveAllListeners();
+        mapButton.onClick.AddListener(()=> OpenMap());
     }
 
     // Update is called once per frame
@@ -28,6 +35,7 @@ public class PanelControler : MonoBehaviour
 
         if (panels[currentPanel].activeSelf == true)
         {
+            time.Pause();
             panels[currentPanel].SetActive(false);
         }
         else
@@ -41,11 +49,15 @@ public class PanelControler : MonoBehaviour
         {
             if(item.activeSelf == true)
             {
+                time.Pause();
+                block.SetActive(true);
                 CameraMovement.MovementAllEnable(false);
                 return;
             }
             else
             {
+                
+                block.SetActive(false);
                 CameraMovement.MovementAllEnable(true);
             }
         }
@@ -57,6 +69,20 @@ public class PanelControler : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             CameraMovement.MovementAllEnable(true);
+
+            foreach (var item in panels)
+            {
+                if(item.activeSelf)
+                {
+                    time.Pause();
+                    block.SetActive(false);
+                    break;
+                }
+            }
+
+            if (map.activeSelf)
+                map.SetActive(false);
+
 
             DisableAllPanels();
         }
@@ -91,6 +117,17 @@ public class PanelControler : MonoBehaviour
     {
         CameraMovement.MovementAllEnable(true);
         gameObject.SetActive(false);
+    }
+
+    private void OpenMap()
+    {
+        if (map.activeSelf)
+        {
+            map.SetActive(false);
+            return;
+        }
+            
+        map.SetActive(true);
     }
 
 }

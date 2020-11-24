@@ -1,21 +1,52 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuControler : MonoBehaviour
 {
-    [SerializeField]
-    GameObject hotKeys; // jina možnost me nenapada
-   // private GameObject hotkeys;
-    void Start()
+    [SerializeField] PanelTime time;
+    [Header("Buttons")]
+    [SerializeField] Button menuButton;
+    [SerializeField] Button backButton;
+    [SerializeField] Button quitButton;
+    [SerializeField] Button hotKeysButton;
+    [Header("Panels")]
+    [SerializeField] GameObject menuPanel;
+    [SerializeField] GameObject hotKeys;
+    [SerializeField] GameObject blockPanel;
+
+    static public bool isInMenu = false;
+
+    private void Awake()
     {
-        // hotkeys = GameObject.FindObjectOfType<Menu>().gameObject;
-        // menu = GameObject.FindGameObjectWithTag("hotkeys");
+        hotKeysButton.onClick.RemoveAllListeners();
+        hotKeysButton.onClick.AddListener(() => OpenHotkeys());
+        menuButton.onClick.RemoveAllListeners();
+        menuButton.onClick.AddListener(() => ActivateMenu());
+        backButton.onClick.RemoveAllListeners();
+        backButton.onClick.AddListener(() => DisableMenu());
+        quitButton.onClick.RemoveAllListeners();
+        quitButton.onClick.AddListener(() => QuitAplication());
+
         hotKeys.SetActive(false);
+        blockPanel.SetActive(false);
     }
-    public void ReverseActivity(GameObject panel)
+
+    public void DisableMenu()
     {
-        panel.SetActive(!panel.activeSelf);
+        MenuControler.isInMenu = false;
+        time.Pause();
+        menuPanel.SetActive(false);
+        blockPanel.SetActive(false); 
+    }
+
+    public void ActivateMenu()
+    {
+        time.Pause();
+        MenuControler.isInMenu = true;
+        menuPanel.SetActive(true);
+        blockPanel.SetActive(true);
     }
 
     public void QuitAplication ()
@@ -27,12 +58,16 @@ public class MenuControler : MonoBehaviour
     public void OpenHotkeys ()
     {
         hotKeys.SetActive(true);
+        hotKeysButton.onClick.RemoveAllListeners();
+        hotKeysButton.onClick.AddListener(() => CloseHotkeys());
 
     }
 
     public void CloseHotkeys()
     {
         hotKeys.SetActive(false);
+        hotKeysButton.onClick.RemoveAllListeners();
+        hotKeysButton.onClick.AddListener(() => OpenHotkeys());
 
     }
 

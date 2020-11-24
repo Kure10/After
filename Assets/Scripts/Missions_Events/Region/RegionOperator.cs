@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RegionOperator : MonoBehaviour
 {
     [Header("Prefabs")]
-     private Region region;
+    private Region region;
     [SerializeField] string regionIdentifikator;
     [SerializeField] List<uButtonAdditionalMission> uButtAdditionalMission = new List<uButtonAdditionalMission>();
 
@@ -24,7 +24,7 @@ public class RegionOperator : MonoBehaviour
 
     private void Awake()
     {
-        if(this.regionControler == null)
+        if (this.regionControler == null)
             this.regionControler = GameObject.FindObjectOfType<RegionControler>();
     }
 
@@ -39,9 +39,9 @@ public class RegionOperator : MonoBehaviour
         }
     }
 
-    public void CompleteMission(bool isRepeate , string missionPointer, bool missionCompleteConditionCounter = false)
+    public void CompleteMission(bool isRepeate, string missionPointer, bool missionCompleteConditionCounter = false)
     {
-        if(missionCompleteConditionCounter)
+        if (missionCompleteConditionCounter)
             this.regionControler.onRegionCounterDecreased(this.region);
 
 
@@ -72,7 +72,7 @@ public class RegionOperator : MonoBehaviour
         }
 
         //  regionControler.RefreshRegions();
-        
+
     }
 
     public void RefreshMissionButton(Mission mission)

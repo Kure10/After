@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class WindowMissionController : MonoBehaviour
 {
+    [SerializeField] private PanelTime time;
+
     [SerializeField] private SpecialistControler theSC;
 
     [SerializeField] uWindowMission uWindowShowMission;
 
     [SerializeField] public uWindowMissionSpecSelection uWindowSpecSelection;
 
- 
+    [SerializeField] private GameObject blocker;
+
     private MissionPanelState state;
 
     private Mission currentMission;
@@ -25,6 +28,16 @@ public class WindowMissionController : MonoBehaviour
     public MissionPanelState State { set { this.state = value; } }
 
     public int AmountReadyCharactersToMission { get { return charactersReadyToMission.Count; } }
+
+    public void ActivateBlocker()
+    {
+        this.blocker.SetActive(true);
+    }
+
+    public void DisableBlocker()
+    {
+        this.blocker.SetActive(false);
+    }
 
     private void Awake()
     {
@@ -95,7 +108,8 @@ public class WindowMissionController : MonoBehaviour
     private void OpenSelectionPanel()
     {
         this.PrepairSelectionWindow(this.theSC.PassSpecToMissionSelection());
-        uWindowSpecSelection.ActiveWindow();
+        uWindowSpecSelection.ActivateWindow();
+        uWindowSpecSelection.ActivateBlocker();
     }
 
     private void PrepairSelectionWindow(List<Character> characterList)
@@ -124,7 +138,10 @@ public class WindowMissionController : MonoBehaviour
         {
             Specialists spec = character.GetBlueprint();
 
-            var go = Instantiate(prefab, holder.transform);
+          
+           // GameObject go = new GameObject();
+            GameObject go = Instantiate(prefab) as GameObject;
+            go.transform.SetParent(holder.transform);
             var uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
 
@@ -205,6 +222,7 @@ public class WindowMissionController : MonoBehaviour
         }
 
         uWindowSpecSelection.DisableWindow();
+        uWindowSpecSelection.DisableBlocker();
 
         siblingsCount = this.SiblingsObject.Count;
 
@@ -221,6 +239,8 @@ public class WindowMissionController : MonoBehaviour
             but.onClick.AddListener(OpenSelectionPanel);
         }
 
+
+        
     }
 
     public void BackButton()
@@ -246,6 +266,7 @@ public class WindowMissionController : MonoBehaviour
         }
 
         uWindowSpecSelection.DisableWindow();
+        uWindowSpecSelection.DisableBlocker();
 
     }
 
@@ -286,6 +307,8 @@ public class WindowMissionController : MonoBehaviour
     {
 
         this.theSC.MoveSpecialistToMission(this.charactersReadyToMission);
+        time.Pause();
+        this.DisableBlocker();
 
         return this.charactersReadyToMission;
     }
@@ -388,6 +411,9 @@ public class WindowMissionController : MonoBehaviour
 
         this.SiblingsObject.Clear();
         this.charactersReadyToMission.Clear();
+
+        this.DisableBlocker();
+        time.Pause();
     }
 
 
