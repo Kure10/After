@@ -26,6 +26,11 @@ public class EventController : MonoBehaviour
     private bool finalTestResult = false;
     private TestCase tCase;
 
+    public void Awake()
+    {
+        eventPanel.GetMinimizeButton.onClick.RemoveAllListeners();
+        eventPanel.GetMinimizeButton.onClick.AddListener(Minimaze);
+    }
 
     #region Public Methods
 
@@ -381,6 +386,17 @@ public class EventController : MonoBehaviour
         }
 
         eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
+    }
+
+    public void Minimaze()
+    {
+        eventBlocker.SetActive(false);
+        eventPanel.gameObject.SetActive(false);
+    }
+
+    public void Maximaze()
+    {
+
     }
 
     #endregion

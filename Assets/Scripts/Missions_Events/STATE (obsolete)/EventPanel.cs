@@ -65,6 +65,10 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] GameObject legendGo;
 
+    [SerializeField] Button minimize;
+
+
+
 
     Dictionary<GameObject, Character> charactersInContent = new Dictionary<GameObject, Character>();
 
@@ -87,6 +91,7 @@ public class EventPanel : MonoBehaviour
     public GameObject GetCharacterTransformContent { get { return this.characterContent; } }
     public GameObject GetCharacterButtonPrefab { get { return this.characterButtonPrefab; } }
     public Button GetContinueButton { get { return this.continueButton; } }
+    public Button GetMinimizeButton { get { return this.minimize; } }
     public Dictionary<GameObject, Character> GetCharactersOnEvent { get { return this.charactersInContent; } }
 
     #endregion

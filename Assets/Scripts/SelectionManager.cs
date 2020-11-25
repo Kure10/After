@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SelectionManager : MonoBehaviour, IWorkSource
 {
@@ -31,6 +32,9 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     // Update is called once per frame
     public void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             ClearHighlight(selectedObjects);
