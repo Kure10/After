@@ -15,6 +15,7 @@ public class EventController : MonoBehaviour
 
     [SerializeField] ResourceSpriteLoader spriteLoader;
 
+    [SerializeField] GameObject eventBlocker;
 
     private ResolveSlave slave;
 
@@ -48,6 +49,9 @@ public class EventController : MonoBehaviour
         Dictionary<string, List<StatsClass>> output2 = slave2.Resolve();
 
         AddCharactersPrefabFromMissionToEvent(mission);
+        eventPanel.AmountCharacterSelectedText.text = "";
+
+        eventBlocker.SetActive(true);
 
         this.eventPanel.gameObject.SetActive(true);
 
@@ -211,6 +215,7 @@ public class EventController : MonoBehaviour
             RemoveCharactersGameObjectFromEvent();
             this.eventPanel.gameObject.SetActive(false);
             TimeControl.IsTimeBlocked = false;
+            eventBlocker.SetActive(false);
         }
     }
 

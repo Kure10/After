@@ -42,7 +42,7 @@ public class MissionController : MonoBehaviour
     {
         if (windowMissionController.uWindowSpecSelection.IsWindowActive) return;
 
-        if (windowMissionController.AmountReadyCharactersToMission <= missinToStart.SpecMin)
+        if (windowMissionController.AmountReadyCharactersToMission < missinToStart.SpecMin)
         {
             Debug.Log("Počet charakteru nesedí: " + windowMissionController.AmountReadyCharactersToMission +
                 ".  Mise vyžaduje min: " + missinToStart.SpecMin);
