@@ -191,6 +191,8 @@ public class MissionController : MonoBehaviour
 
                     eventController.EventTrigered(currentMission);
 
+
+                    this.thePT.Pause(true);
                     EventController.isEventRunning = true;
 
 
@@ -198,7 +200,7 @@ public class MissionController : MonoBehaviour
                     this.notificationMissionManager.CreateNewNotification(currentMission); // neni dokonceno
 
                     /* Time blocked*/
-                    this.thePT.Pause(true);
+                    
                     
                     
 

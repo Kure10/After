@@ -16,6 +16,8 @@ public class PanelTime : MonoBehaviour
     private bool paused;
     private float blinkingTime = 0f;
 
+    [SerializeField] EventController eventController;
+
     private bool wasPauseBefore;
 
     public bool IsPaused { get { return this.paused; } }
@@ -76,6 +78,13 @@ public class PanelTime : MonoBehaviour
         if (MenuControler.isInMenu == true) return;
 
         if (PanelControler.isPopupOpen == true) return;
+
+        if(EventController.isEventRunning)
+        {
+            eventController.Maximaze();
+            return;
+        }
+
 
         if (forcePause) 
         {

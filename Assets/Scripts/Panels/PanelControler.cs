@@ -11,11 +11,12 @@ public class PanelControler : MonoBehaviour
     [SerializeField] EventController eventControler;
     [SerializeField] WindowMissionController missionWindowControler;
     [SerializeField] GameObject missionShowMissionPanel;
-    [SerializeField] GameObject map;
-    [SerializeField] Button mapButton;
+    //[SerializeField] GameObject map;
+    //[SerializeField] Button mapButton;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
     [Space]
     [SerializeField] GameObject blocker;
+    [SerializeField] GameObject blockerMap;
 
     static public bool isPopupOpen = false;
 
@@ -25,8 +26,8 @@ public class PanelControler : MonoBehaviour
         SetActiveAll(false);
         panels[0].transform.parent.gameObject.SetActive(true);
 
-        mapButton.onClick.RemoveAllListeners();
-        mapButton.onClick.AddListener(()=> OpenMap());
+        //mapButton.onClick.RemoveAllListeners();
+        //mapButton.onClick.AddListener(()=> OpenMap());
     }
 
     // Update is called once per frame
@@ -54,15 +55,22 @@ public class PanelControler : MonoBehaviour
 
         foreach (var item in panels)
         {
-            if(item.activeSelf == true)
+            if (item.activeSelf == true)
             {
-                blocker.SetActive(true);
+                if (currentPanel != 3)
+                {
+                    blocker.SetActive(true);
+                    blockerMap.SetActive(false);
+                }
+                else
+                    blockerMap.SetActive(true);
+
                 CameraMovement.MovementAllEnable(false);
                 return;
             }
             else
             {
-                
+                blockerMap.SetActive(false);
                 blocker.SetActive(false);
                 CameraMovement.MovementAllEnable(true);
             }
@@ -98,13 +106,19 @@ public class PanelControler : MonoBehaviour
                 return;
 
 
-            if (map.activeSelf)
+            //if (map.activeSelf)
+            //{
+            //    map.SetActive(false);
+            //    return;
+            //}
+
+            DisableAllPanels();
+
+            if (!menuControler.IsMenuPanelActive)
             {
-                map.SetActive(false);
+                menuControler.ActivateMenu();
                 return;
             }
-                
-            DisableAllPanels();
         }
     }
 
@@ -157,15 +171,15 @@ public class PanelControler : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OpenMap()
-    {
-        if (map.activeSelf)
-        {
-            map.SetActive(false);
-            return;
-        }
+    //private void OpenMap()
+    //{
+    //    if (map.activeSelf)
+    //    {
+    //        map.SetActive(false);
+    //        return;
+    //    }
             
-        map.SetActive(true);
-    }
+    //    map.SetActive(true);
+    //}
 
 }

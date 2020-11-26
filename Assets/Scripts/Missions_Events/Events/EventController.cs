@@ -36,6 +36,8 @@ public class EventController : MonoBehaviour
 
     #region Public Methods
 
+
+
     public void EventTrigered(Mission mission)
     {
         // choise Random Event..
@@ -59,7 +61,6 @@ public class EventController : MonoBehaviour
         eventPanel.AmountCharacterSelectedText.text = "";
 
         eventBlocker.SetActive(true);
-
         this.eventPanel.gameObject.SetActive(true);
 
         LoadEventSteps(output, mission);
@@ -224,6 +225,7 @@ public class EventController : MonoBehaviour
             TimeControl.IsTimeBlocked = false;
             
             eventBlocker.SetActive(false);
+            isEventRunning = false;
         }
     }
 
@@ -399,7 +401,8 @@ public class EventController : MonoBehaviour
 
     public void Maximaze()
     {
-
+        this.eventBlocker.SetActive(true);
+        this.eventPanel.gameObject.SetActive(true);
     }
 
     #endregion

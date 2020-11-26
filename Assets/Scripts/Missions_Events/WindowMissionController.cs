@@ -51,7 +51,7 @@ public class WindowMissionController : MonoBehaviour
         switch (this.state)
         {
             case MissionPanelState.normal:
-                uWindowShowMission.ButtonStartText = "Zacit missi";
+                uWindowShowMission.ButtonStartText = "Zacit misi";
                 break;
             case MissionPanelState.inRepeatTime:
                 if (currentMission != null)
