@@ -27,6 +27,7 @@ public class MissionController : MonoBehaviour
     private MissionNotificationManager notificationMissionManager;
 
 
+
     
 
     private void Awake()
@@ -34,6 +35,8 @@ public class MissionController : MonoBehaviour
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
         this.notificationMissionManager = GameObject.FindObjectOfType<MissionNotificationManager>();
+
+        EventController.OnEventEnd += RemoveNotification;
     }
 
 
@@ -223,6 +226,12 @@ public class MissionController : MonoBehaviour
             }
         }
 
+    }
+
+    // event 
+    private void RemoveNotification(Mission mission)
+    {
+        this.notificationMissionManager.DestroyNotification(mission);
     }
 
     public bool IsMissionInProgress(string missionPointer)

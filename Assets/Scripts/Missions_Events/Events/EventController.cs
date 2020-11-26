@@ -9,6 +9,8 @@ public class EventController : MonoBehaviour
 {
     static public bool isEventRunning = false;
 
+    public static event Action<Mission> OnEventEnd = delegate { };
+
     [SerializeField] public EventManager eventManager;
 
     [SerializeField] EventPanel eventPanel;
@@ -223,7 +225,7 @@ public class EventController : MonoBehaviour
             RemoveCharactersGameObjectFromEvent();
             this.eventPanel.gameObject.SetActive(false);
             TimeControl.IsTimeBlocked = false;
-            
+            OnEventEnd.Invoke(mission);
             eventBlocker.SetActive(false);
             isEventRunning = false;
         }

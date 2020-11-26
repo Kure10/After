@@ -20,42 +20,63 @@ public class MissionNotificationManager : MonoBehaviour
     [SerializeField]
     private Transform NotificationHolder;
 
-    private List<Notification> impendingNotification = new List<Notification>();
+    [SerializeField]
+    private EventController eventController;
+
+    //private List<Notification> notificationList = new List<Notification>();
+
+    private Dictionary<GameObject, Notification> notificationDictionary = new Dictionary<GameObject, Notification>(); 
 
 
+    // ToDo  je to teprve prvni pokus pro notificace
     public void CreateNewNotification(Mission currentMission)
     {
-        Notification not = new Notification(NotificationType.Event); // tohle je huste nedodelane..
-                                                                     // not.subTittle = currentEvent;
+        Notification not = new Notification(NotificationType.Event, currentMission.Id);
+                                                                     
 
-        GameObject notification = Instantiate(NotificationPrefab, NotificationHolder.position, Quaternion.identity);
-        uWindowMissionNotification windowSettings = notification.GetComponent<uWindowMissionNotification>();
+        GameObject goNotification = Instantiate(NotificationPrefab, NotificationHolder.position, Quaternion.identity);
+        uWindowMissionNotification windowSettings = goNotification.GetComponent<uWindowMissionNotification>();
 
         if (windowSettings == null)
             return;
+
         windowSettings.Tittle.text = not.tittle;
         windowSettings.SubTittle.text = not.subTittle;
 
         /* buttons */
-        windowSettings.ButtonOne.onClick.AddListener(() => OpenMissionPanel(currentMission.Id)) ;
+        windowSettings.ButtonOne.onClick.AddListener(() => OpenEventPanel(currentMission.Id)) ;
 
         // Set parrent and Reset Scale.
-        notification.transform.SetParent(NotificationHolder);
-        notification.transform.localScale = new Vector3(1, 1, 1);
+        goNotification.transform.SetParent(NotificationHolder);
+        goNotification.transform.localScale = new Vector3(1, 1, 1);
+
+        notificationDictionary.Add(goNotification, not);
+
+    }
+
+    public void DestroyNotification(Mission mission)
+    {
+        GameObject foundedNotification = null;
+
+        foreach (KeyValuePair<GameObject, Notification> item in notificationDictionary)
+        {
+            if (mission.Id == item.Value.id)
+            {
+                foundedNotification = item.Key;
+                Destroy(item.Key);
+            }
+        }
+
+        if (foundedNotification != null && notificationDictionary.ContainsKey(foundedNotification))
+            notificationDictionary.Remove(foundedNotification);
 
     }
 
     /*Events*/
 
-    public void OpenMissionPanel(long missionID)
+    public void OpenEventPanel(long missionID)
     {
-
-    }
-
-
-    private void Start()
-    {
-
+        eventController.Maximaze();
     }
 
 }
@@ -66,7 +87,8 @@ public enum NotificationType { Specialist , Event , Building} // jeden pro každ
 public class Notification
 {
     #region Fields
-    private bool isBlockingTime;
+
+    public long id;
 
     private NotificationType type;
 
@@ -77,8 +99,10 @@ public class Notification
     #endregion
 
     #region Construktor
-    public Notification(NotificationType type)
+    public Notification(NotificationType type, long _id)
     {
+        id = _id;
+
         switch (type)
         {
             case NotificationType.Building:
