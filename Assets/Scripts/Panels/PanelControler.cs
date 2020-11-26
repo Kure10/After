@@ -7,11 +7,17 @@ public class PanelControler : MonoBehaviour
 {
     [SerializeField] PanelTime time;
     [SerializeField] GameObject cheatPanel;
+    [SerializeField] MenuControler menuControler;
+    [SerializeField] EventController eventControler;
+    [SerializeField] WindowMissionController missionWindowControler;
+    [SerializeField] GameObject missionShowMissionPanel;
     [SerializeField] GameObject map;
     [SerializeField] Button mapButton;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
     [Space]
-    [SerializeField] GameObject block;
+    [SerializeField] GameObject blocker;
+
+    static public bool isPopupOpen = false;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +41,12 @@ public class PanelControler : MonoBehaviour
 
         if (panels[currentPanel].activeSelf == true)
         {
-            time.Pause();
+            time.UnpauseGame(fromPopup: true);
             panels[currentPanel].SetActive(false);
         }
         else
         {
+            time.PauseGame(intoPopup: true);
             SetActiveAll(false);
             panels[currentPanel].SetActive(true);
         }
@@ -49,15 +56,14 @@ public class PanelControler : MonoBehaviour
         {
             if(item.activeSelf == true)
             {
-                time.Pause();
-                block.SetActive(true);
+                blocker.SetActive(true);
                 CameraMovement.MovementAllEnable(false);
                 return;
             }
             else
             {
                 
-                block.SetActive(false);
+                blocker.SetActive(false);
                 CameraMovement.MovementAllEnable(true);
             }
         }
@@ -66,26 +72,58 @@ public class PanelControler : MonoBehaviour
 
     public void KeyControl ()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             CameraMovement.MovementAllEnable(true);
 
-            foreach (var item in panels)
+            if (EventController.isEventRunning && eventControler.GetEventPanel.activeSelf)
             {
-                if(item.activeSelf)
-                {
-                    time.Pause();
-                    block.SetActive(false);
-                    break;
-                }
+                eventControler.Minimaze();
+                return;
             }
 
+            if (menuControler.IsMenuPanelActive)
+            {
+                menuControler.DisableMenu();
+                return;
+            }
+
+            if (missionShowMissionPanel.activeSelf)
+            {
+                missionWindowControler.DisableShowMissionPanel();
+                return;
+            }
+
+            if (IsPopupActive())
+                return;
+
+
             if (map.activeSelf)
+            {
                 map.SetActive(false);
-
-
+                return;
+            }
+                
             DisableAllPanels();
         }
+    }
+
+    private bool IsPopupActive()
+    {
+        bool isActive = false;
+
+        for (int i = 0; i < panels.Count; i++)
+        {
+            GameObject item = panels[i];
+
+            if (item.activeSelf)
+            {
+                TurnOn(i);
+                isActive = true;
+            }
+        }
+
+        return isActive;
     }
 
     public void DisableAllPanels()

@@ -79,7 +79,7 @@ public class MissionManager : MonoBehaviour
 
         theMC.windowMissionController.SetActivePanel(true);
         theMC.windowMissionController.ActivateBlocker();
-        this.time.Pause();
+        this.time.PauseGame(intoPopup: true);
 
     }
 

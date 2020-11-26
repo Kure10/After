@@ -16,6 +16,8 @@ public class PanelTime : MonoBehaviour
     private bool paused;
     private float blinkingTime = 0f;
 
+    private bool wasPauseBefore;
+
     public bool IsPaused { get { return this.paused; } }
     private int timeStatus
     {
@@ -73,7 +75,9 @@ public class PanelTime : MonoBehaviour
     {
         if (MenuControler.isInMenu == true) return;
 
-        if (forcePause)
+        if (PanelControler.isPopupOpen == true) return;
+
+        if (forcePause) 
         {
             blinkingTime = 0;
             paused = true;
@@ -93,8 +97,64 @@ public class PanelTime : MonoBehaviour
         }
         else
         {
-
             TimeControl.SetTime(timeStatus + 1);
+            wasPauseBefore = false;
+        }
+    }
+
+    public void PauseGame(bool intoMenu = false, bool intoPopup = false)
+    {
+        if(intoMenu)
+            MenuControler.isInMenu = true;
+
+        if(!PanelControler.isPopupOpen && IsPaused)
+            wasPauseBefore = true;
+
+        if (intoPopup)
+            PanelControler.isPopupOpen = true;
+
+        if (TimeControl.IsTimeBlocked)
+            return;
+
+        if (IsPaused)
+        {
+            if (PanelControler.isPopupOpen)
+                return;
+
+            wasPauseBefore = true;
+        }
+        else
+        {
+            TimeControl.SetTime(0);
+            paused = true;
+        }
+    }
+
+    public void UnpauseGame(bool fromMenu = false, bool fromPopup = false)
+    {
+        if (fromMenu)
+            MenuControler.isInMenu = false;
+
+        if (fromPopup)
+            PanelControler.isPopupOpen = false;
+
+        if (MenuControler.isInMenu || PanelControler.isPopupOpen || TimeControl.IsTimeBlocked)
+            return;
+
+
+
+        if (IsPaused)
+        {
+            if(wasPauseBefore)
+            {
+                this.paused = true;
+            }
+            else
+            {
+                TimeControl.SetTime(timeStatus + 1);
+                this.paused = false;
+                wasPauseBefore = false;
+            }
         }
     }
 
@@ -122,6 +182,7 @@ public class PanelTime : MonoBehaviour
             TimeControl.SetTime(timeStatus + 1);
         }
     }
+
     private int timeRemain = 0;
     private void TimeChanged(int timePoints)
     {
@@ -157,7 +218,6 @@ public class PanelTime : MonoBehaviour
 
     private void DisplayStatus(int speed)
     {
-
         speedStatus.text = listOfTimeStatus[speed];
     }
     private void CheckInput()

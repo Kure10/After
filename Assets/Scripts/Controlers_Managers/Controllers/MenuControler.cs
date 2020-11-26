@@ -18,6 +18,8 @@ public class MenuControler : MonoBehaviour
 
     static public bool isInMenu = false;
 
+    public bool IsMenuPanelActive { get { return menuPanel.activeSelf; } }
+
     private void Awake()
     {
         hotKeysButton.onClick.RemoveAllListeners();
@@ -35,16 +37,14 @@ public class MenuControler : MonoBehaviour
 
     public void DisableMenu()
     {
-        MenuControler.isInMenu = false;
-        time.Pause();
+        time.UnpauseGame(fromMenu: true);
         menuPanel.SetActive(false);
         blockPanel.SetActive(false); 
     }
 
     public void ActivateMenu()
     {
-        time.Pause();
-        MenuControler.isInMenu = true;
+        time.PauseGame(intoMenu: true);
         menuPanel.SetActive(true);
         blockPanel.SetActive(true);
     }

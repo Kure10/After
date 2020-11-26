@@ -15,7 +15,8 @@ public class TimeControl : MonoBehaviour
 
     #region Properities
 
-    public static bool IsTimeBlocked { 
+    public static bool IsTimeBlocked 
+    { 
         get { return isTimeBlocked; } 
         set { 
             if (isTimeBlocked = value)

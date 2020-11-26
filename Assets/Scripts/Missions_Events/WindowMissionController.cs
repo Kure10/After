@@ -41,9 +41,9 @@ public class WindowMissionController : MonoBehaviour
 
     private void Awake()
     {
-        var button = uWindowShowMission.GetCloseMissionButton;
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(DisableShowMissionPanel);
+        var closeButton = uWindowShowMission.GetCloseMissionButton;
+        closeButton.onClick.RemoveAllListeners();
+        closeButton.onClick.AddListener(DisableShowMissionPanel);
     }
 
     public void OnEnable()
@@ -307,7 +307,7 @@ public class WindowMissionController : MonoBehaviour
     {
 
         this.theSC.MoveSpecialistToMission(this.charactersReadyToMission);
-        time.Pause();
+        time.UnpauseGame(fromPopup: true);
         this.DisableBlocker();
 
         return this.charactersReadyToMission;
@@ -396,9 +396,14 @@ public class WindowMissionController : MonoBehaviour
         uWindowShowMission.SetActivityMissionPanel = value;
     }
 
-    private void DisableShowMissionPanel()
+    public void DisableShowMissionPanel()
     {
-        if (uWindowSpecSelection.IsWindowActive) return;        
+        if (uWindowSpecSelection.IsWindowActive)
+        {
+            BackButton();
+            return;
+        }
+                
         
         foreach (Character character in this.charactersReadyToMission)
         {
@@ -413,7 +418,7 @@ public class WindowMissionController : MonoBehaviour
         this.charactersReadyToMission.Clear();
 
         this.DisableBlocker();
-        time.Pause();
+        time.UnpauseGame(fromPopup: true);
     }
 
 

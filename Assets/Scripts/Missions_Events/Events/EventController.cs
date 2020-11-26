@@ -26,6 +26,8 @@ public class EventController : MonoBehaviour
     private bool finalTestResult = false;
     private TestCase tCase;
 
+    public GameObject GetEventPanel { get { return this.eventPanel.gameObject; } }
+
     public void Awake()
     {
         eventPanel.GetMinimizeButton.onClick.RemoveAllListeners();
@@ -220,6 +222,7 @@ public class EventController : MonoBehaviour
             RemoveCharactersGameObjectFromEvent();
             this.eventPanel.gameObject.SetActive(false);
             TimeControl.IsTimeBlocked = false;
+            
             eventBlocker.SetActive(false);
         }
     }
