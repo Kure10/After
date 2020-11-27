@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Buildings;
 using Resources;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -342,6 +343,19 @@ public class ResourceManager : MonoBehaviour
             {
                 smallestSteps = steps;
                 cheapest = position;
+            }
+        }
+
+        if (smallestSteps == int.MaxValue)
+        {
+            //try warehouses
+            foreach (var box in res.Where(r => r is Warehouse))
+            {
+                var warehouse = (Warehouse) box;
+                if (warehouse.State == Building.BuildingState.Build)
+                {
+                    //
+                }
             }
         }
         return cheapest;
