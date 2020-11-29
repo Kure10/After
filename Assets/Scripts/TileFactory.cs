@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Microsoft.Win32;
 using Resources;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +32,7 @@ public class TileFactory : MonoBehaviour
         occupiedTiles = new List<Vector2Int>();
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         grid = CreateGrid();
+        UpdateFog();
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
         specControler.CreateStartingCharacters(specPosition);
 
@@ -62,6 +61,40 @@ public class TileFactory : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void UpdateFog()
+    {
+        var columns = grid.GetUpperBound(0);
+        var rows = grid.Length / columns - 1;
+        for (int x = 0; x < columns ; x++)
+        {
+            for (int y = 0; y < rows ; y++)
+            {
+                if (grid[x, y] is DebrisTile d)
+                {
+                    bool found = false;
+                    //check if any of neighbourhood's tiles is empty tile - if so, remove the fog
+                    for (int x2 = -1; x2 <= 1; x2++)
+                    {
+                        for (int y2 = -1; y2 <= 1; y2++)
+                        {
+                            if (x + x2 < 0) continue;
+                            if (y + y2 < 0) continue;
+                            if (x + x2 > columns) continue;
+                            if (y + y2 > rows) continue;
+                            if (grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
+                            {
+                                d.tile.gameObject.transform.Find("Fog").transform.gameObject.SetActive(false);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) break;
+                    }
+                }
+            }
+        }
     }
 
     public bool IsOccupied(Vector2Int coord)
@@ -109,8 +142,8 @@ public class TileFactory : MonoBehaviour
 
     BaseTile[,] CreateGrid()
     {
-        var lines = level.text.Split(new string[] {System.Environment.NewLine},
-            System.StringSplitOptions.RemoveEmptyEntries);
+        var lines = level.text.Split(new[] {Environment.NewLine},
+            StringSplitOptions.RemoveEmptyEntries);
         var checkedLines = new List<string>();
         var tempGrid = new List<List<BaseTile>>();
         int x = 0;
@@ -305,6 +338,7 @@ public class TileFactory : MonoBehaviour
     public void ClearDebris(int col, int row)
     {
         grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
+        UpdateFog();
     }
     public bool Buildable(Vector2Int coord)
     {
@@ -386,7 +420,7 @@ public class TileFactory : MonoBehaviour
                         continue;
                     if (grid[startPoint.x + x, startPoint.y + y] is Tile t)
                     {
-                        if (t.building == null && t.inside == true)
+                        if (t.building == null && t.inside)
                         {
                             var empty = true;
                             var candidate = new Vector2Int(t.x, t.y);
