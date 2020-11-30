@@ -39,6 +39,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7153330929911868009}
     m_Modifications:
+    - target: {fileID: 5228551353868421604, guid: fdb6f7227700a774da53d2ad0b0eddc3,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d040deb20a6a1e478a0ac432cc19f16, type: 2}
     - target: {fileID: 5815094681811631416, guid: fdb6f7227700a774da53d2ad0b0eddc3,
         type: 3}
       propertyPath: m_Name
@@ -109,11 +114,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 100.00054
       objectReference: {fileID: 0}
-    - target: {fileID: 5228551353868421604, guid: fdb6f7227700a774da53d2ad0b0eddc3,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2d040deb20a6a1e478a0ac432cc19f16, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdb6f7227700a774da53d2ad0b0eddc3, type: 3}
 --- !u!4 &8940895768879605240 stripped
@@ -129,9 +129,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7153330929911868009}
     m_Modifications:
+    - target: {fileID: 139622, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 149628, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
       propertyPath: m_Name
       value: Studna_MV
+      objectReference: {fileID: 0}
+    - target: {fileID: 149628, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 168998, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 180690, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 412780, guid: 924119014c1df86449c1b61bad3c7bd1, type: 3}
       propertyPath: m_LocalPosition.x
