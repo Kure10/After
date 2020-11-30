@@ -263,7 +263,7 @@ public class StatsClass
         return obj;
     }
     // Type to string
-    private object XmlToVal(object val, string typ)
+    public static object XmlToVal(object val, string typ)
     {
         try
         {
@@ -595,12 +595,7 @@ public class StatsClass
     public StatsClass GetDataRead(string key)
     {
         object obj = GetStat(key);
-        if (obj != null && obj is StatsClass)
-        {
-            StatsClass nstat = new StatsClass(key);
-            nstat.AddStats((StatsClass)obj);
-            return nstat;
-        }
+        if (obj != null && obj is StatsClass) return new StatsClass((StatsClass)obj);
         return new StatsClass();
     }
     // Get list of all dynamic effects nested under key
@@ -727,7 +722,7 @@ public class StatsClass
         w.Write((byte)14);
     }
     // Load binary data file
-    public static Dictionary<string, StatsClass> LoadBinaryFile(string filepath, string filename)
+    public static Dictionary<string, StatsClass> LoadBinaryFile(string filepath, string filename, bool logs = true)
     {
         float cas = Time.realtimeSinceStartup;
         Dictionary<string, StatsClass> ret = null;
@@ -736,53 +731,56 @@ public class StatsClass
         {
             // Read file
             string finalpath = string.Format("{0}/{1}.bytes", filepath, filename);
-            //string finalpath = string.Format("{0}/{1}", filepath, filename);
-            using (FileStream stream = File.Open(finalpath, FileMode.Open))
+            if (File.Exists(finalpath))
             {
-                using (BinaryReader r = new BinaryReader(stream, Encoding.UTF8))
+                using (FileStream stream = File.Open(finalpath, FileMode.Open))
                 {
-                    try { ret = ReadBytes(r); }
-                    catch (Exception e) { if (Application.isEditor) Debug.LogError(e.Message); }
+                    using (BinaryReader r = new BinaryReader(stream, Encoding.UTF8))
+                    {
+                        try { ret = ReadBytes(r); }
+                        catch (Exception e) { if (Application.isEditor) Debug.LogError(e.Message); }
+                    }
                 }
             }
         }
         // Log
-        if (Application.isEditor) Debug.Log(string.Format("Loaded binary file [{0}] in {1:0.0000}s", filename, Time.realtimeSinceStartup - cas));
+        if (Application.isEditor && logs) Debug.Log(string.Format("Loaded binary file [{0}] in {1:0.0000}s", filename, Time.realtimeSinceStartup - cas));
         return ret;
     }
     // Load xml data file
-    public static Dictionary<string, StatsClass> LoadXmlFile(string filepath, string filename)
+    public static Dictionary<string, StatsClass> LoadXmlFile(string filepath, string filename, bool logs = true)
     {
         float cas = Time.realtimeSinceStartup;
         XDocument doc = null;
         Dictionary<string, StatsClass> rets = new Dictionary<string, StatsClass>();
         try
         {
-            // Read file
-            using (FileStream stream = File.Open(string.Format("{0}/{1}.xml", filepath, filename), FileMode.Open))
+            string finalpath = string.Format("{0}/{1}.xml", filepath, filename);
+            if (File.Exists(finalpath))
             {
-                using (TextReader reader = new StreamReader(stream)) doc = XDocument.Load(reader);
-            }
-            // Parse xml document
-            XElement elm2 = doc.Element("DataRoot");
-            XAttribute tit = elm2.Attribute("n");
-            string grp = (tit != null) ? tit.Value : "";
-            foreach (XElement el in elm2.Elements())
-            {
-                StatsClass dat = new StatsClass(el, grp);
-                rets.Add(dat.Title, dat);
+                // Read file
+                using (FileStream stream = File.Open(finalpath, FileMode.Open))
+                {
+                    using (TextReader reader = new StreamReader(stream)) doc = XDocument.Load(reader);
+                }
+                // Parse xml document
+                XElement elm2 = doc.Element("DataRoot");
+                XAttribute tit = elm2.Attribute("n");
+                string grp = (tit != null) ? tit.Value : "";
+                foreach (XElement el in elm2.Elements())
+                {
+                    StatsClass dat = new StatsClass(el, grp);
+                    rets.Add(dat.Title, dat);
+                }
             }
         }
-        catch (Exception e)
-        {
-            if (Application.isEditor) Debug.LogError(e.Message);
-        }
+        catch (Exception e) { if (Application.isEditor) Debug.LogError(e.Message); }
         // Log
-        if (Application.isEditor) Debug.Log(string.Format("Loaded XML file [{0}] in {1:0.0000}s", filename, Time.realtimeSinceStartup - cas));
+        if (Application.isEditor && logs) Debug.Log(string.Format("Loaded XML file [{0}] in {1:0.0000}s", filename, Time.realtimeSinceStartup - cas));
         return rets;
     }
     // Load binary data file
-    public static Dictionary<string, StatsClass> LoadBinaryAsset(TextAsset txt)
+    public static Dictionary<string, StatsClass> LoadBinaryAsset(TextAsset txt, bool logs = true)
     {
         float cas = Time.realtimeSinceStartup;
 
@@ -794,7 +792,7 @@ public class StatsClass
             catch (Exception e) { if (Application.isEditor) Debug.LogError(e.Message); }
         }
         // Log
-        if (Application.isEditor) Debug.Log(string.Format("Loaded binary asset [{0}] in {1:0.0000}s", ret != null ? txt.name : "", Time.realtimeSinceStartup - cas));
+        if (Application.isEditor && logs) Debug.Log(string.Format("Loaded binary asset [{0}] in {1:0.0000}s", ret != null ? txt.name : "", Time.realtimeSinceStartup - cas));
         return ret;
     }
     // Data from binary

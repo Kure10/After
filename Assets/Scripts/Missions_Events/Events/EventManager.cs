@@ -16,11 +16,6 @@ public class EventManager : MonoBehaviour
 
         allEvents = xmlLoader.GetEventsFromXML();
 
-        //resolveMaster.ResolveAction
-        ////
-        //resolveMaster.ResolveCondition += OnResolveCondition; //když je podminka.
-        ////
-        //resolveMaster.ResolveAction += OnResolveCondition; // je neco oznacene jako chovani akce..
     }
 
     public StatsClass ChoiseRandomEvent(int minDifficulty, int maxDifficulty, List<Terrain> occurringTerrains)

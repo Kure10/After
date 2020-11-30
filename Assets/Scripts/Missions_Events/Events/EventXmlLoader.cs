@@ -18,15 +18,12 @@ public class EventXmlLoader : MonoBehaviour
     {
         List<StatsClass> XMLLoadedEvents = new List<StatsClass>();
         List<StatsClass> XMLAdditionalEventsInformation = new List<StatsClass>();
-        // List<EventBlueprint> allEvents = new List<EventBlueprint>();
 
         var manager = GetComponent<EventManager>();
 
         string path = "Assets/Data/XML";
         string fileName = "Events";
         string fileNameCZ = "Events-CZ";
-
-        // ResolveMaster resolveMaster = new ResolveMaster();
 
         Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
         manager.resolveMaster.AddDataNode(fileName, firstData);

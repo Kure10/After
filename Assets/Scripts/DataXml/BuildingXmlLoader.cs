@@ -4,7 +4,7 @@ using System.Linq;
 using ResolveMachine;
 using UnityEngine;
 
-public class BuildingXmlLoader : MonoBehaviour
+public class BuildingXmlLoader
 {
     public List<BuildingBlueprint> GetBuildingsFromXML()
     {
@@ -35,11 +35,6 @@ public class BuildingXmlLoader : MonoBehaviour
         XMLLoadedData = resolveMaster.GetDataKeys(fileName);
 
         allBuildings = DeSerializedData(XMLLoadedData);
-
-        //ResolveSlave slave = resolveMaster.AddDataSlave("Rooms", resolveMaster.GetDataKeys("Rooms")[0].Title);
-        ////slave = resolveMaster.AddDataSlave("Missions", resolveMaster.GetDataKeys("Missions")[1].Title);
-        //slave.StartResolve();
-        //var output = slave.Resolve();
 
         return allBuildings;
     }
@@ -93,7 +88,7 @@ public class BuildingXmlLoader : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
+              //  Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
             }
 
             

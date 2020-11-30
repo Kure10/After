@@ -13,27 +13,38 @@ namespace ResolveMachine
         public Func<string, StatsClass, bool> ResolveAction;
         #pragma warning restore 0649
 
+        public bool DetailLogs = false;
         public Dictionary<string, decimal> Counters = new Dictionary<string, decimal>();
         public Dictionary<string, string> Texts = new Dictionary<string, string>();
         public List<string> _gates = new List<string>();
         private Dictionary<string, ResolveData> _datas = new Dictionary<string, ResolveData>();
 
+        // Get data
+        internal ResolveData GetResolveData(string datname)
+        {
+            return (_datas.ContainsKey(datname)) ? _datas[datname] : null;
+        }
         // Add new editor data to resolve
         internal void AddDataNode(string dataname, Dictionary<string, StatsClass> data)
         {
             ResolveData rd = new ResolveData(this, dataname, data);
             _datas.Add(dataname, rd);
             // Log
-            if (Application.isEditor) Debug.Log(string.Format("MASTER [{0}]: Initialized {1} nodes with {2} behaviors!", dataname, rd.DataCount, rd.BehaviorCount));
+            if (Application.isEditor && DetailLogs) Debug.Log(string.Format("MASTER [{0}]: Initialized {1} nodes with {2} behaviors!", dataname, rd.DataCount, rd.BehaviorCount));
         }
         internal void ModifyDataNode(string dataname, Dictionary<string, StatsClass> data)
         {
+            if (data == null) return;
             if (_datas.ContainsKey(dataname))
             {
                 _datas[dataname].ModifyData(data);
                 // Log
-                if (Application.isEditor) Debug.Log(string.Format("MASTER [{0}]: Modified {1} nodes!", dataname, data.Count));
+                if (Application.isEditor && DetailLogs) Debug.Log(string.Format("MASTER [{0}]: Modified {1} nodes!", dataname, data.Count));
             }
+        }
+        internal void AllowLoops(string dataname)
+        {
+            if (_datas.ContainsKey(dataname)) _datas[dataname].AllowLoops = true;
         }
         internal List<StatsClass> GetDataKeys(string dataname)
         {
@@ -44,10 +55,28 @@ namespace ResolveMachine
         {
             return (_datas.ContainsKey(dataname)) ? _datas[dataname].InitSlave(keyname) : null;
         }
+        // Add new data resolver to data node
+        internal void KillSlave(string dataname, ResolveSlave slave)
+        {
+            if (_datas.ContainsKey(dataname)) _datas[dataname].KillSlave(slave);
+        }
+        // Add new data resolver to data node
+        internal void KillAllSlaves(string dataname, string keyname)
+        {
+            if (_datas.ContainsKey(dataname)) _datas[dataname].KillSlaves(keyname);
+        }
         internal bool GetCondition(StatsClass data, string title)
         {
             bool? ret = ResolveCondition?.Invoke(title, data);
             return ret.HasValue && ret.Value;
+        }
+        internal string GetText(string key)
+        {
+            return (Texts.ContainsKey(key)) ? Texts[key] : "";
+        }
+        internal decimal GetCounter(string key)
+        {
+            return Counters.ContainsKey(key) ? Counters[key] : 0m;
         }
         // Export state data
         internal StatsClass ExportState()
@@ -99,6 +128,8 @@ namespace ResolveMachine
         private Dictionary<int, bool[]> _behav = new Dictionary<int, bool[]>();
         private Dictionary<string, StatsClass> _fulldata = new Dictionary<string, StatsClass>();
         private List<ResolveSlave> _slaves = new List<ResolveSlave>();
+        public bool DetailLogs { get { return _rm != null && _rm.DetailLogs; } }
+        public bool AllowLoops { get; set; }
 
         internal int DataCount { get { return _fulldata.Count; } }
         internal int BehaviorCount { get { return _behav.Count; } }
@@ -139,7 +170,7 @@ namespace ResolveMachine
         {
             if (_fulldata.ContainsKey(keyname))
             {
-                ResolveSlave newslave = new ResolveSlave(this, _fulldata[keyname]);
+                ResolveSlave newslave = new ResolveSlave(this, new StatsClass(_fulldata[keyname]));
                 _slaves.Add(newslave);
                 return newslave;
             }
@@ -195,7 +226,7 @@ namespace ResolveMachine
         }
         internal decimal GetCounter(string key)
         {
-            return _rm.Counters.ContainsKey(key) ? _rm.Counters[key] : 0m; 
+            return _rm.GetCounter(key);
         }
         // Texts
         internal void AddText(string key, string val)
@@ -205,7 +236,7 @@ namespace ResolveMachine
         }
         internal string GetText(string key)
         {
-            return _rm.Texts.ContainsKey(key) ? _rm.Texts[key] : "";
+            return _rm.GetText(key);
         }
         // Gate handling
         internal bool GetGate(int node)
@@ -219,6 +250,88 @@ namespace ResolveMachine
             _slaves = new List<ResolveSlave>();
             _fulldata = new Dictionary<string, StatsClass>();
             _behav = new Dictionary<int, bool[]>();
+        }
+        internal bool ResolveGate(StatsClass data, Dictionary<int, int> _gates = null)
+        {
+            bool nxt = false;
+            int node = Convert.ToInt32(data.Title);
+            string ityp = data.GetStrStat("GT");
+            // Key Existence
+            if (ityp == "G0")
+            {
+                nxt = HasKey(data.GetStrStat("Var")) == data.GetBoolStat("Ex");
+            }
+            // Counters
+            else if (ityp == "G1")
+            {
+                string op = data.GetStrStat("O");
+                // Value 1 - Counter
+                decimal val1 = GetCounter(data.GetStrStat("Cnt"));
+                // Value 2 - Counter or constant value
+                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(data.GetStrStat("Cnt2"));
+                // Equal
+                if (op == "Oe") nxt = val1 == val2;
+                // Not equal
+                else if (op == "On") nxt = val1 != val2;
+                // Not equal or greater than
+                else if (op == "Oeg") nxt = val1 >= val2;
+                // Not equal or less than
+                else if (op == "Oel") nxt = val1 <= val2;
+                // Greater than
+                else if (op == "Og") nxt = val1 > val2;
+                // Less than
+                else if (op == "Ol") nxt = val1 < val2;
+            }
+            // Only once
+            else if (ityp == "G4")
+            {
+                nxt = !GetGate(node);
+                if (nxt) AddGate(node);
+            }
+            // Random
+            else if (ityp == "G2")
+            {
+                float dice = UnityEngine.Random.value;
+                nxt = dice < data.GetNumStat("Rng") * 0.01f;
+            }
+            // Watcher
+            else if (ityp == "G3" && _gates != null)
+            {
+                if (_gates.ContainsKey(node)) _gates[node]++; else _gates.Add(node, 1);
+                int p = data.GetIntStat("Con");
+                int g = _gates[node];
+                nxt = g >= p;
+            }
+            return nxt;
+        }
+        internal void ResolveFunction(StatsClass data)
+        {
+            string ityp = data.GetStrStat("GT");
+            // Key Existence
+            if (ityp == "G0")
+            {
+                AddText(data.GetStrStat("Var"), data.GetStrStat("Txt"));
+            }
+            // Counters
+            else if (ityp == "G1")
+            {
+                string op = data.GetStrStat("O");
+                // Value 1 - Counter
+                string cntr = data.GetStrStat("Cnt");
+                decimal val1 = GetCounter(cntr);
+                // Value 2 - Counter or constant value
+                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(data.GetStrStat("Cnt2"));
+                // Set
+                if (op == "Os") AddCounter(cntr, val2);
+                // Add
+                else if (op == "O+") AddCounter(cntr, val1 + val2);
+                // Subtract
+                else if (op == "O-") AddCounter(cntr, val1 - val2);
+                // Multiply
+                else if (op == "O*") AddCounter(cntr, val1 * val2);
+                // Divide
+                else if (op == "O:") AddCounter(cntr, val1 / val2);
+            }
         }
     }
     // Class to resolve specific data diagrams inside 
@@ -234,6 +347,8 @@ namespace ResolveMachine
         private List<int> _trueConds = new List<int>();
         private List<StatsClass> _todo = new List<StatsClass>();
         private Dictionary<int, int> _gates = new Dictionary<int, int>();
+        internal StatsClass GetHeader { get { return _header; } }
+        internal bool NoInternalResolve { get; set; }
 
         // Data key name
         internal string Keyname { get { return _header == null ? "" : _header.Title; } }
@@ -261,7 +376,7 @@ namespace ResolveMachine
             foreach (var g in new List<int>(_conns.Keys)) _conns[g] = _conns[g].OrderBy(x => x).ToList();
             _header.RemoveStat("$C");
             // Log
-            if (Application.isEditor) Debug.Log(string.Format("SLAVE [{0}]: Initialized {1} elements and {2} connections!", _header.Title, _elems.Count, _conns.Keys.Select(x => _conns[x].Count).Sum()));
+            if (Application.isEditor && _rd.DetailLogs) Debug.Log(string.Format("SLAVE [{0}]: Initialized {1} elements and {2} connections!", _header.Title, _elems.Count, _conns.Keys.Select(x => _conns[x].Count).Sum()));
         }
         // Is element added in TRUE conditions?
         internal bool IsTrue(int inx)
@@ -316,7 +431,7 @@ namespace ResolveMachine
                 int mstr = mymaster;
                 int typ = data.GetIntStat("$T");
                 // Check existence in output
-                bool exis = rets.Contains(data);
+                bool exis = !_rd.AllowLoops && rets.Contains(data);
                 bool add = !exis;
                 bool nxt = !exis;
                 bool frc = false;
@@ -353,90 +468,16 @@ namespace ResolveMachine
                 // Internal gate condition (add it to failed if fails)
                 else if (Is(typ, Behaviors.Gate))
                 {
-                    bool isfail = true;
-                    string ityp = data.GetStrStat("GT");
-
                     // Is true condition
-                    if (_trueConds.Contains(node)) nxt = true;
-                    // Key Existence
-                    else if (ityp == "G0")
-                    {
-                        nxt = _rd.HasKey(data.GetStrStat("Var")) == data.GetBoolStat("Ex");
-                    }
-                    // Counters
-                    else if (ityp == "G1")
-                    {
-                        string op = data.GetStrStat("O");
-                        // Value 1 - Counter
-                        decimal val1 = _rd.GetCounter(data.GetStrStat("Cnt"));
-                        // Value 2 - Counter or constant value
-                        decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : _rd.GetCounter(data.GetStrStat("Cnt2"));
-                        // Equal
-                        if (op == "Oe") nxt = val1 == val2;
-                        // Not equal
-                        else if (op == "On") nxt = val1 != val2;
-                        // Not equal or greater than
-                        else if (op == "Oeg") nxt = val1 >= val2;
-                        // Not equal or less than
-                        else if (op == "Oel") nxt = val1 <= val2;
-                        // Greater than
-                        else if (op == "Og") nxt = val1 > val2;
-                        // Less than
-                        else if (op == "Ol") nxt = val1 < val2;
-                    }
-                    // Only once
-                    else if (ityp == "G4")
-                    {
-                        nxt = !_rd.GetGate(node);
-                        if (nxt) _rd.AddGate(node);
-                    }
-                    // Random
-                    else if (ityp == "G2")
-                    {
-                        float dice = UnityEngine.Random.value;
-                        nxt = dice < data.GetNumStat("Rng") * 0.01f;
-                    }
-                    // Watcher
-                    else if (ityp == "G3")
-                    {
-                        if (_gates.ContainsKey(node)) _gates[node]++; else _gates.Add(node, 1);
-                        int p = data.GetIntStat("Con");
-                        int g = _gates[node];
-                        nxt = g == p;
-                        if (g > p) isfail = false;
-                    }
-                    if (!nxt && isfail) failed.Add(data);
+                    if (NoInternalResolve || _trueConds.Contains(node)) nxt = true;
+                    else nxt = _rd.ResolveGate(data, _gates);
+                    if (!nxt) failed.Add(data);
                     add = nxt;
                 }
                 // Internal function
                 else if (Is(typ, Behaviors.Function))
                 {
-                    string ityp = data.GetStrStat("GT");
-                    // Key Existence
-                    if (ityp == "G0")
-                    {
-                        _rd.AddText(data.GetStrStat("Var"), data.GetStrStat("Txt"));
-                    }
-                    // Counters
-                    else if (ityp == "G1")
-                    {
-                        string op = data.GetStrStat("O");
-                        // Value 1 - Counter
-                        string cntr = data.GetStrStat("Cnt");
-                        decimal val1 = _rd.GetCounter(cntr);
-                        // Value 2 - Counter or constant value
-                        decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : _rd.GetCounter(data.GetStrStat("Cnt2"));
-                        // Set
-                        if (op == "Os") _rd.AddCounter(cntr, val2);
-                        // Add
-                        else if (op == "O+") _rd.AddCounter(cntr, val1 + val2);
-                        // Subtract
-                        else if (op == "O-") _rd.AddCounter(cntr, val1 - val2);
-                        // Multiply
-                        else if (op == "O*") _rd.AddCounter(cntr, val1 * val2);
-                        // Divide
-                        else if (op == "O:") _rd.AddCounter(cntr, val1 / val2);
-                    }
+                    if (!NoInternalResolve) _rd.ResolveFunction(data);
                 }
                 // Silent - Does not count as parent to child elements and forces this branch to continue first
                 if (Is(typ, Behaviors.Silent))

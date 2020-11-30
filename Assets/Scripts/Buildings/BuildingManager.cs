@@ -16,8 +16,6 @@ public class BuildingManager : MonoBehaviour
 
     private Dictionary<Sector, Sprite> backgroundImages = new Dictionary<Sector, Sprite>();
 
-    private BuildingXmlLoader xmlLoader;
-
     public List<BuildingBlueprint> GetBuildingList()
     {
         return buildings;
@@ -25,8 +23,8 @@ public class BuildingManager : MonoBehaviour
 
     private void Awake()
     {
-        //this.xmlLoader = gameObject.GetComponent<BuildingXmlLoader>();
-        //buildings = this.xmlLoader.GetBuildingsFromXML();
+        //BuildingXmlLoader xmlLoader = new BuildingXmlLoader();
+        //buildings = xmlLoader.GetBuildingsFromXML();
 
 
         SetUpDictionary();

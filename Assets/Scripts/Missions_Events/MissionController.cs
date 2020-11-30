@@ -204,8 +204,6 @@ public class MissionController : MonoBehaviour
 
                     /* Time blocked*/
                     
-                    
-                    
 
                     /*-------*/
                     Debug.Log("Event Triggerd");
@@ -225,7 +223,6 @@ public class MissionController : MonoBehaviour
                 MissionRefresh(missionsInRepate[i]);
             }
         }
-
     }
 
     // event 

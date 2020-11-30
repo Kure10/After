@@ -54,10 +54,10 @@ public class EventController : MonoBehaviour
         slave.StartResolve();
         Dictionary<string, List<StatsClass>> output = slave.Resolve();
 
-        // Work with data..
-        slave2 = eventManager.resolveMaster.AddDataSlave("Events", _event.Title);
-        slave2.StartResolve();
-        Dictionary<string, List<StatsClass>> output2 = slave2.Resolve();
+        //// Work with data..
+        //slave2 = eventManager.resolveMaster.AddDataSlave("Events", _event.Title);
+        //slave2.StartResolve();
+        //Dictionary<string, List<StatsClass>> output2 = slave2.Resolve();
 
         AddCharactersPrefabFromMissionToEvent(mission);
         eventPanel.AmountCharacterSelectedText.text = "";
