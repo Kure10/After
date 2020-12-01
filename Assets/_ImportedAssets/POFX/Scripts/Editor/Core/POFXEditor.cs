@@ -41,7 +41,7 @@ namespace Kalagaan
 
                 
                 if (m_logo == null)
-                    m_logo = Resources.Load("POFX_banner") as Texture2D;
+                    m_logo = UnityEngine.Resources.Load("POFX_banner") as Texture2D;
                 GUILayout.BeginHorizontal(EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
                 GUILayout.Label(m_logo);
@@ -112,7 +112,7 @@ namespace Kalagaan
 
                 if (m_types == null)
                 {
-                    m_types = Resources
+                    m_types = UnityEngine.Resources
                         .FindObjectsOfTypeAll(typeof(MonoScript))
                         .Cast<MonoScript>()
                         .Where(x => x.GetClass() != null)

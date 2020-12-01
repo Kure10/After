@@ -47,6 +47,8 @@ public class BuildingBlueprint : ScriptableObject
     public int Military { get { return vojenskyMaterial; } set { vojenskyMaterial = value; } }
     public Sprite Sprite { get { return ilustrationImage; } set { ilustrationImage = value; } }
     public int Size { get { return row * column; } }
+    public int RowSize { get { return row; } }
+    public int ColumnSize { get { return column; } }
     public string Info { get { return textForInfo; } set { textForInfo = value; } }
     public float TimeToBuild { get { return timeToBuild; } set { timeToBuild = value; } }
     public float ElectricConsumption { get { return electricConsumption; } set { electricConsumption = value; } }

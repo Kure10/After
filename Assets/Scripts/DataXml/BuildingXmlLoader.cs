@@ -61,6 +61,11 @@ public class BuildingXmlLoader
             tmp = item.GetStrStat("RoomType");
             newBuilding.Type = newBuilding.ConvertTypeStringData(tmp);
 
+            var prefabName = item.GetStrStat("RoomPrefab");
+            newBuilding.Prefab = UnityEngine.Resources.Load(prefabName) as GameObject;
+            var constructionName = item.GetStrStat("Construction........");
+            newBuilding.ConstructionPrefab = UnityEngine.Resources.Load(constructionName) as GameObject;
+
             newBuilding.TimeToBuild = item.GetIntStat("BuildTime");
 
             newBuilding.column = item.GetIntStat("SizeA");
@@ -88,7 +93,7 @@ public class BuildingXmlLoader
             }
             else
             {
-              //  Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
+                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded ->  XML loader building ");
             }
 
             

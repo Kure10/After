@@ -30,11 +30,11 @@ public class BuildingController : MonoBehaviour
     {
         foreach (var item in buildingManager.GetBuildingList())
         {
-            AddBuildingHolder(item);
+            AddBuildingButton(item);
         }
     }
 
-    private void AddBuildingHolder(BuildingBlueprint buildingBlueprint)
+    private void AddBuildingButton(BuildingBlueprint buildingBlueprint)
     {
         Sector sector = buildingBlueprint.GetSector();
 
@@ -43,7 +43,6 @@ public class BuildingController : MonoBehaviour
         go.transform.localScale = new Vector3(1f, 1f, 1f);
         BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
         bbb.BuildingChangeStats(buildingBlueprint, buildingManager);
-        BuildingOnUse bou = go.GetComponent<BuildingOnUse>();
     }
 
 

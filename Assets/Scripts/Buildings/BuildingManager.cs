@@ -7,8 +7,9 @@ public class BuildingManager : MonoBehaviour
 
     [SerializeField] private List<BuildingBlueprint> buildings = new List<BuildingBlueprint>();
 
-    [Space] [Header("Background Images For Buildings")] [SerializeField]
-    private List<Sprite> sprites = new List<Sprite>();
+    [Space]
+    [Header("Background Images For Buildings")]
+    [SerializeField] private List<Sprite> sprites = new List<Sprite>();
 
     /* -- presunuto do blueprints
      [Space] [Header("Construction prefabs 1x1,2x1,2x2,2x3")] [SerializeField]
