@@ -29,17 +29,17 @@ public class BuildingOnUse : MonoBehaviour
 
     public void ButtonOnClick()
     {
-        
-            if (currentBuildingBlueprint.Prefab != null)
-            {
-                buildingCreator.CreateBuilding(currentBuildingBlueprint);
-                panelControler.DisableAllPanels(); // disable all open panels. Pak tu dam current. Kdyby se nejak rozsirila hra.
-                CameraMovement.MovementAllEnable(true);
-            }
-            else
-            {
-                Debug.Log("Chybi Prefab pro building!");
-            }
-            Debug.Log("Button Executed !!!!  " + this.name);
+
+        if (currentBuildingBlueprint.Prefab != null)
+        {
+            buildingCreator.CreateBuilding(currentBuildingBlueprint);
+            panelControler.DisableAllPanels(); // disable all open panels. Pak tu dam current. Kdyby se nejak rozsirila hra.
+            CameraMovement.MovementAllEnable(true);
+        }
+        else
+        {
+            Debug.Log("Chybi Prefab pro building!");
+        }
+        Debug.Log("Button Executed !!!!  " + this.name);
     }
 }

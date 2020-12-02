@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PanelControler : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class PanelControler : MonoBehaviour
     [SerializeField] EventController eventControler;
     [SerializeField] WindowMissionController missionWindowControler;
     [SerializeField] GameObject missionShowMissionPanel;
-    //[SerializeField] GameObject map;
-    //[SerializeField] Button mapButton;
+    [SerializeField] GameObject map;
+    [SerializeField] uButtonMap uButtonMap;
     [SerializeField] List<GameObject> panels = new List<GameObject>();
     [Space]
     [SerializeField] GameObject blocker;
-    [SerializeField] GameObject blockerMap;
+
+    public event Action<GameObject> CheckIfMapIsActive = delegate { };
 
     static public bool isPopupOpen = false;
 
@@ -26,8 +28,12 @@ public class PanelControler : MonoBehaviour
         SetActiveAll(false);
         panels[0].transform.parent.gameObject.SetActive(true);
 
-        //mapButton.onClick.RemoveAllListeners();
-        //mapButton.onClick.AddListener(()=> OpenMap());
+        CheckIfMapIsActive += uButtonMap.SwitchButtonView;
+
+        uButtonMap.GetMapButton.onClick.RemoveAllListeners();
+        uButtonMap.GetMapButton.onClick.AddListener(() => OpenMap());
+
+
     }
 
     // Update is called once per frame
@@ -57,25 +63,19 @@ public class PanelControler : MonoBehaviour
         {
             if (item.activeSelf == true)
             {
-                if (currentPanel != 3)
-                {
-                    blocker.SetActive(true);
-                    blockerMap.SetActive(false);
-                }
-                else
-                    blockerMap.SetActive(true);
-
+                blocker.SetActive(true);
                 CameraMovement.MovementAllEnable(false);
                 return;
             }
             else
             {
-                blockerMap.SetActive(false);
+                
                 blocker.SetActive(false);
                 CameraMovement.MovementAllEnable(true);
             }
         }
     }
+
 
 
     public void KeyControl ()
@@ -106,11 +106,12 @@ public class PanelControler : MonoBehaviour
                 return;
 
 
-            //if (map.activeSelf)
-            //{
-            //    map.SetActive(false);
-            //    return;
-            //}
+            if (map.activeSelf)
+            {
+                map.SetActive(false);
+                CheckIfMapIsActive.Invoke(map);
+                return;
+            }
 
             DisableAllPanels();
 
@@ -149,6 +150,14 @@ public class PanelControler : MonoBehaviour
                 item.SetActive(false);
             }
         }
+        blocker.SetActive(false);
+
+        if (map.activeSelf)
+        {
+            map.SetActive(false);
+            CheckIfMapIsActive.Invoke(map);
+        }
+
     }
 
     public void ShowCheats()
@@ -171,15 +180,18 @@ public class PanelControler : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    //private void OpenMap()
-    //{
-    //    if (map.activeSelf)
-    //    {
-    //        map.SetActive(false);
-    //        return;
-    //    }
-            
-    //    map.SetActive(true);
-    //}
+    private void OpenMap()
+    {
+        if (map.activeSelf)
+        {
+            map.SetActive(false);
+            CheckIfMapIsActive.Invoke(map);
+            return;
+        }
+
+        map.SetActive(true);
+
+        CheckIfMapIsActive.Invoke(map);    
+    }
 
 }
