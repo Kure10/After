@@ -57,14 +57,14 @@ public class BuildingXmlLoader
             newBuilding.Id = idNumber;
 
             string tmp = item.GetStrStat("RoomGroup");
-            newBuilding.Group = newBuilding.ConvertSectorStringData(tmp); 
+            newBuilding.Tag = newBuilding.ConvertTagStringData(tmp); 
             tmp = item.GetStrStat("RoomType");
             newBuilding.Type = newBuilding.ConvertTypeStringData(tmp);
 
             var prefabName = item.GetStrStat("RoomPrefab");
-            newBuilding.Prefab = UnityEngine.Resources.Load(prefabName) as GameObject;
+            newBuilding.Prefab = UnityEngine.Resources.Load("CompleteBuilding/" + prefabName) as GameObject;
             var constructionName = item.GetStrStat("Construction........");
-            newBuilding.ConstructionPrefab = UnityEngine.Resources.Load(constructionName) as GameObject;
+            newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("Construction/" + constructionName) as GameObject;
 
             newBuilding.TimeToBuild = item.GetIntStat("BuildTime");
 
@@ -95,22 +95,6 @@ public class BuildingXmlLoader
             {
                 Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded ->  XML loader building ");
             }
-
-            
-
-
-            //// ToDo doesnt work item.getstrstat(Wrong key) - spatny klic je unvnit neni dodelane od designu
-            //if (spriteLoader != null)
-            //{
-            //    string spriteName = item.GetStrStat("MisImage");
-            //    newMission.Image = spriteLoader.LoadMissionSprite(spriteName);
-            //    if (newMission.Image == null)
-            //        Debug.LogError("Sprite is null -> Image will not be displayed -> " + this.name + " Neffe tak me to uz dodej :D");
-            //}
-            //else
-            //{
-            //    Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
-            //}
 
             allMissions.Add(newBuilding);
         }

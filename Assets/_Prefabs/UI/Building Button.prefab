@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8808939350578986204}
   - component: {fileID: 7148906718434511843}
   - component: {fileID: 670633706992593102}
-  - component: {fileID: 6209116254169807690}
   - component: {fileID: 4804985149646632067}
   m_Layer: 5
   m_Name: InfoPanel
@@ -77,22 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6209116254169807690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1456448948530900250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f752d3a51152f4e44a3ebe45ae24abcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FitTarget: {fileID: 0}
-  m_FitOnLateUpdate: 0
-  m_OnlyForChildren: 0
-  m_ShowUnmaskGraphic: 1
 --- !u!95 &4804985149646632067
 Animator:
   serializedVersion: 3
@@ -279,7 +262,6 @@ GameObject:
   - component: {fileID: 3893462540887438087}
   - component: {fileID: 8651880812094190028}
   - component: {fileID: 2098257343876221354}
-  - component: {fileID: 4186186689382483049}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -347,22 +329,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Prozat\xEDm..."
---- !u!114 &4186186689382483049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2666698065876107743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f752d3a51152f4e44a3ebe45ae24abcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FitTarget: {fileID: 0}
-  m_FitOnLateUpdate: 0
-  m_OnlyForChildren: 0
-  m_ShowUnmaskGraphic: 1
 --- !u!1 &3113295019836709762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1092,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b873ea953546b48be9fefd0d077db8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Size:
+  - {fileID: 4642538366086832453}
+  - {fileID: 4642538364815853934}
+  - {fileID: 4642538366201454251}
+  - {fileID: 4642538365619818159}
+  - {fileID: 4642538365103994843}
+  - {fileID: 4642538365458594466}
 --- !u!114 &3631370339559723632
 MonoBehaviour:
   m_ObjectHideFlags: 0

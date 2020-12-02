@@ -16,70 +16,56 @@ public class BuildingController : MonoBehaviour
     [SerializeField] GameObject garaz;
     [SerializeField] GameObject kaple;
 
-    private BuildingManager buildingManager;
+    
     [Header("ButtonPrefab")]
     public GameObject buildingPrefab;
 
-    private void Awake()
+    public void AddBuildingButton(BuildingBlueprint buildingBlueprint, BuildingManager buildingManager)
     {
-        buildingManager = FindObjectOfType<BuildingManager>();
-        AddAllBuildings();
-    }
-
-    private void AddAllBuildings()
-    {
-        foreach (var item in buildingManager.GetBuildingList())
-        {
-            AddBuildingButton(item);
-        }
-    }
-
-    private void AddBuildingButton(BuildingBlueprint buildingBlueprint)
-    {
-        Sector sector = buildingBlueprint.GetSector();
+        Tag sector = buildingBlueprint.GetTag();
 
         GameObject go = Instantiate(buildingPrefab);
         ChoiceBuildingHolder(sector, go);
         go.transform.localScale = new Vector3(1f, 1f, 1f);
-        BuildingButtonBuilder bbb = go.GetComponent<BuildingButtonBuilder>();
+        BuildingButton bbb = go.GetComponent<BuildingButton>();
         bbb.BuildingChangeStats(buildingBlueprint, buildingManager);
     }
 
 
     // this method is broken. And obsolete...
-    private void ChoiceBuildingHolder(Sector sector, GameObject go)
+    private void ChoiceBuildingHolder(Tag sector, GameObject go)
     {
         switch (sector)
         {
-            case Sector.Cela:
-                go.transform.parent = agregat.transform;
+            case Tag.Cela:
+                go.transform.parent = vezeni.transform;
                 break;
-            case Sector.Strojovna:
-                go.transform.parent = dilna.transform;
+            case Tag.Strojovna:
+                go.transform.parent = strojovna.transform;
                 break;
-            case Sector.Garaz:
+            case Tag.Garaz:
                 go.transform.parent = garaz.transform;
                 break;
-            case Sector.Kaple:
+            case Tag.Kaple:
                 go.transform.parent = kaple.transform;
                 break;
-            case Sector.Strilna:
-                go.transform.parent = laborator.transform;
-                break;
-            case Sector.Sklad:
-                go.transform.parent = sklad.transform;
-                break;
-            case Sector.Dilna:
+            case Tag.Strilna:
                 go.transform.parent = strilna.transform;
                 break;
-            case Sector.Ubikace:
+            case Tag.Sklad:
+                go.transform.parent = sklad.transform;
+                break;
+            case Tag.Dilna:
+                go.transform.parent = dilna.transform;
+                break;
+            case Tag.Ubikace:
                 go.transform.parent = ubikace.transform;
                 break;
-            case Sector.Laborator:
-                go.transform.parent = vezeni.transform;
+            case Tag.Laborator:
+                go.transform.parent = laborator.transform;
                 break;
-            case Sector.VolnePole:
-                go.transform.parent = vezeni.transform;
+            case Tag.VolnePole: // agreat pokecat s Nefem..
+                go.transform.parent = agregat.transform;
                 break;
             default:
                 Debug.Log("Building has not button Holder -> Error");

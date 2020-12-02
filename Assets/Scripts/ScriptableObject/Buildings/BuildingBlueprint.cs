@@ -10,7 +10,7 @@ public class BuildingBlueprint : ScriptableObject
     private long id;
     [SerializeField] string buildingName = "Default";
     [SerializeField]
-    Sector sector = Sector.Ubikace;
+    Tag tag = Tag.Ubikace;
     [SerializeField]
     TypeOfBuilding type = TypeOfBuilding.Basis;
     [Tooltip("v sekundach")]
@@ -55,7 +55,7 @@ public class BuildingBlueprint : ScriptableObject
     public GameObject Prefab { get { return prefab; } set { prefab = value; } }
     public GameObject ConstructionPrefab { get { return constructionPrefab; } set { constructionPrefab = value; } }
 
-    public Sector Group { get { return this.sector; } set { this.sector = value; } }
+    public Tag Tag { get { return this.tag; } set { this.tag = value; } }
 
     public TypeOfBuilding Type { get { return this.type; } set { this.type = value; } }
 
@@ -80,9 +80,9 @@ public class BuildingBlueprint : ScriptableObject
         listRawMaterials = myList;
     }
 
-    public Sector GetSector()
+    public Tag GetTag()
     {
-        return sector;
+        return tag;
     }
 
     public void SetColor(int Red, int Green, int Blue)
@@ -93,30 +93,30 @@ public class BuildingBlueprint : ScriptableObject
         this.backgroundColor.a = 255;
     }
 
-    public Sector ConvertSectorStringData(string data)
+    public Tag ConvertTagStringData(string data)
     {
         switch (data)
         {
-            case "EngineRoom":
-                return Sector.Ubikace;
+            case "Quarters":
+                return Tag.Ubikace;
             case "Store":
-                return Sector.Sklad;
-            case "Dzungle":
-                return Sector.Strojovna;
-            case "Lesy":
-                return Sector.Dilna;
-            case "dsad":
-                return Sector.Laborator;
-            case "dsqqad":
-                return Sector.Strilna;
-            case "dasd":
-                return Sector.Cela;
-            case "ddddd":
-                return Sector.Garaz;
-            case "Loueeeky":
-                return Sector.Kaple;
+                return Tag.Sklad;
+            case "EngineRoom":
+                return Tag.Strojovna;
+            case "WorkShop":
+                return Tag.Dilna;
+            case "Laboratory":
+                return Tag.Laborator;
+            case "Loophole":
+                return Tag.Strilna;
+            case "Cell":
+                return Tag.Cela;
+            case "Garage":
+                return Tag.Garaz;
+            case "Chapel":
+                return Tag.Kaple;
             default:
-                return Sector.VolnePole;
+                return Tag.VolnePole;
 
         }
     }
@@ -139,6 +139,6 @@ public class BuildingBlueprint : ScriptableObject
 
 public enum TypeOfBuilding {Basis , Extension, Upgrade};
 
-public enum Sector { Ubikace, Strojovna, Dilna, Sklad, Laborator, Strilna, Cela, Garaz, Kaple, VolnePole};
+public enum Tag { Ubikace, Strojovna, Dilna, Sklad, Laborator, Strilna, Cela, Garaz, Kaple, VolnePole};
 
 public enum RawMaterials { bojler, varic, lednicka, usmernovac, sadaNaradi, sverak, kovadlina , rozsireneNaradi, elektrickeRucniNastroje, strojniZarizeni, automatizacniJednotka, Computer , zakladniNastroje,None };

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingButtonBuilder : MonoBehaviour
+public class BuildingButton : MonoBehaviour
 {
 
     private Text NameText { get; set; }
@@ -14,7 +14,10 @@ public class BuildingButtonBuilder : MonoBehaviour
     private Image IlustrationImage { get; set; }
     private Image BackgroundImage { get; set; }
     private Text InfoPanelText { get; set; }
-    private Image[] Size;
+
+    [SerializeField] private Image[] Size;
+   
+
     private Image[] RawMaterials;
 
     // vytvorit promene pro Raw material a ElectricConsumption // -> neni to udelane protoze Button Panel je nedodelany.
@@ -25,7 +28,6 @@ public class BuildingButtonBuilder : MonoBehaviour
         BuildingSetUp();
     }
 
-
     private void BuildingSetUp()
     {
         BackgroundImage = gameObject.transform.GetComponent<Image>();
@@ -35,19 +37,19 @@ public class BuildingButtonBuilder : MonoBehaviour
         MilitaryHolder = gameObject.transform.GetChild(3).GetChild(0).GetComponent<Text>();
         ElectricHolder = gameObject.transform.GetChild(4).GetChild(0).GetComponent<Text>();
         IlustrationImage = gameObject.transform.GetChild(5).GetComponent<Image>();
-        Size = gameObject.transform.GetChild(6).GetComponentsInChildren<Image>();
         InfoPanelText = gameObject.transform.GetChild(7).GetChild(0).GetComponent<Text>();
         RawMaterials = gameObject.transform.GetChild(8).GetComponentsInChildren<Image>();
     }
 
-    public void BuildingChangeStats(BuildingBlueprint buildingBlueprint, BuildingManager bm)
+    public void BuildingChangeStats(BuildingBlueprint buildingBlueprint, BuildingManager buildingManager)
     {
-        this.name = buildingBlueprint.name;
-
+        this.name = "_" + buildingBlueprint.Name;
+       
         if (buildingBlueprint.Sprite == null)
         {
             Debug.Log("Image errors on the building");
         }
+
         NameText.text = buildingBlueprint.Name;
         CivilHolder.text = buildingBlueprint.Civil.ToString();
         TechHolder.text = buildingBlueprint.Tech.ToString();
@@ -59,22 +61,38 @@ public class BuildingButtonBuilder : MonoBehaviour
         {
             if (i > 5)
                 return;
-            // RawMaterials[i].SetActive(true);
+
             RawMaterials[i].color = Color.yellow;
         }
 
-        for (int i = 0; i < buildingBlueprint.Size; i++)
+        if(buildingBlueprint.Size == 2)
         {
-            Size[i].color = Color.black;
+            this.Size[0].color = Color.black;
+            this.Size[3].color = Color.black;
         }
+        else if(buildingBlueprint.Size == 4)
+        {
+            this.Size[0].color = Color.black;
+            this.Size[1].color = Color.black;
+            this.Size[3].color = Color.black;
+            this.Size[4].color = Color.black;
+        }
+        else
+        {
+            for (int i = 0; i < buildingBlueprint.Size; i++)
+            {
+                this.Size[i].color = Color.black;
+            }
+        }
+ 
         InfoPanelText.text = buildingBlueprint.Info;
 
-        if (buildingBlueprint == null || bm == null)
+        if (buildingBlueprint == null || buildingManager == null)
         {
             return;
         }
 
-        BackgroundImage.sprite =  bm.GetSprite(buildingBlueprint.GetSector()); // buildingBlueprint.Sprite;
+        BackgroundImage.sprite =  buildingManager.GetSprite(buildingBlueprint.GetTag());
 
         this.GetComponent<BuildingOnUse>().CacheBuilding(buildingBlueprint);
     }
