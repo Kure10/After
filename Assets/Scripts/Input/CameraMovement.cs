@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
+    [SerializeField] GameObject cameraHolder;
+    [Space]
+
     public float CameraSpeed = 9f;
     public float MinY = 10f;
     public float MaxY = 40f;
@@ -61,7 +64,7 @@ public class CameraMovement : MonoBehaviour
             movement.z = 0;
         }
 
-        Vector3 vec = transform.parent.transform.position;
+        Vector3 vec = cameraHolder.transform.position;
 
         if (vec.y > MaxY || vec.y < MinY)
         {
@@ -74,20 +77,20 @@ public class CameraMovement : MonoBehaviour
         if (vec.y <= MinY)
         {
             vec.y = MinY;
-            transform.parent.transform.position = new Vector3(vec.x, 10 /*MinY + 0.01f*/, vec.z);
+            cameraHolder.transform.position = new Vector3(vec.x, 10 /*MinY + 0.01f*/, vec.z);
             isMinZoom = true;
         }
         else if (vec.y >= MaxY)
         {
             vec.y = MaxY;
-            transform.parent.transform.position = new Vector3(vec.x, 40 /*MaxY + 0.01f*/, vec.z);
+            cameraHolder.transform.position = new Vector3(vec.x, 40 /*MaxY + 0.01f*/, vec.z);
             isMaxZoom = true;
         }
 
-        cameraPositionY = transform.parent.transform.position.y; // properity for healthBar
+        cameraPositionY = cameraHolder.transform.position.y; // properity for healthBar
 
         if ((movement.y <= 0 && !isMinZoom) || (movement.y >= 0 && !isMaxZoom))
-            transform.parent.transform.Translate(movement);
+            cameraHolder.transform.Translate(movement);
 
     }
     public static void ZoomByScrollEnabled(bool enabled)

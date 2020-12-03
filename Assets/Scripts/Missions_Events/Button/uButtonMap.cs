@@ -9,22 +9,29 @@ public class uButtonMap : MonoBehaviour
 {
     [SerializeField] Button mapButton;
 
-    [SerializeField] Text text; // Will be remove after button will be complete.
+    [SerializeField] GameObject mapView;
+
+    [SerializeField] GameObject bunkerView;
+
 
     public Button GetMapButton { get { return this.mapButton; } }
 
-    public Text GetText { get { return this.text; } }
-
     public void SwitchButtonView(GameObject map)
     {
-        if(map.activeSelf)
+        ToggleButtonView(map.activeSelf);
+    }
+
+    private void ToggleButtonView(bool isMapActive)
+    {
+        if(isMapActive)
         {
-            this.text.text = "Bunker";
+            bunkerView.SetActive(true);
+            mapView.SetActive(false);
         }
         else
         {
-            this.text.text = "Map";
+            bunkerView.SetActive(false);
+            mapView.SetActive(true);
         }
-
     }
 }

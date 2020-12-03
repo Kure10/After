@@ -33,7 +33,7 @@ public class PanelControler : MonoBehaviour
         uButtonMap.GetMapButton.onClick.RemoveAllListeners();
         uButtonMap.GetMapButton.onClick.AddListener(() => OpenMap());
 
-
+        CheckIfMapIsActive.Invoke(map);
     }
 
     // Update is called once per frame
