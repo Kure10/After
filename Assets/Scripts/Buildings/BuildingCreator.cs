@@ -15,6 +15,8 @@ public class BuildingCreator : MonoBehaviour
     private int rotation;
     private TileFactory tileFactory;
 
+    [SerializeField] PanelTime time;
+
     private List<IWorkSource> buildings;
     // Start is called before the first frame update
     void Start()
@@ -70,7 +72,7 @@ public class BuildingCreator : MonoBehaviour
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
                     float upDiff = 0.04f;
-
+                    
                     blueprint.transform.position += new Vector3(0, upDiff, 0); 
                     //TODO create proper Factory for this
                     Building newBuild;
@@ -84,7 +86,6 @@ public class BuildingCreator : MonoBehaviour
                         
                     }
                     buildings.Add(newBuild);
-                   
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
                 }
@@ -106,6 +107,7 @@ public class BuildingCreator : MonoBehaviour
         CameraMovement.ZoomByScrollEnabled(true);
         Destroy(blueprint);
         selectedBuildingBlueprint = null;
+        time.UnpauseGame(fromPopup: true);
     }
     private List<Vector2Int> getGridForBuilding(Vector2Int coord)
     {
