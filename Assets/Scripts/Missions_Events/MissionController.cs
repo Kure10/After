@@ -5,6 +5,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
+using Notification;
 
 public class MissionController : MonoBehaviour
 {
@@ -24,19 +25,15 @@ public class MissionController : MonoBehaviour
 
     private TimeControl theTC;
     private PanelTime thePT;
-    private MissionNotificationManager notificationMissionManager;
-
-
-
-    
+  
 
     private void Awake()
     {
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
-        this.notificationMissionManager = GameObject.FindObjectOfType<MissionNotificationManager>();
+      
 
-        EventController.OnEventEnd += RemoveNotification;
+        EventController.OnEventEnd += RemoveEventNotification;
     }
 
 
@@ -199,8 +196,8 @@ public class MissionController : MonoBehaviour
                     EventController.isEventRunning = true;
 
 
-                    /* Create Notifiction*/
-                    this.notificationMissionManager.CreateNewNotification(currentMission); // neni dokonceno
+                    NotificationManager.Instantion.AddNotification(currentMission);
+
 
                     /* Time blocked*/
                     
@@ -226,9 +223,9 @@ public class MissionController : MonoBehaviour
     }
 
     // event 
-    private void RemoveNotification(Mission mission)
+    private void RemoveEventNotification(Mission mission)
     {
-        this.notificationMissionManager.DestroyNotification(mission);
+        NotificationManager.Instantion.DestroyNotification(mission.Id);
     }
 
     public bool IsMissionInProgress(string missionPointer)

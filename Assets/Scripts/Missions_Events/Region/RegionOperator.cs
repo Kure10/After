@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RegionOperator : MonoBehaviour
+public class RegionOperator : MonoBehaviour , INotifiable
 {
     [Header("Prefabs")]
     private Region region;
@@ -116,7 +116,7 @@ public class RegionOperator : MonoBehaviour
     {
         if (this.region.IsInDarkness)
         {
-            Debug.Log("Region is in dargknesss  -> ToDo");
+            this.regionControler.onRegionIsInDarkness(this);
             return;
         }
         if (this.region.IsExplored)

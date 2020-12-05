@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Notification;
 
 public class RegionControler : MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class RegionControler : MonoBehaviour
     private MissionManager missionManager;
     private MissionController missionController;
 
-    [SerializeField] private MissionMapNotificationControler notificationControler;
-
     public UnityAction onButtonIsDeActivate;
 
   //  public UnityAction<uButtonAdditionalMission, RegionOperator> onButtonIsReActivate;
@@ -26,6 +25,8 @@ public class RegionControler : MonoBehaviour
     public UnityAction<Region> onRegionCounterDecreased;
 
     public UnityAction<RegionOperator> onRegionCounterLimitWasNotReached;
+
+    public UnityAction<RegionOperator> onRegionIsInDarkness;
 
 
     private void Awake()
@@ -40,6 +41,7 @@ public class RegionControler : MonoBehaviour
         onButtonIsAlreadyCompleted += AdditionMissionIsAlreadyCompleted;
         onRegionCounterDecreased += RegionCounterDecreased;
         onRegionCounterLimitWasNotReached += RegionCounterLimitNotReached;
+        onRegionIsInDarkness += RegionIsInDarkness;
     }
 
     public void ChangeRegionState(Region region, Image regionImage)
@@ -127,9 +129,13 @@ public class RegionControler : MonoBehaviour
 
     public void RegionCounterLimitNotReached(RegionOperator regionOperator)
     {
-        Debug.Log("Mission counter deleted..");
+        NotificationManager.Instantion.AddNotification(regionOperator);
 
-        notificationControler.AddNotification(regionOperator);
+    }
+
+    public void RegionIsInDarkness(RegionOperator regionOperator)
+    {
+        NotificationManager.Instantion.AddNotification(regionOperator);
     }
 
     #endregion

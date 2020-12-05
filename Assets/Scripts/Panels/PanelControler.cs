@@ -174,6 +174,7 @@ public class PanelControler : MonoBehaviour
         }
     }
 
+    // Obsolete.. Look if Anybutton is not using this shit..
     public void CloseThisPanel(GameObject gameObject)
     {
         CameraMovement.MovementAllEnable(true);

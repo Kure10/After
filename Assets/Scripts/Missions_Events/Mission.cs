@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class Mission
+public class Mission : INotifiable
 {
     #region Fields
 
