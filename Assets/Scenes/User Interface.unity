@@ -7981,7 +7981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -8010,7 +8010,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 930014143}
   m_HandleRect: {fileID: 930014142}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -16464,7 +16464,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 909.51605, y: -488.26276}
+  m_AnchoredPosition: {x: 909.51605, y: -460.2984}
   m_SizeDelta: {x: 1819.0323, y: 208}
   m_Pivot: {x: 0.49999994, y: 0.5}
 --- !u!114 &1606664131
@@ -27010,6 +27010,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847969611016316303, guid: 65b84b81998b6d14db614d69973df165,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1484299
       objectReference: {fileID: 0}
     - target: {fileID: 2962061535376110073, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}
