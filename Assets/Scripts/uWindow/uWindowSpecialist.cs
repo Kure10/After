@@ -115,9 +115,7 @@ public class uWindowSpecialist : MonoBehaviour
     #region Public Methods
     public void SetAll(Character character)
     {
-        var spec = character.GetBlueprint(); // Todo Je to spatne. musi se brat hodnoty z charakteru
-
-        SetImage(spec);
+        SetImage(character.GetBlueprint());
         CalcHealtandStamina(character);
         SetStatsPanel(character);
     }
