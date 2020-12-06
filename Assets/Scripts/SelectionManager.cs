@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Kalagaan.POFX;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -58,10 +59,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                             blueprint.State = "Waiting";
                         }
                         if (cmd is MoveOutside) return;
-                        highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
-                        highlight.gameObject.SetActive(true);
+                        //highlight.gameObject.GetComponent<Renderer>().material.SetColor("_Color", blueprint.GetColor());
+                        //highlight.gameObject.SetActive(true);
                         panelUI.GetComponent<uWindowSelecctedObject>().SetAll(blueprint);
                         panelUI.SetActive(true);
+                        var pofx = hitObject.gameObject.transform.Find("recon").GetComponent<POFX>();
+                        POFX_Outline outline = pofx.GetLayer(0) as POFX_Outline;
+                        outline.m_cParams.intensity = 1f;
                     }
                 }
                 else
@@ -162,6 +166,13 @@ public class SelectionManager : MonoBehaviour, IWorkSource
         foreach (var prevSelection in objects)
         {
             prevSelection.transform.Find("Selection").gameObject.SetActive(false);
+            var mesh = prevSelection.gameObject.transform.Find("recon");
+            if (mesh != null)
+            {
+                var pofx = mesh.GetComponent<POFX>();
+                POFX_Outline outline = pofx.GetLayer(0) as POFX_Outline;
+                outline.m_cParams.intensity = 0f;
+            }
         }
         objects.Clear();
 
