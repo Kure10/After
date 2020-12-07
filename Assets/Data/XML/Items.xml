@@ -1,87 +1,593 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DataRoot n="">
+  <Data n="$B">
+    <Key v="B4,B8" t="String" n="-1" />
+    <Key v="B4,B9" t="String" n="-2" />
+  </Data>
   <Data n="20203948678122">
     <Key v="ArmorSpec" t="String" n="ItemType" />
-    <Key v="Improvizované dřevěné brnění" t="String" n="X" />
+    <Key v="10" t="Decimal" n="Absorption" />
+    <Key v="1" t="Decimal" n="RepairCostTM" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="5" t="Decimal" n="RepairBlock" />
   </Data>
   <Data n="20203978491798">
     <Key v="ArmorSpec" t="String" n="ItemType" />
-    <Key v="Kostěné brnění" t="String" n="X" />
+    <Key v="15" t="Decimal" n="Absorption" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="SoL" t="String" n="AtribModif" />
+        <Key v="minus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="AtributChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203978493729">
     <Key v="ArmorSpec" t="String" n="ItemType" />
-    <Key v="Kožené brnění" t="String" n="X" />
+    <Key v="20" t="Decimal" n="Absorption" />
+    <Key v="2" t="Decimal" n="RepairCostTM" />
+    <Key v="1" t="Decimal" n="RepairCostCM" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="10" t="Decimal" n="RepairBlock" />
   </Data>
   <Data n="20203978495255">
     <Key v="ArmorSpec" t="String" n="ItemType" />
-    <Key v="Železné brnění" t="String" n="X" />
+    <Key v="30" t="Decimal" n="Absorption" />
+    <Key v="1" t="Decimal" n="RepairCostCM" />
+    <Key v="4" t="Decimal" n="RepairCostTM" />
+    <Key v="0" t="Decimal" n="RepairCostMM" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="10" t="Decimal" n="RepairBlock" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Hunting" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="minus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Sneaking" t="String" n="TestModif" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209400632823">
+    <Key v="ArmorSpec" t="String" n="ItemType" />
+    <Key v="25" t="Decimal" n="Absorption" />
+    <Key v="RepairNot" t="String" n="Repairable" />
   </Data>
   <Data n="20203948687747">
     <Key v="BagSpec" t="String" n="ItemType" />
-    <Key v="Malý batoh" t="String" n="X" />
+    <Key v="2" t="Decimal" n="Capacity" />
   </Data>
   <Data n="20203948691579">
-    <Key v="Malý vozík" t="String" n="X" />
     <Key v="BagSpec" t="String" n="ItemType" />
+    <Key v="6" t="Decimal" n="Capacity" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Sneaking" t="String" n="TestModif" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203978506093">
-    <Key v="Velký batoh" t="String" n="X" />
     <Key v="BagSpec" t="String" n="ItemType" />
+    <Key v="4" t="Decimal" n="Capacity" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Sneaking" t="String" n="TestModif" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203948443222">
-    <Key v="Páčidlo" t="String" n="X" />
     <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Key v="20" t="Int32" n="UsesCount" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Leverage" t="String" n="TestModif" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+        <Key v="minus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+        <Key v="Leverage" t="String" n="TestModif" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="times" t="String" n="MathKind" />
+        <Key v="1.5" t="Decimal" n="TestChangeVal" />
+        <Key v="Leverage" t="String" n="TestModif" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203948445207">
-    <Key v="Paklíče" t="String" n="X" />
     <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="8" t="Int32" n="UsesCount" />
+    <Key v="2" t="Decimal" n="RepairBlock" />
+    <Key v="4" t="Decimal" n="RepairCostTM" />
+    <Key v="1" t="Decimal" n="RepairCostCM" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="LockPicking" t="String" n="TestModif" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+        <Key v="minus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="LockPicking" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="LockPicking" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="times" t="String" n="MathKind" />
+        <Key v="1.25" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203978534734">
-    <Key v="Základní souprava nářadí" t="String" n="X" />
     <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="12" t="Int32" n="UsesCount" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="2" t="Decimal" n="RepairCostTM" />
+    <Key v="4" t="Decimal" n="RepairBlock" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Repair" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="1.25" t="Decimal" n="TestChangeVal" />
+        <Key v="times" t="String" n="MathKind" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Repair" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+        <Key v="plus" t="String" n="MathKind" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="LockPicking" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Int32" n="TestChangeVal" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Hunting" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Int32" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="String" n="$S" />
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401354779">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Key v="10" t="Int32" n="UsesCount" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Comunication" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+        <Key v="plus" t="String" n="MathKind" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401386710">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="2" t="Int32" n="UsesCount" />
+    <Key v="1" t="Decimal" n="RepairBlock" />
+    <Key v="2" t="Decimal" n="RepairCostTM" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Hunting" t="String" n="TestModif" />
+        <Key v="DiffChange" t="String" n="TypeModif" />
+        <Key v="minus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Hunting" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Hunting" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="times" t="String" n="MathKind" />
+        <Key v="1.5" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401416443">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="10" t="Int32" n="UsesCount" />
+    <Key v="5" t="Decimal" n="RepairBlock" />
+    <Key v="1" t="Decimal" n="RepairCostCM" />
+    <Key v="1" t="Decimal" n="RepairCostTM" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Sneaking" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401457769">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="Undestructible" t="String" n="Repairable" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Scouting" t="String" n="TestModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401477811">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="2" t="Int32" n="UsesCount" />
+    <Key v="2" t="Decimal" n="RepairBlock" />
+    <Key v="1" t="Decimal" n="RepairCostCM" />
+    <Key v="1" t="Decimal" n="RepairCostTM" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Scavenging" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401499512">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Key v="10" t="Int32" n="UsesCount" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Gathering" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401522536">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="Undestructible" t="String" n="Repairable" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Research" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401533795">
+    <Key v="ItemSpec" t="String" n="ItemType" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Key v="20" t="Int32" n="UsesCount" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="DiggBuild" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="DiggBuild" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="times" t="String" n="MathKind" />
+        <Key v="1.25" t="Decimal" n="TestChangeVal" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="Int32" n="$T" />
+        <Key v="Leverage" t="String" n="TestModif" />
+        <Key v="DiceCountMod" t="String" n="TypeModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="TestChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="2" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203948682800">
     <Key v="ResBasic" t="String" n="ItemType" />
-    <Key v="Jídlo" t="String" n="X" />
   </Data>
   <Data n="20203978442136">
     <Key v="ResBasic" t="String" n="ItemType" />
-    <Key v="Civilní materiál" t="String" n="X" />
   </Data>
   <Data n="20203978444588">
     <Key v="ResBasic" t="String" n="ItemType" />
-    <Key v="Technický materiál" t="String" n="X" />
   </Data>
   <Data n="20203978446648">
     <Key v="ResBasic" t="String" n="ItemType" />
-    <Key v="Vojenský materiál" t="String" n="X" />
   </Data>
   <Data n="20203978449705">
     <Key v="ResBasic" t="String" n="ItemType" />
-    <Key v="Palivo" t="String" n="X" />
   </Data>
   <Data n="20203948659485">
-    <Key v="Lednice" t="String" n="X" />
     <Key v="ResSpecial" t="String" n="ItemType" />
   </Data>
   <Data n="20203978529684">
-    <Key v="Vařič" t="String" n="X" />
     <Key v="ResSpecial" t="String" n="ItemType" />
   </Data>
   <Data n="20203978531865">
-    <Key v="Bojler" t="String" n="X" />
     <Key v="ResSpecial" t="String" n="ItemType" />
   </Data>
   <Data n="20203998794984">
-    <Key v="Sada nářadí" t="String" n="X" />
     <Key v="ResSpecial" t="String" n="ItemType" />
   </Data>
   <Data n="20203978773666">
     <Key v="WeapSpec" t="String" n="ItemType" />
-    <Key v="Nůž" t="String" n="X" />
+    <Key v="Undestructible" t="String" n="Repairable" />
+    <Key v="0" t="Int32" n="RangeMin" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="MiL" t="String" n="AtribModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="1" t="Decimal" n="AtributChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
   <Data n="20203978801781">
     <Key v="WeapSpec" t="String" n="ItemType" />
-    <Key v="Bojový nůž" t="String" n="X" />
+    <Key v="Undestructible" t="String" n="Repairable" />
+    <Key v="0" t="Int32" n="RangeMin" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="MiL" t="String" n="AtribModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="AtributChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401088094">
+    <Key v="WeapSpec" t="String" n="ItemType" />
+    <Key v="1" t="Int32" n="RangeMin" />
+    <Key v="3" t="Int32" n="RangeMax" />
+    <Key v="1" t="Int32" n="UsesCount" />
+    <Key v="RepairNot" t="String" n="Repairable" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="MiL" t="String" n="AtribModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="AtributChangeVal" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="MiL" t="String" n="AtribModif" />
+        <Key v="times" t="String" n="MathKind" />
+        <Key v="2" t="Decimal" n="AtributChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="0" t="String" n="$S" />
+        <Key v="1" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401129158">
+    <Key v="WeapSpec" t="String" n="ItemType" />
+    <Key v="1" t="Int32" n="RangeMin" />
+    <Key v="4" t="Int32" n="RangeMax" />
+    <Key v="4" t="Int32" n="UsesCount" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="1" t="Decimal" n="RepairBlock" />
+    <Key v="3" t="Decimal" n="RepairCostMM" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="MiL" t="String" n="AtribModif" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="6" t="Decimal" n="AtributChangeVal" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20209401173582">
+    <Key v="WeapSpec" t="String" n="ItemType" />
+    <Key v="3" t="Int32" n="UsesCount" />
+    <Key v="RepairYes" t="String" n="Repairable" />
+    <Key v="2" t="Decimal" n="RepairCostMM" />
+    <Key v="1" t="Decimal" n="RepairBlock" />
+    <Key v="0" t="Int32" n="RangeMin" />
+    <Key v="2" t="Int32" n="RangeMax" />
+    <Data n="$E">
+      <Data n="0">
+        <Key v="2" t="Int32" n="$T" />
+        <Key v="5" t="Decimal" n="AtributChangeVal" />
+        <Key v="plus" t="String" n="MathKind" />
+        <Key v="MiL" t="String" n="AtribModif" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="0" t="String" n="$E" />
+      </Data>
+    </Data>
   </Data>
 </DataRoot>
