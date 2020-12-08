@@ -14,6 +14,8 @@ public class Character : MonoBehaviour, IResourceHolder
     private IWorkSource source;
     public string State; //just pure text for now
 
+    //Inventory
+    public SpecInventory inventory;
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;

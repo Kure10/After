@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AllowDragDrop : MonoBehaviour , IDragHandler
+public class AllowDragDrop : MonoBehaviour , IBeginDragHandler, IDragHandler , IEndDragHandler
 {
 
     [SerializeField]
@@ -11,23 +11,12 @@ public class AllowDragDrop : MonoBehaviour , IDragHandler
 
     public Transform parent;
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if(!dragParent)
-        transform.position = eventData.position;
-
-        if(dragParent)
-        {
-            parent.transform.position = eventData.position;
-        }
-    }
-
     private void Awake()
     {
         if (transform.parent.parent.parent != null)
         {
             parent = this.transform.parent.parent.parent;
-            if(parent.name == "Canvas")
+            if (parent.name == "Canvas")
             {
                 parent = this.transform.parent.parent;
             }
@@ -42,4 +31,24 @@ public class AllowDragDrop : MonoBehaviour , IDragHandler
 
     }
 
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if(!dragParent)
+        transform.position = eventData.position;
+
+        if(dragParent)
+        {
+            parent.transform.position = eventData.position;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
 }
