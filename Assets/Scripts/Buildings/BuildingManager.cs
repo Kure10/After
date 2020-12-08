@@ -36,15 +36,15 @@ public class BuildingManager : MonoBehaviour
     // obsolete Destroy as soon is posible
     private void SetUpDictionary()
     {
-        backgroundImages.Add(Tag.Cela, sprites[0]);
-        backgroundImages.Add(Tag.Strojovna, sprites[1]);
+        backgroundImages.Add(Tag.Strojovna, sprites[0]);
+        backgroundImages.Add(Tag.Dilna, sprites[1]);
         backgroundImages.Add(Tag.Garaz, sprites[2]);
         backgroundImages.Add(Tag.Kaple, sprites[3]);
-        backgroundImages.Add(Tag.Strilna, sprites[4]);
+        backgroundImages.Add(Tag.Laborator, sprites[4]);
         backgroundImages.Add(Tag.Sklad, sprites[5]);
-        backgroundImages.Add(Tag.Dilna, sprites[6]);
+        backgroundImages.Add(Tag.Strilna, sprites[6]);
         backgroundImages.Add(Tag.Ubikace, sprites[7]);
-        backgroundImages.Add(Tag.Laborator, sprites[8]);
+        backgroundImages.Add(Tag.Cela, sprites[8]);
         backgroundImages.Add(Tag.VolnePole, sprites[9]);
     }
 

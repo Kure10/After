@@ -71,24 +71,15 @@ public class BuildingXmlLoader
             newBuilding.column = item.GetIntStat("SizeA");
             newBuilding.row = item.GetIntStat("SizeB");
 
-            if (newBuilding.Size == 6) 
-            {
-                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("Construction/" ) as GameObject;
-            }
+            if (newBuilding.Size == 6)
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x3_mistnost") as GameObject;
             else if (newBuilding.Size == 4)
-            {
-
-            }
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x2_mistnost") as GameObject;
             else if (newBuilding.Size == 2)
-            {
-
-            }
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x1_mistnost") as GameObject;
             else if (newBuilding.Size == 1)
-            {
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_1x1_mistnost") as GameObject;
 
-            }
-
-            
 
 
             newBuilding.Civil = item.GetIntStat("PriceCM");
