@@ -6,20 +6,20 @@ using System;
 
 public class ItemXmlLoader 
 {
-    public List<Item> GetItemsFromXML()
+    public List<ItemBlueprint> GetItemsFromXML()
     {
-        List<Item> createdItems = new List<Item>();
+        List<ItemBlueprint> createdItems = new List<ItemBlueprint>();
 
         createdItems = LoadItemsFromXML();
 
         return createdItems;
     }
 
-    private List<Item> LoadItemsFromXML()
+    private List<ItemBlueprint> LoadItemsFromXML()
     {
         List<StatsClass> XMLLoadedItems= new List<StatsClass>();
 
-        List<Item> items = new List<Item>();
+        List<ItemBlueprint> items = new List<ItemBlueprint>();
 
         string path = "Assets/Data/XML";
         string fileName = "Items";
@@ -40,9 +40,9 @@ public class ItemXmlLoader
         return items;
     }
 
-    private List<Item> DeSerializedSpecialists(List<StatsClass> firstStatClass)
+    private List<ItemBlueprint> DeSerializedSpecialists(List<StatsClass> firstStatClass)
     {
-        List<Item> items = new List<Item>();
+        List<ItemBlueprint> items = new List<ItemBlueprint>();
 
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
@@ -60,10 +60,10 @@ public class ItemXmlLoader
             string typeString = statClass.GetStrStat("ItemType");
             string name = statClass.GetStrStat("X");
 
-            Item.ItemType type;
+            ItemBlueprint.ItemType type;
             bool checkParse = Enum.TryParse(typeString, out type);
 
-            Item item = new Item(id, name,type);
+            ItemBlueprint item = new ItemBlueprint(id, name,type);
 
             items.Add(item);
         }

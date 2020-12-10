@@ -15,7 +15,7 @@ public class Character : MonoBehaviour, IResourceHolder
     public string State; //just pure text for now
 
     //Inventory
-    public SpecInventory inventory;
+    public CharacterInventory inventory;
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SpecInventorySlot : MonoBehaviour
+public class SpecInventorySlot : MonoBehaviour , IDropHandler
 {
     [SerializeField] Image backgroundImage;
 
@@ -11,41 +12,17 @@ public class SpecInventorySlot : MonoBehaviour
 
     [SerializeField] Button button;
 
-    private ItemSlot itemSlot = null;
 
-
-    public void SetItemSlot (ItemSlot slot)
+    void IDropHandler.OnDrop(PointerEventData eventData)
     {
-        if (slot == null)
-            return;
+        GameObject dragGo = eventData.pointerDrag;
+        Item item = dragGo.GetComponent<Item>();
+        if (item != null)
+        {
+            dragGo.transform.SetParent(container);
+            backgroundImage.gameObject.SetActive(false);
+        }
 
-        itemSlot = slot;
-        slot.transform.SetParent(container);
 
-        SetInventoryOccupied();
     }
-
-    public ItemSlot UnSetItemSlot()
-    {
-        if (itemSlot == null)
-            return null;
-
-        itemSlot = null;
-        
-
-        SetInventoryEmpty();
-
-        return itemSlot;
-    }
-
-    private void SetInventoryOccupied()
-    {
-        backgroundImage.gameObject.SetActive(false);
-    }
-
-    private void SetInventoryEmpty()
-    {
-        backgroundImage.gameObject.SetActive(true);
-    }
-
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecInventory : MonoBehaviour
+public class CharacterInventory : MonoBehaviour
 {
     public List<SpecInventorySlot> slots = new List<SpecInventorySlot>();
 

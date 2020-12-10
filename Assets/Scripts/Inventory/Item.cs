@@ -1,34 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-
-[Serializable]
-public class Item
+using UnityEngine.UI;
+public class Item : MonoBehaviour
 {
-    public long itemID;
-    public new string name;
-    public ItemType type;
+    
 
-    public long Id { get { return itemID; } }
-    public string Name { get { return name; } }
+    private ItemBlueprint blueprint;
 
-    public ItemType Type { get { return type; } }
 
-    public Item(long _id, string _name, ItemType _type)
-    {
-        itemID = _id;
-        name = _name;
-        type = _type;
-    }
-
-    public enum ItemType
-    {
-        ArmorSpec,
-        BagSpec,
-        ItemSpec,
-        ResBasic,
-        WeapSpec
-    }
+    public ItemBlueprint Blueprint { get { return this.blueprint; } set { blueprint = value; } }
 
 }
