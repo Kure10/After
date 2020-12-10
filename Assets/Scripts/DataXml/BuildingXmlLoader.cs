@@ -55,6 +55,7 @@ public class BuildingXmlLoader
             // napriklad generovani nejake generické mise.. Nebo tak neco..
 
             newBuilding.Id = idNumber;
+          
 
             string tmp = item.GetStrStat("RoomGroup");
             newBuilding.Tag = newBuilding.ConvertTagStringData(tmp); 
@@ -63,13 +64,23 @@ public class BuildingXmlLoader
 
             var prefabName = item.GetStrStat("RoomPrefab");
             newBuilding.Prefab = UnityEngine.Resources.Load("CompleteBuilding/" + prefabName) as GameObject;
-            var constructionName = item.GetStrStat("Construction........");
-            newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("Construction/" + constructionName) as GameObject;
+
 
             newBuilding.TimeToBuild = item.GetIntStat("BuildTime");
 
             newBuilding.column = item.GetIntStat("SizeA");
             newBuilding.row = item.GetIntStat("SizeB");
+
+            if (newBuilding.Size == 6)
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x3_mistnost") as GameObject;
+            else if (newBuilding.Size == 4)
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x2_mistnost") as GameObject;
+            else if (newBuilding.Size == 2)
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_2x1_mistnost") as GameObject;
+            else if (newBuilding.Size == 1)
+                newBuilding.ConstructionPrefab = UnityEngine.Resources.Load("InConstructionBuilding/Vystavba_1x1_mistnost") as GameObject;
+
+
 
             newBuilding.Civil = item.GetIntStat("PriceCM");
             newBuilding.Tech = item.GetIntStat("PriceTM");
