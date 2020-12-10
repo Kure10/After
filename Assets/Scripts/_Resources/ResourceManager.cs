@@ -329,7 +329,8 @@ public class ResourceManager : MonoBehaviour
             resourceHolders.Remove(holder);
         }
     }
-    public Vector2Int Nearest(Vector2Int from, ResourceAmount amount)
+
+    public Vector2Int Nearest(Vector2Int from, ResourceAmount amount, bool ignoreWarehouses = true)
     {
         var res = GetAllResourceHolders(amount);
         Vector2Int cheapest = Vector2Int.Max(default, default);
@@ -346,6 +347,7 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
+        if (ignoreWarehouses) return cheapest;
         if (smallestSteps == int.MaxValue)
         {
             //try warehouses
@@ -354,7 +356,14 @@ public class ResourceManager : MonoBehaviour
                 var warehouse = (Warehouse) box;
                 if (warehouse.State == Building.BuildingState.Build)
                 {
-                    //
+                    Vector2Int position = Geometry.GridFromPoint(warehouse.GetPosition());
+                    var steps = tileFactory.FindPath(from, position ).Count;
+                    if (steps < smallestSteps)
+                    {
+                        smallestSteps = steps;
+                        cheapest = position;
+                    }
+                    
                 }
             }
         }

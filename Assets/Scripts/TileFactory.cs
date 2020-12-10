@@ -85,6 +85,7 @@ public class TileFactory : MonoBehaviour
                 {
                     checkFog(w.tile, x, y);
                 }
+                
             }
         }
     }
