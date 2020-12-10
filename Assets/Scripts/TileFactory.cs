@@ -63,16 +63,35 @@ public class TileFactory : MonoBehaviour
         return false;
     }
 
+    private static int columns = 0;
+    private static int rows = 0;
     public void UpdateFog()
     {
-        var columns = grid.GetUpperBound(0);
-        var rows = grid.Length / columns - 1;
+        if (columns == 0)
+        {
+            columns = grid.GetUpperBound(0);
+            rows = grid.Length / columns - 1;
+        }
+
         for (int x = 0; x < columns ; x++)
         {
             for (int y = 0; y < rows ; y++)
             {
                 if (grid[x, y] is DebrisTile d)
                 {
+                    checkFog(d.tile, x, y);
+                }
+                else if (grid[x,y] is WallTile w)
+                {
+                    checkFog(w.tile, x, y);
+                }
+                
+            }
+        }
+    }
+
+    private void checkFog(GameObject tile, int x, int y)
+    {
                     bool found = false;
                     //check if any of neighbourhood's tiles is empty tile - if so, remove the fog
                     for (int x2 = -1; x2 <= 1; x2++)
@@ -85,16 +104,13 @@ public class TileFactory : MonoBehaviour
                             if (y + y2 > rows) continue;
                             if (grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
                             {
-                                d.tile.gameObject.transform.Find("Fog").transform.gameObject.SetActive(false);
+                                tile.transform.Find("Fog").transform.gameObject.SetActive(false);
                                 found = true;
                                 break;
                             }
                         }
                         if (found) break;
                     }
-                }
-            }
-        }
     }
 
     public bool IsOccupied(Vector2Int coord)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Buildings;
 using Resources;
 using UnityEngine;
 
@@ -128,7 +129,22 @@ public class PickUp : Command
         {
             var character = Target.GetComponent<Character>() as IResourceHolder;
             var pickedUp = tile.Remove(tile.Amount);
-            if (pickedUp.Empty()) return Result.Failure;
+            if (pickedUp.Empty())
+            {
+                //maybe not empty tile, but warehouse
+                if (tile is Tile t)
+                {
+                    if (t.building is Warehouse w)
+                    {
+                        pickedUp = tile.Remove(tile.Amount);
+                        if (pickedUp.Empty()) return Result.Failure;
+                    }
+                }
+                else
+                {
+                    return Result.Failure;
+                }
+            }
             var surplus = character.Add(pickedUp);
             tile.Add(surplus);            
             return Result.Success;

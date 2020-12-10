@@ -128,7 +128,7 @@ public class Building : IWorkSource, IResourceHolder
                             return;
                         }
 
-                        var tile = resourceManager.Nearest(charPosition, missingMaterials);
+                        var tile = resourceManager.Nearest(charPosition, missingMaterials, false);
 
                         if (tile == Vector2Int.Max(default, default))
                         {
