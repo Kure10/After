@@ -10,7 +10,7 @@ public class InventoryManager : MonoBehaviour
 
     // will provide curent item if will be asked..
 
-    public List<Item> allItems = new List<Item>();
+    public List<ItemBlueprint> allItems = new List<ItemBlueprint>();
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // ToDo tmp method for testing..
-    public List<Item> returnThemAll ()
+    public List<ItemBlueprint> returnThemAll ()
     {
         return allItems;
     }

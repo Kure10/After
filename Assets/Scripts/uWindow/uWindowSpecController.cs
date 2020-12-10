@@ -6,6 +6,8 @@ using System.Linq;
 
 public class uWindowSpecController : MonoBehaviour
 {
+    [SerializeField] private Inventory inventory;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject itemSlot;
     [SerializeField] private GameObject panelSpecialist;
@@ -16,6 +18,7 @@ public class uWindowSpecController : MonoBehaviour
 
 
 
+    private int _inventorzSize = 70;
 
 
     private List<uWindowSpecialist> specInGame = new List<uWindowSpecialist>();
@@ -34,6 +37,21 @@ public class uWindowSpecController : MonoBehaviour
 
         OnClicked += this.ClearPreviousCharacters;
         OnClicked += specControler.AddAllSpecialistToUI;
+
+        CreateInventory();
+    }
+
+    private void CreateInventory ()
+    {
+        for (int i = 0; i < _inventorzSize; i++)
+        {
+            GameObject slot = Instantiate(this.itemSlot);
+            slot.transform.SetParent(itemHolder);
+            slot.transform.localScale = new Vector3(1f, 1f, 1f);
+            ItemSlot itemSlot = slot.GetComponent<ItemSlot>();
+            itemSlot.SetEmpty();
+            itemSlots.Add(itemSlot);
+        }
     }
 
     private void ClearPreviousCharacters()
@@ -49,21 +67,27 @@ public class uWindowSpecController : MonoBehaviour
     private void OnEnable()
     {
         OnClicked();
+        UpdateInventory();
     }
 
     // karma = 0
     // abecedne = 1
     // level = 2
     // health = 3
-    public void AddItem(Item item)
+    public void UpdateInventory()
     {
-        GameObject ga = Instantiate(itemSlot);
-        ga.transform.SetParent(itemHolder);
-        ga.transform.localScale = new Vector3(1f, 1f, 1f);
-        ItemSlot slot = ga.GetComponent<ItemSlot>();
-        slot.SetAll(item);
-        itemSlots.Add(slot);
+        var listOfItems = inventory.collectedItems;
+
+        for (int i = 0; i < listOfItems.Count; i++)
+        {
+            ItemBlueprint itemBlueprint = listOfItems[i];
+            GameObject goItem = Instantiate(inventory.itemPrefab);
+            Item item = goItem.GetComponent<Item>();
+            item.Blueprint = itemBlueprint;
+            itemSlots[i].AddItem(goItem);
+        }
     }
+
 
     public void AddSpecHolder(Character character)
     {

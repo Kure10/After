@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler
+public class RegionIPointerClick : MonoBehaviour , IPointerClickHandler 
 {
     private RegionOperator regionOperator;
 

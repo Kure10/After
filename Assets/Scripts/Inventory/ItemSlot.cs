@@ -7,14 +7,18 @@ public class ItemSlot : MonoBehaviour
 {
     [SerializeField] Image image;
 
-    [SerializeField] GameObject countGameObject;
+    [SerializeField] Transform itemContainer;
 
-    [SerializeField] Text count;
 
-    [SerializeField] Button button;
+    public ItemBlueprint slot;
 
-    public void SetAll(Item item)
+    public void AddItem(GameObject gameObject)
     {
+        gameObject.transform.SetParent(itemContainer);
+    }
 
+    public void SetEmpty()
+    {
+        image.gameObject.SetActive(false);
     }
 }

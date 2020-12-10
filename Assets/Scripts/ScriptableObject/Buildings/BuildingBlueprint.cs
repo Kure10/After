@@ -117,7 +117,6 @@ public class BuildingBlueprint : ScriptableObject
                 return Tag.Kaple;
             default:
                 return Tag.VolnePole;
-
         }
     }
 
