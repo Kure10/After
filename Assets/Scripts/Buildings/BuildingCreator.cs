@@ -75,7 +75,7 @@ public class BuildingCreator : MonoBehaviour
                     blueprint.transform.position += new Vector3(0, upDiff, 0); 
                     //TODO create proper Factory for this
                     Building newBuild;
-                    if (selectedBuildingBlueprint.Name == "Sklad")
+                    if (selectedBuildingBlueprint.Name == "Skladiště")
                     {
                         newBuild = new Warehouse(selectedBuildingBlueprint, blueprint );
                     }
@@ -84,6 +84,8 @@ public class BuildingCreator : MonoBehaviour
                         newBuild = new Building(selectedBuildingBlueprint, blueprint );
                         
                     }
+
+                        
                     buildings.Add(newBuild);
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
