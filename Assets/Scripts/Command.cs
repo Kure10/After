@@ -136,7 +136,7 @@ public class PickUp : Command
                 {
                     if (t.building is Warehouse w)
                     {
-                        pickedUp = tile.Remove(tile.Amount);
+                        pickedUp = w.Remove(w.Amount);
                         if (pickedUp.Empty()) return Result.Failure;
                     }
                 }
