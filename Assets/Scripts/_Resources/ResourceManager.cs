@@ -374,5 +374,64 @@ public class ResourceManager : MonoBehaviour
     {
         return resourceHolders.Where(r => r.Amount.HasAny(amount)).ToList();
     }
+    //get 12, can 
+    public static ResourceAmount ReturnSurplus(ResourceAmount amount, int max)
+    {
+        var realResourceAmount = new ResourceAmount();
+        if (amount.Food > 0)
+        {
+            if (amount.Food > max)
+            {
+                realResourceAmount.Food = max;
+            }
+
+            realResourceAmount.Food = amount.Food;
+            return realResourceAmount;
+        }
+        
+        if (amount.Civilian> 0)
+        {
+            realResourceAmount.Civilian= amount.Civilian;
+            if (amount.Civilian> max)
+            {
+                realResourceAmount.Civilian= max;
+            } 
+
+            return realResourceAmount;
+        }
+        
+        if (amount.Technical> 0)
+        {
+            realResourceAmount.Technical= amount.Technical;
+            if (amount.Technical> max)
+            {
+                realResourceAmount.Technical= max;
+            }
+
+            return realResourceAmount;
+        }
+        if (amount.Fuel> 0)
+        {
+            if (amount.Fuel> max)
+            {
+                realResourceAmount.Fuel= max;
+            }
+
+            realResourceAmount.Fuel = amount.Fuel;
+            return realResourceAmount;
+        }
+        if (amount.Military> 0)
+        {
+            if (amount.Military> max)
+            {
+                realResourceAmount.Military= max;
+            }
+
+            realResourceAmount.Military= amount.Military;
+            return realResourceAmount;
+        }
+        
+        return realResourceAmount;
+    }
 
 }

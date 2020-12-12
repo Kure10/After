@@ -138,6 +138,9 @@ public class PickUp : Command
                     {
                         pickedUp = w.Remove(w.Amount);
                         if (pickedUp.Empty()) return Result.Failure;
+                        var s = character.Add(pickedUp);
+                        w.Add(s);
+                        return Result.Success;
                     }
                 }
                 else

@@ -45,72 +45,13 @@ public class Tile : BaseTile, IWalkable, IResourceHolder
     public ResourceAmount Add(ResourceAmount amount)
     {
         GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
-        Amount += amount;
-        var realAmount = FixAmount();
+        var realAmount = ReturnSurplus(amount, 10);
         var toReturn = Amount - realAmount;
         Amount = realAmount;
         RefreshMaterials();
         return toReturn;
     }
 
-    ResourceAmount FixAmount()
-    {
-        var realResourceAmount = new ResourceAmount();
-        if (Amount.Food > 0)
-        {
-            if (Amount.Food > 10)
-            {
-                realResourceAmount.Food = 10;
-            }
-
-            realResourceAmount.Food = Amount.Food;
-            return realResourceAmount;
-        }
-        
-        if (Amount.Civilian> 0)
-        {
-            if (Amount.Civilian> 10)
-            {
-                realResourceAmount.Civilian= 10;
-            }
-
-            realResourceAmount.Civilian= Amount.Civilian;
-            return realResourceAmount;
-        }
-        
-        if (Amount.Technical> 0)
-        {
-            if (Amount.Technical> 10)
-            {
-                realResourceAmount.Technical= 10;
-            }
-
-            realResourceAmount.Technical= Amount.Technical;
-            return realResourceAmount;
-        }
-        if (Amount.Fuel> 0)
-        {
-            if (Amount.Fuel> 10)
-            {
-                realResourceAmount.Fuel= 10;
-            }
-
-            realResourceAmount.Fuel = Amount.Fuel;
-            return realResourceAmount;
-        }
-        if (Amount.Military> 0)
-        {
-            if (Amount.Military> 10)
-            {
-                realResourceAmount.Military= 10;
-            }
-
-            realResourceAmount.Military= Amount.Military;
-            return realResourceAmount;
-        }
-        
-        return realResourceAmount;
-    }
 
     private void RefreshMaterials()
     {

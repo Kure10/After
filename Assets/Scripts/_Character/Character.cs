@@ -96,9 +96,11 @@ public class Character : MonoBehaviour, IResourceHolder
 
     public ResourceManager.ResourceAmount Add(ResourceManager.ResourceAmount amount)
     {
-        Amount += amount;
         GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
-        return new ResourceManager.ResourceAmount();//TODO ma vracet zbytek - tzn. kdyz pridas 11 resourcu, 1 vrat, bo unese jen 10
+        var realAmount = ResourceManager.ReturnSurplus(amount, 10);
+        var toReturn = Amount - realAmount;
+        Amount = realAmount;
+        return toReturn;
     }
 
     public ResourceManager.ResourceAmount Remove(ResourceManager.ResourceAmount amount)
