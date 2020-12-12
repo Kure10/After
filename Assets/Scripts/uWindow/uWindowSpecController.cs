@@ -43,6 +43,7 @@ public class uWindowSpecController : MonoBehaviour
 
     private void CreateInventory ()
     {
+        // vytvořím sloty podle velikosti pro itemy.. nastavím jím holder a pridam je do listu vsech slotu..
         for (int i = 0; i < _inventorzSize; i++)
         {
             GameObject slot = Instantiate(this.itemSlot);
@@ -78,13 +79,15 @@ public class uWindowSpecController : MonoBehaviour
     {
         var listOfItems = inventory.collectedItems;
 
+        // vytvořím item a naplním ho daty , a nastavím jednotlivym slotum ITEM.
         for (int i = 0; i < listOfItems.Count; i++)
         {
             ItemBlueprint itemBlueprint = listOfItems[i];
             GameObject goItem = Instantiate(inventory.itemPrefab);
             Item item = goItem.GetComponent<Item>();
             item.Blueprint = itemBlueprint;
-            itemSlots[i].AddItem(goItem);
+            item.Sprite = itemBlueprint.Sprite;
+            itemSlots[i].AddItem(goItem,item);
         }
     }
 

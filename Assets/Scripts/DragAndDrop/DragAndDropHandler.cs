@@ -6,19 +6,30 @@ using UnityEngine.EventSystems;
 public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable
 {
     private CanvasGroup canvasGroup;
-    private Item slot;
+ 
+    private ( Item item, GameObject go) dragingObject;
+
+    // Zatím Todo. Mozna bude mit drag and drop vlastni canvas.. uvidím.
+    //private Canvas canvas;
+    //private RectTransform rect;
+
+
     private void Awake()
     {
-        slot = this.gameObject.GetComponent<Item>();
+        dragingObject.go = this.gameObject;
+        dragingObject.item = this.gameObject.GetComponent<Item>();
         canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+
+        //rect = GetComponent<RectTransform>();
+        //canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        DragAndDropManager.IsDraging = true;
-
+        DragAndDropManager.Instantion.InitDraging(dragingObject);
         canvasGroup.blocksRaycasts = false;
+        canvasGroup.alpha = 0.7f;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -27,16 +38,35 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable
         {
             Vector3 posMouse = Input.mousePosition;
             this.transform.position = posMouse;
+
+            //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
+
         }
 
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
         DragAndDropManager.IsDraging = false;
-
         canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1f;
 
+
+        bool isPosibleDrop = DragAndDropManager.Instantion.IsDropItemPosible();
+        bool result;
+
+        if (!isPosibleDrop)
+        {
+            result = DragAndDropManager.Instantion.ReturnToOriginalPosition();
+        }
+        else
+        {
+            result = DragAndDropManager.Instantion.SwitchPosition();
+        }
+
+
+        
         // skonci Drag
         // cheknout kde jsem zkoncil
         // jestli je prazdny tak priradim slot.  // jestli je plny vymenim  // jestli do sraček priradím. vratím na puvodní místo
@@ -53,32 +83,7 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(!DragAndDropManager.IsDraging)
-        {
-           DragAndDropManager.InitDraging(this.gameObject, slot);
-        }
 
-        if (DragAndDropManager.IsDraging)
-        {
-            if (slot.gameObject == eventData.pointerEnter)
-                return;
-
-            var pos = eventData.position;
-
-            var ss = eventData.selectedObject;
-
-            var sda = eventData.pointerEnter;
-
-            var sddsaa = eventData.pointerPressRaycast;
-
-            RaycastHit2D hit = Physics2D.Raycast(eventData.position,transform.TransformDirection(Vector2.up));
-
-
-
-           // DragAndDropManager.SetDestination(slot.myCurrentPosition);
-            
-
-        }
     }
 
     public void OnPointerExit(PointerEventData eventData)

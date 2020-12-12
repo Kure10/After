@@ -18,9 +18,8 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        // return all data for item -> ToDo finish
+        // return all data for itemManager -> ToDo finish
         collectedItems = inventoryManager.returnThemAll();
-
     }
 
 }

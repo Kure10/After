@@ -4,40 +4,141 @@ using UnityEngine;
 
 public class DragAndDropManager : MonoBehaviour
 {
+    [SerializeField] Transform dragHolder;
+
     static private bool _isDraging = false;
 
+    private Slot _originalSlot;
+
+    private Slot _newSlot;
+
+    private (Item item, GameObject go) _dragingObject;
+
+    public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
+
+    //public Transform GetOriginalLocation { get { return _originalLocation; }}
+    //public Transform GetNewLocation { get { return _newLocation; } }
     static public bool IsDraging { get { return _isDraging; } set { _isDraging = value; } }
 
-    public Item dragingSlot = null;
-
-    //public IInventory oldPosition;
-
-    //public IInventory newPosition;
-
-
-    static public (GameObject go, Item slot) dragingObject;
-
-    //static public void SetDestination (IInventory slot) // nepotrebuji ho.. musim set destiny
-    //{
-
-    //}
-    static public void InitDraging(GameObject go, Item slot)
+    #region Singleton
+    private static DragAndDropManager _instantion;
+    public static DragAndDropManager Instantion
     {
-        dragingObject = (go, slot);
+        get
+        {
+            if (_instantion == null)
+            {
+                GameObject go = new GameObject("DragAndDropManager");
+                go.AddComponent<DragAndDropManager>();
+            }
+
+            return _instantion;
+        }
+    }
+    private void Awake()
+    {
+        _instantion = this;
     }
 
-    static public void StartDraging(GameObject go, Item slot)
+    #endregion
+
+
+    public void InitDraging((Item item, GameObject go) dragingObject)
     {
-        dragingObject = (go, slot);
-
-
+        _isDraging = true;
+        _originalSlot = dragingObject.item.Owner;
+        dragingObject.go.transform.SetParent(dragHolder);
+        _dragingObject = dragingObject;
     }
 
-    //static public void EndDraging(IInventory destination , IInventory source)
-    //{
-        
+    public bool IsDropItemPosible()
+    {
+        if (_newSlot == null || _newSlot == _originalSlot)
+            return false;
+
+        return true;
+    }
+
+    public bool ReturnToOriginalPosition()
+    {
+        if (_newSlot == null || _newSlot == _originalSlot)
+        {
+            _dragingObject.go.transform.SetParent(_originalSlot.GetItemContainer);
+            SetDefault();
+        }
+
+        return false;
+    }
+
+    public void SetDropPosition(Slot destinationSlot)
+    {
+        if(_originalSlot is SpecInventorySlot specSlot)
+        {
+            if(specSlot.GetSlotType != _dragingObject.item.blueprint.Type)
+            {
+                return;
+            }
+        }
+
+        if (destinationSlot is ItemSlot itemSlot && _originalSlot is SpecInventorySlot origin)
+        {
+            if (!itemSlot.IsEmpty && origin.GetSlotType == itemSlot.CurrentItem.item.Blueprint.Type)
+            {
+                _newSlot = destinationSlot;
+            }
+            else if (itemSlot.IsEmpty)
+            {
+                _newSlot = destinationSlot;
+            }
+
+            return;
+
+        }
 
 
-    //}
+        _newSlot = destinationSlot;
+    }
+
+    public bool SwitchPosition()
+    {
+
+        if (_dragingObject.go != null || _newSlot != null)
+        {
+            if (!_newSlot.IsEmpty) // Switchuji Itemy.
+            {
+                _newSlot.CurrentItem.go.transform.SetParent(_originalSlot.GetItemContainer);
+                _newSlot.CurrentItem.item.Owner = _originalSlot; // odstranit Ownera zapremyslet..
+
+                _originalSlot.CurrentItem = _newSlot.CurrentItem;
+                _newSlot.CurrentItem = _dragingObject;
+            }
+            else // Je prazdny slot prideluji
+            {
+                _newSlot.IsEmpty = false;
+                _originalSlot.IsEmpty = true;
+
+                _newSlot.CurrentItem = _dragingObject;
+                _originalSlot.CurrentItem = (null, null);
+            }
+
+
+            _dragingObject.go.transform.SetParent(_newSlot.GetItemContainer);
+            _dragingObject.item.Owner = _newSlot; // odstranit Ownera zapremyslet..
+            SetDefault();
+
+            return true;
+        }
+
+
+        return false;
+    }
+
+    private void SetDefault ()
+    {
+        _newSlot = null;
+        _originalSlot = null;
+        _dragingObject.go = null;
+        _dragingObject.item = null;
+    }
 
 }
