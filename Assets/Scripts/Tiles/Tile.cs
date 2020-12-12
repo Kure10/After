@@ -46,71 +46,12 @@ public class Tile : BaseTile, IWalkable, IResourceHolder
     {
         GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
         Amount += amount;
-        var realAmount = FixAmount();
-        var toReturn = Amount - realAmount;
-        Amount = realAmount;
+        var surplus = ReturnSurplus(Amount, 10);
+        Amount -= surplus;
         RefreshMaterials();
-        return toReturn;
+        return surplus;
     }
 
-    ResourceAmount FixAmount()
-    {
-        var realResourceAmount = new ResourceAmount();
-        if (Amount.Food > 0)
-        {
-            if (Amount.Food > 10)
-            {
-                realResourceAmount.Food = 10;
-            }
-
-            realResourceAmount.Food = Amount.Food;
-            return realResourceAmount;
-        }
-        
-        if (Amount.Civilian> 0)
-        {
-            if (Amount.Civilian> 10)
-            {
-                realResourceAmount.Civilian= 10;
-            }
-
-            realResourceAmount.Civilian= Amount.Civilian;
-            return realResourceAmount;
-        }
-        
-        if (Amount.Technical> 0)
-        {
-            if (Amount.Technical> 10)
-            {
-                realResourceAmount.Technical= 10;
-            }
-
-            realResourceAmount.Technical= Amount.Technical;
-            return realResourceAmount;
-        }
-        if (Amount.Fuel> 0)
-        {
-            if (Amount.Fuel> 10)
-            {
-                realResourceAmount.Fuel= 10;
-            }
-
-            realResourceAmount.Fuel = Amount.Fuel;
-            return realResourceAmount;
-        }
-        if (Amount.Military> 0)
-        {
-            if (Amount.Military> 10)
-            {
-                realResourceAmount.Military= 10;
-            }
-
-            realResourceAmount.Military= Amount.Military;
-            return realResourceAmount;
-        }
-        
-        return realResourceAmount;
-    }
 
     private void RefreshMaterials()
     {
@@ -142,12 +83,13 @@ public class Tile : BaseTile, IWalkable, IResourceHolder
 
     public ResourceAmount Remove(ResourceAmount amount)
     {
-        Amount -= amount;
+        var removed = ResourceManager.RemoveResourceAmount(Amount, amount);
+        Amount -= removed;
         if (Amount.Empty())
         {
             GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Unregister(this);
         }
         RefreshMaterials();
-        return amount; //TODO vrat skutecny pocet ziskanych resources
+        return removed; 
     }
 }
