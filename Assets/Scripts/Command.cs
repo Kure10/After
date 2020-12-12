@@ -116,9 +116,12 @@ public class Move : Command
 }
 public class PickUp : Command
 {
-    public PickUp(GameObject target)
+    private ResourceManager.ResourceAmount howMany;
+    public PickUp(GameObject target, ResourceManager.ResourceAmount howMany)
     {
         Target = target;
+        this.howMany = howMany;
+
     }
     public override Result Execute()
     {
@@ -128,7 +131,7 @@ public class PickUp : Command
         if (pickupPoint is IResourceHolder tile)
         {
             var character = Target.GetComponent<Character>() as IResourceHolder;
-            var pickedUp = tile.Remove(tile.Amount);
+            var pickedUp = tile.Remove(howMany);
             if (pickedUp.Empty())
             {
                 //maybe not empty tile, but warehouse
@@ -136,7 +139,7 @@ public class PickUp : Command
                 {
                     if (t.building is Warehouse w)
                     {
-                        pickedUp = w.Remove(w.Amount);
+                        pickedUp = w.Remove(howMany);
                         if (pickedUp.Empty()) return Result.Failure;
                         var s = character.Add(pickedUp);
                         w.Add(s);

@@ -11,22 +11,22 @@ using Object = System.Object;
 
 public class ResourceManager : MonoBehaviour
 {
-   
+
     private TileFactory tileFactory;
     private List<IResourceHolder> resourceHolders;
     public GameObject[] Prefabs;
-     
-    
-    public  static GameObject PotravinyBigBox;
-    public  static GameObject PotravinySmallBox;
-    public  static GameObject VojenskyMaterialBigBox;
-    public  static GameObject VojenskyMaterialSmallBox;
-    public  static GameObject TechnickyMaterialBigBox;
-    public  static GameObject TechnickyMaterialSmallBox;
-    public  static GameObject CivilniMaterialBigBox;
-    public  static GameObject CivilniMaterialSmallBox;
-    public  static GameObject PohonneHmotyBigBox;
-    public  static GameObject PohonneHmotySmallBox;
+
+
+    public static GameObject PotravinyBigBox;
+    public static GameObject PotravinySmallBox;
+    public static GameObject VojenskyMaterialBigBox;
+    public static GameObject VojenskyMaterialSmallBox;
+    public static GameObject TechnickyMaterialBigBox;
+    public static GameObject TechnickyMaterialSmallBox;
+    public static GameObject CivilniMaterialBigBox;
+    public static GameObject CivilniMaterialSmallBox;
+    public static GameObject PohonneHmotyBigBox;
+    public static GameObject PohonneHmotySmallBox;
 
     public void Awake()
     {
@@ -43,6 +43,7 @@ public class ResourceManager : MonoBehaviour
         PohonneHmotySmallBox = Prefabs[9];
         resourceHolders = new List<IResourceHolder>();
     }
+
     [Serializable]
     public enum Material
     {
@@ -76,6 +77,7 @@ public class ResourceManager : MonoBehaviour
             src.Energy += dst.Energy;
             return src;
         }
+
         public static ResourceAmount operator -(ResourceAmount src, ResourceAmount dst)
         {
             src.Food -= dst.Food;
@@ -121,22 +123,27 @@ public class ResourceManager : MonoBehaviour
             {
                 if (Food > 0) return true;
             }
-            if (amount.Military> 0)
+
+            if (amount.Military > 0)
             {
-                if (Military> 0) return true;
+                if (Military > 0) return true;
             }
-            if (amount.Technical> 0)
+
+            if (amount.Technical > 0)
             {
                 if (Technical > 0) return true;
             }
+
             if (amount.Civilian > 0)
             {
                 if (Civilian > 0) return true;
             }
+
             if (amount.Fuel > 0)
             {
                 if (Fuel > 0) return true;
             }
+
             if (amount.Energy > 0)
             {
                 if (Energy > 0) return true;
@@ -145,6 +152,7 @@ public class ResourceManager : MonoBehaviour
             return false;
         }
     }
+
     public Text[] text;
 
     /*   Metody na nastaveni kazde surky zvlast */
@@ -167,10 +175,12 @@ public class ResourceManager : MonoBehaviour
                 Debug.Log("Snazime se pridat neexistujici material -> viz Resource Manager");
                 break;
         }
+
         return PotravinyBigBox; //shouldn't happen, TODO use some other 'red warning box' or something
     }
 
     Vector2Int defaultSpawnPoint = new Vector2Int(20, 20);
+
     public void IncPohonneHmoty(int value)
     {
         var val = new ResourceAmount();
@@ -194,9 +204,11 @@ public class ResourceManager : MonoBehaviour
                 {
                     val.Food = f.Amount.Food;
                 }
+
                 value += val.Food;
                 f.Remove(val);
             }
+
             ResourceAmountChanged();
         }
         else
@@ -204,6 +216,7 @@ public class ResourceManager : MonoBehaviour
             SpawnResource(val, defaultSpawnPoint);
         }
     }
+
     public void IncVojenskyMaterialy(int value)
     {
 
@@ -212,6 +225,7 @@ public class ResourceManager : MonoBehaviour
 
         SpawnResource(val, defaultSpawnPoint);
     }
+
     public void IncTechnickyMaterial(int value)
     {
 
@@ -220,6 +234,7 @@ public class ResourceManager : MonoBehaviour
 
         SpawnResource(val, defaultSpawnPoint);
     }
+
     public void IncCivilniMaterial(int value)
     {
         var val = new ResourceAmount();
@@ -227,6 +242,7 @@ public class ResourceManager : MonoBehaviour
 
         SpawnResource(val, defaultSpawnPoint);
     }
+
     public void IncEnergie(int value)
     {
         var val = new ResourceAmount();
@@ -257,9 +273,10 @@ public class ResourceManager : MonoBehaviour
         {
             holder.Set(new ResourceAmount());
         }
+
         ResourceAmountChanged();
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -275,6 +292,7 @@ public class ResourceManager : MonoBehaviour
         {
             resources += holder.Amount;
         }
+
         text[0].text = resources.Food.ToString();
         text[1].text = resources.Military.ToString();
         text[2].text = resources.Technical.ToString();
@@ -339,7 +357,7 @@ public class ResourceManager : MonoBehaviour
         {
             var tile = (Tile) box; //TODO muze byt i sklad
             Vector2Int position = new Vector2Int(tile.x, tile.y);
-            var steps = tileFactory.FindPath(from, position ).Count;
+            var steps = tileFactory.FindPath(from, position).Count;
             if (steps < smallestSteps)
             {
                 smallestSteps = steps;
@@ -357,16 +375,17 @@ public class ResourceManager : MonoBehaviour
                 if (warehouse.State == Building.BuildingState.Build)
                 {
                     Vector2Int position = Geometry.GridFromPoint(warehouse.GetPosition());
-                    var steps = tileFactory.FindPath(from, position ).Count;
+                    var steps = tileFactory.FindPath(from, position).Count;
                     if (steps < smallestSteps)
                     {
                         smallestSteps = steps;
                         cheapest = position;
                     }
-                    
+
                 }
             }
         }
+
         return cheapest;
     }
 
@@ -374,64 +393,149 @@ public class ResourceManager : MonoBehaviour
     {
         return resourceHolders.Where(r => r.Amount.HasAny(amount)).ToList();
     }
-    //get 12, can 
+    //get 12, can hold 10, return 2
+
     public static ResourceAmount ReturnSurplus(ResourceAmount amount, int max)
     {
-        var realResourceAmount = new ResourceAmount();
+        var surplus = amount;
         if (amount.Food > 0)
         {
             if (amount.Food > max)
             {
-                realResourceAmount.Food = max;
+                surplus.Food = amount.Food - max;
+            }
+            else
+            {
+                surplus.Food = 0;
             }
 
-            realResourceAmount.Food = amount.Food;
-            return realResourceAmount;
+            return surplus;
         }
-        
-        if (amount.Civilian> 0)
+
+        if (amount.Civilian > 0)
         {
-            realResourceAmount.Civilian= amount.Civilian;
             if (amount.Civilian> max)
             {
-                realResourceAmount.Civilian= max;
-            } 
+                surplus.Civilian = amount.Civilian - max;
+            }
+            else
+            {
+                surplus.Civilian = 0;
+            }
 
-            return realResourceAmount;
+            return surplus;
+        }
+        if (amount.Energy > 0)
+        {
+            if (amount.Energy > max)
+            {
+                surplus.Energy = amount.Energy - max;
+            }
+            else
+            {
+                surplus.Energy = 0;
+            }
+            return surplus;
+        }
+        if (amount.Fuel > 0)
+        {
+            if (amount.Fuel> max)
+            {
+                surplus.Fuel = amount.Fuel - max;
+            }
+            else
+            {
+                surplus.Fuel = 0;
+            }
+            return surplus;
+        }
+        if (amount.Military > 0)
+        {
+            if (amount.Military > max)
+            {
+                surplus.Military = amount.Military - max;
+            }
+            else
+            {
+                surplus.Military = 0;
+            }
+            return surplus;
+        }
+        if (amount.Technical > 0)
+        {
+            if (amount.Technical > max)
+            {
+                surplus.Technical = amount.Technical - max;
+            }
+            else
+            {
+                surplus.Technical = 0;
+            }
+            return surplus;
+        }
+
+        return surplus;
+    }
+
+    public static ResourceAmount RemoveResourceAmount(ResourceAmount resourceAmount, ResourceAmount amount)
+    {
+        var removed = new ResourceAmount();
+        if (amount.Food > 0)
+        {
+            if (resourceAmount.Food > amount.Food)
+            {
+                removed.Food = amount.Food;
+                resourceAmount.Food -= amount.Food;
+            }
+            else
+            {
+                removed.Food = resourceAmount.Food;
+                resourceAmount.Food = 0;
+            }
+        }
+        if (amount.Civilian > 0)
+        {
+            if (resourceAmount.Civilian > amount.Civilian)
+            {
+                removed.Civilian = amount.Civilian;
+                resourceAmount.Civilian -= amount.Civilian;
+            }
+            else
+            {
+                removed.Civilian = resourceAmount.Civilian;
+                resourceAmount.Civilian = 0;
+            }
+        }
+        if (amount.Military > 0)
+        {
+            if (resourceAmount.Military > amount.Military)
+            {
+                removed.Military = amount.Military;
+                resourceAmount.Military -= amount.Military;
+            }
+            else
+            {
+                removed.Military = resourceAmount.Military;
+                resourceAmount.Military = 0;
+            }
         }
         
         if (amount.Technical> 0)
         {
-            realResourceAmount.Technical= amount.Technical;
-            if (amount.Technical> max)
+            if (resourceAmount.Technical > amount.Technical)
             {
-                realResourceAmount.Technical= max;
+                removed.Technical = amount.Technical;
+                resourceAmount.Technical -= amount.Technical;
             }
-
-            return realResourceAmount;
-        }
-        if (amount.Fuel> 0)
-        {
-            if (amount.Fuel> max)
+            else
             {
-                realResourceAmount.Fuel= max;
+                removed.Technical = resourceAmount.Technical;
+                resourceAmount.Technical = 0;
             }
-
-            realResourceAmount.Fuel = amount.Fuel;
-            return realResourceAmount;
         }
-        if (amount.Military> 0)
-        {
-            if (amount.Military> max)
-            {
-                realResourceAmount.Military= max;
-            }
 
-            realResourceAmount.Military= amount.Military;
-            return realResourceAmount;
-        }
-        
-        return realResourceAmount;
+        return removed;
     }
+        
 
 }

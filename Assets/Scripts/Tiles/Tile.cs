@@ -45,11 +45,11 @@ public class Tile : BaseTile, IWalkable, IResourceHolder
     public ResourceAmount Add(ResourceAmount amount)
     {
         GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
-        var realAmount = ReturnSurplus(amount, 10);
-        var toReturn = Amount - realAmount;
-        Amount = realAmount;
+        Amount += amount;
+        var surplus = ReturnSurplus(Amount, 10);
+        Amount -= surplus;
         RefreshMaterials();
-        return toReturn;
+        return surplus;
     }
 
 
@@ -83,12 +83,13 @@ public class Tile : BaseTile, IWalkable, IResourceHolder
 
     public ResourceAmount Remove(ResourceAmount amount)
     {
-        Amount -= amount;
+        var removed = ResourceManager.RemoveResourceAmount(Amount, amount);
+        Amount -= removed;
         if (Amount.Empty())
         {
             GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Unregister(this);
         }
         RefreshMaterials();
-        return amount; //TODO vrat skutecny pocet ziskanych resources
+        return removed; 
     }
 }

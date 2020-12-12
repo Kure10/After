@@ -149,7 +149,7 @@ public class Building : IWorkSource, IResourceHolder
                     case WorkerState.empty:
                         if (activeWorker.character.Execute() == Result.Success)
                         {
-                            activeWorker.character.AddCommand(new PickUp(activeWorker.character.gameObject));
+                            activeWorker.character.AddCommand(new PickUp(activeWorker.character.gameObject, GetMissingResources()));
                             activeWorker.state = WorkerState.pickup;
                         }
 
@@ -416,11 +416,12 @@ public class Building : IWorkSource, IResourceHolder
 
     public ResourceManager.ResourceAmount Remove(ResourceManager.ResourceAmount amount)
     {
-        Amount -= amount;
+        var removed = ResourceManager.RemoveResourceAmount(Amount, amount);
+        Amount -= removed;
         if (Amount.Empty())
         {
             resourceManager.Unregister(this);
         }
-        return amount;
+        return removed;
     }
 }

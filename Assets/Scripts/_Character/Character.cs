@@ -97,10 +97,10 @@ public class Character : MonoBehaviour, IResourceHolder
     public ResourceManager.ResourceAmount Add(ResourceManager.ResourceAmount amount)
     {
         GameObject.FindGameObjectWithTag("ResourceManager").transform.GetComponent<ResourceManager>().Register(this);
-        var realAmount = ResourceManager.ReturnSurplus(amount, 10);
-        var toReturn = Amount - realAmount;
-        Amount = realAmount;
-        return toReturn;
+        Amount += amount;
+        var surplus = ResourceManager.ReturnSurplus(Amount, 10);
+        Amount -= surplus;
+        return surplus;
     }
 
     public ResourceManager.ResourceAmount Remove(ResourceManager.ResourceAmount amount)
