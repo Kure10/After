@@ -16,7 +16,7 @@ public class DragAndDropManager : MonoBehaviour
 
     public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
 
-    //public Transform GetOriginalLocation { get { return _originalLocation; }}
+    //public Transform GetOriginalLocation { get { return _originalLocation; } }
     //public Transform GetNewLocation { get { return _newLocation; } }
     static public bool IsDraging { get { return _isDraging; } set { _isDraging = value; } }
 
@@ -42,18 +42,24 @@ public class DragAndDropManager : MonoBehaviour
 
     #endregion
 
+    public void SetOriginSlot(Slot originalSlot)
+    {
+        _originalSlot = originalSlot;
+    }
 
     public void InitDraging((Item item, GameObject go) dragingObject)
     {
         _isDraging = true;
-        _originalSlot = dragingObject.item.Owner;
-        dragingObject.go.transform.SetParent(dragHolder);
+        MoveItem(dragingObject, dragHolder);
         _dragingObject = dragingObject;
     }
 
     public bool IsDropItemPosible()
     {
         if (_newSlot == null || _newSlot == _originalSlot)
+            return false;
+
+        if (_originalSlot == null) // Todo tohle by tak nemelo byt..
             return false;
 
         return true;
@@ -63,7 +69,7 @@ public class DragAndDropManager : MonoBehaviour
     {
         if (_newSlot == null || _newSlot == _originalSlot)
         {
-            _dragingObject.go.transform.SetParent(_originalSlot.GetItemContainer);
+            MoveItem(_dragingObject, _dragingObject.item.MySlot.GetItemContainer);
             SetDefault();
         }
 
@@ -106,11 +112,13 @@ public class DragAndDropManager : MonoBehaviour
         {
             if (!_newSlot.IsEmpty) // Switchuji Itemy.
             {
-                _newSlot.CurrentItem.go.transform.SetParent(_originalSlot.GetItemContainer);
-                _newSlot.CurrentItem.item.Owner = _originalSlot; // odstranit Ownera zapremyslet..
+                MoveItem(_newSlot.CurrentItem, _originalSlot.GetItemContainer);
+
+                _newSlot.CurrentItem.item.MySlot = _originalSlot;
 
                 _originalSlot.CurrentItem = _newSlot.CurrentItem;
                 _newSlot.CurrentItem = _dragingObject;
+
             }
             else // Je prazdny slot prideluji
             {
@@ -121,9 +129,8 @@ public class DragAndDropManager : MonoBehaviour
                 _originalSlot.CurrentItem = (null, null);
             }
 
-
-            _dragingObject.go.transform.SetParent(_newSlot.GetItemContainer);
-            _dragingObject.item.Owner = _newSlot; // odstranit Ownera zapremyslet..
+            MoveItem(_dragingObject, _newSlot.GetItemContainer);
+            _dragingObject.item.MySlot = _newSlot;
             SetDefault();
 
             return true;
@@ -135,10 +142,15 @@ public class DragAndDropManager : MonoBehaviour
 
     private void SetDefault ()
     {
+        _originalSlot = _newSlot;
         _newSlot = null;
-        _originalSlot = null;
         _dragingObject.go = null;
         _dragingObject.item = null;
     }
 
+
+    private void MoveItem((Item item , GameObject go) item , Transform destination)
+    {
+        item.go.transform.SetParent(destination);
+    }
 }

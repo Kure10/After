@@ -64,16 +64,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable
         {
             result = DragAndDropManager.Instantion.SwitchPosition();
         }
-
-
-        
-        // skonci Drag
-        // cheknout kde jsem zkoncil
-        // jestli je prazdny tak priradim slot.  // jestli je plny vymenim  // jestli do sraček priradím. vratím na puvodní místo
-
-        // nasledně stop Draging je false 
-        // vycistím data. na dalsí Drag
-
     }
 
     public void OnPointerClick(PointerEventData eventData)

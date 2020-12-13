@@ -38,12 +38,12 @@ public class uWindowSpecController : MonoBehaviour
         OnClicked += this.ClearPreviousCharacters;
         OnClicked += specControler.AddAllSpecialistToUI;
 
-        CreateInventory();
+        CreateSlots();
     }
 
-    private void CreateInventory ()
+    private void CreateSlots ()
     {
-        // vytvořím sloty podle velikosti pro itemy.. nastavím jím holder a pridam je do listu vsech slotu..
+        // vytvořím sloty podle velikosti inventare pro itemy.. nastavím jím holder a pridam je do listu vsech slotu..
         for (int i = 0; i < _inventorzSize; i++)
         {
             GameObject slot = Instantiate(this.itemSlot);
@@ -87,6 +87,7 @@ public class uWindowSpecController : MonoBehaviour
             Item item = goItem.GetComponent<Item>();
             item.Blueprint = itemBlueprint;
             item.Sprite = itemBlueprint.Sprite;
+            item.MySlot = itemSlots[i];
             itemSlots[i].AddItem(goItem,item);
         }
     }

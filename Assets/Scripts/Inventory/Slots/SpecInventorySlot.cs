@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SpecInventorySlot : Slot , IDropHandler 
+public class SpecInventorySlot : Slot  
 {
     [SerializeField] ItemBlueprint.ItemType type;
     // Todo zatim se nepouziva..
@@ -22,6 +22,14 @@ public class SpecInventorySlot : Slot , IDropHandler
             {
                 DragAndDropManager.Instantion.SetDropPosition(this);
             }
+            else
+            {
+                DragAndDropManager.Instantion.SetDropPosition(null);
+            }
+        }
+        else
+        {
+            DragAndDropManager.Instantion.SetOriginSlot(this);
         }
     }
 
@@ -31,15 +39,15 @@ public class SpecInventorySlot : Slot , IDropHandler
         {
             DragAndDropManager.Instantion.SetDropPosition(null);
         }
+        //else
+        //{
+        //    DragAndDropManager.Instantion.SetOriginSlot(null);
+        //}
     }
 
     override public void OnPointerClick(PointerEventData eventData)
     {
        // throw new System.NotImplementedException();
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        //throw new System.NotImplementedException();
+       Debug.Log("dasdasdas jsem tady");
     }
 }
