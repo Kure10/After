@@ -58,7 +58,7 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
         Debug.Log("OnEndDrag");
 
-        DragAndDropManager.Instantion.WasItemReplaced();
+        DragAndDropManager.Instantion.wasSuccessfullyDroped();
 
         DragAndDropManager.Instantion.SetDefault();
 

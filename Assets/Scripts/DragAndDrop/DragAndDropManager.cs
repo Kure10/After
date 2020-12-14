@@ -57,7 +57,7 @@ public class DragAndDropManager : MonoBehaviour
 
     }
 
-    public void WasItemReplaced()
+    public void wasSuccessfullyDroped()
     {
         if(!_successDrop)
         {
@@ -221,10 +221,21 @@ public class DragAndDropManager : MonoBehaviour
             if (itemSlotDestination.CurrentItem.item.GetType != specSlotOrigin2.CurrentItem.item.GetType)
             {
                 // vrat item na puvodni pozici...
+                _dragingObject.go.transform.SetParent(specSlotOrigin2.GetItemContainer);
+
             }
             else
             {
-                // switch
+                // switching
+                itemSlotDestination.CurrentItem.go.transform.SetParent(specSlotOrigin2.GetItemContainer);
+                specSlotOrigin2.CurrentItem = itemSlotDestination.CurrentItem;
+                specSlotOrigin2.CurrentItem.item.MySlot = _dragingObject.item.MySlot;
+
+
+                _dragingObject.go.transform.SetParent(itemSlotDestination.GetItemContainer);
+                _dragingObject.item.MySlot = itemSlotDestination;
+                itemSlotDestination.CurrentItem = _dragingObject;
+
             }
         }
     }
@@ -233,6 +244,7 @@ public class DragAndDropManager : MonoBehaviour
     {
         if (slotDestination.IsEmpty)
         {
+            // prirad do volne pozice
             _dragingObject.go.transform.SetParent(slotDestination.GetItemContainer);
             _dragingObject.item.MySlot = slotDestination;
             slotDestination.CurrentItem = _dragingObject;
@@ -245,7 +257,7 @@ public class DragAndDropManager : MonoBehaviour
         }
         else
         {
-            // vymena 
+            // switching 
 
             slotDestination.CurrentItem.go.transform.SetParent(slotOrigin.GetItemContainer);
             slotOrigin.CurrentItem = slotDestination.CurrentItem;
@@ -264,16 +276,34 @@ public class DragAndDropManager : MonoBehaviour
         if (specSlotDestination2.GetSlotType != itemSlotOrigin2.CurrentItem.item.GetType)
         {
             // vrat item na puvodni pozici...
+            _dragingObject.go.transform.SetParent(itemSlotOrigin2.GetItemContainer);
         }
         else
         {
             if (specSlotDestination2.IsEmpty)
             {
                 // prirad do volne pozice
+                _dragingObject.go.transform.SetParent(specSlotDestination2.GetItemContainer);
+                _dragingObject.item.MySlot = specSlotDestination2;
+                specSlotDestination2.CurrentItem = _dragingObject;
+
+                // original pozice
+                itemSlotOrigin2.CurrentItem = (null, null);
+
+                specSlotDestination2.IsEmpty = false;
+                itemSlotOrigin2.IsEmpty = true;
             }
             else
             {
-                // vymena
+                // switching
+                specSlotDestination2.CurrentItem.go.transform.SetParent(itemSlotOrigin2.GetItemContainer);
+                itemSlotOrigin2.CurrentItem = specSlotDestination2.CurrentItem;
+                itemSlotOrigin2.CurrentItem.item.MySlot = _dragingObject.item.MySlot;
+
+
+                _dragingObject.go.transform.SetParent(specSlotDestination2.GetItemContainer);
+                _dragingObject.item.MySlot = specSlotDestination2;
+                specSlotDestination2.CurrentItem = _dragingObject;
             }
         }
     }
