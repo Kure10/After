@@ -12,42 +12,37 @@ public class SpecInventorySlot : Slot
 
     public ItemBlueprint.ItemType GetSlotType { get { return this.type; } }
 
-    override public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (DragAndDropManager.IsDraging)
-        {
-            var dragingObject = DragAndDropManager.Instantion.GetDragingObject;
+    //override public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    if (DragAndDropManager.IsDraging)
+    //    {
+    //        var dragingObject = DragAndDropManager.Instantion.GetDragingObject;
 
-            if (type == dragingObject.item.Blueprint.Type)
-            {
-                DragAndDropManager.Instantion.SetDropPosition(this);
-            }
-            else
-            {
-                DragAndDropManager.Instantion.SetDropPosition(null);
-            }
-        }
-        else
-        {
-            DragAndDropManager.Instantion.SetOriginSlot(this);
-        }
-    }
+    //        if (type == dragingObject.item.Blueprint.Type)
+    //        {
+    //            DragAndDropManager.Instantion.SetDropPosition(this);
+    //        }
+    //        else
+    //        {
+    //            DragAndDropManager.Instantion.SetDropPosition(null);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        DragAndDropManager.Instantion.SetOriginSlot(this);
+    //    }
+    //}
 
-    override public void OnPointerExit(PointerEventData eventData)
-    {
-        if (DragAndDropManager.IsDraging)
-        {
-            DragAndDropManager.Instantion.SetDropPosition(null);
-        }
-        //else
-        //{
-        //    DragAndDropManager.Instantion.SetOriginSlot(null);
-        //}
-    }
+    //override public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    if (DragAndDropManager.IsDraging)
+    //    {
+    //        DragAndDropManager.Instantion.SetDropPosition(null);
+    //    }
+    //    //else
+    //    //{
+    //    //    DragAndDropManager.Instantion.SetOriginSlot(null);
+    //    //}
+    //}
 
-    override public void OnPointerClick(PointerEventData eventData)
-    {
-       // throw new System.NotImplementedException();
-       Debug.Log("dasdasdas jsem tady");
-    }
 }

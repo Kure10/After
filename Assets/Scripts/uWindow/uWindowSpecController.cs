@@ -86,6 +86,7 @@ public class uWindowSpecController : MonoBehaviour
             GameObject goItem = Instantiate(inventory.itemPrefab);
             Item item = goItem.GetComponent<Item>();
             item.Blueprint = itemBlueprint;
+            item.SetType = itemBlueprint.Type;
             item.Sprite = itemBlueprint.Sprite;
             item.MySlot = itemSlots[i];
             itemSlots[i].AddItem(goItem,item);
