@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
+[Serializable]
 public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
 {
     [SerializeField] protected Transform container;
@@ -10,6 +12,7 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
     protected bool isEmpty = true;
 
     protected (Item item, GameObject go) currentItem;
+
 
     #region Property
     public Transform GetItemContainer { get { return container; } }
@@ -23,7 +26,10 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
 
 
     //abstract public void OnPointerExit(PointerEventData eventData);
-
+    public void DestroyItem()
+    {
+        Destroy(CurrentItem.go);
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {

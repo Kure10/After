@@ -3,43 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
+[Serializable]
 public class ItemSlot : Slot  
 {
     [SerializeField] Image image;
 
-    public void AddItem(GameObject gameObject, Item item)
+    private int _index = 0; // index je asi k hovnu..
+
+    public int Index { get { return _index; } set { _index = value; } }
+
+    public void SetSlot(int index, GameObject gameObject, Item item)
     {
-        gameObject.transform.SetParent(container);
- 
-        isEmpty = false;
+        _index = index;
+        isEmpty = true;
+        image.gameObject.SetActive(false);
         this.CurrentItem = (item, gameObject);
 
-        
+        if (gameObject != null && item != null)
+        {
+            gameObject.transform.SetParent(container);
+            isEmpty = false;
+        }
     }
 
-    public void SetEmpty()
-    {
-        image.gameObject.SetActive(false);
-    }
-
-    //override public void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    if (DragAndDropManager.IsDraging)
-    //    {
-    //        DragAndDropManager.Instantion.SetDropPosition(this);
-    //    }
-    //    else
-    //    {
-    //        DragAndDropManager.Instantion.SetOriginSlot(this);
-    //    }
-    //}
-
-    //override public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    if (DragAndDropManager.IsDraging)
-    //    {
-    //        DragAndDropManager.Instantion.SetDropPosition(null);
-    //    }
-    //}
 }

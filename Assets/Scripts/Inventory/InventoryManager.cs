@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    // will be responsible. for load Item from XML
-
+    
     // Will have ALL items in Game..
 
-    // will provide curent item if will be asked..
+    [SerializeField] Inventory inventory;
 
     public List<ItemBlueprint> allItems = new List<ItemBlueprint>();
 
@@ -16,11 +15,9 @@ public class InventoryManager : MonoBehaviour
     {
         ItemXmlLoader xmlLoader = new ItemXmlLoader();
         allItems = xmlLoader.GetItemsFromXML();
+
+        // will provide only items which will be at start... For not ALL !!
+        inventory.InicializedStartInventory(allItems);
     }
 
-    // ToDo tmp method for testing..
-    public List<ItemBlueprint> returnThemAll ()
-    {
-        return allItems;
-    }
 }

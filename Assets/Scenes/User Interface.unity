@@ -16729,6 +16729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63634838a87a8f647a8f3ab26b03a28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 1607481416}
   allItems: []
 --- !u!114 &1607481416
 MonoBehaviour:
@@ -16742,9 +16743,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 310b62a869ff0b74d966e50a41977de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryManager: {fileID: 1607481415}
-  itemPrefab: {fileID: 1630212127835737023, guid: a95790e04be2fa54b9ebd790ea1fd78a,
+  _uWindowSpecController: {fileID: 1355431889}
+  _itemPrefab: {fileID: 1630212127835737023, guid: a95790e04be2fa54b9ebd790ea1fd78a,
     type: 3}
+  _itemSlot: {fileID: 3456231362756869532, guid: 339d8db77719d7f47af8cc154133f49c,
+    type: 3}
+  inventory: []
   collectedItems: []
 --- !u!1 &1611219965
 GameObject:
@@ -25425,16 +25429,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1403715332}
     m_Modifications:
-    - target: {fileID: 1135720996986361873, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1135720996986361873, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2391154635060585414, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
         type: 3}
       propertyPath: m_Pivot.x
@@ -25540,36 +25534,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2754645774873510340, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2754645774873510340, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3473193085183438862, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
         type: 3}
       propertyPath: m_Name
       value: Specialiste
       objectReference: {fileID: 0}
-    - target: {fileID: 5212397326715931449, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5905131153139529530, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6734710365609314757, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
-        type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 1607481416}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c, type: 3}
 --- !u!114 &1870303662287801189
@@ -27199,7 +27168,7 @@ PrefabInstance:
     - target: {fileID: 4295340654519354688, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5.1994324
+      value: -5.199188
       objectReference: {fileID: 0}
     - target: {fileID: 4510990862160671584, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}

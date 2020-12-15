@@ -5,31 +5,29 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 using static ItemBlueprint;
+using System;
 
+[Serializable]
 public class Item : MonoBehaviour
 {
+    private string name;
+
     private Slot mySlot;  // odstranit Ownera zapremyslet..
 
     private ItemType type;
 
-    public ItemBlueprint blueprint;
-
     [SerializeField] private Image image;
-
-    public ItemBlueprint Blueprint { get { return this.blueprint; } set { blueprint = value; } }
 
     public Slot MySlot { get { return this.mySlot; } set { mySlot = value; } }
 
     public Sprite Sprite { get { return this.image.sprite; } set { image.sprite = value; } }
 
-    public new ItemType GetType { get { return this.type; } }
+    public ItemType Type { get { return this.type; } }
 
-    public ItemType SetType { set { this.type = value; } }
-
-
-    // todo Vic...
-    public Item(ItemType _type)
+    public void SetupItem(string _name, ItemType _type, Sprite _sprite)
     {
+        name = _name;
+        image.sprite = _sprite;
         type = _type;
     }
 

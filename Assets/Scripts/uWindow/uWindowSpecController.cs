@@ -6,24 +6,17 @@ using System.Linq;
 
 public class uWindowSpecController : MonoBehaviour
 {
-    [SerializeField] private Inventory inventory;
-
+  
     [Header("Prefabs")]
-    [SerializeField] private GameObject itemSlot;
     [SerializeField] private GameObject panelSpecialist;
 
     [Header("Holder")]
     [SerializeField] private Transform specHolder;
-    [SerializeField] private Transform itemHolder;
+    [SerializeField] private Transform slotHolder;
 
-
-
-    private int _inventorzSize = 70;
-
+    public Transform GetSlotHolder { get { return slotHolder; } }
 
     private List<uWindowSpecialist> specInGame = new List<uWindowSpecialist>();
-
-    private List<ItemSlot> itemSlots = new List<ItemSlot>();
 
     private int lastSortCategory = -1;
 
@@ -38,22 +31,8 @@ public class uWindowSpecController : MonoBehaviour
         OnClicked += this.ClearPreviousCharacters;
         OnClicked += specControler.AddAllSpecialistToUI;
 
-        CreateSlots();
     }
 
-    private void CreateSlots ()
-    {
-        // vytvořím sloty podle velikosti inventare pro itemy.. nastavím jím holder a pridam je do listu vsech slotu..
-        for (int i = 0; i < _inventorzSize; i++)
-        {
-            GameObject slot = Instantiate(this.itemSlot);
-            slot.transform.SetParent(itemHolder);
-            slot.transform.localScale = new Vector3(1f, 1f, 1f);
-            ItemSlot itemSlot = slot.GetComponent<ItemSlot>();
-            itemSlot.SetEmpty();
-            itemSlots.Add(itemSlot);
-        }
-    }
 
     private void ClearPreviousCharacters()
     {
@@ -68,30 +47,12 @@ public class uWindowSpecController : MonoBehaviour
     private void OnEnable()
     {
         OnClicked();
-        UpdateInventory();
     }
 
     // karma = 0
     // abecedne = 1
     // level = 2
     // health = 3
-    public void UpdateInventory()
-    {
-        var listOfItems = inventory.collectedItems;
-
-        // vytvořím item a naplním ho daty , a nastavím jednotlivym slotum ITEM.
-        for (int i = 0; i < listOfItems.Count; i++)
-        {
-            ItemBlueprint itemBlueprint = listOfItems[i];
-            GameObject goItem = Instantiate(inventory.itemPrefab);
-            Item item = goItem.GetComponent<Item>();
-            item.Blueprint = itemBlueprint;
-            item.SetType = itemBlueprint.Type;
-            item.Sprite = itemBlueprint.Sprite;
-            item.MySlot = itemSlots[i];
-            itemSlots[i].AddItem(goItem,item);
-        }
-    }
 
 
     public void AddSpecHolder(Character character)
