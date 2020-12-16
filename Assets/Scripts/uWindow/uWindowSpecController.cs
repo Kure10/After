@@ -20,39 +20,36 @@ public class uWindowSpecController : MonoBehaviour
 
     private int lastSortCategory = -1;
 
-    public delegate void ClickAction();
-    public static event ClickAction OnClicked;
+    //public delegate void ClickAction();
+    //public static event ClickAction OnClicked;
 
 
     private void Awake()
     {
-        SpecialistControler specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
+        //SpecialistControler specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
 
-        OnClicked += this.ClearPreviousCharacters;
-        OnClicked += specControler.AddAllSpecialistToUI;
+        //OnClicked += this.ClearPreviousCharacters;
+        //OnClicked += specControler.AddAllSpecialistToUI;
 
     }
 
 
-    private void ClearPreviousCharacters()
-    {
-        foreach (var item in specInGame)
-        {
-            Destroy(item.transform.gameObject);
-        }
+    //private void ClearPreviousCharacters()
+    //{
+    //    foreach (var item in specInGame)
+    //    {
+    //        Destroy(item.transform.gameObject);
+    //    }
 
-        specInGame.Clear();
-    }
+    //    specInGame.Clear();
+    //}
 
     private void OnEnable()
     {
-        OnClicked();
+        //OnClicked();
     }
 
-    // karma = 0
-    // abecedne = 1
-    // level = 2
-    // health = 3
+
 
 
     public void AddSpecHolder(Character character)
@@ -64,7 +61,10 @@ public class uWindowSpecController : MonoBehaviour
         specInGame.Add(uWindowSpec);
         uWindowSpec.SetAll(character);
     }
-
+    // karma = 0
+    // abecedne = 1
+    // level = 2
+    // health = 3
     // From Editor
     public void Sort(int currentSortCategory)
     {

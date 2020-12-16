@@ -14,8 +14,7 @@ public class Character : MonoBehaviour, IResourceHolder
     private IWorkSource source;
     public string State; //just pure text for now
 
-    //Inventory
-    public CharacterInventory inventory;
+
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
@@ -138,5 +137,10 @@ public class Character : MonoBehaviour, IResourceHolder
                 Debug.LogError("Unknow Stats to c hange error in: " + this.name);
                 break;
         }
+    }
+
+    public void OnItemChange ()
+    {
+        Debug.Log("lets change it");
     }
 }

@@ -11,7 +11,7 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
 
     protected bool isEmpty = true;
 
-    protected (Item item, GameObject go) currentItem;
+    protected (Item item, GameObject go) _currentItem;
 
 
     #region Property
@@ -19,17 +19,19 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
 
     public bool IsEmpty { get { return isEmpty; } set { isEmpty = value; } }
 
-    public (Item item, GameObject go) CurrentItem { get { return currentItem; } set { currentItem = value; } }
+    public virtual (Item item, GameObject go) CurrentItem 
+    {
+        get
+        { 
+            return _currentItem;
+        } 
+        set 
+        {
+            _currentItem = value;
+        }
+    }
 
     #endregion
-    //abstract public void OnPointerEnter(PointerEventData eventData);
-
-
-    //abstract public void OnPointerExit(PointerEventData eventData);
-    public void DestroyItem()
-    {
-        Destroy(CurrentItem.go);
-    }
 
     public void OnPointerClick(PointerEventData eventData)
     {

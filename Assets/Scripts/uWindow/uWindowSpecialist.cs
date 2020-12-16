@@ -23,6 +23,10 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Text technicianValue;
     [SerializeField] Text scientistValue;
     [SerializeField] Text karmaValue;
+
+    [Header("Activity Stats")]
+    [SerializeField] List<Slot> characterSlots = new List<Slot>();
+
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
 
@@ -66,6 +70,10 @@ public class uWindowSpecialist : MonoBehaviour
 
     public Button GetMainButton { get { return this.mainButton; } }
 
+    public List<Slot> GetCharacterSlots()
+    {
+        return this.characterSlots;
+    }
     public bool IsResultSuccess 
     { 
         set
