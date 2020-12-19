@@ -65,10 +65,16 @@ public class ItemXmlLoader
 
             ItemBlueprint item = new ItemBlueprint(id, name,type);
 
-            // ToDo sprite is loaded randomly. 
-            var tmp = spriteLoader.LoadItemSpriteForType(item.Type);
-            item.Sprite = tmp;
-
+            // Sprite
+            string spriteName = statClass.GetStrStat("ItemPicture");
+            Sprite sprite = spriteLoader.LoadItemSpriteForType(spriteName);
+            item.Sprite = sprite;
+            if(sprite == null || item.Sprite == null)
+            {
+                // ToDo sprite is loaded randomly.  Kdzbz nahodou
+                var tmp = spriteLoader.LoadItemSpriteForType(item.Type);
+                item.Sprite = tmp;
+            }
 
             items.Add(item);
         }

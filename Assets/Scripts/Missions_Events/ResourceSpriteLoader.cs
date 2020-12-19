@@ -28,8 +28,16 @@ public class ResourceSpriteLoader : MonoBehaviour
     [SerializeField]
     private List<Sprite> itemResources = new List<Sprite>();
 
+    [SerializeField]
+    private List<Sprite> itemResources2 = new List<Sprite>();
+
     [Space]
     [SerializeField] private Sprite defaultResource;
+
+    public Sprite LoadItemSpriteForType(string resourceName)
+    {
+        return this.itemResources2.Find(sprite => sprite.name == resourceName);
+    }
 
     // Tmp.. For testing purposes
     public Sprite LoadItemSpriteForType(ItemType type)
