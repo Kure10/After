@@ -47,6 +47,8 @@ public class SpecialistControler : MonoBehaviour
 
             InGameSpecialists.Add(character);
         }
+
+        AddAllSpecialistToUI();
     }
 
     public void AddAllSpecialistToUI()

@@ -27,7 +27,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.7f;
         DragAndDropManager.Instantion.InitDraging(itemInSlot);
@@ -35,7 +34,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnDrag(PointerEventData eventData)
     {
-
 
         if (DragAndDropManager.IsDraging)
         {
@@ -45,8 +43,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
             //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
         }
-
-        Debug.Log("OnDrag");
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -56,27 +52,10 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
         DragAndDropManager.IsDraging = false;
 
-        Debug.Log("OnEndDrag");
-
         DragAndDropManager.Instantion.wasSuccessfullyDroped();
 
         DragAndDropManager.Instantion.SetDefault();
 
-        // clean up.. Na konci dragu nastavit vsechno na null
-
-
-
-        //bool isPosibleDrop = DragAndDropManager.Instantion.IsDropItemPosible();
-        //bool result;
-
-        //if (!isPosibleDrop)
-        //{
-        //    result = DragAndDropManager.Instantion.ReturnToOriginalPosition();
-        //}
-        //else
-        //{
-        //    result = DragAndDropManager.Instantion.SwitchPosition();
-        //}
     }
 
     public void OnPointerClick(PointerEventData eventData)

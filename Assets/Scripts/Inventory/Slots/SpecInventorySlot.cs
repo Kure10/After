@@ -7,12 +7,21 @@ using System;
 
 public class SpecInventorySlot : Slot  
 {
+    [SerializeField] int _index;
+
     [SerializeField] ItemBlueprint.ItemType type;
     // Todo zatim se nepouziva..
     [SerializeField] Image backgroundImage;
 
-    public event Action<Item> OnEventEnd = delegate { };
+    [SerializeField] GameObject selectedBackground;
 
+    public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
+
+    public ItemBlueprint.ItemType GetSlotType { get { return this.type; } }
+
+    public int GetIndex { get { return this._index; } }
+
+    // budu potrebovat
     public override (Item item, GameObject go) CurrentItem
     {
         get
@@ -22,10 +31,19 @@ public class SpecInventorySlot : Slot
         set
         {
             _currentItem = value;
-            OnEventEnd?.Invoke(_currentItem.item);
+            OnItemChangeCallBack?.Invoke(_currentItem.item, this);
         }
     }
 
-    public ItemBlueprint.ItemType GetSlotType { get { return this.type; } }
+    public void ShowDragPosibility()
+    {
+        selectedBackground.gameObject.SetActive(true);
+    }
+
+    public void HideDragPosibility()
+    {
+        selectedBackground.gameObject.SetActive(false);
+    }
+
 
 }

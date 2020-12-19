@@ -13,7 +13,6 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
 
     protected (Item item, GameObject go) _currentItem;
 
-
     #region Property
     public Transform GetItemContainer { get { return container; } }
 
@@ -43,7 +42,6 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
     {
         DragAndDropManager.Instantion.HandleDrop(this);
 
-        Debug.Log("OnDrop");
     }
 
 

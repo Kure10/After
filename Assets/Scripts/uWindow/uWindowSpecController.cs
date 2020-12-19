@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 
 public class uWindowSpecController : MonoBehaviour
@@ -20,37 +21,6 @@ public class uWindowSpecController : MonoBehaviour
 
     private int lastSortCategory = -1;
 
-    //public delegate void ClickAction();
-    //public static event ClickAction OnClicked;
-
-
-    private void Awake()
-    {
-        //SpecialistControler specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
-
-        //OnClicked += this.ClearPreviousCharacters;
-        //OnClicked += specControler.AddAllSpecialistToUI;
-
-    }
-
-
-    //private void ClearPreviousCharacters()
-    //{
-    //    foreach (var item in specInGame)
-    //    {
-    //        Destroy(item.transform.gameObject);
-    //    }
-
-    //    specInGame.Clear();
-    //}
-
-    private void OnEnable()
-    {
-        //OnClicked();
-    }
-
-
-
 
     public void AddSpecHolder(Character character)
     {
@@ -60,6 +30,16 @@ public class uWindowSpecController : MonoBehaviour
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
         specInGame.Add(uWindowSpec);
         uWindowSpec.SetAll(character);
+
+        var slots = uWindowSpec.GetCharacterSlots();
+        character.CharacterSlots = slots;
+        foreach (SpecInventorySlot slot in slots)
+        {
+            slot.OnItemChangeCallBack += character.OnItemChange;
+            DragAndDropManager.Instantion.OnItemResponceAnimation += OnItemDragResponce;
+        }
+        
+
     }
     // karma = 0
     // abecedne = 1
@@ -104,4 +84,36 @@ public class uWindowSpecController : MonoBehaviour
             }
         }
     }
+
+    public void OnItemDragResponce(Item dragingItem)
+    {
+        if(DragAndDropManager.IsDraging)
+        {
+            foreach (var character in specInGame)
+            {
+                List<SpecInventorySlot> slots = character.GetCharacterSlots();
+                foreach (SpecInventorySlot slot in slots)
+                {
+                    if (dragingItem.Type == slot.GetSlotType)
+                    {
+                        slot.ShowDragPosibility();
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var character in specInGame)
+            {
+                List<SpecInventorySlot> slots = character.GetCharacterSlots();
+                foreach (SpecInventorySlot slot in slots)
+                {
+                    slot.HideDragPosibility();
+                }
+            }
+        }
+
+        
+    }
+
 }

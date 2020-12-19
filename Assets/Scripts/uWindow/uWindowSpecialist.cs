@@ -25,7 +25,7 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Text karmaValue;
 
     [Header("Activity Stats")]
-    [SerializeField] List<Slot> characterSlots = new List<Slot>();
+    [SerializeField] List<SpecInventorySlot> characterSlots = new List<SpecInventorySlot>();
 
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
@@ -70,7 +70,7 @@ public class uWindowSpecialist : MonoBehaviour
 
     public Button GetMainButton { get { return this.mainButton; } }
 
-    public List<Slot> GetCharacterSlots()
+    public List<SpecInventorySlot> GetCharacterSlots()
     {
         return this.characterSlots;
     }

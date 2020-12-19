@@ -14,6 +14,12 @@ public class Character : MonoBehaviour, IResourceHolder
     private IWorkSource source;
     public string State; //just pure text for now
 
+    private List<SpecInventorySlot> charactersSlots;
+
+    public List<SpecInventorySlot> CharacterSlots { set { charactersSlots = value; } }
+
+    private List<Item> inventory = new List<Item>();
+
 
 
     public int AmountDicesInLastTest = 0;
@@ -139,8 +145,61 @@ public class Character : MonoBehaviour, IResourceHolder
         }
     }
 
-    public void OnItemChange ()
+    public void OnItemChange (Item item, SpecInventorySlot specSlot)
     {
-        Debug.Log("lets change it");
+        inventory.Clear();
+        foreach (SpecInventorySlot slot in charactersSlots)
+        {
+            inventory.Add(slot.CurrentItem.item);
+        }
+
+
+        //Item previousItem = GetItemFromSlotType(specSlot);
+
+        //// pridavam item do volneho pole..
+        //if (previousItem == null && item != null)
+        //{
+        //    inventory.Add(item);
+        //}
+        //else if (item == null) // odebiram item
+        //{
+        //    if (inventory.Contains(previousItem))
+        //    {
+        //        inventory.Remove(previousItem);
+        //    }
+        //}
+        //else // menim item za jiny..
+        //{
+        //    if (inventory.Contains(previousItem))
+        //    {
+        //        inventory.Remove(previousItem);
+        //        inventory.Add(item);
+        //    }
+        //}
+
+        var tmp = inventory.Count;
+        Debug.Log("Character: " + this.blueprint.FullName + "  Pocet: " + tmp);
+
+        foreach (Item it in inventory)
+        {
+            if(it !=null)
+             Debug.Log("Item: " + it.name);
+        }
+        Debug.Log("---------- ");
     }
+
+    private Item GetItemFromSlotType(SpecInventorySlot passedSlot)
+    {
+        Item resultsItems = new Item();
+        
+        foreach (SpecInventorySlot charSlots in charactersSlots)
+        {
+            if (passedSlot.GetSlotType == charSlots.GetSlotType && passedSlot.GetIndex == charSlots.GetIndex)
+                return passedSlot.CurrentItem.item;
+        }
+
+        return resultsItems;
+    }
+
+
 }

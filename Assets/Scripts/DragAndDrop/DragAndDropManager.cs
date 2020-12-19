@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DragAndDropManager : MonoBehaviour
 {
@@ -16,7 +17,9 @@ public class DragAndDropManager : MonoBehaviour
 
     private (Item item, GameObject go) _dragingObject;
 
-   // public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
+    public event Action<Item> OnItemResponceAnimation = delegate { };
+
+    // public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
 
     //public Transform GetOriginalLocation { get { return _originalLocation; } }
     //public Transform GetNewLocation { get { return _newLocation; } }
@@ -55,6 +58,12 @@ public class DragAndDropManager : MonoBehaviour
 
         _dragingObject.go.transform.SetParent(dragHolder);
 
+        var rect = dragingObject.go.GetComponent<RectTransform>();
+        if (rect != null)
+            rect.sizeDelta = new Vector2 (60,60);
+
+        OnItemResponceAnimation.Invoke(dragingObject.item);
+
     }
 
     public void wasSuccessfullyDroped()
@@ -65,6 +74,8 @@ public class DragAndDropManager : MonoBehaviour
 
     public void SetDefault()
     {
+        OnItemResponceAnimation.Invoke(_dragingObject.item);
+
         _dragingObject = (null, null);
         _originalSlot = null;
         _successDrop = false;
