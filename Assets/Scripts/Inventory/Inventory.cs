@@ -20,9 +20,7 @@ public class Inventory : MonoBehaviour
     private int _baseInventorySize = 15;
     private int _additionalInventorySize = 70;
 
-    //  public Dictionary<Item, ItemSlot > _inventory = new Dictionary<Item, ItemSlot >();
-
-    // provide Data for inventory window.. Which is uWindowSpecialistController
+    public GameObject GetItemPrefab { get { return _itemPrefab; }}
 
     public static event Action<Mission> OnInventoryChange = delegate { };
 

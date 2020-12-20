@@ -20,7 +20,7 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private List<Item> inventory = new List<Item>();
 
-
+    public List<Item> GetInventory { get {return this.inventory; } }
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
@@ -177,15 +177,15 @@ public class Character : MonoBehaviour, IResourceHolder
         //    }
         //}
 
-        var tmp = inventory.Count;
-        Debug.Log("Character: " + this.blueprint.FullName + "  Pocet: " + tmp);
+        //var tmp = inventory.Count;
+        //Debug.Log("Character: " + this.blueprint.FullName + "  Pocet: " + tmp);
 
-        foreach (Item it in inventory)
-        {
-            if(it !=null)
-             Debug.Log("Item: " + it.name);
-        }
-        Debug.Log("---------- ");
+        //foreach (Item it in inventory)
+        //{
+        //    if(it !=null)
+        //     Debug.Log("Item: " + it.name);
+        //}
+        //Debug.Log("---------- ");
     }
 
     private Item GetItemFromSlotType(SpecInventorySlot passedSlot)

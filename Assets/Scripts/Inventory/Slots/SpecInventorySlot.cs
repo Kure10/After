@@ -45,5 +45,12 @@ public class SpecInventorySlot : Slot
         selectedBackground.gameObject.SetActive(false);
     }
 
+    public void SetSlot(GameObject gameObject, Item item)
+    {
+        _index = 0;
+        isEmpty = false;
+        this.CurrentItem = (item, gameObject);
+        gameObject.transform.SetParent(container);
+    }
 
 }

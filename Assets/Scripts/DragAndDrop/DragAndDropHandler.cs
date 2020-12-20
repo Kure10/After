@@ -13,12 +13,17 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
     //private Canvas canvas;
     //private RectTransform rect;
 
+    [SerializeField] public bool _disableDrag = false;
 
     private void Awake()
     {
-        itemInSlot.go = this.gameObject;
-        itemInSlot.item = this.gameObject.GetComponent<Item>();
-        canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+        if(!_disableDrag)
+        {
+            itemInSlot.go = this.gameObject;
+            itemInSlot.item = this.gameObject.GetComponent<Item>();
+            canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
+        }
+   
 
         //rect = GetComponent<RectTransform>();
         //canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
@@ -27,22 +32,27 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = 0.7f;
-        DragAndDropManager.Instantion.InitDraging(itemInSlot);
+        if (!_disableDrag)
+        {
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.alpha = 0.7f;
+            DragAndDropManager.Instantion.InitDraging(itemInSlot);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-
-        if (DragAndDropManager.IsDraging)
+        if (!_disableDrag)
         {
-            Vector3 posMouse = Input.mousePosition;
-            this.transform.position = posMouse;
+            if (DragAndDropManager.IsDraging)
+            {
+                Vector3 posMouse = Input.mousePosition;
+                this.transform.position = posMouse;
 
-            //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
+                //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
-        }
+            }
+        }   
     }
 
     public void OnEndDrag(PointerEventData eventData)

@@ -7,7 +7,7 @@ public class WindowMissionController : MonoBehaviour
 {
     [SerializeField] private PanelTime time;
 
-    [SerializeField] private SpecialistControler theSC;
+    [SerializeField] private SpecialistControler specialistController;
 
     [SerializeField] uWindowMission uWindowShowMission;
 
@@ -107,7 +107,7 @@ public class WindowMissionController : MonoBehaviour
 
     private void OpenSelectionPanel()
     {
-        this.PrepairSelectionWindow(this.theSC.PassSpecToMissionSelection());
+        this.PrepairSelectionWindow(this.specialistController.PassSpecToMissionSelection());
         uWindowSpecSelection.ActivateWindow();
         uWindowSpecSelection.ActivateBlocker();
     }
@@ -121,10 +121,11 @@ public class WindowMissionController : MonoBehaviour
         this.uWindowSpecSelection.GetConfirmButton.onClick.RemoveAllListeners();
 
         this.uWindowSpecSelection.GetBackButton.onClick.AddListener(this.BackButton);
-        this.uWindowSpecSelection.GetConfirmButton.onClick.AddListener(this.ConfirmSelectedSpecialist);
+        this.uWindowSpecSelection.GetConfirmButton.onClick.AddListener(this.ConfirmPreSelectedSpecialist);
 
         this.charactersPreSelectedToMission.Clear();
 
+        // Destroy all character prefabs (panels)
         foreach (Transform item in holder.transform)
         {
             Destroy(item.gameObject);
@@ -134,16 +135,17 @@ public class WindowMissionController : MonoBehaviour
         var missionSelectedMaxSpec = currentMission.SpecMax;
         this.uWindowSpecSelection.setInfoText(currentAmountSelectedSpec, missionSelectedMaxSpec);
 
+        // pres vsechny charactery kteri muzou na missi
         foreach (Character character in characterList)
         {
             Specialists spec = character.GetBlueprint();
 
-          
-           // GameObject go = new GameObject();
             GameObject go = Instantiate(prefab) as GameObject;
             go.transform.SetParent(holder.transform);
             var uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
+            uWindow.PopulateItemSlots(character);
+
 
             var but = go.GetComponent<Button>();
 
@@ -157,8 +159,6 @@ public class WindowMissionController : MonoBehaviour
 
             if (spec.isSelectedOnMission)
             {
-                // Debug.Log(spec.FullName + "   toto je muj specialista co tu nema uz byt..");
-
                 charactersPreSelectedToMission.Add(character);
                 spec.isPreSelectedOnMission = true;
                 uWindow.ActivateCoverPanel("Specialista je už vybran.");
@@ -179,7 +179,7 @@ public class WindowMissionController : MonoBehaviour
 
 
 
-    public void ConfirmSelectedSpecialist ()
+    public void ConfirmPreSelectedSpecialist ()
     {
         this.charactersReadyToMission.Clear();
         this.charactersReadyToMission.AddRange(this.charactersPreSelectedToMission);
@@ -273,7 +273,7 @@ public class WindowMissionController : MonoBehaviour
     private void PreSelectSpecialistToMission(Character character, uWindowSpecialist uWindow)
     {
         Specialists spec = character.GetBlueprint();
-        var count = charactersPreSelectedToMission.Count;
+        int count = charactersPreSelectedToMission.Count;
         if (count >= currentMission.SpecMax && !spec.isPreSelectedOnMission)
         {
             Debug.Log("Nemužes pridat dalsiho specialistu....  Limit je: " + currentMission.SpecMax + " na tuto missi.");
@@ -296,17 +296,13 @@ public class WindowMissionController : MonoBehaviour
             charactersPreSelectedToMission.Add(character);
 
 
-        var currentAmountSelectedSpec = charactersReadyToMission.Count;
-        var missionSelectedMaxSpec = currentMission.SpecMax;
-
-        this.uWindowSpecSelection.setInfoText(currentAmountSelectedSpec, missionSelectedMaxSpec);
-
+        this.uWindowSpecSelection.setInfoText(charactersReadyToMission.Count, currentMission.SpecMax);
     }
 
     public List<Character> StartMission()
     {
 
-        this.theSC.MoveSpecialistToMission(this.charactersReadyToMission);
+        this.specialistController.MoveSpecialistToMission(this.charactersReadyToMission);
         time.UnpauseGame(fromPopup: true);
         this.DisableBlocker();
 

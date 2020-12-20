@@ -18,6 +18,8 @@ public class Item : MonoBehaviour
 
     [SerializeField] private Image image;
 
+    public string Name { get { return this.name; } set { name = value; } }
+
     public Slot MySlot { get { return this.mySlot; } set { mySlot = value; } }
 
     public Sprite Sprite { get { return this.image.sprite; } set { image.sprite = value; } }

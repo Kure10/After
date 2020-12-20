@@ -47,6 +47,9 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Button Control2;
     [SerializeField] Button Control3;
 
+    [Header("Item Prefab")]
+    [SerializeField] GameObject itemPrefab;
+
     private float percentHealth = 0;
     private float percentStamina = 0;
 
@@ -150,6 +153,38 @@ public class uWindowSpecialist : MonoBehaviour
             ActivateCoverPanel("Specialista byl je vybran");
     }
 
+    public void PopulateItemSlots(Character character)
+    {
+        List<Item> charInventory = character.GetInventory;
+        foreach (Item item in charInventory)
+        {
+            // vytvoř item
+            // prirad to slotu
+
+            if (item == null)
+                continue;
+
+            GameObject gameObject = Instantiate(itemPrefab);
+            DragAndDropHandler dragHandler = gameObject.GetComponent<DragAndDropHandler>();
+            Item newItem = gameObject.GetComponent<Item>();
+            newItem.SetupItem(item.Name, item.Type, item.Sprite);
+
+            dragHandler._disableDrag = true; // disable drag..
+
+            for (int i = 0; i < characterSlots.Count; i++)
+            {
+                if(characterSlots[i].GetSlotType == newItem.Type)
+                {
+                    if(characterSlots[i].IsEmpty)
+                    {
+                        newItem.MySlot = characterSlots[i];
+                        characterSlots[i].SetSlot(gameObject, newItem);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 
     #endregion
