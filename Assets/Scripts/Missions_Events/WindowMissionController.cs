@@ -346,7 +346,6 @@ public class WindowMissionController : MonoBehaviour
 
         this.charactersReadyToMission.Clear();
 
-        Debug.Log("isInProgress: " + isInProgress);
         if(isInProgress)
         {
             foreach (Character character in mission.GetCharactersOnMission)

@@ -3471,7 +3471,7 @@ GameObject:
   - component: {fileID: 1326788409587005022}
   - component: {fileID: 4687942697697031628}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Level-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4693,7 +4693,7 @@ GameObject:
   - component: {fileID: 6665629780496697803}
   - component: {fileID: 1629738754802556886}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Karma-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4771,7 +4771,7 @@ GameObject:
   - component: {fileID: 6968905089503772092}
   - component: {fileID: 4496099172387534447}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Engineer-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5256,7 +5256,7 @@ GameObject:
   - component: {fileID: 8284791383440992760}
   - component: {fileID: 7628913322883006730}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Social-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5460,15 +5460,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 6673139949766618728}
   characterName: {fileID: 6673139949100244976}
-  characterLevel: {fileID: 0}
+  characterLevel: {fileID: 4687942697697031628}
   backgroundImage: {fileID: 0}
   healthBar: {fileID: 6673139950315744889}
   staminaBar: {fileID: 6673139950275854673}
   militaryValue: {fileID: 6673139950931855801}
-  socialValue: {fileID: 0}
-  technicianValue: {fileID: 0}
-  scientistValue: {fileID: 0}
-  karmaValue: {fileID: 0}
+  socialValue: {fileID: 7628913322883006730}
+  technicianValue: {fileID: 4496099172387534447}
+  scientistValue: {fileID: 7260360064974623522}
+  karmaValue: {fileID: 1629738754802556886}
   characterSlots:
   - {fileID: 4422792560280030964}
   - {fileID: 4365644067052591190}
@@ -6969,7 +6969,7 @@ GameObject:
   - component: {fileID: 6673139950931855800}
   - component: {fileID: 6673139950931855801}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Military-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8050,7 +8050,7 @@ GameObject:
   - component: {fileID: 3497171177222115916}
   - component: {fileID: 7260360064974623522}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Science-Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

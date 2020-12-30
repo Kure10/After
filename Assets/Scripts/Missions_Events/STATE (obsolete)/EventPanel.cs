@@ -53,7 +53,7 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] GameObject buttonHolder;
 
-    [SerializeField] GameObject characterContent;
+    [SerializeField] List<CharacterEventContent> characterContents = new List<CharacterEventContent>();
 
     [Header("Prefabs")]
 
@@ -88,7 +88,6 @@ public class EventPanel : MonoBehaviour
     public Text TitleField { get { return this.titleField; } }
     public Text SelectionInfoText { get { return this.selectionInfoText; } }
     public Text AmountCharacterSelectedText { get { return this.amountCharacterSelectedText; } }
-    public GameObject GetCharacterTransformContent { get { return this.characterContent; } }
     public GameObject GetCharacterButtonPrefab { get { return this.characterButtonPrefab; } }
     public Button GetContinueButton { get { return this.continueButton; } }
     public Button GetMinimizeButton { get { return this.minimize; } }
@@ -205,6 +204,35 @@ public class EventPanel : MonoBehaviour
 
     #region Helping Methods
 
+    public void ActivateCharacterContent(int rows)
+    {
+        for (int i = 0; i <= rows; i++)
+        {
+            characterContents[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void DisableCharacterContent()
+    {
+        foreach (CharacterEventContent item in characterContents)
+        {
+            item.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetCharacterParent(GameObject go, int i)
+    {
+        characterContents[i].AddCharacterToContent(go);
+    }
+
+    public void ClearCharacterContent()
+    {
+        foreach (CharacterEventContent item in characterContents)
+        {
+            item.ClearCharactersInContent();
+        }
+    }
+
     public void TurnOnLegend()
     {
         legendGo.SetActive(true);
@@ -217,4 +245,3 @@ public class EventPanel : MonoBehaviour
 
     #endregion
 }
-
