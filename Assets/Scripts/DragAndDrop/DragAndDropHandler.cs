@@ -57,15 +57,17 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = 1f;
+        if (!_disableDrag)
+        {
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.alpha = 1f;
 
-        DragAndDropManager.IsDraging = false;
+            DragAndDropManager.IsDraging = false;
 
-        DragAndDropManager.Instantion.wasSuccessfullyDroped();
+            DragAndDropManager.Instantion.wasSuccessfullyDroped();
 
-        DragAndDropManager.Instantion.SetDefault();
-
+            DragAndDropManager.Instantion.SetDefault();
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
