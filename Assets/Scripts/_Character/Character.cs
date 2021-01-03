@@ -145,6 +145,7 @@ public class Character : MonoBehaviour, IResourceHolder
         }
     }
 
+    // modifi current Stats.. According wearing items..
     public void OnItemChange (Item item, SpecInventorySlot specSlot)
     {
         inventory.Clear();

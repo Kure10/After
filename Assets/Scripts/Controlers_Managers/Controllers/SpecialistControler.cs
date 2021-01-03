@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class SpecialistControler : MonoBehaviour
 {
-    [Space] [Header("Managers")] [SerializeField]
-    SpecialistManager specManager;
+    [Space] [Header("Managers")]
 
+    [SerializeField] SpecialistManager specManager;
     [SerializeField] SelectionManager selectionManager;
 
-    [Header("Character Setup")] [SerializeField]
-    TileFactory tileFactory;
+    [Header("Character Setup")] 
 
+    [SerializeField] TileFactory tileFactory;
     [SerializeField] GameObject characterPrefab;
 
-    [Space] [Header("Utility things")] [SerializeField]
-    private uWindowSpecController specUWindowUi;
+    [Space] [Header("Utility things")] 
+    [SerializeField] private uWindowSpecController specUWindowUi;
 
     public delegate void OnCharacterLeaveCoreGame();
 

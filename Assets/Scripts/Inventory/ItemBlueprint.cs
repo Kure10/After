@@ -9,6 +9,15 @@ public class ItemBlueprint
     public new string name;
     public Sprite sprite;
     public ItemType type;
+    public int capacity;
+    public int absorbation;
+    public bool isRepairable;
+    public int repairBlock;
+    public int useCount;
+    public int rangeMin;
+    public int rangeMax;
+
+    public RepairCost repairCost;
 
     public long Id { get { return itemID; } }
     public string Name { get { return name; } }
@@ -31,6 +40,13 @@ public class ItemBlueprint
         ItemSpec,
         ResBasic,
         WeapSpec
+    }
+
+    public struct RepairCost
+    {
+        public int TM;
+        public int MM;
+        public int CM;
     }
 
 }

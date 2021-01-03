@@ -35,20 +35,22 @@ public class ItemXmlLoader
 
         XMLLoadedItems = resolveMaster.GetDataKeys(fileName);
 
-        items = DeSerializedSpecialists(XMLLoadedItems);
+        items = DeSerializedSpecialists(XMLLoadedItems, resolveMaster);
 
         return items;
     }
 
-    private List<ItemBlueprint> DeSerializedSpecialists(List<StatsClass> firstStatClass)
+    private List<ItemBlueprint> DeSerializedSpecialists(List<StatsClass> firstStatClass, ResolveMaster resolveMaster)
     {
+        ResolveSlave slave;
+        Dictionary<string, List<StatsClass>> output = new Dictionary<string, List<StatsClass>>();
         List<ItemBlueprint> items = new List<ItemBlueprint>();
 
         ResourceSpriteLoader spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
         foreach (StatsClass statClass in firstStatClass)
         {
-           // Item item = new Item(); //Take care Construktor is not empty..
+            // Item item = new Item(); //Take care Construktor is not empty..
 
             bool success = long.TryParse(statClass.Title, out long idNumber);
             if (!success)
@@ -63,7 +65,37 @@ public class ItemXmlLoader
             ItemBlueprint.ItemType type;
             bool checkParse = Enum.TryParse(typeString, out type);
 
-            ItemBlueprint item = new ItemBlueprint(id, name,type);
+            ItemBlueprint item = new ItemBlueprint(id, name, type);
+
+            item.capacity = statClass.GetIntStat("Capacity");
+            item.absorbation = statClass.GetIntStat("Absorption");
+
+            var repairableString = statClass.GetStrStat("Repairable");
+            if (repairableString.Contains("Yes"))
+                item.isRepairable = true;
+            else
+                item.isRepairable = false;
+
+            item.repairBlock = statClass.GetIntStat("RepairBlock");
+            item.repairCost.TM = statClass.GetIntStat("RepairCostTM");
+            item.repairCost.MM = statClass.GetIntStat("RepairCostMM");
+            item.repairCost.CM = statClass.GetIntStat("RepairCostCM");
+
+            item.useCount = statClass.GetIntStat("UsesCount");
+
+            item.rangeMin = statClass.GetIntStat("RangeMin");
+            item.rangeMax = statClass.GetIntStat("RangeMax");
+
+
+
+            slave = resolveMaster.AddDataSlave("Items", statClass.Title);
+
+            if (slave != null)
+            {
+                slave.StartResolve();
+                output = slave.Resolve();
+            }
+
 
             // Sprite
             string spriteName = statClass.GetStrStat("ItemPicture");

@@ -21,8 +21,6 @@ public class EventController : MonoBehaviour
 
     private ResolveSlave slave;
 
-    private ResolveSlave slave2;
-
     List<Character> CharactersSelectedForTesting = new List<Character>();
 
     private bool finalTestResult = false;
@@ -45,7 +43,7 @@ public class EventController : MonoBehaviour
         // choise Random Event..
         StatsClass _event = eventManager.ChoiseRandomEvent(mission.DifficultyMin, mission.DifficultyMax, mission.GetEmergingTerrains);
 
-        // PreWarm Pictureteam
+        // PreWarm Pictureteamevent
         Sprite sprite = spriteLoader.LoadEventSprite(_event.GetStrStat("EventPicture"));
         eventPanel.SetImage(sprite);
 
