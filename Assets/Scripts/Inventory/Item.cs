@@ -36,6 +36,11 @@ public class Item : MonoBehaviour
         type = _type;
     }
 
+    private void Awake()
+    {
+        image = this.transform.GetChild(0).gameObject.GetComponent<Image>();
+    }
+
     /// od itemu bude base class.. A pak dalsi tridy jako Bagg weapon ad...
 
 }

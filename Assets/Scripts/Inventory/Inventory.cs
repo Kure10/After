@@ -50,7 +50,11 @@ public class Inventory : MonoBehaviour
             {
                 ItemBlueprint blueprint = blueprits[i];
                 GameObject gameObject = Instantiate(_itemPrefab);
-                Item item = gameObject.GetComponent<Item>();
+
+                gameObject.name = "Item_ " + blueprint.Name;
+
+                Item item = gameObject.AddComponent<Item>();
+                //Item item = gameObject.GetComponent<Item>();
                 item.SetupItem(blueprint.Name, blueprint.Type, blueprint.Sprite);
                 item.MySlot = itemSlot;
                

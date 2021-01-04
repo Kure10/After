@@ -18,6 +18,7 @@ public class ItemBlueprint
     public int rangeMax;
 
     public RepairCost repairCost;
+    public BonusModificators modificators;
 
     public long Id { get { return itemID; } }
     public string Name { get { return name; } }
@@ -35,11 +36,22 @@ public class ItemBlueprint
 
     public enum ItemType
     {
+        None,
         ArmorSpec,
         BagSpec,
         ItemSpec,
         ResBasic,
         WeapSpec
+    }
+
+    public struct BonusModificators
+    {
+        public AtributeModificator AtributeModificator;
+        public int AtributeChangeVal;
+        public TestModificator TestModificator;
+        public int TestChangeVal;
+        public MathKind MathKind;
+        public TypeModificator TypeModificator;
     }
 
     public struct RepairCost
@@ -48,5 +60,46 @@ public class ItemBlueprint
         public int MM;
         public int CM;
     }
+
+    #region Struct Enum
+    public enum TestModificator
+    {
+        None,
+        Sneaking,
+        Leverage,
+        LockPicking,
+        Repair,
+        Hunting,
+        Comunication,
+        Scouting,
+        Scavenging,
+        Gathering,
+        Research,
+        DiggBuild
+    }
+
+    public enum MathKind
+    {
+        None,
+        plus,
+        minus,
+        times
+    }
+
+    public enum TypeModificator
+    {
+        None,
+        DiceCountMod,
+        DiffChange
+    }
+
+    public enum AtributeModificator
+    {
+        None,
+        MiL,
+        SoL
+    }
+
+    #endregion
 
 }

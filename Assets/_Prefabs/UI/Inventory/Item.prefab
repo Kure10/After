@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1184936131689848366}
   - component: {fileID: 2019854829890319671}
   - component: {fileID: 2763158189808653943}
-  - component: {fileID: -8715119128350018790}
   - component: {fileID: 1028732906496558943}
   m_Layer: 5
   m_Name: Item
@@ -60,19 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7040cc41b5a67408fdbe2611db5f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8715119128350018790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630212127835737023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab59c82e6beb41549b6ece9a1bf03f64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  image: {fileID: 4804522470616355114}
+  _disableDrag: 0
 --- !u!225 &1028732906496558943
 CanvasGroup:
   m_ObjectHideFlags: 0
