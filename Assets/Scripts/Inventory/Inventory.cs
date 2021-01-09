@@ -20,6 +20,7 @@ public class Inventory : MonoBehaviour
     private int _baseInventorySize = 15;
     private int _additionalInventorySize = 70;
 
+    private ItemCreater itemCreator = new ItemCreater();
     public GameObject GetItemPrefab { get { return _itemPrefab; }}
 
     public static event Action<Mission> OnInventoryChange = delegate { };
@@ -48,14 +49,18 @@ public class Inventory : MonoBehaviour
             // if Nomore items t
             if (i < count)
             {
+
+
                 ItemBlueprint blueprint = blueprits[i];
+                GameObject game = itemCreator.CreateItemByType(blueprint, _itemPrefab);
+
                 GameObject gameObject = Instantiate(_itemPrefab);
 
-                gameObject.name = "Item_ " + blueprint.Name;
+                gameObject.name = "Item_ " + blueprint.name;
 
                 Item item = gameObject.AddComponent<Item>();
                 //Item item = gameObject.GetComponent<Item>();
-                item.SetupItem(blueprint.Name, blueprint.Type, blueprint.Sprite);
+                item.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite);
                 item.MySlot = itemSlot;
                
                 itemSlot.SetSlot(i, gameObject, item);

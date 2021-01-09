@@ -7,21 +7,19 @@ public class ItemBlueprint
     // Todo make private
     public long itemID;
     public new string name;
-    public Sprite sprite;
-    public ItemType type;
+    private Sprite sprite;
+    private ItemType type;
     public int capacity;
     public int absorbation;
     public bool isRepairable;
+    public bool isIndestructible;
     public int repairBlock;
     public int useCount;
-    public int rangeMin;
-    public int rangeMax;
+    public int rangeMin = 0;
+    public int rangeMax = 0;
 
     public RepairCost repairCost;
     public BonusModificators modificators;
-
-    public long Id { get { return itemID; } }
-    public string Name { get { return name; } }
 
     public Sprite Sprite { get { return sprite; } set { sprite = value; } }
 

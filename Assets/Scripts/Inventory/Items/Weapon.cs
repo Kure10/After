@@ -1,0 +1,38 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static ItemBlueprint;
+
+public class Weapon : Item
+{
+    private int useCount;
+    private bool isRepairable;
+    private RepairCost repairCost;
+
+    private int repairBlock;
+    private int rangeMin;
+    private int rangeMax;
+
+    public int UseCount { get { return this.useCount; } set { this.useCount = value; } }
+    public bool IsRepairable { get { return this.isRepairable; } set { this.isRepairable = value; } }
+    public RepairCost RepairCost { get { return this.repairCost; } set { this.repairCost = value; } }
+
+    public int RepairBlock { get { return this.repairBlock; } set { this.repairBlock = value; } }
+    public int RangeMin { get { return this.rangeMin; } set { this.rangeMin = value; } }
+    public int RangeMax { get { return this.rangeMax; } set { this.rangeMax = value; } }
+
+    public void SetupItem(int _useCount, bool _isRepairable, string _name, ItemType _type, Sprite _sprite)
+    {
+        base.SetupItem(_name, _type, _sprite);
+
+        useCount = _useCount;
+        isRepairable = _isRepairable;
+    }
+
+    //public Weapon(int _useCount, bool _isRepairable, string _name, ItemType _type, Sprite _sprite) : base(_name, _type, _sprite )
+    //{
+    //    useCount = _useCount;
+    //    isRepairable = _isRepairable;
+    //}
+
+}

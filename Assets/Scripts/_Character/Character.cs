@@ -191,7 +191,7 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private Item GetItemFromSlotType(SpecInventorySlot passedSlot)
     {
-        Item resultsItems = new Item();
+      //  Item resultsItems = new Item();
         
         foreach (SpecInventorySlot charSlots in charactersSlots)
         {
@@ -199,7 +199,7 @@ public class Character : MonoBehaviour, IResourceHolder
                 return passedSlot.CurrentItem.item;
         }
 
-        return resultsItems;
+        return null;
     }
 
 

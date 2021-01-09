@@ -12,13 +12,11 @@ public class Item : MonoBehaviour
 {
     private string name;
 
-    private Slot mySlot;  
-
     private ItemType type;
 
-    private int capacity = 0;
-
     [SerializeField] private Image image;
+
+    private Slot mySlot;
 
     public string Name { get { return this.name; } set { name = value; } }
 
@@ -28,7 +26,6 @@ public class Item : MonoBehaviour
 
     public ItemType Type { get { return this.type; } }
 
-    public int Capacity { get { return this.capacity; } set { this.capacity = value; } }
     public void SetupItem(string _name, ItemType _type, Sprite _sprite)
     {
         name = _name;
@@ -36,11 +33,16 @@ public class Item : MonoBehaviour
         type = _type;
     }
 
+
     private void Awake()
     {
         image = this.transform.GetChild(0).gameObject.GetComponent<Image>();
     }
 
-    /// od itemu bude base class.. A pak dalsi tridy jako Bagg weapon ad...
-
+    //public Item(string _name, ItemType _type, Sprite _sprite)
+    //{
+    //    name = _name;
+    //    image.sprite = _sprite;
+    //    type = _type;
+    //}
 }

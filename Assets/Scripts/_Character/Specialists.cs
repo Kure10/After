@@ -75,7 +75,6 @@ public class Specialists
             {
                 this.isOnMission = value;
             }
-            
         } 
     }
 
