@@ -13,7 +13,7 @@ public class DragAndDropManager : MonoBehaviour
 
     private bool _successDrop;
 
-  //  private Slot _newSlot;
+    //  private Slot _newSlot;
 
     private (Item item, GameObject go) _dragingObject;
 
@@ -60,7 +60,7 @@ public class DragAndDropManager : MonoBehaviour
 
         var rect = dragingObject.go.GetComponent<RectTransform>();
         if (rect != null)
-            rect.sizeDelta = new Vector2 (60,60);
+            rect.sizeDelta = new Vector2(60, 60);
 
         OnItemResponceAnimation.Invoke(dragingObject.item);
 
@@ -146,7 +146,7 @@ public class DragAndDropManager : MonoBehaviour
             _dragingObject.go.transform.SetParent(slotDestination.GetItemContainer);
             _dragingObject.item.MySlot = slotDestination;
             slotDestination.CurrentItem = _dragingObject;
-            
+
             // original pozice
             slotOrigin.CurrentItem = (null, null);
 
@@ -163,7 +163,9 @@ public class DragAndDropManager : MonoBehaviour
     }
     private void ChangeItemSlot(SpecInventorySlot specSlotDestination2, Slot itemSlotOrigin2)
     {
-        if (specSlotDestination2.GetSlotType != itemSlotOrigin2.CurrentItem.item.Type)
+        ItemBlueprint.ItemType typerino = itemSlotOrigin2.CurrentItem.item.Type;
+
+        if (itemSlotOrigin2.CurrentItem.item.Type != specSlotDestination2.GetFirstSlotType && itemSlotOrigin2.CurrentItem.item.Type != specSlotDestination2.GetSecondSlotType)
         {
             // vrat item na puvodni pozici...
             ReturnToOriginSlot(itemSlotOrigin2);

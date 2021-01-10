@@ -9,7 +9,8 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private Command command;
     private Specialists blueprint;
-    private CurrentStats curentStats;
+    private CurrentStats curentStats; // staty charackteru
+    private CurrentStats _finalStats; // staty s itemama ?  mozna to udelam jinak ?
     private LifeEnergy lifeEnergy;
     private IWorkSource source;
     public string State; //just pure text for now
@@ -18,9 +19,9 @@ public class Character : MonoBehaviour, IResourceHolder
 
     public List<SpecInventorySlot> CharacterSlots { set { charactersSlots = value; } }
 
-    private List<Item> inventory = new List<Item>();
+    private List<Item> _inventory = new List<Item>();
 
-    public List<Item> GetInventory { get {return this.inventory; } }
+    public List<Item> GetInventory { get {return this._inventory; } }
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
@@ -28,6 +29,8 @@ public class Character : MonoBehaviour, IResourceHolder
 
     public CurrentStats Stats { get { return this.curentStats; } }
     public LifeEnergy LifeEnergy { get { return this.lifeEnergy; } }
+
+    public CurrentStats FinalStats { get { return this.curentStats; } }
 
     public Character()
     {
@@ -116,6 +119,36 @@ public class Character : MonoBehaviour, IResourceHolder
 
     #endregion
 
+    public void RecalculateFinalStats()
+    {
+        _finalStats = Stats;
+        // finalni staty + Itemy v inventari..
+
+        foreach (var item in _inventory)
+        {
+            //if(item is Weapon weapon)
+            //{
+            //    weapon
+            //}
+            //else if (item is Armor armor)
+            //{
+
+            //}
+            //else if (item is Backpack backpack)
+            //{
+
+            //}
+            //else if (item is ActiveItem activeItem)
+            //{
+
+            //}
+            //else
+            //{
+
+            //}
+        }
+    }
+
     public void ModifiCharacterAtribute(string atribute, int value)
     {
         
@@ -148,10 +181,10 @@ public class Character : MonoBehaviour, IResourceHolder
     // modifi current Stats.. According wearing items..
     public void OnItemChange (Item item, SpecInventorySlot specSlot)
     {
-        inventory.Clear();
+        _inventory.Clear();
         foreach (SpecInventorySlot slot in charactersSlots)
         {
-            inventory.Add(slot.CurrentItem.item);
+            _inventory.Add(slot.CurrentItem.item);
         }
 
 
@@ -188,19 +221,4 @@ public class Character : MonoBehaviour, IResourceHolder
         //}
         //Debug.Log("---------- ");
     }
-
-    private Item GetItemFromSlotType(SpecInventorySlot passedSlot)
-    {
-      //  Item resultsItems = new Item();
-        
-        foreach (SpecInventorySlot charSlots in charactersSlots)
-        {
-            if (passedSlot.GetSlotType == charSlots.GetSlotType && passedSlot.GetIndex == charSlots.GetIndex)
-                return passedSlot.CurrentItem.item;
-        }
-
-        return null;
-    }
-
-
 }

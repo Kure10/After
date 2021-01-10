@@ -13,6 +13,8 @@ public class Weapon : Item
     private int rangeMin;
     private int rangeMax;
 
+    private bool isIndestructible = false;
+
     public int UseCount { get { return this.useCount; } set { this.useCount = value; } }
     public bool IsRepairable { get { return this.isRepairable; } set { this.isRepairable = value; } }
     public RepairCost RepairCost { get { return this.repairCost; } set { this.repairCost = value; } }
@@ -21,6 +23,8 @@ public class Weapon : Item
     public int RangeMin { get { return this.rangeMin; } set { this.rangeMin = value; } }
     public int RangeMax { get { return this.rangeMax; } set { this.rangeMax = value; } }
 
+    public bool IsIndestructible { get { return this.isIndestructible; } set { this.isIndestructible = value; } }
+
     public void SetupItem(int _useCount, bool _isRepairable, string _name, ItemType _type, Sprite _sprite)
     {
         base.SetupItem(_name, _type, _sprite);
@@ -28,11 +32,5 @@ public class Weapon : Item
         useCount = _useCount;
         isRepairable = _isRepairable;
     }
-
-    //public Weapon(int _useCount, bool _isRepairable, string _name, ItemType _type, Sprite _sprite) : base(_name, _type, _sprite )
-    //{
-    //    useCount = _useCount;
-    //    isRepairable = _isRepairable;
-    //}
 
 }

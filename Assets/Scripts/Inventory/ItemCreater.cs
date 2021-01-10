@@ -7,11 +7,12 @@ public class ItemCreater : MonoBehaviour
     public GameObject CreateItemByType(ItemBlueprint blueprint, GameObject prefab)
     {
         GameObject gameObject = Instantiate(prefab);
+        gameObject.name = "Item_ " + blueprint.name;
 
         switch (blueprint.Type)
         {
             case ItemBlueprint.ItemType.None:
-                Debug.LogError("Item has none type Error in: " + this.name + " -> item name: " + blueprint.name);
+                Debug.LogWarning("Item has none type Error in: ItemCreater  -> item name: " + blueprint.name);
                 break;
             case ItemBlueprint.ItemType.ArmorSpec:
                 CreateArmor(blueprint, gameObject);
@@ -29,42 +30,48 @@ public class ItemCreater : MonoBehaviour
                 CreateWeapon(blueprint, gameObject);
                 break;
             default:
-                Debug.LogError("Item type is not defined Error in: " + this.name + " -> item name: " + blueprint.name);
+                Debug.LogWarning("Item type is not defined Error in: " + this.name + " -> item name: " + blueprint.name);
                 break;
         }
-
-        
 
         return gameObject;
     }
 
     private void CreateResource(ItemBlueprint blueprint, GameObject gameObject)
     {
-        Debug.Log("Todo Resource is not implemented"); // Todo
+        Debug.LogWarning("Todo Resource is not implemented"); // Todo
     }
 
     private void CreateBackpack(ItemBlueprint blueprint, GameObject gameObject)
     {
         Backpack backpack = gameObject.AddComponent<Backpack>();
-        backpack.SetupItem(blueprint.capacity, blueprint.name, backpack.Type, backpack.Sprite);
+        backpack.SetupItem(blueprint.capacity, blueprint.name, blueprint.Type, blueprint.Sprite);
+
+        AddModifications(blueprint, backpack);
     }
 
     private void CreateActiveItem(ItemBlueprint blueprint, GameObject gameObject)
     {
         ActiveItem activeItem = gameObject.AddComponent<ActiveItem>();
         activeItem.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+
+        AddModifications(blueprint, activeItem);
     }
 
     private void CreateArmor(ItemBlueprint blueprint, GameObject gameObject)
     {
         Armor armor = gameObject.AddComponent<Armor>();
         armor.SetupItem(blueprint.absorbation, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+
+        AddModifications(blueprint, armor);
     }
 
     private void CreateWeapon(ItemBlueprint blueprint, GameObject gameObject)
     {
         Weapon weapon = gameObject.AddComponent<Weapon>();
         weapon.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+
+        weapon.IsIndestructible = blueprint.isIndestructible;
 
         if (weapon.IsRepairable)
         {
@@ -74,6 +81,13 @@ public class ItemCreater : MonoBehaviour
 
         weapon.RangeMin = blueprint.rangeMin;
         weapon.RangeMax = blueprint.rangeMax;
+
+        AddModifications(blueprint, weapon);
+    }
+
+    private void AddModifications(ItemBlueprint blueprint, Item item)
+    {
+        item.Modificators = blueprint.modificators;
     }
 
 }

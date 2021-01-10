@@ -71,6 +71,8 @@ public class ItemXmlLoader
             item.capacity = statClass.GetIntStat("Capacity");
             item.absorbation = statClass.GetIntStat("Absorption");
 
+            item.isIndestructible = statClass.GetBoolStat("Undestructible");
+
             var repairableString = statClass.GetStrStat("Repairable");
             if (repairableString.Contains("Yes"))
                 item.isRepairable = true;
@@ -96,6 +98,10 @@ public class ItemXmlLoader
                 output = slave.Resolve();
             }
 
+            var count = output["Result"].Count;
+            item.modificators = new ItemBlueprint.BonusModificators[count];
+
+            int i = 0;
             foreach (StatsClass seconData in output["Result"])
             {
                 ItemBlueprint.AtributeModificator atributeType;
@@ -110,32 +116,34 @@ public class ItemXmlLoader
 
                 checkParse = Enum.TryParse(atributeModif, out atributeType);
                 if (!checkParse)
-                    item.modificators.AtributeModificator = ItemBlueprint.AtributeModificator.None;
+                    item.modificators[i].AtributeModificator = ItemBlueprint.AtributeModificator.None;
                 else
-                    item.modificators.AtributeModificator = atributeType;
+                    item.modificators[i].AtributeModificator = atributeType;
 
 
                 checkParse = Enum.TryParse(testModif, out testModificator);
                 if (!checkParse)
-                    item.modificators.TestModificator = ItemBlueprint.TestModificator.None;
+                    item.modificators[i].TestModificator = ItemBlueprint.TestModificator.None;
                 else
-                    item.modificators.TestModificator = testModificator;
+                    item.modificators[i].TestModificator = testModificator;
 
 
                 checkParse = Enum.TryParse(mathKindString, out mathKind);
                 if (!checkParse)
-                    item.modificators.MathKind = ItemBlueprint.MathKind.None;
+                    item.modificators[i].MathKind = ItemBlueprint.MathKind.None;
                 else
-                    item.modificators.MathKind = mathKind;
+                    item.modificators[i].MathKind = mathKind;
 
                 checkParse = Enum.TryParse(typeModif, out typeModificator);
                 if (!checkParse)
-                    item.modificators.TypeModificator = ItemBlueprint.TypeModificator.None;
+                    item.modificators[i].TypeModificator = ItemBlueprint.TypeModificator.None;
                 else
-                    item.modificators.TypeModificator = typeModificator;
+                    item.modificators[i].TypeModificator = typeModificator;
 
-                item.modificators.TestChangeVal = seconData.GetIntStat("TestChangeVal");
-                item.modificators.AtributeChangeVal = seconData.GetIntStat("AtributChangeVal");
+                item.modificators[i].TestChangeVal = seconData.GetIntStat("TestChangeVal");
+                item.modificators[i].AtributeChangeVal = seconData.GetIntStat("AtributChangeVal");
+
+                i++;
             }
 
             // Sprite

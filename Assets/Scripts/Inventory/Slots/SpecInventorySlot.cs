@@ -9,7 +9,8 @@ public class SpecInventorySlot : Slot
 {
     [SerializeField] int _index;
 
-    [SerializeField] ItemBlueprint.ItemType type;
+    [SerializeField] ItemBlueprint.ItemType firstType;
+    [SerializeField] ItemBlueprint.ItemType secondType;
     // Todo zatim se nepouziva..
     [SerializeField] Image backgroundImage;
 
@@ -17,7 +18,9 @@ public class SpecInventorySlot : Slot
 
     public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
 
-    public ItemBlueprint.ItemType GetSlotType { get { return this.type; } }
+    public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
+
+    public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
 
     public int GetIndex { get { return this._index; } }
 

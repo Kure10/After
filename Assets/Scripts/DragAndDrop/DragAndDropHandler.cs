@@ -9,24 +9,13 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
  
     private ( Item item, GameObject go) itemInSlot;
 
-    // Zatím Todo. Mozna bude mit drag and drop vlastni canvas.. uvidím.
-    //private Canvas canvas;
-    //private RectTransform rect;
-
     [SerializeField] public bool _disableDrag = false;
 
-    private void Awake()
+    public void InitDragHandler()
     {
-        if(!_disableDrag)
-        {
-            itemInSlot.go = this.gameObject;
-            itemInSlot.item = this.gameObject.GetComponent<Item>();
-            canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
-        }
-   
-
-        //rect = GetComponent<RectTransform>();
-        //canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
+        itemInSlot.go = this.gameObject;
+        itemInSlot.item = this.gameObject.GetComponent<Item>();
+        canvasGroup = this.gameObject.GetComponent<CanvasGroup>();
     }
 
 
@@ -87,7 +76,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
         DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
     }
 }

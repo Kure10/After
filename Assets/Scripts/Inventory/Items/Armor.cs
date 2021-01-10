@@ -11,16 +11,15 @@ public class Armor : Item
     private RepairCost repairCost;
     private int repairBlock;
 
+    private bool isIndestructible = false;
+
     public int Absorbation { get { return this.absorbation; } set { this.absorbation = value; } }
     public int RepairBlock { get { return this.repairBlock; } set { this.repairBlock = value; } }
     public bool IsRepairable { get { return this.isRepairable; } set { this.isRepairable = value; } }
     public RepairCost RepairCost { get { return this.repairCost; } set { this.repairCost = value; } }
 
-    //public Armor(int _absorbation, bool _isRepairable, string _name, ItemType _type, Sprite _sprite) : base(_name, _type, _sprite)
-    //{
-    //    absorbation = _absorbation;
-    //    isRepairable = _isRepairable;
-    //}
+    public bool IsIndestructible { get { return this.isIndestructible; } set { this.isIndestructible = value; } }
+
 
     public void SetupItem(int _absorbation, bool _isRepairable, string _name, ItemType _type, Sprite _sprite)
     {

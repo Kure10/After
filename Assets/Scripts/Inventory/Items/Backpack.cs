@@ -16,8 +16,4 @@ public class Backpack : Item
         capacity = _capacity;
     }
 
-    //public Backpack(int _capacity, string _name, ItemType _type, Sprite _sprite) : base(_name, _type, _sprite)
-    //{
-    //    capacity = _capacity;
-    //}
 }

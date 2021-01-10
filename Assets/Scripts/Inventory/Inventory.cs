@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject _itemSlot;
 
     [Space]
-    //  public List<(Item item, ItemSlot slot)> inventory = new List<(Item item, ItemSlot slot)>();
     public List<ItemSlot> inventory = new List<ItemSlot>();
 
     private int _baseInventorySize = 15;
@@ -24,11 +23,6 @@ public class Inventory : MonoBehaviour
     public GameObject GetItemPrefab { get { return _itemPrefab; }}
 
     public static event Action<Mission> OnInventoryChange = delegate { };
-
-    private void Start()
-    {
-
-    }
 
     public void InicializedStartInventory(List<ItemBlueprint> blueprits)
     {
@@ -43,27 +37,28 @@ public class Inventory : MonoBehaviour
             slot.transform.SetParent(_uWindowSpecController.GetSlotHolder);
             slot.transform.localScale = new Vector3(1f, 1f, 1f);
             ItemSlot itemSlot = slot.GetComponent<ItemSlot>();
-           
 
             // create and set item
             // if Nomore items t
             if (i < count)
             {
-
-
                 ItemBlueprint blueprint = blueprits[i];
-                GameObject game = itemCreator.CreateItemByType(blueprint, _itemPrefab);
 
-                GameObject gameObject = Instantiate(_itemPrefab);
+                GameObject game = itemCreator.CreateItemByType(blueprits[i], _itemPrefab);
+                var item = game.GetComponent<Item>();
 
-                gameObject.name = "Item_ " + blueprint.name;
+                if (item == null) // Todo Res and None type.. 
+                {
+                    Debug.LogWarning("somewhere is mistake Error in Inventory");
+                    item = game.AddComponent<Item>();
+                    item.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite);
+                }
 
-                Item item = gameObject.AddComponent<Item>();
-                //Item item = gameObject.GetComponent<Item>();
-                item.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite);
                 item.MySlot = itemSlot;
-               
-                itemSlot.SetSlot(i, gameObject, item);
+
+                game.GetComponent<DragAndDropHandler>().InitDragHandler();
+
+                itemSlot.SetSlot(i, game, item);
             }
             else
                 itemSlot.SetSlot(i, null, null);
@@ -72,11 +67,4 @@ public class Inventory : MonoBehaviour
             inventory.Add(itemSlot);
         }
     }
-
-    //public void Swap((Item item, ItemSlot slot) first , (Item item, ItemSlot slot) secpmd)
-    //{
-    //    var tmp = first.item;
-    //    first.item = secpmd.item;
-    //    secpmd.item = tmp;
-    //}
 }

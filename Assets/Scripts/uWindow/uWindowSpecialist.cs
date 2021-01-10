@@ -173,7 +173,7 @@ public class uWindowSpecialist : MonoBehaviour
 
             for (int i = 0; i < characterSlots.Count; i++)
             {
-                if(characterSlots[i].GetSlotType == newItem.Type)
+                if(characterSlots[i].GetFirstSlotType == newItem.Type || characterSlots[i].GetSecondSlotType == newItem.Type)
                 {
                     if(characterSlots[i].IsEmpty)
                     {

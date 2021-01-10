@@ -94,7 +94,7 @@ public class uWindowSpecController : MonoBehaviour
                 List<SpecInventorySlot> slots = character.GetCharacterSlots();
                 foreach (SpecInventorySlot slot in slots)
                 {
-                    if (dragingItem.Type == slot.GetSlotType)
+                    if (dragingItem.Type == slot.GetFirstSlotType || dragingItem.Type == slot.GetSecondSlotType)
                     {
                         slot.ShowDragPosibility();
                     }
