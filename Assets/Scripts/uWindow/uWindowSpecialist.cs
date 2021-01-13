@@ -155,30 +155,26 @@ public class uWindowSpecialist : MonoBehaviour
 
     public void PopulateItemSlots(Character character)
     {
-        List<Item> charInventory = character.GetInventory;
-        foreach (Item item in charInventory)
+        ItemCreater itemCreator = new ItemCreater();
+        foreach (Item item in character.GetInventory)
         {
-            // vytvoř item
-            // prirad to slotu
-
             if (item == null)
                 continue;
 
-            GameObject gameObject = Instantiate(itemPrefab);
-            DragAndDropHandler dragHandler = gameObject.GetComponent<DragAndDropHandler>();
-            Item newItem = gameObject.GetComponent<Item>();
-            newItem.SetupItem(item.Name, item.Type, item.Sprite);
+            GameObject newGameObject = Instantiate(itemPrefab);
+            Item newColection = itemCreator.CreateObjectForInventory(item, newGameObject);
 
+            DragAndDropHandler dragHandler = newGameObject.GetComponent<DragAndDropHandler>();
             dragHandler._disableDrag = true; // disable drag..
 
             for (int i = 0; i < characterSlots.Count; i++)
             {
-                if(characterSlots[i].GetFirstSlotType == newItem.Type || characterSlots[i].GetSecondSlotType == newItem.Type)
+                if(characterSlots[i].GetFirstSlotType == newColection.Type || characterSlots[i].GetSecondSlotType == newColection.Type)
                 {
                     if(characterSlots[i].IsEmpty)
                     {
-                        newItem.MySlot = characterSlots[i];
-                        characterSlots[i].SetSlot(gameObject, newItem);
+                        characterSlots[i].SetSlot(newGameObject, newColection);
+                        newColection.MySlot = characterSlots[i];
                         break;
                     }
                 }

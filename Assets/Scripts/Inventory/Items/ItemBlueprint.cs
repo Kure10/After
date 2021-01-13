@@ -39,6 +39,7 @@ public class ItemBlueprint
         BagSpec,
         ItemSpec,
         ResBasic,
+        ResSpecial,
         WeapSpec
     }
 

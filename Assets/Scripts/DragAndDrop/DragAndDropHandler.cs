@@ -76,6 +76,9 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnDrop(PointerEventData eventData)
     {
-        DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
+        if (!_disableDrag)
+        {
+            DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
+        }
     }
 }

@@ -214,6 +214,7 @@ public class WindowMissionController : MonoBehaviour
 
             var uWindow = specGameObject.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
+            uWindow.PopulateItemSlots(character);
             uWindow.DeactivateCoverPanel();
 
             Button but = specGameObject.GetComponent<Button>();
