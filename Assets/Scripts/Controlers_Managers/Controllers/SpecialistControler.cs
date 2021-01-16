@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
 
 public class SpecialistControler : MonoBehaviour
 {
@@ -10,12 +12,12 @@ public class SpecialistControler : MonoBehaviour
     [SerializeField] SpecialistManager specManager;
     [SerializeField] SelectionManager selectionManager;
 
-    [Header("Character Setup")] 
+    [Header("Character Setup")]
 
     [SerializeField] TileFactory tileFactory;
     [SerializeField] GameObject characterPrefab;
 
-    [Space] [Header("Utility things")] 
+    [Space] [Header("Utility things")]
     [SerializeField] private uWindowSpecController specUWindowUi;
 
     public delegate void OnCharacterLeaveCoreGame();
@@ -43,12 +45,15 @@ public class SpecialistControler : MonoBehaviour
             alreadyPlaced.Add(gridPoint);
             var person = Instantiate(characterPrefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
             character = person.GetComponent<Character>();
-            character.SetBlueprint(specialist);
+            character.Initialized(specialist);
 
             InGameSpecialists.Add(character);
+
+
         }
 
         AddAllSpecialistToUI();
+
     }
 
     public void AddAllSpecialistToUI()
@@ -61,6 +66,8 @@ public class SpecialistControler : MonoBehaviour
         {
             specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
         }
+
+     //   test += specUWindowUi.Refresh;
     }
 
     public List<Character> PassSpecToMissionSelection()
@@ -155,6 +162,7 @@ public class SpecialistControler : MonoBehaviour
     }
 
     #endregion
+
 
     //IEnumerator OnStartingLeaving(Character character)
     //{

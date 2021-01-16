@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class LifeEnergy
 {
-    private int maxLife;
-    private int maxStamina;
+    private float maxLife;
+    private float maxStamina;
 
-    private int currentLife = 1;
-    private int currentStamina = 1;
+    private float currentLife = 1;
+    private float currentStamina = 1;
 
 
     public LifeEnergy(CurrentStats stats)
     {
         maxLife = LifeEnergy.CalcHealth(stats);
         maxStamina = LifeEnergy.CalcStamina(stats);
+
+        RestroToMax(true);
+        RestroToMax();
     }
 
-    public int CurrentLife
+    public float CurrentLife
     {
         get { return this.currentLife; }
         set
@@ -29,7 +32,7 @@ public class LifeEnergy
                 Debug.Log("Character is Dead");
         }
     }
-    public int CurrentStamina
+    public float CurrentStamina
     {
         get { return this.currentStamina; }
         set
@@ -37,19 +40,28 @@ public class LifeEnergy
             currentStamina += value;
             if (currentStamina > maxStamina)
                 currentStamina = maxStamina;
-            if (currentStamina < 0)
+            if (currentStamina <= 0)
                 Debug.Log("Character is out of Stamina -> Probably dead");
         }
     }
 
-    static private int CalcStamina(CurrentStats stats)
+    static private float CalcStamina(CurrentStats stats)
     {
         return 57600 + 2400 * stats.level;
     }
 
-    static private int CalcHealth(CurrentStats stats)
+    static private float CalcHealth(CurrentStats stats)
     {
         return 40 + stats.level + 4 * stats.military + 2 * stats.tech + stats.science + stats.social;
+    }
+
+    private void RestroToMax(bool restoreStamina = false)
+    {
+        if (restoreStamina)
+            currentStamina = maxStamina;
+        else
+            currentLife = maxLife;
+
     }
 
     public void RecalcLifeEnergy(CurrentStats stats)

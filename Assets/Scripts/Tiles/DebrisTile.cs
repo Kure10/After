@@ -74,6 +74,7 @@ public class DebrisTile : Tile, IWorkSource
                     if (worker.character.GetCommand() is Build buildCmd)
                     {
                         buildPoints = buildCmd.GetBuildPoints(worker.character.Stats.tech);
+                        worker.character.ModifyStamina(-buildPoints);
                     }
                     if (DoDamage(buildPoints))
                     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.Events;
 
 
 public class uWindowSpecController : MonoBehaviour
@@ -21,6 +22,15 @@ public class uWindowSpecController : MonoBehaviour
 
     private int lastSortCategory = -1;
 
+    private SpecialistControler specController;
+
+    private void OnEnable()
+    {
+        foreach (var item in specInGame)
+        {
+            item.RefreshCharacterInfo();
+        }
+    }
 
     public void AddSpecHolder(Character character)
     {
@@ -28,6 +38,7 @@ public class uWindowSpecController : MonoBehaviour
         ga.transform.SetParent(specHolder);
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
+        uWindowSpec.CharacterInWindow = character;
         specInGame.Add(uWindowSpec);
         uWindowSpec.SetAll(character);
 
@@ -38,9 +49,8 @@ public class uWindowSpecController : MonoBehaviour
             slot.OnItemChangeCallBack += character.OnItemChange;
             DragAndDropManager.Instantion.OnItemResponceAnimation += OnItemDragResponce;
         }
-        
-
     }
+
     // karma = 0
     // abecedne = 1
     // level = 2

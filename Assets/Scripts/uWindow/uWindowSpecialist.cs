@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,17 +51,19 @@ public class uWindowSpecialist : MonoBehaviour
     [Header("Item Prefab")]
     [SerializeField] GameObject itemPrefab;
 
+    public Character character;
+
     private float percentHealth = 0;
     private float percentStamina = 0;
 
-
     private bool isActiveBuilding;
 
-    // inventory is missiong ... Todo. (if designer will want to.)
+    private Character _character;
 
     #endregion
 
     #region Properity
+    public Character CharacterInWindow { get { return this._character; } set { _character = value; } }
     public float GetPercentHelth { get => this.percentHealth; }
     public string GetName { get => this.characterName.text.ToString(); }
     public int GetKarma { get => int.Parse(this.karmaValue.text); }
@@ -77,13 +80,13 @@ public class uWindowSpecialist : MonoBehaviour
     {
         return this.characterSlots;
     }
-    public bool IsResultSuccess 
-    { 
+    public bool IsResultSuccess
+    {
         set
-        { 
+        {
             this.success.SetActive(value);
             this.failure.SetActive(!value);
-        } 
+        }
     }
 
     public void TurnOffResult()
@@ -153,6 +156,16 @@ public class uWindowSpecialist : MonoBehaviour
             ActivateCoverPanel("Specialista byl je vybran");
     }
 
+    // Todo
+    public void RefreshCharacterInfo()
+    {
+        if (_character == null)
+            return;
+
+        CalcHealtandStamina(_character);
+
+    }
+
     public void PopulateItemSlots(Character character)
     {
         ItemCreater itemCreator = new ItemCreater();
@@ -169,9 +182,9 @@ public class uWindowSpecialist : MonoBehaviour
 
             for (int i = 0; i < characterSlots.Count; i++)
             {
-                if(characterSlots[i].GetFirstSlotType == newColection.Type || characterSlots[i].GetSecondSlotType == newColection.Type)
+                if (characterSlots[i].GetFirstSlotType == newColection.Type || characterSlots[i].GetSecondSlotType == newColection.Type)
                 {
-                    if(characterSlots[i].IsEmpty)
+                    if (characterSlots[i].IsEmpty)
                     {
                         characterSlots[i].SetSlot(newGameObject, newColection);
                         newColection.MySlot = characterSlots[i];
@@ -181,7 +194,6 @@ public class uWindowSpecialist : MonoBehaviour
             }
         }
     }
-
 
     #endregion
 }

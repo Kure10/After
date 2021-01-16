@@ -36,8 +36,6 @@ public class EventController : MonoBehaviour
 
     #region Public Methods
 
-
-
     public void EventTrigered(Mission mission)
     {
         // choise Random Event..

@@ -30,8 +30,6 @@ public class Character : MonoBehaviour, IResourceHolder
     public CurrentStats Stats { get { return this.curentStats; } }
     public LifeEnergy LifeEnergy { get { return this.lifeEnergy; } }
 
-    public CurrentStats FinalStats { get { return this.curentStats; } }
-
     public Character()
     {
         Amount = new ResourceManager.ResourceAmount();
@@ -42,8 +40,9 @@ public class Character : MonoBehaviour, IResourceHolder
         return blueprint.FullName;
     }
 
-    public void SetBlueprint(Specialists specialist)
+    public void Initialized(Specialists specialist)
     {
+        blueprint = new Specialists();
         blueprint = specialist;
         curentStats = new CurrentStats(specialist.Level, specialist.Mil, specialist.Sol, specialist.Tel, specialist.Kar, specialist.Scl);
         lifeEnergy = new LifeEnergy(curentStats);
@@ -119,6 +118,16 @@ public class Character : MonoBehaviour, IResourceHolder
 
     #endregion
 
+    public void ModifyStamina (float value)
+    {
+        lifeEnergy.CurrentStamina = value;
+    }
+
+    public void ModifyLife(float value)
+    {
+        lifeEnergy.CurrentLife = value;
+    }
+
     public void RecalculateFinalStats()
     {
         _finalStats = Stats;
@@ -149,13 +158,15 @@ public class Character : MonoBehaviour, IResourceHolder
         }
     }
 
+
+
     public void ModifiCharacterAtribute(string atribute, int value)
     {
         
         switch (atribute)
         {
             case "Stamina":
-                LifeEnergy.CurrentStamina += value;
+                LifeEnergy.CurrentStamina = value;
                 break;
             case "Mil":
                 Stats.military += value;

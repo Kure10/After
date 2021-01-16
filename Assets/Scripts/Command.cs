@@ -210,7 +210,7 @@ public class Build : Command
     public override Result Execute()
     {
         accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
-       
+        
         return Result.Success;
     }
 
