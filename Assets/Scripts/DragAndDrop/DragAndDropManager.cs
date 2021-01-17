@@ -17,7 +17,7 @@ public class DragAndDropManager : MonoBehaviour
 
     private (Item item, GameObject go) _dragingObject;
 
-    public event Action<Item> OnItemResponceAnimation = delegate { };
+    public event Action<Item> OnItemResponseReaction = delegate { };
 
     // public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
 
@@ -62,7 +62,7 @@ public class DragAndDropManager : MonoBehaviour
         if (rect != null)
             rect.sizeDelta = new Vector2(60, 60);
 
-        OnItemResponceAnimation.Invoke(dragingObject.item);
+        OnItemResponseReaction.Invoke(dragingObject.item);
 
     }
 
@@ -74,7 +74,7 @@ public class DragAndDropManager : MonoBehaviour
 
     public void SetDefault()
     {
-        OnItemResponceAnimation.Invoke(_dragingObject.item);
+        OnItemResponseReaction.Invoke(_dragingObject.item);
 
         _dragingObject = (null, null);
         _originalSlot = null;

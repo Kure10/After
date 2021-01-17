@@ -33,8 +33,9 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     // Update is called once per frame
     public void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        //if (EventSystem.current.IsPointerOverGameObject())
+        //    return;
+        
 
         if (Input.GetMouseButtonDown(0))
         {

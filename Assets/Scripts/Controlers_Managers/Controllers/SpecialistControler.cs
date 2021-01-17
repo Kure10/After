@@ -48,8 +48,6 @@ public class SpecialistControler : MonoBehaviour
             character.Initialized(specialist);
 
             InGameSpecialists.Add(character);
-
-
         }
 
         AddAllSpecialistToUI();

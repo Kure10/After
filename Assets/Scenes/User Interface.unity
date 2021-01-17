@@ -13007,6 +13007,7 @@ GameObject:
   - component: {fileID: 1246727685}
   - component: {fileID: 1246727684}
   - component: {fileID: 1246727686}
+  - component: {fileID: 1246727687}
   m_Layer: 0
   m_Name: ResourceManager
   m_TagString: ResourceManager
@@ -13150,6 +13151,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1fe0439b1d8c1834b9a9474a598d7c62, type: 3}
   - {fileID: 21300000, guid: bc6fd3843a1db414d90d38da372a2725, type: 3}
   defaultResource: {fileID: 21300000, guid: 1263b46e6df762f42b4af458ad5bdcc7, type: 3}
+--- !u!114 &1246727687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246727683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94914991c5c1c264fad80ef160a41a18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Info:
+  - name: "_Startovn\xED itemy"
+    id: 20209380580065
+  - name: "Bedna se zbran\u011Bmi I"
+    id: 20208435425923
 --- !u!1 &1267051237
 GameObject:
   m_ObjectHideFlags: 0
@@ -16864,6 +16882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63634838a87a8f647a8f3ab26b03a28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerManager: {fileID: 1246727687}
   inventory: {fileID: 1607481416}
   allItems: []
 --- !u!114 &1607481416
@@ -17840,6 +17859,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696437643}
   m_CullTransparentMesh: 0
+--- !u!1 &1697875898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4140179754048588116, guid: f24f439da6af27b4b8e03b17b98e2d77,
+    type: 3}
+  m_PrefabInstance: {fileID: 391733892}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1697875899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697875898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 3
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!223 &1697875900
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697875898}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1699362038
 GameObject:
   m_ObjectHideFlags: 0
@@ -27279,6 +27342,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -245
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274111136688786648, guid: 65b84b81998b6d14db614d69973df165,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -12.999878
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274111136688786648, guid: 65b84b81998b6d14db614d69973df165,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 1674052209352497789, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}

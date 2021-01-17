@@ -25,6 +25,11 @@ public class ItemBlueprint
 
     public ItemType Type { get { return type; } }
 
+    public ItemBlueprint()
+    {
+
+    }
+
     public ItemBlueprint(long _id, string _name, ItemType _type)
     {
         itemID = _id;

@@ -47,7 +47,7 @@ public class uWindowSpecController : MonoBehaviour
         foreach (SpecInventorySlot slot in slots)
         {
             slot.OnItemChangeCallBack += character.OnItemChange;
-            DragAndDropManager.Instantion.OnItemResponceAnimation += OnItemDragResponce;
+            DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
         }
     }
 
