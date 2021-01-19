@@ -241,18 +241,14 @@ public class EventController : MonoBehaviour
 
     private void AddCharactersPrefabFromMissionToEvent(Mission mission)
     {
-        eventPanel.ClearCharacterContent();
+        eventPanel.GetCharactersOnEvent.Clear();
         eventPanel.DisableCharacterContent();
 
-        int amount = mission.GetCharactersOnMission.Count;
-        
         for (int i = 0; i < mission.GetCharactersOnMission.Count; i++)
         {
             Character character = mission.GetCharactersOnMission[i];
             GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab);
 
-            int panelIndex = i / 2;
-            eventPanel.SetCharacterParent(go, panelIndex);
             uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
             eventPanel.AddCharacterToSelectionContent(go, character);
@@ -261,17 +257,7 @@ public class EventController : MonoBehaviour
 
         }
 
-        eventPanel.ActivateCharacterContent(amount/2);
-
-        //foreach (Character character in mission.GetCharactersOnMission)
-        //{
-        //    GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab, eventPanel.GetCharacterTransformContent.transform);
-        //    uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
-        //    uWindow.SetAll(character);
-        //    eventPanel.AddCharacterToSelectionContent(go, character);
-        //    uWindow.PopulateItemSlots(character);
-        //    uWindow.GetMainButton.onClick.RemoveAllListeners();
-        //}
+        eventPanel.ActivateCharacterContent();
     }
 
     private void RemoveCharactersGameObjectFromEvent()

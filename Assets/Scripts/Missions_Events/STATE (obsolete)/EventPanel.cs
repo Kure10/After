@@ -53,7 +53,7 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] GameObject buttonHolder;
 
-    [SerializeField] List<CharacterEventContent> characterContents = new List<CharacterEventContent>();
+    [SerializeField] Transform charContent;
 
     [Header("Prefabs")]
 
@@ -66,9 +66,6 @@ public class EventPanel : MonoBehaviour
     [SerializeField] GameObject legendGo;
 
     [SerializeField] Button minimize;
-
-
-
 
     Dictionary<GameObject, Character> charactersInContent = new Dictionary<GameObject, Character>();
 
@@ -158,11 +155,6 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void AddCharacterToSelectionContent(GameObject gameObject,Character character)
-    {
-        charactersInContent.Add(gameObject,character);
-    }
-
     public enum PanelStates
     {
         Battle,
@@ -204,33 +196,26 @@ public class EventPanel : MonoBehaviour
 
     #region Helping Methods
 
-    public void ActivateCharacterContent(int rows)
+    public void ActivateCharacterContent()
     {
-        for (int i = 0; i <= rows; i++)
+        foreach (KeyValuePair<GameObject, Character> item in charactersInContent)
         {
-            characterContents[i].gameObject.SetActive(true);
+            item.Key.SetActive(true);
         }
     }
 
     public void DisableCharacterContent()
     {
-        foreach (CharacterEventContent item in characterContents)
+        foreach (KeyValuePair<GameObject, Character> item in charactersInContent)
         {
-            item.gameObject.SetActive(false);
+            item.Key.SetActive(false);
         }
     }
 
-    public void SetCharacterParent(GameObject go, int i)
+    public void AddCharacterToSelectionContent(GameObject gameObject, Character character)
     {
-        characterContents[i].AddCharacterToContent(go);
-    }
-
-    public void ClearCharacterContent()
-    {
-        foreach (CharacterEventContent item in characterContents)
-        {
-            item.ClearCharactersInContent();
-        }
+        charactersInContent.Add(gameObject, character);
+        gameObject.transform.SetParent(charContent);
     }
 
     public void TurnOnLegend()
