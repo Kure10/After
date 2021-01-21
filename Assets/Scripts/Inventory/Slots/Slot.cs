@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 [Serializable]
-public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
+public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 {
+    [Header("Main")]
     [SerializeField] protected Transform container;
+
+    [SerializeField] protected Button actionButton;
 
     protected bool isEmpty = true;
 
@@ -31,6 +36,17 @@ public abstract class Slot : MonoBehaviour, IPointerHandler , IDropHandler
     }
 
     #endregion
+
+    private void Awake()
+    {
+        actionButton = this.gameObject.GetComponent<Button>();
+    }
+
+    // Todo tohle bude asi abstraktni..
+    public virtual void AddAction(UnityAction<int> action, UnityAction action2)
+    {
+        actionButton.onClick.AddListener(delegate { action(-1);});
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {

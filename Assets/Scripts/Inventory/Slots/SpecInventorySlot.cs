@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.Events;
 
-public class SpecInventorySlot : Slot  
+public class SpecInventorySlot : Slot
 {
+    [Header("Specific")]
     [SerializeField] int _index;
 
     [SerializeField] ItemBlueprint.ItemType firstType;
@@ -54,6 +56,25 @@ public class SpecInventorySlot : Slot
         isEmpty = false;
         this.CurrentItem = (item, gameObject);
         gameObject.transform.SetParent(container);
+    }
+
+    public override void AddAction(UnityAction<int> action, UnityAction action2)
+    {
+        if (!isEmpty)
+        {
+            if (_currentItem.item is Backpack back)
+            {
+                actionButton.onClick.AddListener(delegate { action(back.Capacity); });
+                actionButton.onClick.AddListener(delegate { action2(); });
+            }
+
+        }
+
+    }
+
+    public void OpenBackPack()
+    {
+
     }
 
 }

@@ -110,7 +110,7 @@ public class EventPanel : MonoBehaviour
             }
             else
             {
-               
+
                 testInfoContent.SetActive(false);
                 selectionCharacterContent.SetActive(true);
                 selectionInfoContent.SetActive(true);
@@ -118,7 +118,7 @@ public class EventPanel : MonoBehaviour
             }
         }
     }
-    
+
     public void SetupTestingState(TestCase tCase)
     {
         IsInvolvedKarma(tCase.GetKarmaInfluence);
@@ -127,7 +127,7 @@ public class EventPanel : MonoBehaviour
         rateMod.text = tCase.GetRateMod.ToString();
         SetupConditionAtributes(tCase);
         eventSubTitle.text = tCase.GetName;
-        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}."; 
+        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}.";
     }
 
     public void SetImage(Sprite _sprite)
@@ -226,6 +226,35 @@ public class EventPanel : MonoBehaviour
     public void TurnOffLegend()
     {
         legendGo.SetActive(false);
+    }
+
+    public void ReCalculatePositions()
+    {
+        int count = charactersInContent.Count;
+        Character[] arrayPos = new Character[count];
+
+        int i = 0;
+        foreach (KeyValuePair<GameObject, Character> item in charactersInContent)
+        {
+            arrayPos[i] = item.Value;
+            i++;
+        }
+
+        var rect = charContent.GetComponent<RectTransform>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+
+        for (int j = 0; j < arrayPos.Length - 1; j++)
+        {
+            foreach (KeyValuePair<GameObject, Character> item in charactersInContent)
+            {
+                if (arrayPos[j] == item.Value)
+                {
+                    item.Key.transform.SetAsFirstSibling();
+                }
+            }
+        }
+
+
     }
 
     #endregion

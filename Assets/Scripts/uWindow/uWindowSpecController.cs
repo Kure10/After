@@ -5,10 +5,9 @@ using System.Linq;
 using System;
 using UnityEngine.Events;
 
-
 public class uWindowSpecController : MonoBehaviour
 {
-  
+
     [Header("Prefabs")]
     [SerializeField] private GameObject panelSpecialist;
 
@@ -77,7 +76,7 @@ public class uWindowSpecController : MonoBehaviour
                 break;
         }
 
-        if(lastSortCategory != currentSortCategory)
+        if (lastSortCategory != currentSortCategory)
         {
             foreach (var item in specInGame)
             {
@@ -97,7 +96,7 @@ public class uWindowSpecController : MonoBehaviour
 
     public void OnItemDragResponce(Item dragingItem)
     {
-        if(DragAndDropManager.IsDraging)
+        if (DragAndDropManager.IsDraging)
         {
             foreach (var character in specInGame)
             {
@@ -123,7 +122,6 @@ public class uWindowSpecController : MonoBehaviour
             }
         }
 
-        
     }
 
 }

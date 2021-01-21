@@ -8,6 +8,7 @@ using System;
 [Serializable]
 public class ItemSlot : Slot  
 {
+    [Header("Specific")]
     [SerializeField] Image image;
 
     private int _index = 0; // index je asi k hovnu..

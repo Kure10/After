@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class uWindowSpecialist : MonoBehaviour
@@ -25,8 +26,12 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Text scientistValue;
     [SerializeField] Text karmaValue;
 
-    [Header("Activity Stats")]
+    [Header("Inventory Stats")]
     [SerializeField] List<SpecInventorySlot> characterSlots = new List<SpecInventorySlot>();
+
+    [SerializeField] List<SpecInventorySlot> backPackSlots = new List<SpecInventorySlot>();
+
+    [SerializeField] List<GameObject> backPackCollums = new List<GameObject>();
 
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
@@ -51,12 +56,10 @@ public class uWindowSpecialist : MonoBehaviour
     [Header("Item Prefab")]
     [SerializeField] GameObject itemPrefab;
 
-    public Character character;
-
     private float percentHealth = 0;
     private float percentStamina = 0;
 
-    private bool isActiveBuilding;
+    private bool isOpenBackPack = false;
 
     private Character _character;
 
@@ -193,6 +196,46 @@ public class uWindowSpecialist : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void AddActionsOnItemClicked( UnityAction action)
+    {
+        foreach (SpecInventorySlot item in characterSlots)
+        {
+            item.AddAction(OpenBackPack, action);
+        }
+
+    }
+
+    // todo zavirat taky..
+    public void OpenBackPack(int backPackCapacity)
+    {
+        if (backPackCapacity <= 0)
+            return;
+
+        var count = backPackCapacity / 2;
+
+        if (isOpenBackPack)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                backPackCollums[i].SetActive(false);
+            }
+            isOpenBackPack = false;
+        }
+        else
+        {
+            for (int i = 0; i < count; i++)
+            {
+                backPackCollums[i].SetActive(true);
+            }
+            isOpenBackPack = true;
+        }
+
+        var tmp = this.transform.GetComponentInParent<Transform>();
+
+        tmp.SetAsFirstSibling();
+        // reorder.. 
     }
 
     #endregion

@@ -253,6 +253,7 @@ public class EventController : MonoBehaviour
             uWindow.SetAll(character);
             eventPanel.AddCharacterToSelectionContent(go, character);
             uWindow.PopulateItemSlots(character);
+            uWindow.AddActionsOnItemClicked(delegate { eventPanel.ReCalculatePositions();});
             uWindow.GetMainButton.onClick.RemoveAllListeners();
 
         }
