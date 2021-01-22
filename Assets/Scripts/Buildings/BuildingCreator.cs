@@ -13,6 +13,8 @@ public class BuildingCreator : MonoBehaviour
     private int direction;
     private int rotation;
     private TileFactory tileFactory;
+    public Color allowed;
+    public Color forbidden;
 
     [SerializeField] PanelTime time;
 
@@ -67,6 +69,9 @@ public class BuildingCreator : MonoBehaviour
                         break;
                     }
                 }
+
+                blueprint.transform.Find("Build_setup").GetComponent<Renderer>()
+                    .material.color = canBuild ? allowed : forbidden;
                   
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
