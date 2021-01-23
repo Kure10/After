@@ -4850,6 +4850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941787d763fbc4b43be3102aada6081f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowed: {r: 0, g: 1, b: 0.1720972, a: 0.25882354}
+  forbidden: {r: 1, g: 0, b: 0, a: 0.32941177}
   time: {fileID: 185772149}
 --- !u!114 &436035998
 MonoBehaviour:
@@ -21187,7 +21189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.20958744}
   m_AnchorMax: {x: 0.8812498, y: 0.4664126}
-  m_AnchoredPosition: {x: -2, y: -1}
+  m_AnchoredPosition: {x: -2, y: -1.0000019}
   m_SizeDelta: {x: 2, y: 4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2032264439
@@ -27279,6 +27281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -245
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274111136688786648, guid: 65b84b81998b6d14db614d69973df165,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 1674052209352497789, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}
