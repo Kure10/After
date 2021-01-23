@@ -130,26 +130,26 @@ public class BuildingCreator : MonoBehaviour
             {
                 // example for row = 3, column = 2
                 // rotation == 0 
-                // x x
-                // x x
-                // x X 
-                // rotation == 1
                 // x x x
                 // X x x
+                // rotation == 1
+                // X x 
+                // x x
+                // x x
                 // rotation == 2
-                // X x
-                // x x
-                // x x
-                // rotation == 3
                 // x x X
                 // x x x
+                // rotation == 3
+                // x x 
+                // x x
+                // x X
 
                 switch (rotation)
                 {
                     case 0: xx = coord.x + x; yy = coord.y + y; break;
                     case 1: xx = coord.x + y; yy = coord.y - x; break;
                     case 2: xx = coord.x - x; yy = coord.y - y; break;
-                    default: xx = coord.x - y; yy = coord.y + x; break;
+                    default: xx = coord.x - y; yy = coord.y + x; break; 
                 }
                 grid.Add(new Vector2Int(xx, yy));
             }
