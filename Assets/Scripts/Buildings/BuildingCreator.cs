@@ -7,12 +7,16 @@ public class BuildingCreator : MonoBehaviour
 {
     private BuildingBlueprint selectedBuildingBlueprint = null;
     private GameObject blueprint = null;
+    private Renderer blueprintOverlayColor;
     private GameObject test = null;
     private readonly int TILE = 1 << 8;
     private float scroll;
     private int direction;
     private int rotation;
     private TileFactory tileFactory;
+    private Color allowed;
+    public Color forbidden;
+    public float overlayAlpha = 0.4f;
 
     [SerializeField] PanelTime time;
 
@@ -67,6 +71,9 @@ public class BuildingCreator : MonoBehaviour
                         break;
                     }
                 }
+
+                blueprintOverlayColor.material.color = canBuild ? allowed : forbidden;
+                
                   
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
@@ -101,11 +108,14 @@ public class BuildingCreator : MonoBehaviour
         scroll = 0f;
         rotation = 0;
         blueprint = Instantiate(buildingBlueprint.Prefab);
-        
+        blueprintOverlayColor = blueprint.transform.Find("Build_setup").GetComponent<Renderer>();
+        var c = selectedBuildingBlueprint.BackgroundColor;
+        allowed = new Color(c.r, c.g, c.b, overlayAlpha);
     }
     private void EndBuildingMode()
     {
         CameraMovement.ZoomByScrollEnabled(true);
+        blueprintOverlayColor = null;
         Destroy(blueprint);
         selectedBuildingBlueprint = null;
         time.UnpauseGame(fromPopup: true);

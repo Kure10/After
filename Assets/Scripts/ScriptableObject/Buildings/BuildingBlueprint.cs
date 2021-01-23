@@ -85,12 +85,9 @@ public class BuildingBlueprint : ScriptableObject
         return tag;
     }
 
-    public void SetColor(int Red, int Green, int Blue)
+    public void SetColor(int red, int green, int blue)
     {
-        this.backgroundColor.r = Red;
-        this.backgroundColor.g = Green;
-        this.backgroundColor.b = Blue;
-        this.backgroundColor.a = 255;
+        backgroundColor = new Color(red/255f, green/255f, blue/255f, 1f );
     }
 
     public Tag ConvertTagStringData(string data)
