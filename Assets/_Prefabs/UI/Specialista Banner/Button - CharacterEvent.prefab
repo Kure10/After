@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 5055716146507102469}
   - component: {fileID: 7109639866229329319}
   - component: {fileID: 4158468672553403419}
-  - component: {fileID: 1378303410918417232}
+  - component: {fileID: 3957848892412241985}
   m_Layer: 5
   m_Name: Backpack (2)
   m_TagString: Untagged
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1378303410918417232
+--- !u!114 &3957848892412241985
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,13 +358,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 2246846867461941325}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 4800014314403716612}
-  selectedBackground: {fileID: 5146211845884478082}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &711820360024096203
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,7 +869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 5222153452578060653}
   actionButton: {fileID: 8237658674555315897}
-  _index: 0
+  isBackPack: 0
   firstType: 2
   secondType: 0
   backgroundImage: {fileID: 8058692724667711798}
@@ -1947,7 +1947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 5077238377053765513}
   actionButton: {fileID: 5355851317826626609}
-  _index: 0
+  isBackPack: 0
   firstType: 6
   secondType: 3
   backgroundImage: {fileID: 5802578109452560584}
@@ -2420,7 +2420,7 @@ GameObject:
   - component: {fileID: 8017764811682169360}
   - component: {fileID: 2798991992180471391}
   - component: {fileID: 6200787198537803273}
-  - component: {fileID: 9097080354281710964}
+  - component: {fileID: 2182155092602102975}
   m_Layer: 5
   m_Name: Backpack (1)
   m_TagString: Untagged
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9097080354281710964
+--- !u!114 &2182155092602102975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2542,13 +2542,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 1760737583803457882}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 5608560260224035086}
-  selectedBackground: {fileID: 8204806459825492363}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &2624255435182759673
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,7 +3051,7 @@ GameObject:
   - component: {fileID: 7730398308635192764}
   - component: {fileID: 5610282349520503281}
   - component: {fileID: 5792113637926136279}
-  - component: {fileID: 9174752759995063508}
+  - component: {fileID: 4592034277387828501}
   m_Layer: 5
   m_Name: Backpack (1)
   m_TagString: Untagged
@@ -3161,7 +3161,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9174752759995063508
+--- !u!114 &4592034277387828501
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3173,13 +3173,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 8004292995154379053}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 5518901606663771137}
-  selectedBackground: {fileID: 2626477809947233327}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &3586949385834147408
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,7 +3268,7 @@ GameObject:
   - component: {fileID: 1319829063639156419}
   - component: {fileID: 6354555428347087301}
   - component: {fileID: 1270486112725705802}
-  - component: {fileID: 5066072446548345249}
+  - component: {fileID: 4263463938310763221}
   m_Layer: 5
   m_Name: Backpack (2)
   m_TagString: Untagged
@@ -3378,7 +3378,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5066072446548345249
+--- !u!114 &4263463938310763221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3390,13 +3390,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 4991502140554857011}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 1607299503447116313}
-  selectedBackground: {fileID: 1924980615900932035}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &4069440411884422105
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,7 +3685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 6778087314628259311}
   actionButton: {fileID: 4881802730786486467}
-  _index: 0
+  isBackPack: 0
   firstType: 6
   secondType: 3
   backgroundImage: {fileID: 4320575901102053652}
@@ -3780,7 +3780,7 @@ GameObject:
   - component: {fileID: 251774917337842353}
   - component: {fileID: 8516237351257260920}
   - component: {fileID: 8127652920157241062}
-  - component: {fileID: 4864607305528874009}
+  - component: {fileID: 8378253503784330339}
   m_Layer: 5
   m_Name: Backpack (1)
   m_TagString: Untagged
@@ -3890,7 +3890,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4864607305528874009
+--- !u!114 &8378253503784330339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3902,13 +3902,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 5833662692265895065}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 2160462114988205068}
-  selectedBackground: {fileID: 4069440411884422105}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &4594371418519892045
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,7 +4045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 8338628026713326975}
   actionButton: {fileID: 2996932681369304566}
-  _index: 0
+  isBackPack: 0
   firstType: 1
   secondType: 0
   backgroundImage: {fileID: 2909666541219426595}
@@ -4137,7 +4137,7 @@ GameObject:
   - component: {fileID: 6860299295941809102}
   - component: {fileID: 6766114190780860980}
   - component: {fileID: 7609147966054450716}
-  - component: {fileID: 8470349640112240177}
+  - component: {fileID: 6525026074429764650}
   m_Layer: 5
   m_Name: Backpack (1)
   m_TagString: Untagged
@@ -4247,7 +4247,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8470349640112240177
+--- !u!114 &6525026074429764650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4259,13 +4259,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 6472435259690772414}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 4009303589611664196}
-  selectedBackground: {fileID: 1114934732553978862}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &5038331971646913367
 GameObject:
   m_ObjectHideFlags: 0
@@ -5067,7 +5067,7 @@ GameObject:
   - component: {fileID: 6083844048136907241}
   - component: {fileID: 2928881508242298133}
   - component: {fileID: 1876343290808312449}
-  - component: {fileID: 2208628416557574059}
+  - component: {fileID: 2691833504711917829}
   m_Layer: 5
   m_Name: Backpack (2)
   m_TagString: Untagged
@@ -5177,7 +5177,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2208628416557574059
+--- !u!114 &2691833504711917829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5189,13 +5189,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 6865377123127669798}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 2122341790903998785}
-  selectedBackground: {fileID: 1953939399566472512}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &6274650827174426090
 GameObject:
   m_ObjectHideFlags: 0
@@ -5535,14 +5535,14 @@ MonoBehaviour:
   - {fileID: 2942824555222747125}
   - {fileID: 4785144941724790802}
   backPackSlots:
-  - {fileID: 9097080354281710964}
-  - {fileID: 1173449178181815075}
-  - {fileID: 9174752759995063508}
-  - {fileID: 1378303410918417232}
-  - {fileID: 4864607305528874009}
-  - {fileID: 2208628416557574059}
-  - {fileID: 8470349640112240177}
-  - {fileID: 5066072446548345249}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   backPackCollums:
   - {fileID: 7472888767580069882}
   - {fileID: 2046400792125659546}
@@ -7247,7 +7247,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 325, y: 0}
+  m_AnchoredPosition: {x: 320, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4981982237607301313
@@ -7799,7 +7799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &69051379518882313
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7816,10 +7816,10 @@ RectTransform:
   m_Father: {fileID: 5561061972411972995}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 140}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -70}
+  m_SizeDelta: {x: 50, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7819283187617491754
 MonoBehaviour:
@@ -8523,7 +8523,7 @@ GameObject:
   - component: {fileID: 7379865204205975899}
   - component: {fileID: 2129057318125723626}
   - component: {fileID: 8317774032790563070}
-  - component: {fileID: 1173449178181815075}
+  - component: {fileID: 1669743396383432322}
   m_Layer: 5
   m_Name: Backpack (2)
   m_TagString: Untagged
@@ -8633,7 +8633,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1173449178181815075
+--- !u!114 &1669743396383432322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8645,13 +8645,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 7612074536451852664}
+  container: {fileID: 0}
   actionButton: {fileID: 0}
-  _index: 0
+  isBackPack: 1
   firstType: 0
   secondType: 0
-  backgroundImage: {fileID: 1392969393624231037}
-  selectedBackground: {fileID: 8445256289659674969}
+  backgroundImage: {fileID: 0}
+  selectedBackground: {fileID: 0}
 --- !u!1 &8892288858474234436
 GameObject:
   m_ObjectHideFlags: 0

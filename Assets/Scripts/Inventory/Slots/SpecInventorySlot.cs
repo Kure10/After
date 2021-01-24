@@ -9,22 +9,23 @@ using UnityEngine.Events;
 public class SpecInventorySlot : Slot
 {
     [Header("Specific")]
-    [SerializeField] int _index;
+
+    [SerializeField] bool isBackPack;
 
     [SerializeField] ItemBlueprint.ItemType firstType;
     [SerializeField] ItemBlueprint.ItemType secondType;
+    [Space]
     // Todo zatim se nepouziva..
     [SerializeField] Image backgroundImage;
 
     [SerializeField] GameObject selectedBackground;
+
 
     public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
 
     public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
 
     public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
-
-    public int GetIndex { get { return this._index; } }
 
     // budu potrebovat
     public override (Item item, GameObject go) CurrentItem
@@ -52,7 +53,6 @@ public class SpecInventorySlot : Slot
 
     public void SetSlot(GameObject gameObject, Item item)
     {
-        _index = 0;
         isEmpty = false;
         this.CurrentItem = (item, gameObject);
         gameObject.transform.SetParent(container);
@@ -67,9 +67,7 @@ public class SpecInventorySlot : Slot
                 actionButton.onClick.AddListener(delegate { action(back.Capacity); });
                 actionButton.onClick.AddListener(delegate { action2(); });
             }
-
         }
-
     }
 
     public void OpenBackPack()

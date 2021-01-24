@@ -57,7 +57,6 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         DragAndDropManager.Instantion.HandleDrop(this);
-
     }
 
 

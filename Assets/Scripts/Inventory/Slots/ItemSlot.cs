@@ -19,7 +19,8 @@ public class ItemSlot : Slot
     {
         _index = index;
         isEmpty = true;
-        image.gameObject.SetActive(false);
+        if(image != null)
+         image.gameObject.SetActive(false);
         this.CurrentItem = (item, gameObject);
 
         if (gameObject != null && item != null)

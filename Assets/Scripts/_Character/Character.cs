@@ -21,7 +21,11 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private List<Item> _inventory = new List<Item>();
 
+    private List<Item> _inventoryBackPack = new List<Item>();
+
     public List<Item> GetInventory { get {return this._inventory; } }
+
+    public List<Item> GetInventoryBackPack { get { return this._inventoryBackPack; } }
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
@@ -196,6 +200,22 @@ public class Character : MonoBehaviour, IResourceHolder
         foreach (SpecInventorySlot slot in charactersSlots)
         {
             _inventory.Add(slot.CurrentItem.item);
+
+            //if (slot.CurrentItem.item is Backpack backpack)
+            //{
+            //    // mas backpack`
+            //}
+        }
+
+        //
+        foreach (SpecInventorySlot slot in charactersSlots)
+        {
+            _inventory.Add(slot.CurrentItem.item);
+
+            if (slot.CurrentItem.item is Backpack backpack)
+            {
+                // mas backpack`
+            }
         }
 
 

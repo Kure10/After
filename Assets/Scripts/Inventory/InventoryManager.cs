@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        Container startContainer = containerManager.GetStartContainer();
+      //  Container startContainer = containerManager.GetStartContainer();
 
         ItemXmlLoader xmlLoader = new ItemXmlLoader();
         allItems = xmlLoader.GetItemsFromXML();
