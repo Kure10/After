@@ -98,7 +98,6 @@ public class DragAndDropManager : MonoBehaviour
 
     public void SetDefault()
     {
-        OnItemResponseReaction.Invoke(_dragingObject.item);
         _isDraging = false;
         _draggingProceed = false;
 
@@ -109,7 +108,7 @@ public class DragAndDropManager : MonoBehaviour
         _dragingObject = (null, null);
         _originalSlot = null;
         _successDrop = false;
-        
+        OnItemResponseReaction.Invoke(_dragingObject.item);
     }
 
     public bool HandleDrop(Slot destination)
@@ -174,14 +173,6 @@ public class DragAndDropManager : MonoBehaviour
         }
         else
         {
-           // if (itemSlotDestination.CurrentItem.item.Type != specSlotOrigin2.CurrentItem.item.Type)
-
-            //if(CanBePlacedIntoDestinationSlot(specSlotOrigin2))
-            //{
-            //    ReturnToOriginSlot(specSlotOrigin2);
-            //}
-            //else
-
                 SwitchItems(itemSlotDestination, specSlotOrigin2);
         }
 
@@ -232,6 +223,7 @@ public class DragAndDropManager : MonoBehaviour
                         Debug.LogError("Osudova chyba už neni empty slot takže se to musi rozširit inventar GG..");
 
                     ReturnToOriginSlot(emptySlot);
+                    SetDefault();
                     return false;
                 }
             }
