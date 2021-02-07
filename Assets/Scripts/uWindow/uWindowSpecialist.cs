@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
+// TOdo jsou asi tri prefaby na tento script.  No chce to vymyslet lepe..
 public class uWindowSpecialist : MonoBehaviour
 {
     #region Fields
@@ -32,6 +34,9 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] List<SpecInventorySlot> backPackSlots = new List<SpecInventorySlot>();
 
     [SerializeField] List<GameObject> backPackCollums = new List<GameObject>();
+
+    [Space]
+    [SerializeField] GameObject BackPack;
 
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
@@ -82,6 +87,11 @@ public class uWindowSpecialist : MonoBehaviour
     public List<SpecInventorySlot> GetCharacterSlots()
     {
         return this.characterSlots;
+    }
+
+    public List<SpecInventorySlot> GetCharacterBackpackSlots()
+    {
+        return this.backPackSlots;
     }
     public bool IsResultSuccess
     {

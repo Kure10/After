@@ -5,26 +5,26 @@ using System;
 
 public class DragAndDropManager : MonoBehaviour
 {
+
+    [SerializeField] Inventory inventory;
+
     [SerializeField] Transform dragHolder;
 
     static private bool _isDraging = false;
+
+    static private bool _draggingProceed = false;
 
     private Slot _originalSlot;
 
     private bool _successDrop;
 
-    //  private Slot _newSlot;
-
     private (Item item, GameObject go) _dragingObject;
 
     public event Action<Item> OnItemResponseReaction = delegate { };
 
-    // public (Item item, GameObject go) GetDragingObject { get { return _dragingObject; }}
-
-    //public Transform GetOriginalLocation { get { return _originalLocation; } }
-    //public Transform GetNewLocation { get { return _newLocation; } }
-
     static public bool IsDraging { get { return _isDraging; } set { _isDraging = value; } }
+
+    static public bool IsDraggingProceed { get { return _draggingProceed; } set { _draggingProceed = value; } }
 
     #region Singleton
     private static DragAndDropManager _instantion;
@@ -53,7 +53,7 @@ public class DragAndDropManager : MonoBehaviour
     {
         _isDraging = true;
         _successDrop = false;
-        _originalSlot = dragingObject.item.MySlot;
+        _originalSlot = dragingObject.item.MySlot; // nepotrebuji..
         _dragingObject = dragingObject;
 
         _dragingObject.go.transform.SetParent(dragHolder);
@@ -66,6 +66,30 @@ public class DragAndDropManager : MonoBehaviour
 
     }
 
+    public bool IsThisDragingItem((Item item, GameObject go) item)
+    {
+        if (_dragingObject == item)
+            return true;
+
+        return false;
+    }
+
+    private void Update()
+    {
+        if (IsDraging && _dragingObject != (null,null))
+        {
+            Vector3 posMouse = Input.mousePosition;
+            _dragingObject.go.transform.position = posMouse;
+            //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
+
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                ReturnToOriginSlot();
+                SetDefault();
+            }
+        }
+    }
+
     public void wasSuccessfullyDroped()
     {
         if (!_successDrop)
@@ -75,16 +99,22 @@ public class DragAndDropManager : MonoBehaviour
     public void SetDefault()
     {
         OnItemResponseReaction.Invoke(_dragingObject.item);
+        _isDraging = false;
+        _draggingProceed = false;
 
+        if(_dragingObject != (null, null) && _dragingObject.item.MySlot is SpecInventorySlot)
+        {
+            OnItemResponseReaction.Invoke(_dragingObject.item);
+        }
         _dragingObject = (null, null);
         _originalSlot = null;
         _successDrop = false;
-        _isDraging = false;
+        
     }
 
-    public void HandleDrop(Slot destination)
+    public bool HandleDrop(Slot destination)
     {
-        if (_dragingObject == (null, null)) return;
+        if (_dragingObject == (null, null)) return false;
 
         if (destination == null)
         {
@@ -93,26 +123,37 @@ public class DragAndDropManager : MonoBehaviour
             _successDrop = false;
         }
 
+        // pokud vracím do stejneho slotu
+        if(destination == _originalSlot)
+        {
+            if(!IsDraggingProceed)
+            {
+
+                ReturnToOriginSlot();
+                return _successDrop = true;
+            }
+        }
+
         if (destination is SpecInventorySlot specSlotDestination && _originalSlot is SpecInventorySlot specSlotOrigin)
         {
-            ChangeItemSlot(specSlotDestination, specSlotOrigin);
+            _successDrop = ChangeItemSlot(specSlotDestination, specSlotOrigin);
         }
         else if (destination is SpecInventorySlot specSlotDestination2 && _originalSlot is ItemSlot itemSlotOrigin2)
         {
-            ChangeItemSlot(specSlotDestination2, itemSlotOrigin2);
+            _successDrop = ChangeItemSlot(specSlotDestination2, itemSlotOrigin2);
         }
         else if (destination is ItemSlot slotDestination && _originalSlot is ItemSlot slotOrigin)
         {
-            ChangeItemSlot(slotDestination, slotOrigin); // budu potrebovat i druhy item ale možna me bude stacit ten co draguji... ??
+            _successDrop = ChangeItemSlot(slotDestination, slotOrigin); // budu potrebovat i druhy item ale možna me bude stacit ten co draguji... ??
         }
         else if (destination is ItemSlot itemSlotDestination && _originalSlot is SpecInventorySlot specSlotOrigin2)
         {
-            ChangeItemSlot(itemSlotDestination, specSlotOrigin2);
+            _successDrop = ChangeItemSlot(itemSlotDestination, specSlotOrigin2);
         }
 
-        _successDrop = true;
+        return _successDrop;
     }
-    private void ChangeItemSlot(ItemSlot itemSlotDestination, SpecInventorySlot specSlotOrigin2)
+    private bool ChangeItemSlot(ItemSlot itemSlotDestination, SpecInventorySlot specSlotOrigin2)
     {
         if (itemSlotDestination.IsEmpty)
         {
@@ -123,22 +164,30 @@ public class DragAndDropManager : MonoBehaviour
 
             // original pozice
             specSlotOrigin2.CurrentItem = (null, null);
-
+            
             itemSlotDestination.IsEmpty = false;
             specSlotOrigin2.IsEmpty = true;
 
+            _originalSlot = null;
+            IsDraggingProceed = false;
+            
         }
         else
         {
-            if (itemSlotDestination.CurrentItem.item.Type != specSlotOrigin2.CurrentItem.item.Type)
-            {
-                ReturnToOriginSlot(specSlotOrigin2);
-            }
-            else
+           // if (itemSlotDestination.CurrentItem.item.Type != specSlotOrigin2.CurrentItem.item.Type)
+
+            //if(CanBePlacedIntoDestinationSlot(specSlotOrigin2))
+            //{
+            //    ReturnToOriginSlot(specSlotOrigin2);
+            //}
+            //else
+
                 SwitchItems(itemSlotDestination, specSlotOrigin2);
         }
+
+        return true;
     }
-    private void ChangeItemSlot(ItemSlot slotDestination, ItemSlot slotOrigin)
+    private bool ChangeItemSlot(ItemSlot slotDestination, ItemSlot slotOrigin)
     {
         if (slotDestination.IsEmpty)
         {
@@ -146,29 +195,50 @@ public class DragAndDropManager : MonoBehaviour
             _dragingObject.go.transform.SetParent(slotDestination.GetItemContainer);
             _dragingObject.item.MySlot = slotDestination;
             slotDestination.CurrentItem = _dragingObject;
+            slotDestination.IsEmpty = false;
 
             // original pozice
-            slotOrigin.CurrentItem = (null, null);
 
-            slotDestination.IsEmpty = false;
-            slotOrigin.IsEmpty = true;
+            if (slotOrigin != slotDestination)
+            {
+                slotOrigin.CurrentItem = (null, null);
+                slotOrigin.IsEmpty = true;
+            }
+
+            _originalSlot = null;
+            _draggingProceed = false;
         }
         else
         {
             // switching 
-
             SwitchItems(slotDestination, slotOrigin);
 
         }
-    }
-    private void ChangeItemSlot(SpecInventorySlot specSlotDestination2, Slot itemSlotOrigin2)
-    {
-        ItemBlueprint.ItemType typerino = itemSlotOrigin2.CurrentItem.item.Type;
 
-        if (itemSlotOrigin2.CurrentItem.item.Type != specSlotDestination2.GetFirstSlotType && itemSlotOrigin2.CurrentItem.item.Type != specSlotDestination2.GetSecondSlotType)
+        return true;
+    }
+    private bool ChangeItemSlot(SpecInventorySlot specSlotDestination2, Slot itemSlotOrigin2)
+    {
+        if (CanBePlacedIntoDestinationSlot(specSlotDestination2))
         {
+            if(itemSlotOrigin2 is SpecInventorySlot originSlotInventory)
+            {
+                if (_dragingObject.item.Type != originSlotInventory.GetFirstSlotType && _dragingObject.item.Type != originSlotInventory.GetSecondSlotType)
+                {
+                    ItemSlot emptySlot = inventory.FindEmptySlot();
+
+                    // TODO Edge case
+                    if (emptySlot == null)
+                        Debug.LogError("Osudova chyba už neni empty slot takže se to musi rozširit inventar GG..");
+
+                    ReturnToOriginSlot(emptySlot);
+                    return false;
+                }
+            }
+
             // vrat item na puvodni pozici...
             ReturnToOriginSlot(itemSlotOrigin2);
+            return false;
         }
         else
         {
@@ -178,52 +248,101 @@ public class DragAndDropManager : MonoBehaviour
                 _dragingObject.go.transform.SetParent(specSlotDestination2.GetItemContainer);
                 _dragingObject.item.MySlot = specSlotDestination2;
                 specSlotDestination2.CurrentItem = _dragingObject;
+                specSlotDestination2.IsEmpty = false;
+               
+                // slot empty no longer draging
+                _draggingProceed = false;
+
 
                 // original pozice
-                itemSlotOrigin2.CurrentItem = (null, null);
+                _originalSlot = null;
 
-                specSlotDestination2.IsEmpty = false;
-                itemSlotOrigin2.IsEmpty = true;
+                if (itemSlotOrigin2 != specSlotDestination2)
+                {
+                    itemSlotOrigin2.CurrentItem = (null, null);
+                    itemSlotOrigin2.IsEmpty = true;
+                }
             }
             else
             {
-                // switching
-                specSlotDestination2.CurrentItem.go.transform.SetParent(itemSlotOrigin2.GetItemContainer);
-                itemSlotOrigin2.CurrentItem = specSlotDestination2.CurrentItem;
-                itemSlotOrigin2.CurrentItem.item.MySlot = _dragingObject.item.MySlot;
 
+                var itemFromDestinySlot = specSlotDestination2.CurrentItem;
 
                 _dragingObject.go.transform.SetParent(specSlotDestination2.GetItemContainer);
-                _dragingObject.item.MySlot = specSlotDestination2;
                 specSlotDestination2.CurrentItem = _dragingObject;
+                specSlotDestination2.CurrentItem.item.MySlot = itemFromDestinySlot.item.MySlot;
+                _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+
+                _dragingObject = itemFromDestinySlot;
+                _dragingObject.go.transform.SetParent(dragHolder);
+                _dragingObject.item.MySlot = null;
+                _dragingObject.item.GetDragAndDropHandler.MakeTransparent(true);
+
+                _draggingProceed = true;
+                itemSlotOrigin2.CurrentItem = (null, null);
+                itemSlotOrigin2.IsEmpty = true;
             }
         }
+
+        return true;
     }
     private void SwitchItems(ItemSlot itemSlotDestination, SpecInventorySlot specSlotOrigin2)
     {
-        itemSlotDestination.CurrentItem.go.transform.SetParent(specSlotOrigin2.GetItemContainer);
-        specSlotOrigin2.CurrentItem = itemSlotDestination.CurrentItem;
-        specSlotOrigin2.CurrentItem.item.MySlot = _dragingObject.item.MySlot;
 
+        var tmp = itemSlotDestination.CurrentItem;
 
         _dragingObject.go.transform.SetParent(itemSlotDestination.GetItemContainer);
         _dragingObject.item.MySlot = itemSlotDestination;
         itemSlotDestination.CurrentItem = _dragingObject;
+        _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+
+        _dragingObject = tmp;
+        _dragingObject.go.transform.SetParent(dragHolder);
+        _dragingObject.item.MySlot = null;
+        _dragingObject.go.GetComponent<DragAndDropHandler>().MakeTransparent(true);
+
+        IsDraggingProceed = true;
+        specSlotOrigin2.CurrentItem = (null, null);
+        specSlotOrigin2.IsEmpty = true;
+
     }
     private void SwitchItems(ItemSlot slotDestination, ItemSlot slotOrigin)
     {
-        slotDestination.CurrentItem.go.transform.SetParent(slotOrigin.GetItemContainer);
-        slotOrigin.CurrentItem = slotDestination.CurrentItem;
-        slotOrigin.CurrentItem.item.MySlot = _dragingObject.item.MySlot;
-
+        var itemFromDestinySlot = slotDestination.CurrentItem;
 
         _dragingObject.go.transform.SetParent(slotDestination.GetItemContainer);
         _dragingObject.item.MySlot = slotDestination;
+        _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
         slotDestination.CurrentItem = _dragingObject;
+
+        _dragingObject = itemFromDestinySlot;
+        _dragingObject.go.transform.SetParent(dragHolder);
+        _dragingObject.item.MySlot = null;
+        _dragingObject.item.GetDragAndDropHandler.MakeTransparent(true);
+
+        _draggingProceed = true;
+
+        slotOrigin.CurrentItem = (null, null);
+        slotOrigin.IsEmpty = true;
     }
     private void ReturnToOriginSlot(Slot specSlotOrigin2)
     {
         _dragingObject.go.transform.SetParent(specSlotOrigin2.GetItemContainer);
+        _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+        _dragingObject.item.MySlot = specSlotOrigin2;
+        specSlotOrigin2.IsEmpty = false;
+        specSlotOrigin2.CurrentItem = _dragingObject;
     }
 
+    private void ReturnToOriginSlot()
+    {
+        _dragingObject.go.transform.SetParent(_originalSlot.GetItemContainer);
+        _dragingObject.item.MySlot = _originalSlot;
+        _originalSlot.CurrentItem = _dragingObject;
+        _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+    }
+    private bool CanBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
+    {
+        return _dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType;
+    }
 }

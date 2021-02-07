@@ -38,11 +38,18 @@ public class uWindowSpecController : MonoBehaviour
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
         uWindowSpec.CharacterInWindow = character;
-        specInGame.Add(uWindowSpec);
         uWindowSpec.SetAll(character);
 
+        specInGame.Add(uWindowSpec);
+
         var slots = uWindowSpec.GetCharacterSlots();
-        character.CharacterSlots = slots;
+        character.SetCharacterSlots = slots;
+
+        var backpackSlots = uWindowSpec.GetCharacterBackpackSlots();
+        character.SetCharacterBackPackSlots = backpackSlots;
+        
+        // todo onitem change  pro backpack
+
         foreach (SpecInventorySlot slot in slots)
         {
             slot.OnItemChangeCallBack += character.OnItemChange;

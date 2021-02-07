@@ -16,7 +16,11 @@ public class Item : MonoBehaviour
     private Slot mySlot;
     private BonusModificators[] modificators;
 
+    private DragAndDropHandler _dragAndDropHandler;
+
     public string Name { get { return this.name; } set { name = value; } }
+
+    public DragAndDropHandler GetDragAndDropHandler { get { return this._dragAndDropHandler; } }
 
     public Slot MySlot { get { return this.mySlot; } set { mySlot = value; } }
 
@@ -36,6 +40,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         image = this.transform.GetChild(0).gameObject.GetComponent<Image>();
+        _dragAndDropHandler = this.GetComponent<DragAndDropHandler>();
     }
 
 }

@@ -9,6 +9,9 @@ using UnityEngine.Events;
 [Serializable]
 public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 {
+
+    [SerializeField] int index;
+
     [Header("Main")]
     [SerializeField] protected Transform container;
 
@@ -50,13 +53,26 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // možna budu potrebovat zatím nechej byt.. Zaleži jestli se bug obeví.
-        // Draguji kurzorem do stredu nejakeho itemu a pak zkusím dragovat znova s jinym itemem..
+        var result = DragAndDropManager.Instantion.HandleDrop(this);
+
+        if (result)
+            _currentItem.item.GetDragAndDropHandler.OnEndDrag();
+        else
+            DragAndDropManager.Instantion.SetDefault();
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        DragAndDropManager.Instantion.HandleDrop(this);
+        bool dragingFromHandler = false;
+        var result = DragAndDropManager.Instantion.HandleDrop(this);
+
+        if(_currentItem != (null, null))
+            dragingFromHandler = _currentItem.item.GetDragAndDropHandler.GetBeginDrag;
+
+        if (result && !dragingFromHandler)
+            _currentItem.item.GetDragAndDropHandler.OnEndDrag();
+        //else
+        //    DragAndDropManager.Instantion.SetDefault();
     }
 
 

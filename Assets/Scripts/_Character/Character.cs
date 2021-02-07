@@ -17,15 +17,36 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private List<SpecInventorySlot> charactersSlots;
 
-    public List<SpecInventorySlot> CharacterSlots { set { charactersSlots = value; } }
+    private List<SpecInventorySlot> backPackSlots;
 
-    private List<Item> _inventory = new List<Item>();
+    public List<SpecInventorySlot> SetCharacterSlots { set { charactersSlots = value; } }
 
-    private List<Item> _inventoryBackPack = new List<Item>();
+    public List<SpecInventorySlot> SetCharacterBackPackSlots { set { backPackSlots = value; } }
 
-    public List<Item> GetInventory { get {return this._inventory; } }
+    public List<Item> GetInventory 
+    { 
+        get 
+        {
+            List<Item> inventory = new List<Item>();
 
-    public List<Item> GetInventoryBackPack { get { return this._inventoryBackPack; } }
+            foreach (SpecInventorySlot item in charactersSlots)
+                inventory.Add(item.CurrentItem.item);
+            
+            return inventory; 
+        } 
+    }
+    public List<Item> GetBackpackInventory
+    {
+        get
+        {
+            List<Item> inventory = new List<Item>();
+
+            foreach (SpecInventorySlot item in backPackSlots)
+                inventory.Add(item.CurrentItem.item);
+
+            return inventory;
+        }
+    }
 
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
@@ -137,29 +158,29 @@ public class Character : MonoBehaviour, IResourceHolder
         _finalStats = Stats;
         // finalni staty + Itemy v inventari..
 
-        foreach (var item in _inventory)
-        {
-            //if(item is Weapon weapon)
-            //{
-            //    weapon
-            //}
-            //else if (item is Armor armor)
-            //{
+        //foreach (var item in _inventory)
+        //{
+        //    //if(item is Weapon weapon)
+        //    //{
+        //    //    weapon
+        //    //}
+        //    //else if (item is Armor armor)
+        //    //{
 
-            //}
-            //else if (item is Backpack backpack)
-            //{
+        //    //}
+        //    //else if (item is Backpack backpack)
+        //    //{
 
-            //}
-            //else if (item is ActiveItem activeItem)
-            //{
+        //    //}
+        //    //else if (item is ActiveItem activeItem)
+        //    //{
 
-            //}
-            //else
-            //{
+        //    //}
+        //    //else
+        //    //{
 
-            //}
-        }
+        //    //}
+        //}
     }
 
 
@@ -196,28 +217,6 @@ public class Character : MonoBehaviour, IResourceHolder
     // modifi current Stats.. According wearing items..
     public void OnItemChange (Item item, SpecInventorySlot specSlot)
     {
-        _inventory.Clear();
-        foreach (SpecInventorySlot slot in charactersSlots)
-        {
-            _inventory.Add(slot.CurrentItem.item);
-
-            //if (slot.CurrentItem.item is Backpack backpack)
-            //{
-            //    // mas backpack`
-            //}
-        }
-
-        //
-        foreach (SpecInventorySlot slot in charactersSlots)
-        {
-            _inventory.Add(slot.CurrentItem.item);
-
-            if (slot.CurrentItem.item is Backpack backpack)
-            {
-                // mas backpack`
-            }
-        }
-
 
         //Item previousItem = GetItemFromSlotType(specSlot);
 
@@ -245,10 +244,11 @@ public class Character : MonoBehaviour, IResourceHolder
         //var tmp = inventory.Count;
         //Debug.Log("Character: " + this.blueprint.FullName + "  Pocet: " + tmp);
 
-        //foreach (Item it in inventory)
+        // vypis
+        //foreach (SpecInventorySlot it in charactersSlots)
         //{
-        //    if(it !=null)
-        //     Debug.Log("Item: " + it.name);
+        //    if (it.CurrentItem != (null,null) )
+        //        Debug.Log("Name of Item in slot :  " + it.CurrentItem.item.Name + " |||| Item Slot : ->  "  + it.CurrentItem.item.MySlot + "  |||| Character name : " + this.blueprint.FullName );
         //}
         //Debug.Log("---------- ");
     }

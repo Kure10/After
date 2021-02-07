@@ -47,11 +47,12 @@ public class SpecialistControler : MonoBehaviour
             character = person.GetComponent<Character>();
             character.Initialized(specialist);
 
+            person.name += " " + character.GetName();
+
             InGameSpecialists.Add(character);
         }
 
         AddAllSpecialistToUI();
-
     }
 
     public void AddAllSpecialistToUI()
@@ -64,8 +65,6 @@ public class SpecialistControler : MonoBehaviour
         {
             specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
         }
-
-     //   test += specUWindowUi.Refresh;
     }
 
     public List<Character> PassSpecToMissionSelection()

@@ -11,6 +11,10 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     [SerializeField] public bool _disableDrag = false;
 
+    private bool _beginDrag = false;
+
+    public bool GetBeginDrag { get { return this._beginDrag; } }
+
     public void InitDragHandler()
     {
         itemInSlot.go = this.gameObject;
@@ -21,47 +25,66 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!_disableDrag)
+        if (!_disableDrag && !DragAndDropManager.IsDraging)
         {
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.alpha = 0.7f;
+            _beginDrag = true;
+            MakeTransparent(true);
             DragAndDropManager.Instantion.InitDraging(itemInSlot);
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!_disableDrag)
-        {
-            if (DragAndDropManager.IsDraging)
-            {
-                Vector3 posMouse = Input.mousePosition;
-                this.transform.position = posMouse;
 
-                //rect.anchoredPosition += eventData.delta / canvas.scaleFactor;
-
-            }
-        }   
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!_disableDrag)
+
+        if (!_disableDrag && _beginDrag)
         {
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.alpha = 1f;
+            MakeTransparent(false);
 
-            DragAndDropManager.IsDraging = false;
+            //if (DragAndDropManager.Instantion.IsThisDragingItem(itemInSlot))
+                
+            //else
+            //    MakeTransparent(false);
+           
+            if(DragAndDropManager.IsDraggingProceed)
+            {
+                DragAndDropManager.IsDraging = true;
+                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+            }
+            else
+            {
+                DragAndDropManager.IsDraging = false;
 
-            DragAndDropManager.Instantion.wasSuccessfullyDroped();
+                DragAndDropManager.Instantion.wasSuccessfullyDroped();
 
-            DragAndDropManager.Instantion.SetDefault();
+                DragAndDropManager.Instantion.SetDefault();
+            }
+
+            _beginDrag = false;
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
        
+        bool result = false;
+
+        if (DragAndDropManager.IsDraging)
+        {
+            result = DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
+        }
+        else
+        {
+            if (!_disableDrag)
+            {
+                MakeTransparent(true);
+                DragAndDropManager.Instantion.InitDraging(itemInSlot);
+            }
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -79,6 +102,42 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
         if (!_disableDrag)
         {
             DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
+        }
+    }
+
+    public void MakeTransparent(bool transparent)
+    {
+        if(transparent)
+        {
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.alpha = 0.7f;
+        }
+        else
+        {
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.alpha = 1f;
+        }
+    }
+
+    public void OnEndDrag()
+    {
+        if (!_disableDrag)
+        {
+            MakeTransparent(false);
+
+            if (DragAndDropManager.IsDraggingProceed)
+            {
+                DragAndDropManager.IsDraging = true;
+                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+            }
+            else
+            {
+                DragAndDropManager.IsDraging = false;
+
+                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+
+                DragAndDropManager.Instantion.SetDefault();
+            }
         }
     }
 }

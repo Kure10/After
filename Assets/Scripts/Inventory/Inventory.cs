@@ -24,6 +24,23 @@ public class Inventory : MonoBehaviour
 
     public static event Action<Mission> OnInventoryChange = delegate { };
 
+    public ItemSlot FindEmptySlot ()
+    {
+        ItemSlot emptySlot = new ItemSlot();
+
+        foreach (ItemSlot item in inventory)
+        {
+            if(item.IsEmpty)
+            {
+                emptySlot = item;
+                break;
+            }
+        }
+
+        return emptySlot;
+    }
+
+
     public void InicializedStartInventory(List<ItemBlueprint> blueprits)
     {
         int size = _baseInventorySize + _additionalInventorySize;

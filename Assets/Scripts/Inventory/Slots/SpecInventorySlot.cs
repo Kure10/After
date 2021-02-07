@@ -10,6 +10,7 @@ public class SpecInventorySlot : Slot
 {
     [Header("Specific")]
 
+    
     [SerializeField] bool isBackPack;
 
     [SerializeField] ItemBlueprint.ItemType firstType;
@@ -27,6 +28,8 @@ public class SpecInventorySlot : Slot
 
     public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
 
+    public bool IsBackpack { get { return this.isBackPack; } }
+    //public int Index { get { return this.index; } }
     // budu potrebovat
     public override (Item item, GameObject go) CurrentItem
     {
@@ -69,10 +72,4 @@ public class SpecInventorySlot : Slot
             }
         }
     }
-
-    public void OpenBackPack()
-    {
-
-    }
-
 }
