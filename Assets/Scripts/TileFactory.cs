@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Resources;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
@@ -355,6 +356,18 @@ public class TileFactory : MonoBehaviour
     {
         grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
         UpdateFog();
+    }
+
+    [CanBeNull]
+    public Building BuildingAt(Vector2Int coord)
+    {
+        if (coord.x > columns || coord.x < 0) return null;
+        if (coord.y > rows || coord.y < 0) return null;
+        if (grid[coord.x, coord.y] is Tile t)
+        {
+            return t.building;
+        }
+        return null;
     }
     public bool Buildable(Vector2Int coord)
     {

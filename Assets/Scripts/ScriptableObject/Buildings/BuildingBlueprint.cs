@@ -123,9 +123,14 @@ public class BuildingBlueprint : ScriptableObject
         {
             case "RomeCore":
                 return TypeOfBuilding.Basis;
-            case "Poust":
+            case "RoomExt":
                 return TypeOfBuilding.Extension;
+            case "Poust": //To je co? Nema to jit dopice? Pridal jsem RoomExt, ktery chybel
+                return TypeOfBuilding.Extension;
+            case "RoomImprov":
+                return TypeOfBuilding.Upgrade;
             default:
+                Debug.Log($"neznamy typ, opravte v XML: {data}");
                 return TypeOfBuilding.Upgrade;
         }
     }

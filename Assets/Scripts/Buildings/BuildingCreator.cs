@@ -72,6 +72,30 @@ public class BuildingCreator : MonoBehaviour
                     }
                 }
 
+                //Extensions can be build only next to existing one or base one
+                if (canBuild && selectedBuildingBlueprint.Type == TypeOfBuilding.Extension)
+                {
+                    canBuild = false;
+                    var tag = selectedBuildingBlueprint.Tag;
+                    var vectors = new List<Vector2Int>()
+                        {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
+                    foreach (var item in buildingGrid)
+                    {
+                        foreach (var position in vectors)
+                        {
+                            var building = tileFactory.BuildingAt(item + position);
+                            if (building == null) continue;
+                            if (building.blueprint.Tag == tag)
+                            {
+                                canBuild = true;
+                                break;
+                            }
+                        }
+
+                        if (canBuild) break;
+                    }
+                }
+
                 blueprintOverlayColor.material.color = canBuild ? allowed : forbidden;
                 
                   
@@ -107,6 +131,11 @@ public class BuildingCreator : MonoBehaviour
         selectedBuildingBlueprint = buildingBlueprint;
         scroll = 0f;
         rotation = 0;
+        if (buildingBlueprint.Type == TypeOfBuilding.Upgrade)
+        {
+             Debug.Log($"Upgrady zatim nepodporujeme!");
+             return;
+        }
         blueprint = Instantiate(buildingBlueprint.Prefab);
         blueprintOverlayColor = blueprint.transform.Find("Build_setup").GetComponent<Renderer>();
         var c = selectedBuildingBlueprint.BackgroundColor;
