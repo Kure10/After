@@ -70,21 +70,37 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
 
     public void OnPointerClick(PointerEventData eventData)
     {
-       
+
         bool result = false;
 
-        if (DragAndDropManager.IsDraging)
+        if (eventData.button == PointerEventData.InputButton.Left || eventData.button == PointerEventData.InputButton.Middle)
         {
-            result = DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
-        }
-        else
-        {
-            if (!_disableDrag)
+            if (DragAndDropManager.IsDraging)
             {
-                MakeTransparent(true);
-                DragAndDropManager.Instantion.InitDraging(itemInSlot);
+                result = DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
+            }
+            else
+            {
+                if (!_disableDrag)
+                {
+                    MakeTransparent(true);
+                    DragAndDropManager.Instantion.InitDraging(itemInSlot);
+                }
             }
         }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Item Action if has ofc.
+            if(itemInSlot.item.MySlot is SpecInventorySlot specSlot)
+            {
+                Backpack backpack = itemInSlot.item as Backpack;
+                specSlot.OpenBackPack(backpack.Capacity);
+            }
+
+
+           // itemInSlot.item.MySlot.InvokeAction();
+        }
+          
     }
 
     public void OnPointerEnter(PointerEventData eventData)

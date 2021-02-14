@@ -32,6 +32,8 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] List<SpecInventorySlot> characterSlots = new List<SpecInventorySlot>();
 
     [SerializeField] List<SpecInventorySlot> backPackSlots = new List<SpecInventorySlot>();
+    [Space]
+    [SerializeField] GameObject backPackGameObject;
 
     [SerializeField] List<GameObject> backPackCollums = new List<GameObject>();
 
@@ -176,7 +178,6 @@ public class uWindowSpecialist : MonoBehaviour
             return;
 
         CalcHealtandStamina(_character);
-
     }
 
     public void PopulateItemSlots(Character character)
@@ -212,16 +213,18 @@ public class uWindowSpecialist : MonoBehaviour
     {
         foreach (SpecInventorySlot item in characterSlots)
         {
-            item.AddAction(OpenBackPack, action);
+            item.AddAction(OpenAndCloseBackpack, action);
         }
-
     }
 
-    // todo zavirat taky..
-    public void OpenBackPack(int backPackCapacity)
+    // Open and Close.. backpack
+    public void OpenAndCloseBackpack(int backPackCapacity)
     {
         if (backPackCapacity <= 0)
             return;
+
+        if (backPackGameObject != null)
+            backPackGameObject.SetActive(!backPackGameObject.activeSelf);
 
         var count = backPackCapacity / 2;
 
@@ -245,6 +248,37 @@ public class uWindowSpecialist : MonoBehaviour
         var tmp = this.transform.GetComponentInParent<Transform>();
 
         tmp.SetAsFirstSibling();
+        // reorder.. 
+    }
+
+    public void OpenAndCloseBackpackInventory(int backPackCapacity)
+    {
+        if (backPackCapacity <= 0)
+            return;
+
+        if (backPackGameObject != null)
+            backPackGameObject.SetActive(!backPackGameObject.activeSelf);
+
+        int i = 0;
+        foreach (GameObject collum in backPackCollums)
+        {
+            if(i < backPackCapacity)
+                collum.SetActive(true);
+            else
+                collum.SetActive(false);
+
+            i++;
+        }
+
+        var specController = this.gameObject.GetComponent<uWindowSpecController>();
+        if(specController != null)
+        {
+            specController.RefreshGrid();
+        }
+
+        //var tmp = this.transform.GetComponentInParent<Transform>();
+
+        //tmp.SetAsFirstSibling();
         // reorder.. 
     }
 

@@ -26,6 +26,8 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 
     public bool IsEmpty { get { return isEmpty; } set { isEmpty = value; } }
 
+   // public Action InvokeAction { get { return this.actionButton.onClick.Invoke; } }
+
     public virtual (Item item, GameObject go) CurrentItem 
     {
         get

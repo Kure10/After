@@ -24,6 +24,9 @@ public class SpecInventorySlot : Slot
 
     public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
 
+    // tady pridat akci na open back pack
+    public event Action<int> OnOpenBackPack = delegate { };
+
     public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
 
     public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
@@ -71,5 +74,16 @@ public class SpecInventorySlot : Slot
                 actionButton.onClick.AddListener(delegate { action2(); });
             }
         }
+    }
+
+    public void OpenBackPack(int i)
+    {
+        if(i < 0)
+        {
+
+        }
+
+        Debug.Log("jsem tady");
+        OnOpenBackPack?.Invoke(i);
     }
 }

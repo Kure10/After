@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class uWindowSpecController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class uWindowSpecController : MonoBehaviour
     [SerializeField] private GameObject panelSpecialist;
 
     [Header("Holder")]
-    [SerializeField] private Transform specHolder;
+    [SerializeField] private RectTransform specHolder;
     [SerializeField] private Transform slotHolder;
 
     public Transform GetSlotHolder { get { return slotHolder; } }
@@ -29,6 +30,8 @@ public class uWindowSpecController : MonoBehaviour
         {
             item.RefreshCharacterInfo();
         }
+
+        RefreshGrid();
     }
 
     public void AddSpecHolder(Character character)
@@ -47,13 +50,20 @@ public class uWindowSpecController : MonoBehaviour
 
         var backpackSlots = uWindowSpec.GetCharacterBackpackSlots();
         character.SetCharacterBackPackSlots = backpackSlots;
-        
+
         // todo onitem change  pro backpack
 
         foreach (SpecInventorySlot slot in slots)
         {
             slot.OnItemChangeCallBack += character.OnItemChange;
             DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
+
+            // Todo..
+            if (slot.IsBackpack)
+            {
+                slot.OnOpenBackPack += uWindowSpec.OpenAndCloseBackpackInventory;
+            }
+
         }
     }
 
@@ -64,6 +74,7 @@ public class uWindowSpecController : MonoBehaviour
     // From Editor
     public void Sort(int currentSortCategory)
     {
+        
         switch (currentSortCategory)
         {
             case 0:
@@ -128,6 +139,26 @@ public class uWindowSpecController : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    public void RefreshGrid()
+    {
+        //specHolder  specInGame
+        int sortBy = 1;
+        // lastSortCategory
+        if (lastSortCategory > -1)
+            sortBy = lastSortCategory;
+
+        Sort(sortBy);
+
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
+
+        //foreach (var item in collection)
+        //{
+
+        //}
 
     }
 
