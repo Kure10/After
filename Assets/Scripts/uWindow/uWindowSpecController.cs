@@ -151,7 +151,7 @@ public class uWindowSpecController : MonoBehaviour
             sortBy = lastSortCategory;
 
         Sort(sortBy);
-
+       
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
 

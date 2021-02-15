@@ -150,6 +150,9 @@ public class DragAndDropManager : MonoBehaviour
             _successDrop = ChangeItemSlot(itemSlotDestination, specSlotOrigin2);
         }
 
+        if (!_successDrop)
+            SetDefault();
+
         return _successDrop;
     }
     private bool ChangeItemSlot(ItemSlot itemSlotDestination, SpecInventorySlot specSlotOrigin2)
