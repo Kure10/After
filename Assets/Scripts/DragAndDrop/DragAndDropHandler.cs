@@ -91,10 +91,14 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             // Item Action if has ofc.
-            if(itemInSlot.item.MySlot is SpecInventorySlot specSlot)
+            if (itemInSlot.item.MySlot is SpecInventorySlot specSlot)
             {
-                Backpack backpack = itemInSlot.item as Backpack;
-                specSlot.OpenBackPack(backpack.Capacity);
+                // for backpack
+                if(specSlot.HasSlotThatType(ItemBlueprint.ItemType.BagSpec))
+                {
+                    Backpack backpack = itemInSlot.item as Backpack;
+                    specSlot.OpenBackPack(backpack.Capacity);
+                }
             }
 
 

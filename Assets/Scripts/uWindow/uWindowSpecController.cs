@@ -34,6 +34,29 @@ public class uWindowSpecController : MonoBehaviour
         RefreshGrid();
     }
 
+    private void Start()
+    {
+        RefreshGrid();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            foreach (uWindowSpecialist item in specInGame)
+            {
+                List<SpecInventorySlot> backpack = item.GetCharacterBackpackSlots();
+                foreach (SpecInventorySlot back in backpack)
+                {
+                    if(back.CurrentItem != (null,null))
+                        Debug.Log(back.CurrentItem.item.Name +  "   item name " + " name spec-> " + item.GetName); 
+
+                }
+            }
+
+        }
+    }
+
     public void AddSpecHolder(Character character)
     {
         GameObject ga = Instantiate(panelSpecialist);
@@ -59,9 +82,12 @@ public class uWindowSpecController : MonoBehaviour
             DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
 
             // Todo..
-            if (slot.IsBackpack)
+            if (slot.GetFirstSlotType == ItemBlueprint.ItemType.BagSpec || slot.GetSecondSlotType == ItemBlueprint.ItemType.BagSpec)
             {
-                slot.OnOpenBackPack += uWindowSpec.OpenAndCloseBackpackInventory;
+                slot.OnOpenBackPack += uWindowSpec.OpenBackpackInventory;
+                slot.OnOpenBackPack += RebuildLayout;
+                slot.OnCloseBackPack += uWindowSpec.CloseBackpackInventory;
+                slot.OnCloseBackPack += RebuildLayout;
             }
 
         }
@@ -142,6 +168,16 @@ public class uWindowSpecController : MonoBehaviour
 
     }
 
+    public void RebuildLayout(int i)
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
+    }
+
+    public void RebuildLayout()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
+    }
+
     public void RefreshGrid()
     {
         //specHolder  specInGame
@@ -154,12 +190,6 @@ public class uWindowSpecController : MonoBehaviour
        
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
-
-        //foreach (var item in collection)
-        //{
-
-        //}
-
     }
 
 }

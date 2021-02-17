@@ -251,13 +251,14 @@ public class uWindowSpecialist : MonoBehaviour
         // reorder.. 
     }
 
-    public void OpenAndCloseBackpackInventory(int backPackCapacity)
+    public void OpenBackpackInventory(int backPackCapacity)
     {
+        // todo special case
         if (backPackCapacity <= 0)
             return;
 
         if (backPackGameObject != null)
-            backPackGameObject.SetActive(!backPackGameObject.activeSelf);
+            backPackGameObject.SetActive(true);
 
         int i = 0;
         foreach (GameObject collum in backPackCollums)
@@ -280,6 +281,22 @@ public class uWindowSpecialist : MonoBehaviour
 
         //tmp.SetAsFirstSibling();
         // reorder.. 
+    }
+
+    public void CloseBackpackInventory()
+    {
+        backPackGameObject.SetActive(false);
+
+        foreach (GameObject collum in backPackCollums)
+        {
+            collum.SetActive(false);
+        }
+
+        var specController = this.gameObject.GetComponent<uWindowSpecController>();
+        if (specController != null)
+        {
+            specController.RefreshGrid();
+        }
     }
 
     #endregion

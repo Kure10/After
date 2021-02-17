@@ -22,6 +22,10 @@ public class DragAndDropManager : MonoBehaviour
 
     public event Action<Item> OnItemResponseReaction = delegate { };
 
+    //
+    List<(Item item, GameObject go)> dragingBackpackItems = new List<(Item item, GameObject go)>();
+    //
+
     static public bool IsDraging { get { return _isDraging; } set { _isDraging = value; } }
 
     static public bool IsDraggingProceed { get { return _draggingProceed; } set { _draggingProceed = value; } }
@@ -213,7 +217,7 @@ public class DragAndDropManager : MonoBehaviour
     }
     private bool ChangeItemSlot(SpecInventorySlot specSlotDestination2, Slot itemSlotOrigin2)
     {
-        if (CanBePlacedIntoDestinationSlot(specSlotDestination2))
+        if (ItemCanNotBePlacedIntoDestinationSlot(specSlotDestination2) && specSlotDestination2.IsBackpack == false)
         {
             if(itemSlotOrigin2 is SpecInventorySlot originSlotInventory)
             {
@@ -237,6 +241,25 @@ public class DragAndDropManager : MonoBehaviour
         }
         else
         {
+            bool isBackpackMoving = false;
+            // in progress
+            if (_dragingObject.item is Backpack backpack && itemSlotOrigin2 is SpecInventorySlot originBackpackSlot)
+            {
+                if (_dragingObject.item.MySlot is SpecInventorySlot specInventorySlot)
+                {
+                    List<SpecInventorySlot> charBackpackSlots = specInventorySlot.GetSpecialist.GetCharacterBackpackSlots();
+                    foreach (SpecInventorySlot specSlot in charBackpackSlots)
+                    {
+                        dragingBackpackItems.Add(specSlot.CurrentItem);
+                        specSlot.CurrentItem = (null, null);
+                    }
+                }
+
+                specSlotDestination2.OpenBackPack(backpack.Capacity);
+                originBackpackSlot.CloseBackpack();
+                isBackpackMoving = true;
+            }
+
             if (specSlotDestination2.IsEmpty)
             {
                 // prirad do volne pozice
@@ -248,7 +271,6 @@ public class DragAndDropManager : MonoBehaviour
                 // slot empty no longer draging
                 _draggingProceed = false;
 
-
                 // original pozice
                 _originalSlot = null;
 
@@ -256,6 +278,32 @@ public class DragAndDropManager : MonoBehaviour
                 {
                     itemSlotOrigin2.CurrentItem = (null, null);
                     itemSlotOrigin2.IsEmpty = true;
+                }
+
+                // pokud se jedna o pohyb batahu
+                // premistit itemy z batohu k jinemu charakteru z predesleho mista..
+                if(isBackpackMoving)
+                {
+                   // uWindowSpecialist tmp = dragingSlot.GetSpecialist;
+
+                    List<SpecInventorySlot> destini = specSlotDestination2.GetSpecialist.GetCharacterBackpackSlots();
+
+                    int i = 0;
+
+                    if(dragingBackpackItems != null)
+                    {
+                        foreach (SpecInventorySlot destinySlot in destini)
+                        {
+                            if (dragingBackpackItems[i] != (null, null))
+                            {
+                                dragingBackpackItems[i].go.transform.SetParent(destinySlot.GetItemContainer);
+                                destinySlot.CurrentItem = dragingBackpackItems[i];
+                            }
+                            i++;
+                        }
+                    }
+
+                    dragingBackpackItems.Clear();
                 }
             }
             else
@@ -276,6 +324,9 @@ public class DragAndDropManager : MonoBehaviour
                 _draggingProceed = true;
                 itemSlotOrigin2.CurrentItem = (null, null);
                 itemSlotOrigin2.IsEmpty = true;
+
+                // pokud se jedna o pohyb batohu
+                // vymenit batohy.. i itemy ve vnitř.
             }
         }
 
@@ -322,6 +373,8 @@ public class DragAndDropManager : MonoBehaviour
     }
     private void ReturnToOriginSlot(Slot specSlotOrigin2)
     {
+        if (specSlotOrigin2 == null) return;
+
         _dragingObject.go.transform.SetParent(specSlotOrigin2.GetItemContainer);
         _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
         _dragingObject.item.MySlot = specSlotOrigin2;
@@ -336,8 +389,9 @@ public class DragAndDropManager : MonoBehaviour
         _originalSlot.CurrentItem = _dragingObject;
         _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
     }
-    private bool CanBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
+    private bool ItemCanNotBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
     {
-        return _dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType;
+        bool result = (_dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType);
+        return result;
     }
 }

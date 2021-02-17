@@ -10,8 +10,8 @@ public class SpecInventorySlot : Slot
 {
     [Header("Specific")]
 
-    
-    [SerializeField] bool isBackPack;
+    [SerializeField] private uWindowSpecialist specialist;
+    [SerializeField] private bool isBackPack;
 
     [SerializeField] ItemBlueprint.ItemType firstType;
     [SerializeField] ItemBlueprint.ItemType secondType;
@@ -21,11 +21,16 @@ public class SpecInventorySlot : Slot
 
     [SerializeField] GameObject selectedBackground;
 
+    public uWindowSpecialist GetSpecialist { get { return this.specialist; } }
 
     public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
 
     // tady pridat akci na open back pack
     public event Action<int> OnOpenBackPack = delegate { };
+
+    public event Action OnCloseBackPack = delegate { };
+
+    public event Action<List<int>> dsadas = delegate { };
 
     public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
 
@@ -76,14 +81,26 @@ public class SpecInventorySlot : Slot
         }
     }
 
-    public void OpenBackPack(int i)
+    public void CloseBackpack()
     {
-        if(i < 0)
-        {
+        Debug.Log("Closing Backpack");
+        OnCloseBackPack?.Invoke();
+    }
 
+    public void OpenBackPack(int capacity)
+    {
+        Debug.Log("Opening Backpack");
+        OnOpenBackPack?.Invoke(capacity);
+    }
+
+    public bool HasSlotThatType(ItemBlueprint.ItemType type)
+    {
+        bool result = false;
+        if(type == GetFirstSlotType || type == GetSecondSlotType)
+        {
+            result = true;
         }
 
-        Debug.Log("jsem tady");
-        OnOpenBackPack?.Invoke(i);
+        return result;
     }
 }
