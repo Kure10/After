@@ -87,17 +87,18 @@ public class BuildingCreator : MonoBehaviour
                             if (building == null) continue;
                             if (building.blueprint.Tag == tag)
                             {
-                                canBuild = true;
-                                break;
+                                if (building.State == Building.BuildingState.Build)
+                                {
+                                    canBuild = true;
+                                    break;
+                                }
                             }
                         }
-
                         if (canBuild) break;
                     }
                 }
 
                 blueprintOverlayColor.material.color = canBuild ? allowed : forbidden;
-                
                   
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
@@ -116,7 +117,6 @@ public class BuildingCreator : MonoBehaviour
                         
                     }
 
-                        
                     buildings.Add(newBuild);
                     tileFactory.AddBuilding(buildingGrid, newBuild);
                     EndBuildingMode();
