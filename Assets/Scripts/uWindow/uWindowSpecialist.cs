@@ -276,11 +276,6 @@ public class uWindowSpecialist : MonoBehaviour
         {
             specController.RefreshGrid();
         }
-
-        //var tmp = this.transform.GetComponentInParent<Transform>();
-
-        //tmp.SetAsFirstSibling();
-        // reorder.. 
     }
 
     public void CloseBackpackInventory()

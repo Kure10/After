@@ -10,6 +10,8 @@ public class DragAndDropManager : MonoBehaviour
 
     [SerializeField] Transform dragHolder;
 
+    [SerializeField] Transform dragBackpackHolder;
+
     static private bool _isDraging = false;
 
     static private bool _draggingProceed = false;
@@ -66,8 +68,38 @@ public class DragAndDropManager : MonoBehaviour
         if (rect != null)
             rect.sizeDelta = new Vector2(60, 60);
 
-        OnItemResponseReaction.Invoke(dragingObject.item);
+        if(dragingObject.item.MySlot is SpecInventorySlot specInventorySlot && _dragingObject.item is Backpack backpakc)
+        {
+            specInventorySlot.CloseBackpack();
+            dragingBackpackItems.Clear();
 
+            List<SpecInventorySlot> charBackpackSlots = specInventorySlot.GetSpecialist.GetCharacterBackpackSlots();
+
+            foreach (SpecInventorySlot slot in charBackpackSlots)
+            {
+                // set active false staci...
+                if(slot.CurrentItem != (null, null))
+                    slot.CurrentItem.go.transform.SetParent(dragBackpackHolder);
+
+                dragingBackpackItems.Add(slot.CurrentItem);
+                slot.CurrentItem = (null, null);
+                slot.IsEmpty = true;
+            }
+
+            //if (originBackpackSlot != specSlotDestination2)
+            //{
+            //    originBackpackSlot.CloseBackpack();
+            //}  
+
+            // tmp vypis
+            foreach ((Item item, GameObject go) item in dragingBackpackItems)
+            {
+                if (item != (null, null))
+                    Debug.Log("item: " + item.item.Name);
+            }
+        }
+
+        OnItemResponseReaction.Invoke(dragingObject.item);
     }
 
     public bool IsThisDragingItem((Item item, GameObject go) item)
@@ -176,11 +208,28 @@ public class DragAndDropManager : MonoBehaviour
 
             _originalSlot = null;
             IsDraggingProceed = false;
-            
+
         }
         else
         {
                 SwitchItems(itemSlotDestination, specSlotOrigin2);
+        }
+
+        if (_dragingObject.item is Backpack backpack)
+        {
+            foreach ((Item item, GameObject go) backpackItem in dragingBackpackItems)
+            {
+                if (backpackItem != (null, null))
+                {
+                    ItemSlot emptySlot = inventory.FindEmptySlot();
+                    emptySlot.CurrentItem = backpackItem;
+                    emptySlot.CurrentItem.go.transform.SetParent(emptySlot.GetItemContainer);
+                    backpackItem.item.MySlot = emptySlot;
+                    emptySlot.IsEmpty = false;
+                }
+            }
+
+            dragingBackpackItems.Clear();
         }
 
         return true;
@@ -242,22 +291,20 @@ public class DragAndDropManager : MonoBehaviour
         else
         {
             bool isBackpackMoving = false;
-            // in progress
-            if (_dragingObject.item is Backpack backpack && itemSlotOrigin2 is SpecInventorySlot originBackpackSlot)
-            {
-                if (_dragingObject.item.MySlot is SpecInventorySlot specInventorySlot)
-                {
-                    List<SpecInventorySlot> charBackpackSlots = specInventorySlot.GetSpecialist.GetCharacterBackpackSlots();
-                    foreach (SpecInventorySlot specSlot in charBackpackSlots)
-                    {
-                        dragingBackpackItems.Add(specSlot.CurrentItem);
-                        specSlot.CurrentItem = (null, null);
-                    }
-                }
 
-                specSlotDestination2.OpenBackPack(backpack.Capacity);
-                originBackpackSlot.CloseBackpack();
+            // in progress
+            if (_dragingObject.item is Backpack backpack)
+            {
                 isBackpackMoving = true;
+                specSlotDestination2.OpenBackPack(backpack.Capacity);
+
+                //if (itemSlotOrigin2 is SpecInventorySlot originBackpackSlot)
+                //{
+                //    if(originBackpackSlot != specSlotDestination2)
+                //    {
+                //        originBackpackSlot.CloseBackpack();
+                //    }
+                //}
             }
 
             if (specSlotDestination2.IsEmpty)
@@ -267,7 +314,7 @@ public class DragAndDropManager : MonoBehaviour
                 _dragingObject.item.MySlot = specSlotDestination2;
                 specSlotDestination2.CurrentItem = _dragingObject;
                 specSlotDestination2.IsEmpty = false;
-               
+
                 // slot empty no longer draging
                 _draggingProceed = false;
 
@@ -282,27 +329,35 @@ public class DragAndDropManager : MonoBehaviour
 
                 // pokud se jedna o pohyb batahu
                 // premistit itemy z batohu k jinemu charakteru z predesleho mista..
-                if(isBackpackMoving)
+                if (isBackpackMoving)
                 {
-                   // uWindowSpecialist tmp = dragingSlot.GetSpecialist;
+                    List<SpecInventorySlot> destinySlots = specSlotDestination2.GetSpecialist.GetCharacterBackpackSlots();
 
-                    List<SpecInventorySlot> destini = specSlotDestination2.GetSpecialist.GetCharacterBackpackSlots();
+                    //List<(Item item, GameObject go)> TempBackpackItems = new List<(Item item, GameObject go)>();
+                    //foreach (SpecInventorySlot destinySlot in destinySlots)
+                    //{
+                    //    if (destinySlot.CurrentItem != (null, null))
+                    //        destinySlot.CurrentItem.go.transform.SetParent(dragBackpackHolder);
+
+                    //    TempBackpackItems.Add(destinySlot.CurrentItem);
+                    //    destinySlot.CurrentItem = (null, null);
+                    //}
 
                     int i = 0;
-
-                    if(dragingBackpackItems != null)
+                    if (dragingBackpackItems != null && dragingBackpackItems.Count > 0)
                     {
-                        foreach (SpecInventorySlot destinySlot in destini)
+                        foreach (SpecInventorySlot destinySlot in destinySlots)
                         {
                             if (dragingBackpackItems[i] != (null, null))
                             {
                                 dragingBackpackItems[i].go.transform.SetParent(destinySlot.GetItemContainer);
                                 destinySlot.CurrentItem = dragingBackpackItems[i];
+
+                                destinySlot.CurrentItem.item.MySlot = destinySlot;
                             }
                             i++;
                         }
                     }
-
                     dragingBackpackItems.Clear();
                 }
             }
@@ -326,6 +381,41 @@ public class DragAndDropManager : MonoBehaviour
                 itemSlotOrigin2.IsEmpty = true;
 
                 // pokud se jedna o pohyb batohu
+                if(isBackpackMoving && itemFromDestinySlot.item is Backpack backpackPrevious)
+                {
+                    // v dragu mam origin backpakc. Ten si preuložím do tmpListu a pak vymažu dragList backpack
+                    List<(Item item, GameObject go)> tmpBackpackItems = new List<(Item item, GameObject go)>();
+                    foreach (var item in dragingBackpackItems)
+                    {
+                        tmpBackpackItems.Add(item);
+                    }
+                    dragingBackpackItems.Clear();
+
+                    // uložím si destination backpack do DragListu budu potrebovat.
+                    List<SpecInventorySlot> destinyBackpackSlots = specSlotDestination2.GetSpecialist.GetCharacterBackpackSlots();
+                    foreach (SpecInventorySlot destinySlot in destinyBackpackSlots)
+                    {
+                        dragingBackpackItems.Add(destinySlot.CurrentItem);
+                    }
+
+                    // vložím do destination backpacku itemy z tmpListu což je origin backPack
+                    int i = 0;
+                    foreach (SpecInventorySlot destinyBackpackSlot in destinyBackpackSlots)
+                    {
+                        
+                        if (tmpBackpackItems[i] != (null, null))
+                        {
+                            tmpBackpackItems[i].go.transform.SetParent(destinyBackpackSlot.GetItemContainer);
+                            destinyBackpackSlot.CurrentItem = tmpBackpackItems[i];
+                        }
+                        i++;
+                    }
+
+                    tmpBackpackItems.Clear();
+
+                }
+
+                    
                 // vymenit batohy.. i itemy ve vnitř.
             }
         }
@@ -380,6 +470,28 @@ public class DragAndDropManager : MonoBehaviour
         _dragingObject.item.MySlot = specSlotOrigin2;
         specSlotOrigin2.IsEmpty = false;
         specSlotOrigin2.CurrentItem = _dragingObject;
+
+        if (specSlotOrigin2 is SpecInventorySlot inventorySlot && _dragingObject.item is Backpack backpack)
+        {
+            List<SpecInventorySlot> charBackpackSlots = inventorySlot.GetSpecialist.GetCharacterBackpackSlots();
+
+            int i = 0;
+            foreach (SpecInventorySlot slot in charBackpackSlots)
+            {
+                slot.CurrentItem = dragingBackpackItems[i];
+
+                if (dragingBackpackItems[i] != (null, null))
+                {
+                    dragingBackpackItems[i].go.transform.SetParent(slot.GetItemContainer);
+                    slot.IsEmpty = false;
+                }
+              
+                i++;
+            }
+            dragingBackpackItems.Clear();
+
+            inventorySlot.OpenBackPack(backpack.Capacity);
+        }
     }
 
     private void ReturnToOriginSlot()
@@ -388,6 +500,29 @@ public class DragAndDropManager : MonoBehaviour
         _dragingObject.item.MySlot = _originalSlot;
         _originalSlot.CurrentItem = _dragingObject;
         _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+
+        if (_originalSlot is SpecInventorySlot inventorySlot && _dragingObject.item is Backpack backpack)
+        {
+            List<SpecInventorySlot> charBackpackSlots = inventorySlot.GetSpecialist.GetCharacterBackpackSlots();
+
+            int i = 0;
+            foreach (SpecInventorySlot slot in charBackpackSlots)
+            {
+                slot.CurrentItem = dragingBackpackItems[i];
+
+                if (dragingBackpackItems[i] != (null, null))
+                {
+                    dragingBackpackItems[i].go.transform.SetParent(slot.GetItemContainer);
+                    slot.IsEmpty = false;
+                }
+
+                i++;
+            }
+            dragingBackpackItems.Clear();
+
+            inventorySlot.OpenBackPack(backpack.Capacity);
+        }
+
     }
     private bool ItemCanNotBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
     {
