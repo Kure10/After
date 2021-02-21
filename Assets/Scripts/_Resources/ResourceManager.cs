@@ -533,6 +533,19 @@ public class ResourceManager : MonoBehaviour
                 resourceAmount.Technical = 0;
             }
         }
+        if (amount.Fuel> 0)
+        {
+            if (resourceAmount.Fuel > amount.Fuel)
+            {
+                removed.Fuel = amount.Fuel;
+                resourceAmount.Fuel -= amount.Fuel;
+            }
+            else
+            {
+                removed.Fuel = resourceAmount.Fuel;
+                resourceAmount.Fuel = 0;
+            }
+        }
 
         return removed;
     }
