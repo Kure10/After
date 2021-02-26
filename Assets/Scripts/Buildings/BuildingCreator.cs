@@ -128,6 +128,10 @@ public class BuildingCreator : MonoBehaviour
     public void CreateBuilding(BuildingBlueprint buildingBlueprint)
     {
         CameraMovement.ZoomByScrollEnabled(false);
+        if (blueprint != null)
+        {
+            Object.Destroy(blueprint);
+        }
         selectedBuildingBlueprint = buildingBlueprint;
         scroll = 0f;
         rotation = 0;
