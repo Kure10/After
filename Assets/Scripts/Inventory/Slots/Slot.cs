@@ -60,7 +60,10 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
         if (result)
             _currentItem.item.GetDragAndDropHandler.OnEndDrag();
         else
+        {
             DragAndDropManager.Instantion.SetDefault();
+        }
+            
     }
 
     public void OnDrop(PointerEventData eventData)

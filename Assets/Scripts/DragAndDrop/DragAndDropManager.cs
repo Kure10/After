@@ -134,6 +134,11 @@ public class DragAndDropManager : MonoBehaviour
 
     public void SetDefault()
     {
+        if (_dragingObject.item is Backpack back && _draggingProceed)
+        {
+            ReturnToOriginSlot();
+        }
+
         _isDraging = false;
         _draggingProceed = false;
 
@@ -171,14 +176,14 @@ public class DragAndDropManager : MonoBehaviour
         if (destination is SpecInventorySlot specSlotDestination && _originalSlot is SpecInventorySlot specSlotOrigin)
         {
             if (_dragingObject.item is Backpack && specSlotDestination.IsBackpack)
-                return _successDrop;
+                return false;
 
             _successDrop = ChangeItemSlot(specSlotDestination, specSlotOrigin);
         }
         else if (destination is SpecInventorySlot specSlotDestination2 && _originalSlot is ItemSlot itemSlotOrigin2)
         {
             if (_dragingObject.item is Backpack && specSlotDestination2.IsBackpack)
-                return _successDrop;
+                return false;
 
             _successDrop = ChangeItemSlot(specSlotDestination2, itemSlotOrigin2);
         }
@@ -367,17 +372,8 @@ public class DragAndDropManager : MonoBehaviour
                 itemSlotOrigin2.IsEmpty = true;
 
                 // pokud se jedna o pohyb batohu
-                if(isBackpackMoving && itemFromDestinySlot.item is Backpack backpackPrevious)
+                if (isBackpackMoving && itemFromDestinySlot.item is Backpack backpackPrevious)
                 {
-                    //List<SpecInventorySlot> destinyBackpackSlots = specSlotDestination2.GetSpecialist.GetCharacterBackpackSlots();
-
-                    //List<(Item item, GameObject go)> tmpItems = new List<(Item item, GameObject go)>();
-
-                    //foreach (SpecInventorySlot destinySlot in destinyBackpackSlots)
-                    //{
-                    //    tmpItems.Add(destinySlot.CurrentItem);
-                    //}
-
                     // v dragu mam origin backpakc. Ten si preuložím do tmpListu a pak vymažu dragList backpack
                     List<(Item item, GameObject go)> tmpBackpackItems = new List<(Item item, GameObject go)>();
                     foreach (var item in dragingBackpackItems)
@@ -404,6 +400,9 @@ public class DragAndDropManager : MonoBehaviour
                     int i = 0;
                     foreach (SpecInventorySlot destinyBackpackSlot in destinyBackpackSlots)
                     {
+                        if (tmpBackpackItems.Count <= 0)
+                            break;
+
                         if (tmpBackpackItems[i] != (null, null))
                         {
                             tmpBackpackItems[i].go.transform.SetParent(destinyBackpackSlot.GetItemContainer);
@@ -503,6 +502,7 @@ public class DragAndDropManager : MonoBehaviour
         _dragingObject.item.MySlot = _originalSlot;
         _originalSlot.CurrentItem = _dragingObject;
         _dragingObject.item.GetDragAndDropHandler.MakeTransparent(false);
+        _originalSlot.IsEmpty = false;
 
         if (_originalSlot is SpecInventorySlot inventorySlot && _dragingObject.item is Backpack backpack)
         {
@@ -511,6 +511,12 @@ public class DragAndDropManager : MonoBehaviour
             int i = 0;
             foreach (SpecInventorySlot slot in charBackpackSlots)
             {
+                if (dragingBackpackItems.Count < 1)
+                    break;
+
+                if (i >= dragingBackpackItems.Count)
+                    continue;
+
                 slot.CurrentItem = dragingBackpackItems[i];
 
                 if (dragingBackpackItems[i] != (null, null))

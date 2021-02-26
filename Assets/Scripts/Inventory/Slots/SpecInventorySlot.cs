@@ -83,13 +83,13 @@ public class SpecInventorySlot : Slot
 
     public void CloseBackpack()
     {
-        Debug.Log("Closing Backpack");
+       // Debug.Log("Closing Backpack");
         OnCloseBackPack?.Invoke();
     }
 
     public void OpenBackPack(int capacity)
     {
-        Debug.Log("Opening Backpack");
+       // Debug.Log("Opening Backpack");
         OnOpenBackPack?.Invoke(capacity);
     }
 
