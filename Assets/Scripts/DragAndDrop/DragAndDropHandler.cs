@@ -45,21 +45,16 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
         {
             MakeTransparent(false);
 
-            //if (DragAndDropManager.Instantion.IsThisDragingItem(itemInSlot))
-                
-            //else
-            //    MakeTransparent(false);
-           
             if(DragAndDropManager.IsDraggingProceed)
             {
                 DragAndDropManager.IsDraging = true;
-                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+                DragAndDropManager.Instantion.WasSuccessfullyDroped();
             }
             else
             {
                 DragAndDropManager.IsDraging = false;
 
-                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+                DragAndDropManager.Instantion.WasSuccessfullyDroped();
 
                 DragAndDropManager.Instantion.SetDefault();
             }
@@ -100,9 +95,6 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
                     specSlot.OpenBackPack(backpack.Capacity);
                 }
             }
-
-
-           // itemInSlot.item.MySlot.InvokeAction();
         }
           
     }
@@ -148,13 +140,13 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
             if (DragAndDropManager.IsDraggingProceed)
             {
                 DragAndDropManager.IsDraging = true;
-                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+                DragAndDropManager.Instantion.WasSuccessfullyDroped();
             }
             else
             {
                 DragAndDropManager.IsDraging = false;
 
-                DragAndDropManager.Instantion.wasSuccessfullyDroped();
+                DragAndDropManager.Instantion.WasSuccessfullyDroped();
 
                 DragAndDropManager.Instantion.SetDefault();
             }
