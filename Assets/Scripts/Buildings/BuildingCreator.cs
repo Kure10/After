@@ -21,6 +21,7 @@ public class BuildingCreator : MonoBehaviour
     [SerializeField] PanelTime time;
 
     private List<IWorkSource> buildings;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,17 +32,17 @@ public class BuildingCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        buildings?.ForEach(b=>b.Update());
-        
+        buildings?.ForEach(b => b.Update());
+
 
         if (blueprint != null)
         {
- 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
                 EndBuildingMode();
                 return;
             }
+
             scroll += Input.mouseScrollDelta.y;
 
             if (Mathf.Abs(scroll) >= 0.1f)
@@ -52,6 +53,7 @@ public class BuildingCreator : MonoBehaviour
                 scroll = 0;
                 blueprint.transform.Rotate(new Vector3(0, 90 * direction));
             }
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100f, TILE))
@@ -72,11 +74,11 @@ public class BuildingCreator : MonoBehaviour
                     }
                 }
 
+                var selectedTag = selectedBuildingBlueprint.Tag;
                 //Extensions can be build only next to existing one or base one
-                if (canBuild && selectedBuildingBlueprint.Type == TypeOfBuilding.Extension)
+                if (selectedBuildingBlueprint.Type == TypeOfBuilding.Extension && canBuild)
                 {
                     canBuild = false;
-                    var tag = selectedBuildingBlueprint.Tag;
                     var vectors = new List<Vector2Int>()
                         {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right};
                     foreach (var item in buildingGrid)
@@ -85,7 +87,7 @@ public class BuildingCreator : MonoBehaviour
                         {
                             var building = tileFactory.BuildingAt(item + position);
                             if (building == null) continue;
-                            if (building.blueprint.Tag == tag)
+                            if (building.blueprint.Tag == selectedTag)
                             {
                                 if (building.State == Building.BuildingState.Build)
                                 {
@@ -94,27 +96,53 @@ public class BuildingCreator : MonoBehaviour
                                 }
                             }
                         }
+
                         if (canBuild) break;
+                    }
+                }
+                if (selectedBuildingBlueprint.Type == TypeOfBuilding.Upgrade)
+                {
+                    canBuild = true;
+                    foreach (var item in buildingGrid)
+                    {
+                        var building = tileFactory.BuildingAt(item);
+                        if (building == null)
+                        {
+                            canBuild = false;
+                            break;
+                        }
+
+                        if (building.blueprint.Tag != selectedTag ||
+                            building.blueprint.Type != TypeOfBuilding.Extension)
+                        {
+                            canBuild = false;
+                            break;
+                        }
+
+                        if (building.State != Building.BuildingState.Build)
+                        {
+                            canBuild = false;
+                            break;
+                        }
                     }
                 }
 
                 blueprintOverlayColor.material.color = canBuild ? allowed : forbidden;
-                  
+
                 if (Input.GetMouseButtonDown(0) && canBuild)
                 {
                     float upDiff = 0.04f;
-                    
-                    blueprint.transform.position += new Vector3(0, upDiff, 0); 
+
+                    blueprint.transform.position += new Vector3(0, upDiff, 0);
                     //TODO create proper Factory for this
                     Building newBuild;
                     if (selectedBuildingBlueprint.Name == "Skladiště")
                     {
-                        newBuild = new Warehouse(selectedBuildingBlueprint, blueprint );
+                        newBuild = new Warehouse(selectedBuildingBlueprint, blueprint);
                     }
                     else
                     {
-                        newBuild = new Building(selectedBuildingBlueprint, blueprint );
-                        
+                        newBuild = new Building(selectedBuildingBlueprint, blueprint);
                     }
 
                     buildings.Add(newBuild);
@@ -132,19 +160,21 @@ public class BuildingCreator : MonoBehaviour
         {
             Object.Destroy(blueprint);
         }
+
         selectedBuildingBlueprint = buildingBlueprint;
         scroll = 0f;
         rotation = 0;
         if (buildingBlueprint.Type == TypeOfBuilding.Upgrade)
         {
-             Debug.Log($"Upgrady zatim nepodporujeme!");
-             return;
+            Debug.Log($"Upgrade");
         }
+
         blueprint = Instantiate(buildingBlueprint.Prefab);
         blueprintOverlayColor = blueprint.transform.Find("Build_setup").GetComponent<Renderer>();
         var c = selectedBuildingBlueprint.BackgroundColor;
         allowed = new Color(c.r, c.g, c.b, overlayAlpha);
     }
+
     private void EndBuildingMode()
     {
         CameraMovement.ZoomByScrollEnabled(true);
@@ -153,6 +183,7 @@ public class BuildingCreator : MonoBehaviour
         selectedBuildingBlueprint = null;
         time.UnpauseGame(fromPopup: true);
     }
+
     private List<Vector2Int> getGridForBuilding(Vector2Int coord)
     {
         int xx, yy;
@@ -179,14 +210,28 @@ public class BuildingCreator : MonoBehaviour
 
                 switch (rotation)
                 {
-                    case 0: xx = coord.x + x; yy = coord.y + y; break;
-                    case 1: xx = coord.x + y; yy = coord.y - x; break;
-                    case 2: xx = coord.x - x; yy = coord.y - y; break;
-                    default: xx = coord.x - y; yy = coord.y + x; break; 
+                    case 0:
+                        xx = coord.x + x;
+                        yy = coord.y + y;
+                        break;
+                    case 1:
+                        xx = coord.x + y;
+                        yy = coord.y - x;
+                        break;
+                    case 2:
+                        xx = coord.x - x;
+                        yy = coord.y - y;
+                        break;
+                    default:
+                        xx = coord.x - y;
+                        yy = coord.y + x;
+                        break;
                 }
+
                 grid.Add(new Vector2Int(xx, yy));
             }
         }
+
         return grid;
     }
 }
