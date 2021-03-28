@@ -6,6 +6,8 @@ public class BattleController : MonoBehaviour
 {
     public List<GameObject> rows = new List<GameObject>();
 
+    public List<Squar> squars = new List<Squar>();
+
     [Space]
     public int collumCount = 16;
 
@@ -28,10 +30,17 @@ public class BattleController : MonoBehaviour
                 GameObject squarGameObject = Instantiate(squarTemplate, row.transform);
                 Squar squar = squarGameObject.GetComponent<Squar>();
                 squar.SetCoordinates(i,j);
+
+                squars.Add(squar);
             }
             j++;
         }
 
+    }
+
+    public void InitBattle(BattleStartData data)
+    {
+        
     }
 
 }
