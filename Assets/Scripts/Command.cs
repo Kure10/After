@@ -216,7 +216,7 @@ public class Build : Command
 
     public float GetBuildPoints(int techLevel)
     {
-        var ret = (accumulatedTime / 10f + techLevel) * 10f;
+        var ret = (accumulatedTime / 10f + (techLevel + 1)) * 10f;
         accumulatedTime = 0;
         return ret;
     }

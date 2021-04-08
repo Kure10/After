@@ -67,6 +67,7 @@ public class SelectionManager : MonoBehaviour, IWorkSource
                         var pofx = hitObject.gameObject.transform.Find("recon").GetComponent<POFX>();
                         POFX_Outline outline = pofx.GetLayer(0) as POFX_Outline;
                         outline.m_cParams.intensity = 1f;
+                        outline.m_cParams.color = blueprint.GetColor();
                     }
                 }
                 else
