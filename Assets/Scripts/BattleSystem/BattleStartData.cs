@@ -16,9 +16,9 @@ public class BattleStartData
 
     // Players In battle
 
-    public BattlePlayerStartData playerData;
+    public BattlePlayerStartData playerData = new BattlePlayerStartData();
 
-    public BattleAIStartData aiData;
+    public BattleAIStartData aiData = new BattleAIStartData();
 
     // BattleField data
 
@@ -31,12 +31,12 @@ public class BattleStartData
 public class BattlePlayerStartData
 {
 
-    public List<Unit> playerUnits = new List<Unit>();
+    public List<DataUnit> playerUnits = new List<DataUnit>();
 }
 
 public class BattleAIStartData
 {
-   public List<Unit> enemieUnits = new List<Unit>();
+   public List<DataUnit> enemieUnits = new List<DataUnit>();
 
 
 }
