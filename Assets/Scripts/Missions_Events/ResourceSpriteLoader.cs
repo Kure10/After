@@ -26,6 +26,9 @@ public class ResourceSpriteLoader : MonoBehaviour
     private List<Sprite> regionResources = new List<Sprite>();
 
     [SerializeField]
+    private List<Sprite> unitResources = new List<Sprite>();
+
+    [SerializeField]
     private List<Sprite> itemResources = new List<Sprite>();
 
     [SerializeField]
@@ -86,6 +89,11 @@ public class ResourceSpriteLoader : MonoBehaviour
     public Sprite LoadRegionSprite(string resourceName)
     {
         return this.regionResources.Find(sprite => sprite.name == resourceName);
+    }
+
+    public Sprite LoadUnitSprite(string resourceName)
+    {
+        return this.unitResources.Find(sprite => sprite.name == resourceName);
     }
 
     public Sprite LoadEventSprite(string resourceName)

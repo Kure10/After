@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System;
 
 [System.Serializable]
-public class MyIntEvent : UnityEvent<Squar>
+public class CursorColorEvent : UnityEvent<Squar>
 {
-    public bool isInRange = false;
-
-    public bool isTesting2 = false;
+    public bool isInMoveRange = false;
+    public bool canAttack = false;
 }
 
 public class Squar : MonoBehaviour
@@ -21,17 +21,27 @@ public class Squar : MonoBehaviour
     [SerializeField] public GameObject container;
 
     [SerializeField] public GameObject inRangeBackground;
-    [SerializeField] public GameObject inAttackRangeBackground;
+    [SerializeField] public GameObject canAttackMark;
+
+    [Header("Attack Range Borders")]
+    [SerializeField] public GameObject leftBorder;
+    [SerializeField] public GameObject rightBorder;
+    [SerializeField] public GameObject upBorder;
+    [SerializeField] public GameObject downBorder;
+
+    [Space]
 
     public Unit unitInSquar;
 
     public bool isVisited = false;
+    public bool isInReach = false;
 
-    public MyIntEvent  m_MyEvent;
+    public CursorColorEvent CursorEvent;
 
-
-    // todo mrkni se jak to funguje..
-    public Action<int> asdasd;
+    [Header("Color for Curzor")]
+    public Color isInMoveRangeColor;
+    public Color isOutOfMoveRangeColor;
+    public Color canAttackColor;
 
     public void SetCoordinates(int x, int y)
     {
@@ -43,39 +53,51 @@ public class Squar : MonoBehaviour
 
     // Events actions
 
-    public void ShowCircle ()
-    {
-        inAttackRangeBackground.SetActive(true);
-    }
     public void InitEvent(UnityAction<Squar> call)
     {
-        if (m_MyEvent == null)
-            m_MyEvent = new MyIntEvent();
+        if (CursorEvent == null)
+            CursorEvent = new CursorColorEvent();
 
-        m_MyEvent.AddListener(call);
+        CursorEvent.AddListener(call);
     }
 
-    public void IneitEvent(UnityAction<Squar> call)
+    public void DisableAttackBorders()
     {
-        if (m_MyEvent == null)
-            m_MyEvent = new MyIntEvent();
-
-        m_MyEvent.AddListener(call);
+        leftBorder.SetActive(false);
+        rightBorder.SetActive(false);
+        upBorder.SetActive(false);
+        downBorder.SetActive(false);
     }
 
     public void OnPointerEnter()
     {
-        m_MyEvent.Invoke(this);
+        CursorEvent.Invoke(this);
+        var cursor = canAttackMark.GetComponent<Image>();
 
+        if (cursor == null)
+            return;
+
+
+        if (CursorEvent.isInMoveRange)
+        {
+            cursor.color = isInMoveRangeColor;
+        }
+        else
+        {
+            cursor.color = isOutOfMoveRangeColor;
+        }
+
+        if (CursorEvent.canAttack)
+        {
+            cursor.color = canAttackColor;
+        }
         
-        var tmp = m_MyEvent.isInRange;
-        var tmp2 = m_MyEvent.isTesting2;
-        // inAttackRangeBackground.SetActive(true);
+        canAttackMark.SetActive(true);
     }
 
     public void OnPointerExit ()
     {
-        inAttackRangeBackground.SetActive(false);
+        canAttackMark.SetActive(false);
     }
 
 

@@ -7,6 +7,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public Animator animator;
+    public UnitWindow _unitWindow;
 
     public struct PositionSquar
     {
@@ -15,24 +16,28 @@ public class Unit : MonoBehaviour
     }
 
     public int _id = 0;
-    public string imageName = "Defaul";
+    public string _imageName = "Defaul";
 
     public PositionSquar CurrentPos;
     //
 
     public string _name = "Zombie";
-    public int _health = 5;
+    public int _maxHealth = 5;
     public int _damage = 0;
     public int _threat = 0;
     public int _range = 0;
 
     public int _movement = 1;
 
+    public int _iniciation = 0;
+
+    public Unit.Team _team = Team.Human;
+
     [SerializeField] private GameObject activePanel;
 
     private bool _isActive;
 
-
+    private int _currentHealth = 1;
 
     public bool IsActive
     { 
@@ -44,15 +49,33 @@ public class Unit : MonoBehaviour
         } 
     }
 
-    // special abilities 
+    public int CurrentHealth
+    {
+        get { return this._currentHealth; }
+        set
+        {
+            _currentHealth = value;
+
+            if(_currentHealth < 0)
+            {
+                _currentHealth = 0;
+            }
+            else if (_currentHealth > _maxHealth)
+            {
+                _currentHealth = _maxHealth;
+            }
+
+            _unitWindow.UpdateHealthBar(_currentHealth,_maxHealth);
+        }
+    }
 
 
-    private int currentHealth = 1;
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, PositionSquar startPosition, int id, int movement)
+
+    public void InitUnit(string name, int health, int dmg , int threat , int range, PositionSquar startPosition, int id, int movement, string imageName, Team tea)
     {
         _name = name;
-        _health = health;
+        _maxHealth = health;
         _damage = dmg;
         _threat = threat;
         _range = range;
@@ -62,13 +85,26 @@ public class Unit : MonoBehaviour
         CurrentPos.XPosition = startPosition.XPosition;
         CurrentPos.YPosition = startPosition.YPosition;
 
+        _imageName = imageName;
         _id = id;
+
+        _iniciation = CalculateIniciation();
+
+        _team = tea;
+
+        if (_unitWindow == null)
+        {
+            _unitWindow = GetComponent<UnitWindow>();
+        }
+
+        _unitWindow.UpdateStats(this);
+        _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
     public void InitUnit(Unit unit)
     {
         _name = unit.name;
-        _health = unit._health;
+        _maxHealth = unit._maxHealth;
         _damage = unit._damage;
         _threat = unit._threat;
         _range = unit._range;
@@ -76,7 +112,38 @@ public class Unit : MonoBehaviour
         CurrentPos.XPosition = unit.CurrentPos.XPosition;
         CurrentPos.YPosition = unit.CurrentPos.YPosition;
 
+        _imageName = unit._imageName;
         _id = unit._id;
+
+        _iniciation = CalculateIniciation();
+
+        _team = unit._team;
+
+        if (_unitWindow == null)
+        {
+            _unitWindow = GetComponent<UnitWindow>();
+        }
+
+        _unitWindow.UpdateStats(this);
+        _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
+    }
+
+
+    public int CalculateIniciation ()
+    {
+        int result = 0;
+ 
+        for (int i = 0; i < _threat; i++)
+        {
+            int number = Random.Range(1, 7);
+
+            if(number == 6)
+                i--;
+            
+            result += number;
+        }
+
+        return result;
     }
 
     public void SetNewCurrentPosition(int posX , int posY)
@@ -91,6 +158,14 @@ public class Unit : MonoBehaviour
         animator.SetBool("Active", _isActive);
     }
 
+    // enums
+
+    public enum Team
+    {
+        Human,
+        Demon,
+        Neutral,
+    }
 
 }
 
@@ -98,12 +173,6 @@ public class Unit : MonoBehaviour
 
 public class DataUnit 
 {
-    //public struct PositionSquar
-    //{
-    //    public int XPosition;
-    //    public int YPosition;
-    //}
-
     public string imageName = "Defaul";
 
     public Unit.PositionSquar StartPos;
