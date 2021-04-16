@@ -72,26 +72,27 @@ public class Squar : MonoBehaviour
     public void OnPointerEnter()
     {
         CursorEvent.Invoke(this);
-        var cursor = canAttackMark.GetComponent<Image>();
+        var cursorImg = canAttackMark.GetComponent<Image>();
 
-        if (cursor == null)
+        if (cursorImg == null)
             return;
-
-
-        if (CursorEvent.isInMoveRange)
-        {
-            cursor.color = isInMoveRangeColor;
-        }
-        else
-        {
-            cursor.color = isOutOfMoveRangeColor;
-        }
 
         if (CursorEvent.canAttack)
         {
-            cursor.color = canAttackColor;
+            cursorImg.color = canAttackColor;
         }
-        
+        else
+        {
+            if (CursorEvent.isInMoveRange)
+            {
+                cursorImg.color = isInMoveRangeColor;
+            }
+            else
+            {
+                cursorImg.color = isOutOfMoveRangeColor;
+            }
+        }
+
         canAttackMark.SetActive(true);
     }
 

@@ -7,23 +7,28 @@ using UnityEngine.Events;
 
 public class BattleController : MonoBehaviour
 {
-    BattleStartData battleData = new BattleStartData();
+    private BattleStartData battleData = new BattleStartData();
 
+    [Header("Info Panels")]
     [SerializeField] private BattleInfoPanel battleInfoPanel;
+    [SerializeField] private UnitInfoPanel leftUnitInfo;
+    [SerializeField] private UnitInfoPanel rightUnitInfo;
 
-    public List<GameObject> rows = new List<GameObject>();
+    [Header("Dimensions")]
+    [SerializeField] List<GameObject> rows = new List<GameObject>();
+    [Space]
+    [SerializeField] int collumCount = 16;
 
-   // public List<Squar> squars = new List<Squar>();
-
-    public Squar[,] squaresInBattleField; 
+    [Space]
+    [Header("Others")]
+    private Squar[,] _squaresInBattleField; 
 
     public List<Unit> unitsOnBattleField = new List<Unit>();
 
     [Space]
     public GameObject _unit;
 
-    [Space]
-    public int collumCount = 16;
+
 
     public GameObject squarTemplate;
 
@@ -99,7 +104,7 @@ public class BattleController : MonoBehaviour
                 
                 FindSquaresInUnitAttackRange();
 
-
+                leftUnitInfo.UpdateStats(_activeUnit);
 
 
                 // so on
@@ -132,7 +137,7 @@ public class BattleController : MonoBehaviour
     public void CreateBattleField()
     {
 
-        squaresInBattleField = new Squar[rows.Count, collumCount];
+        _squaresInBattleField = new Squar[rows.Count, collumCount];
 
         int j = 0;
         foreach (GameObject row in rows)
@@ -143,7 +148,7 @@ public class BattleController : MonoBehaviour
                 Squar square = squarGameObject.GetComponent<Squar>();
                 square.SetCoordinates(j, i);
                 
-                squaresInBattleField[j, i] = square;
+                _squaresInBattleField[j, i] = square;
 
                 square.InitEvent(delegate (Squar squ) 
                 {
@@ -224,8 +229,8 @@ public class BattleController : MonoBehaviour
         DataUnit newx = new DataUnit();
         DataUnit newy = new DataUnit();
         // newA
-        newA.StartPos.XPosition = 7;
-        newA.StartPos.YPosition = 15;
+        newA.StartPos.XPosition = 6;
+        newA.StartPos.YPosition = 13;
         newA._name = "Player1";
         newA.imageName = "Gargoyle";
         newA.health = 7;
@@ -296,6 +301,8 @@ public class BattleController : MonoBehaviour
 
             // testing fire range
             FindSquaresInUnitAttackRange();
+
+            leftUnitInfo.UpdateStats(_activeUnit);
         }
         else
         {
@@ -335,16 +342,33 @@ public class BattleController : MonoBehaviour
             int xCor = Random.Range(0, rowsCount);
             int yCor = Random.Range(0, collumCount);
 
-            if (squaresInBattleField[xCor, yCor].unitInSquar == null)
+            if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
             {
-                return squaresInBattleField[xCor, yCor];
+                return _squaresInBattleField[xCor, yCor];
             }
         }
     }
 
-    // Buttons
+
     private bool OnMoveUnit(Squar squarToMove)
     {
+        // Tady budu vybirat akci ,  Utok , Move , Heal  : napr
+
+        /*
+         
+         pokud sq != null
+        a zaroven is enemy unit a zaroven je v attackRange
+        UTOK
+
+
+        pokud sq neni null a zaroven friendly unit or selected unit
+        neco -->
+
+        pokud SQ is emty tak a zaroven je v moveRange .. 
+        MOVE
+
+         */
+
         bool canMove = false;
 
         if (squarToMove.unitInSquar != null)
@@ -398,7 +422,7 @@ public class BattleController : MonoBehaviour
         _squaresInUnitRange.Clear();
 
         int moveRange = _activeUnit._movement;
-        Squar centerSquar = squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
 
         _squaresInUnitRange.AddRange(GetTheAdjacentSquare(centerSquar));
 
@@ -442,7 +466,7 @@ public class BattleController : MonoBehaviour
         _squaresInUnitAttackRange.Clear();
 
         int attackRange = _activeUnit._range;
-        Squar centerSquar = squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
 
         _squaresInUnitAttackRange.AddRange(GetTheAdjacentAttackSquare(centerSquar));
 
@@ -660,7 +684,7 @@ public class BattleController : MonoBehaviour
 
     private Squar GetSquareFromGrid(int x , int y)
     {
-        Squar sq = squaresInBattleField[x, y];
+        Squar sq = _squaresInBattleField[x, y];
         return sq;
     }
 
@@ -679,7 +703,7 @@ public class BattleController : MonoBehaviour
     {
 
         // setVisited Sq to false
-        Squar centerSquar = squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
         centerSquar.isVisited = false;
         centerSquar.inRangeBackground.SetActive(false);
 
@@ -693,7 +717,7 @@ public class BattleController : MonoBehaviour
     private void SetSquaresOutOfAttackReach()
     {
 
-        Squar centerSquar = squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
         centerSquar.isInReach = false;
         centerSquar.DisableAttackBorders();
 
@@ -709,10 +733,22 @@ public class BattleController : MonoBehaviour
         sq.CursorEvent.canAttack = false;
         sq.CursorEvent.isInMoveRange = false;
 
-        if(_squaresInUnitRange.Contains(sq))
+        if (sq.unitInSquar is null)
         {
-            sq.CursorEvent.isInMoveRange = true;
+            if (_squaresInUnitRange.Contains(sq))
+            {
+                sq.CursorEvent.isInMoveRange = true;
+            }
         }
+        else
+        {
+            if(_squaresInUnitAttackRange.Contains(sq) && sq.unitInSquar._team != _activeUnit._team)
+            {
+                sq.CursorEvent.canAttack = true;
+            }
+        }
+
+
     }
 
     private void SortUnitAccordingIniciation()

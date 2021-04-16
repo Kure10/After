@@ -69,9 +69,6 @@ public class Unit : MonoBehaviour
         }
     }
 
-
-
-
     public void InitUnit(string name, int health, int dmg , int threat , int range, PositionSquar startPosition, int id, int movement, string imageName, Team tea)
     {
         _name = name;
@@ -128,7 +125,6 @@ public class Unit : MonoBehaviour
         _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
-
     public int CalculateIniciation ()
     {
         int result = 0;
@@ -166,7 +162,6 @@ public class Unit : MonoBehaviour
         Demon,
         Neutral,
     }
-
 }
 
 
