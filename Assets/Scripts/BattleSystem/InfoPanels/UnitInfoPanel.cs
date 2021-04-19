@@ -23,7 +23,7 @@ public class UnitInfoPanel : MonoBehaviour
     {
         _threat.text = unit._threat.ToString();
 
-        UpdateHealthBar(unit.CurrentHealth, unit._maxHealth);
+        UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
 
         UpdateRange(unit._range);
 

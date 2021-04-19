@@ -97,17 +97,13 @@ public class BattleController : MonoBehaviour
 
                 UpdateActiveUnit();
 
-                FindSquaresInUnitRange();
+                FindSquaresInUnitMoveRange();
                 ShowSquaresWithinRange(true);
 
-                //
-                
+
                 FindSquaresInUnitAttackRange();
 
                 leftUnitInfo.UpdateStats(_activeUnit);
-
-
-                // so on
 
             }
         }
@@ -116,19 +112,53 @@ public class BattleController : MonoBehaviour
     public bool DetectPlayerInputs()
     {
         bool result = false;
+        BattleAction action = BattleAction.None;
+        Squar squarToMove = null;
+        Unit unitOnSquare = null;
 
         if (Input.GetMouseButtonDown(0))
         {
-            Squar squarToMove = RaycastTargetSquar();
+            squarToMove = RaycastTargetSquar();
             if (squarToMove != null)
             {
-                result = OnMoveUnit(squarToMove);
+                action = OnClickIntoGrid(squarToMove);
+                unitOnSquare = squarToMove.unitInSquar;
+                result = true;
             }
         }
 
         if(result)
         {
-            ShowSquaresWithinRange(false);
+            switch (action)
+            {
+                case BattleAction.None:
+                    Debug.Log("None Action");
+                    result = false;
+                    break;
+                case BattleAction.Move:
+                    Debug.Log("Move ACtion");
+                    MoveToSquar(squarToMove);
+                    result = true;
+                    break;
+                case BattleAction.Attack:
+                    Debug.Log("Attack Action");
+                    AttackToUnit(unitOnSquare);
+                    result = true;
+                    break;
+                case BattleAction.Heal:
+                    Debug.Log("Heal action");
+                    result = false;
+                    break;
+                default:
+                    break;
+            }
+
+            if (action == BattleAction.Move || action == BattleAction.Attack)
+            {
+                SetSquaresOutOfAttackReach();
+                SetSquaresUnvisited();
+                ShowSquaresWithinRange(false);
+            }
         }
 
         return result;
@@ -233,25 +263,29 @@ public class BattleController : MonoBehaviour
         newA.StartPos.YPosition = 13;
         newA._name = "Player1";
         newA.imageName = "Gargoyle";
-        newA.health = 7;
+        newA.health = 14;
         newA.damage = 6;
         newA.threat = 3;
         newA.range = 0;
+        newA._movement = 1;
+
+
 
         newB.StartPos.XPosition = 0;
         newB.StartPos.YPosition = 0;
         newB._name = "Zombie1";
         newB.imageName = "Zombie 1";
-        newB.health = 5;
+        newB.health = 9;
         newB.damage = 4;
         newB.threat = 5;
         newB.range = 2;
+        newB._movement = 2;
 
         newC.StartPos.XPosition = 0;
         newC.StartPos.YPosition = 6;
         newC._name = "Zombie2";
         newC.imageName = "Zombie 2";
-        newC.health = 3;
+        newC.health = 8;
         newC.damage = 3;
         newC.threat = 1;
         newC.range = 1;
@@ -260,7 +294,7 @@ public class BattleController : MonoBehaviour
         newx.StartPos.YPosition = 2;
         newx._name = "Zombie3";
         newx.imageName = "Zombie 1";
-        newx.health = 2;
+        newx.health = 8;
         newx.damage = 3;
         newx.threat = 2;
         newx.range = 0;
@@ -270,7 +304,7 @@ public class BattleController : MonoBehaviour
         newy.StartPos.YPosition = 6;
         newy._name = "Player2";
         newy.imageName = "Gargoyle";
-        newy.health = 5;
+        newy.health = 11;
         newy.damage = 1;
         newy.threat = 2;
         newy.range = 1;
@@ -296,7 +330,7 @@ public class BattleController : MonoBehaviour
             battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
             //
-            FindSquaresInUnitRange();
+            FindSquaresInUnitMoveRange();
             ShowSquaresWithinRange(true);
 
             // testing fire range
@@ -350,55 +384,35 @@ public class BattleController : MonoBehaviour
     }
 
 
-    private bool OnMoveUnit(Squar squarToMove)
+    private BattleAction OnClickIntoGrid(Squar squarToMove)
     {
-        // Tady budu vybirat akci ,  Utok , Move , Heal  : napr
-
-        /*
-         
-         pokud sq != null
-        a zaroven is enemy unit a zaroven je v attackRange
-        UTOK
-
-
-        pokud sq neni null a zaroven friendly unit or selected unit
-        neco -->
-
-        pokud SQ is emty tak a zaroven je v moveRange .. 
-        MOVE
-
-         */
-
-        bool canMove = false;
+        BattleAction action = BattleAction.None;
 
         if (squarToMove.unitInSquar != null)
         {
-            return false;
-        }
+            bool isFriendlyUnit = squarToMove.unitInSquar._team == _activeUnit._team;
 
-        if (squarToMove.xCoordinate < 0 || squarToMove.yCoordinate < 0 || squarToMove.xCoordinate >= rows.Count || squarToMove.yCoordinate >= collumCount)
-        {
-            return false;
-        }
+            if(!isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
+            {
+                action = BattleAction.Attack;
+            }
 
-        // check if my Square is in Range
-        if (_squaresInUnitRange.Contains(squarToMove))
-        {
-            canMove = true;
-        }
+            if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
+            {
+                action = BattleAction.Heal;
+            }
 
-        if (canMove)
-        {
-            SetSquaresOutOfAttackReach();
-            SetSquaresUnvisited();
-            MoveToSquar(squarToMove);
+            return action;
         }
         else
         {
-            // You can not move that far... Nejake info pro hrace ze tam se nemuže pohnout..
-        }
+            if (_squaresInUnitRange.Contains(squarToMove))
+            {
+                action = BattleAction.Move;
+            }
 
-        return canMove;
+            return action;
+        }
     }
     private void OnSimpleAIMove()
     {
@@ -416,8 +430,39 @@ public class BattleController : MonoBehaviour
         selectedUnitSquar.unitInSquar = null;
     }
 
+    private void AttackToUnit(Unit defendUnit)
+    {
+        int dices = BattleSystem.CalculateAmountDices(_activeUnit);
+        int success = BattleSystem.CalculateAmountSuccess(dices , defendUnit._threat);
+
+        defendUnit.CurrentHealth = defendUnit.CurrentHealth - success;
+
+        var isDead = defendUnit.CheckIfUnitIsNotDead();
+
+        // if is dead  - vymažu s jednotek na bojovem poli .
+        // 
+        if (isDead)
+        {
+            KillUnitOnBattleField(defendUnit);
+            battleInfoPanel.DeleteUnitFromOrder(defendUnit);
+        }
+
+    }
+
+    private void KillUnitOnBattleField(Unit unit)
+    {
+        unitsOnBattleField.Remove(unit);
+
+        var sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
+
+        Destroy(sq.unitInSquar.gameObject, 1f);
+
+        sq.unitInSquar = null;
+
+    }
+
     // in this method i can mark squares and maybe change method for move..  Can be more easy to find..
-    private void FindSquaresInUnitRange()
+    private void FindSquaresInUnitMoveRange()
     {
         _squaresInUnitRange.Clear();
 
@@ -449,16 +494,7 @@ public class BattleController : MonoBehaviour
             _squaresInUnitRange.AddRange(adjectedSq);
         }
 
-        // remove full Squares
-        for (int i = _squaresInUnitRange.Count -1 ; i >= 0; i--)
-        {
-            Squar squareInRange = _squaresInUnitRange[i];
-
-            if (squareInRange.unitInSquar != null)
-            {
-                _squaresInUnitRange.Remove(squareInRange);
-            }
-        }
+        _squaresInUnitRange.Add(centerSquar);
     }
 
     private void FindSquaresInUnitAttackRange()
@@ -494,11 +530,12 @@ public class BattleController : MonoBehaviour
             _squaresInUnitAttackRange.AddRange(lastAdjectedSq);
         }
 
+        _squaresInUnitAttackRange.Add(centerSquar);
+
+        // search and activate borders for attack range
         foreach (Squar squ in lastAdjectedSq)
         {
-            List<Squar> adjectedSquarsInCurrentRange = new List<Squar>();
-
-            GetTheAdjacentAttackSquare(squ,true);
+            GetTheAdjacentAttackSquare(squ, true);
         }
     }
 
@@ -506,7 +543,10 @@ public class BattleController : MonoBehaviour
     {
         foreach (Squar sq in _squaresInUnitRange)
         {
-            sq.inRangeBackground.SetActive(makeVisible);
+            if (sq.unitInSquar == null)
+            {
+                sq.inRangeBackground.SetActive(makeVisible);
+            }
         }
     }
 
@@ -701,12 +741,6 @@ public class BattleController : MonoBehaviour
 
     private void SetSquaresUnvisited()
     {
-
-        // setVisited Sq to false
-        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
-        centerSquar.isVisited = false;
-        centerSquar.inRangeBackground.SetActive(false);
-
         foreach (Squar item in _squaresInUnitRange)
         {
             item.inRangeBackground.SetActive(false);
@@ -716,11 +750,6 @@ public class BattleController : MonoBehaviour
 
     private void SetSquaresOutOfAttackReach()
     {
-
-        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
-        centerSquar.isInReach = false;
-        centerSquar.DisableAttackBorders();
-
         foreach (Squar item in _squaresInUnitAttackRange)
         {
             item.DisableAttackBorders();
@@ -747,13 +776,20 @@ public class BattleController : MonoBehaviour
                 sq.CursorEvent.canAttack = true;
             }
         }
-
-
     }
 
     private void SortUnitAccordingIniciation()
     {
         unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
+    }
+
+
+    enum BattleAction 
+    {
+        None,
+        Move,
+        Attack,
+        Heal
     }
 
 }

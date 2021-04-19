@@ -20,7 +20,7 @@ public class UnitWindow : MonoBehaviour
     {
         threat.text = unit._threat.ToString();
 
-        health.text = unit._maxHealth.ToString();
+        health.text = unit.MaxHealth.ToString();
 
         UpdateRange(unit._range);
 
@@ -30,7 +30,6 @@ public class UnitWindow : MonoBehaviour
         var spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
         var sprite = spriteLoader.LoadUnitSprite(unit._imageName);
         image.sprite = sprite;
-
     }
 
     public void UpdateHealthBar (int current , int max)

@@ -22,7 +22,7 @@ public class Unit : MonoBehaviour
     //
 
     public string _name = "Zombie";
-    public int _maxHealth = 5;
+    private int _maxHealth = 5;
     public int _damage = 0;
     public int _threat = 0;
     public int _range = 0;
@@ -39,6 +39,7 @@ public class Unit : MonoBehaviour
 
     private int _currentHealth = 1;
 
+    public int MaxHealth { get { return this._maxHealth; } }
     public bool IsActive
     { 
         get { return this._isActive; }
@@ -89,6 +90,10 @@ public class Unit : MonoBehaviour
 
         _team = tea;
 
+        // tmp
+        _currentHealth = _maxHealth;
+        //
+
         if (_unitWindow == null)
         {
             _unitWindow = GetComponent<UnitWindow>();
@@ -116,6 +121,10 @@ public class Unit : MonoBehaviour
 
         _team = unit._team;
 
+        // tmp
+        _currentHealth = _maxHealth;
+        //
+
         if (_unitWindow == null)
         {
             _unitWindow = GetComponent<UnitWindow>();
@@ -140,6 +149,21 @@ public class Unit : MonoBehaviour
         }
 
         return result;
+    }
+
+    public bool CheckIfUnitIsNotDead()
+    {
+        bool isDead = false;
+        if (_currentHealth <= 0)
+        {
+            // unit is dead
+            // animation
+            // what ever call back///
+
+            return isDead = true;
+        }
+
+        return isDead;
     }
 
     public void SetNewCurrentPosition(int posX , int posY)

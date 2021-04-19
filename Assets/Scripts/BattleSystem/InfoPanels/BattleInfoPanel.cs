@@ -29,4 +29,24 @@ public class BattleInfoPanel : MonoBehaviour
             }
         }
     }
+
+    public void DeleteUnitFromOrder(Unit selectedUnit)
+    {
+        Unit unit = null;
+
+        foreach (var item in InfoUnitsList)
+        {
+            if (selectedUnit._id == item._id)
+            {
+                unit = item;
+            }
+        }
+
+        if(unit != null)
+        {
+            InfoUnitsList.Remove(unit);
+            Destroy(unit.gameObject, 1f);
+        }
+        
+    }
 }
