@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 2795415217500912970}
   - component: {fileID: 3906867974679998702}
   - component: {fileID: 4702994579234516648}
+  - component: {fileID: 1302280339237771756}
   m_Layer: 5
   m_Name: Unit
   m_TagString: Untagged
@@ -267,7 +268,6 @@ MonoBehaviour:
   _id: 0
   _imageName: Defaul
   _name: Zombie
-  _maxHealth: 5
   _damage: 0
   _threat: 0
   _range: 0
@@ -312,6 +312,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1302280339237771756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091871265957222101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 70
+  m_MinHeight: 70
+  m_PreferredWidth: 110
+  m_PreferredHeight: 110
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &3215918293417686701
 GameObject:
   m_ObjectHideFlags: 0

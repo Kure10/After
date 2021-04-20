@@ -172,6 +172,8 @@ public class Unit : MonoBehaviour
         CurrentPos.YPosition = posY;
     }
 
+    
+
     // tmp pak poresit lepe
     public void UpdateAnim()
     {

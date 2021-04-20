@@ -45,7 +45,7 @@ public class BattleInfoPanel : MonoBehaviour
         if(unit != null)
         {
             InfoUnitsList.Remove(unit);
-            Destroy(unit.gameObject, 1f);
+            Destroy(unit.gameObject, 0.5f);
         }
         
     }

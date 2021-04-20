@@ -19,6 +19,9 @@ public class UnitInfoPanel : MonoBehaviour
     [Header("Image")]
     [SerializeField] Image _image;
 
+    [Header("Buttons")]
+    [SerializeField] Button _skipTurnButton;
+
     public void UpdateStats(Unit unit)
     {
         _threat.text = unit._threat.ToString();

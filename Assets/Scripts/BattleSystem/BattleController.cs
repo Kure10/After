@@ -13,6 +13,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private BattleInfoPanel battleInfoPanel;
     [SerializeField] private UnitInfoPanel leftUnitInfo;
     [SerializeField] private UnitInfoPanel rightUnitInfo;
+    [SerializeField] private BattleLogPanel battleLog;
 
     [Header("Dimensions")]
     [SerializeField] List<GameObject> rows = new List<GameObject>();
@@ -24,6 +25,8 @@ public class BattleController : MonoBehaviour
     private Squar[,] _squaresInBattleField; 
 
     public List<Unit> unitsOnBattleField = new List<Unit>();
+
+
 
     [Space]
     public GameObject _unit;
@@ -38,12 +41,15 @@ public class BattleController : MonoBehaviour
     /// </summary>
     /// 
 
+    bool _turnIsOver = false;
     private bool _isBattleOnline = false;
     private bool _isPlayerTurn = false;
 
     private Unit _activeUnit = null;
 
     private int order = 0;
+
+    private int roundCount = 1;
 
     private List<Squar> _squaresInUnitRange = new List<Squar>();
 
@@ -60,13 +66,11 @@ public class BattleController : MonoBehaviour
     {
         if (_isBattleOnline)
         {
-            bool turnIsOver = false;
-
             if (_isPlayerTurn)
             {
                 if (DetectPlayerInputs())
                 {
-                    turnIsOver = true;
+                    _turnIsOver = true;
                     _isPlayerTurn = false;
                 }
             }
@@ -76,7 +80,7 @@ public class BattleController : MonoBehaviour
 
                 if (DetectPlayerInputs())
                 {
-                    turnIsOver = true;
+                    _turnIsOver = true;
                     _isPlayerTurn = true;
                 }
 
@@ -85,10 +89,13 @@ public class BattleController : MonoBehaviour
                 // switch to player turn
             }
 
-            if (turnIsOver)
+            if (_turnIsOver)
             {
-               // SetSquaresUnvisited();
-                // default all squesr
+                SetSquaresOutOfAttackReach();
+                SetSquaresUnvisited();
+                ShowSquaresWithinRange(false);
+
+                battleLog.AddLog("New Turn : " + ++roundCount);
 
                 order++;
 
@@ -104,6 +111,8 @@ public class BattleController : MonoBehaviour
                 FindSquaresInUnitAttackRange();
 
                 leftUnitInfo.UpdateStats(_activeUnit);
+
+                _turnIsOver = false;
 
             }
         }
@@ -136,13 +145,15 @@ public class BattleController : MonoBehaviour
                     result = false;
                     break;
                 case BattleAction.Move:
-                    Debug.Log("Move ACtion");
                     MoveToSquar(squarToMove);
+                    battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
                     result = true;
                     break;
                 case BattleAction.Attack:
-                    Debug.Log("Attack Action");
-                    AttackToUnit(unitOnSquare);
+                    AttackInfo attackInfo = null;
+                    attackInfo = AttackToUnit(unitOnSquare);
+                    battleLog.AddLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
+                    result = true;
                     result = true;
                     break;
                 case BattleAction.Heal:
@@ -155,13 +166,17 @@ public class BattleController : MonoBehaviour
 
             if (action == BattleAction.Move || action == BattleAction.Attack)
             {
-                SetSquaresOutOfAttackReach();
-                SetSquaresUnvisited();
-                ShowSquaresWithinRange(false);
+
             }
         }
 
         return result;
+    }
+
+    // for buttons
+    public void SkipUnitTurn()
+    {
+        _turnIsOver = true;
     }
 
     public void CreateBattleField()
@@ -192,6 +207,7 @@ public class BattleController : MonoBehaviour
 
     public void InitBattle()
     {
+        battleLog.AddLog("Battle Start");
         // something is for testing
         _isPlayerTurn = true;
 
@@ -430,8 +446,10 @@ public class BattleController : MonoBehaviour
         selectedUnitSquar.unitInSquar = null;
     }
 
-    private void AttackToUnit(Unit defendUnit)
+    private AttackInfo AttackToUnit(Unit defendUnit)
     {
+        AttackInfo attackInfo = new AttackInfo();
+
         int dices = BattleSystem.CalculateAmountDices(_activeUnit);
         int success = BattleSystem.CalculateAmountSuccess(dices , defendUnit._threat);
 
@@ -439,14 +457,17 @@ public class BattleController : MonoBehaviour
 
         var isDead = defendUnit.CheckIfUnitIsNotDead();
 
-        // if is dead  - vymažu s jednotek na bojovem poli .
-        // 
         if (isDead)
         {
             KillUnitOnBattleField(defendUnit);
             battleInfoPanel.DeleteUnitFromOrder(defendUnit);
         }
 
+        // for info
+        attackInfo.dices = dices;
+        attackInfo.success = success;
+
+        return attackInfo;
     }
 
     private void KillUnitOnBattleField(Unit unit)
@@ -455,7 +476,7 @@ public class BattleController : MonoBehaviour
 
         var sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
 
-        Destroy(sq.unitInSquar.gameObject, 1f);
+        Destroy(sq.unitInSquar.gameObject, 0.5f);
 
         sq.unitInSquar = null;
 
@@ -790,6 +811,12 @@ public class BattleController : MonoBehaviour
         Move,
         Attack,
         Heal
+    }
+
+    private class AttackInfo
+    {
+        public int dices = 0;
+        public int success = 0;
     }
 
 }

@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -61.1}
+  m_AnchoredPosition: {x: 0, y: -38.7}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1236161748321027364
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 499373751530609198}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Controlls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4944259586129352204
 RectTransform:
   m_ObjectHideFlags: 0
@@ -519,7 +519,7 @@ GameObject:
   - component: {fileID: 2888385483061766052}
   - component: {fileID: 2971184496464809650}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: SkipButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -889,7 +889,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Skip
 --- !u!1 &5203653142344438527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,6 +1563,7 @@ MonoBehaviour:
   _health: {fileID: 8825336906212504694}
   healthImageValue: {fileID: 2508843355807885226}
   _image: {fileID: 6160778646340038631}
+  _skipTurnButton: {fileID: 2971184496464809650}
 --- !u!1 &7620879544205702900
 GameObject:
   m_ObjectHideFlags: 0
