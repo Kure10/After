@@ -109,6 +109,7 @@ public class BattleController : MonoBehaviour
 
 
                 FindSquaresInUnitAttackRange();
+                ShowSquaresWithingAttackRange();
 
                 leftUnitInfo.UpdateStats(_activeUnit);
 
@@ -283,7 +284,7 @@ public class BattleController : MonoBehaviour
         newA.damage = 6;
         newA.threat = 3;
         newA.range = 0;
-        newA._movement = 1;
+        newA._movement = 2;
 
 
 
@@ -295,7 +296,7 @@ public class BattleController : MonoBehaviour
         newB.damage = 4;
         newB.threat = 5;
         newB.range = 2;
-        newB._movement = 2;
+        newB._movement = 1;
 
         newC.StartPos.XPosition = 0;
         newC.StartPos.YPosition = 6;
@@ -323,7 +324,8 @@ public class BattleController : MonoBehaviour
         newy.health = 11;
         newy.damage = 1;
         newy.threat = 2;
-        newy.range = 1;
+        newy.range = 2;
+        newy._movement = 3;
 
         battleStartData.playerData.playerUnits.Add(newA);
         battleStartData.playerData.playerUnits.Add(newy);
@@ -351,6 +353,7 @@ public class BattleController : MonoBehaviour
 
             // testing fire range
             FindSquaresInUnitAttackRange();
+            ShowSquaresWithingAttackRange();
 
             leftUnitInfo.UpdateStats(_activeUnit);
         }
@@ -527,10 +530,10 @@ public class BattleController : MonoBehaviour
 
         _squaresInUnitAttackRange.AddRange(GetTheAdjacentAttackSquare(centerSquar));
 
-        if (attackRange >= 1)
-        {
-            _squaresInUnitAttackRange.AddRange(GetTheAdjacentCrossSquare(centerSquar));
-        }
+        //if (attackRange >= 1)
+        //{
+        //    _squaresInUnitAttackRange.AddRange(GetTheAdjacentCrossSquare(centerSquar));
+        //}
 
         List<Squar> lastAdjectedSq = new List<Squar>();
         lastAdjectedSq.AddRange(_squaresInUnitAttackRange);
@@ -542,7 +545,7 @@ public class BattleController : MonoBehaviour
             foreach (Squar sq in lastAdjectedSq)
             {
                 adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentAttackSquare(sq));
-                adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentCrossSquare(sq));
+               // adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentCrossSquare(sq));
             }
 
             lastAdjectedSq.Clear();
@@ -554,10 +557,10 @@ public class BattleController : MonoBehaviour
         _squaresInUnitAttackRange.Add(centerSquar);
 
         // search and activate borders for attack range
-        foreach (Squar squ in lastAdjectedSq)
-        {
-            GetTheAdjacentAttackSquare(squ, true);
-        }
+        //foreach (Squar squ in _squaresInUnitAttackRange)
+        //{
+        //    GetTheAdjacentAttackSquare(squ, true);
+        //}
     }
 
     private void ShowSquaresWithinRange(bool makeVisible)
@@ -568,6 +571,14 @@ public class BattleController : MonoBehaviour
             {
                 sq.inRangeBackground.SetActive(makeVisible);
             }
+        }
+    }
+
+    private void ShowSquaresWithingAttackRange()
+    {
+        foreach (Squar squ in _squaresInUnitAttackRange)
+        {
+            GetTheAdjacentAttackSquare(squ, true);
         }
     }
 
@@ -658,16 +669,16 @@ public class BattleController : MonoBehaviour
 
         if(searchForBorders)
         {
-            if (leftSquare != null && !leftSquare.isInReach)
+            if (leftSquare == null || !leftSquare.isInReach)
                 centerSquar.leftBorder.SetActive(true);
 
-            if (rightSquare != null && !rightSquare.isInReach)
+            if (rightSquare == null || !rightSquare.isInReach)
                 centerSquar.rightBorder.SetActive(true);
 
-            if (downSquare != null && !downSquare.isInReach)
+            if (downSquare == null || !downSquare.isInReach)
                 centerSquar.downBorder.SetActive(true);
 
-            if (upSquare != null && !upSquare.isInReach)
+            if (upSquare == null || !upSquare.isInReach)
                 centerSquar.upBorder.SetActive(true);
         }
         else

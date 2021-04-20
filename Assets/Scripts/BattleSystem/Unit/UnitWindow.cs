@@ -43,7 +43,7 @@ public class UnitWindow : MonoBehaviour
 
     public void UpdateRange(int range)
     {
-        if(range == 0)
+        if(range <= 1)
         {
             this.range.text = "M";
         }
