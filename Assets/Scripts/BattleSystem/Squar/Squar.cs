@@ -43,6 +43,8 @@ public class Squar : MonoBehaviour
     public Color isOutOfMoveRangeColor;
     public Color canAttackColor;
 
+    public Action action;
+
     public void SetCoordinates(int x, int y)
     {
         xCoordinate = x;

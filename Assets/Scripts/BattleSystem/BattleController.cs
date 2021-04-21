@@ -15,6 +15,9 @@ public class BattleController : MonoBehaviour
     [SerializeField] private UnitInfoPanel rightUnitInfo;
     [SerializeField] private BattleLogPanel battleLog;
 
+    [Header("Info Popup")]
+    [SerializeField] private DetailUnitPopup detailPopup;
+
     [Header("Dimensions")]
     [SerializeField] List<GameObject> rows = new List<GameObject>();
     [Space]
@@ -138,7 +141,21 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        if(result)
+        if (Input.GetMouseButtonDown(1))
+        {
+            squarToMove = RaycastTargetSquar();
+            if (squarToMove != null)
+            {
+                if(squarToMove.unitInSquar != null)
+                {
+                    detailPopup.ShowPopup(squarToMove.unitInSquar);
+                }
+
+                Debug.Log("Info unit panel popup");
+            }
+        }
+
+        if (result)
         {
             switch (action)
             {
@@ -164,11 +181,6 @@ public class BattleController : MonoBehaviour
                     break;
                 default:
                     break;
-            }
-
-            if (action == BattleAction.Move || action == BattleAction.Attack)
-            {
-
             }
         }
 

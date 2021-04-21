@@ -60,15 +60,15 @@ public class UnitInfoPanel : MonoBehaviour
         }
     }
 
-    public void DisablePanel()
-    {
-        StartCoroutine(Disable(1.5f));
-    }
+    //public void DisablePanel()
+    //{
+    //    StartCoroutine(Disable(1.5f));
+    //}
 
-    IEnumerator Disable (float time)
-    {
-        yield return new WaitForSeconds(time);
-        this.gameObject.SetActive(false);
-    }
+    //IEnumerator Disable (float time)
+    //{
+    //    yield return new WaitForSeconds(time);
+    //    this.gameObject.SetActive(false);
+    //}
 
 }
