@@ -31,13 +31,14 @@ public class BattleController : MonoBehaviour
     [Space]
     public GameObject _unit;
 
-
-
     public GameObject squarTemplate;
+
+    //
 
     /// <summary>
     /// ////////////////////
-    /// 
+    ///   FOR now needed we will see 
+    ///    musim v tom udelat poradek neco budu potrebovat neco ne
     /// </summary>
     /// 
 
@@ -199,6 +200,7 @@ public class BattleController : MonoBehaviour
                 square.InitEvent(delegate (Squar squ) 
                 {
                     SetCursor(squ);
+                    UpdateRightPanel(squ);
                 });
             }
             j++;
@@ -808,6 +810,7 @@ public class BattleController : MonoBehaviour
                 sq.CursorEvent.canAttack = true;
             }
         }
+        
     }
 
     private void SortUnitAccordingIniciation()
@@ -815,6 +818,21 @@ public class BattleController : MonoBehaviour
         unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
     }
 
+    public void UpdateRightPanel (Squar sq)
+    {
+        Unit unit = sq.unitInSquar;
+
+        if (unit != null)
+        {
+            rightUnitInfo.UpdateStats(unit);
+            rightUnitInfo.gameObject.SetActive(true);
+
+        }
+        //else
+        //{
+        //   // rightUnitInfo.DisablePanel();
+        //}
+    }
 
     enum BattleAction 
     {
@@ -829,5 +847,7 @@ public class BattleController : MonoBehaviour
         public int dices = 0;
         public int success = 0;
     }
+
+
 
 }

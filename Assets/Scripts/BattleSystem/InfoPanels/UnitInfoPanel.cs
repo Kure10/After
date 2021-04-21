@@ -39,7 +39,7 @@ public class UnitInfoPanel : MonoBehaviour
 
     }
 
-    public void UpdateHealthBar(int current, int max)
+    private void UpdateHealthBar(int current, int max)
     {
         _health.text = $"{current} / {max}";
 
@@ -48,7 +48,7 @@ public class UnitInfoPanel : MonoBehaviour
         healthImageValue.transform.localScale = new Vector3(amount, 1, 1);
     }
 
-    public void UpdateRange(int range)
+    private void UpdateRange(int range)
     {
         if (range == 0)
         {
@@ -58,6 +58,17 @@ public class UnitInfoPanel : MonoBehaviour
         {
             this._range.text = range.ToString();
         }
+    }
+
+    public void DisablePanel()
+    {
+        StartCoroutine(Disable(1.5f));
+    }
+
+    IEnumerator Disable (float time)
+    {
+        yield return new WaitForSeconds(time);
+        this.gameObject.SetActive(false);
     }
 
 }

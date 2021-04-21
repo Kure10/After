@@ -69,6 +69,7 @@ public class Squar : MonoBehaviour
         downBorder.SetActive(false);
     }
 
+    // Event Trigger from Unity
     public void OnPointerEnter()
     {
         CursorEvent.Invoke(this);
@@ -96,6 +97,7 @@ public class Squar : MonoBehaviour
         canAttackMark.SetActive(true);
     }
 
+    // Event Trigger from Unity
     public void OnPointerExit ()
     {
         canAttackMark.SetActive(false);
