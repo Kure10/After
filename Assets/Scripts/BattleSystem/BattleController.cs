@@ -99,9 +99,7 @@ public class BattleController : MonoBehaviour
                 SetSquaresUnvisited();
                 ShowSquaresWithinRange(false);
 
-                battleLog.AddLog("New Turn : " + ++roundCount);
-
-                order++;
+                 order++;
 
                 if (order >= unitsOnBattleField.Count)
                     order = 0;
@@ -119,6 +117,7 @@ public class BattleController : MonoBehaviour
 
                 _turnIsOver = false;
 
+                // check if is a victory.
             }
         }
     }
@@ -165,13 +164,15 @@ public class BattleController : MonoBehaviour
                     break;
                 case BattleAction.Move:
                     MoveToSquar(squarToMove);
-                    battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+                    //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+                    battleLog.AddBattleLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
                     result = true;
                     break;
                 case BattleAction.Attack:
                     AttackInfo attackInfo = null;
                     attackInfo = AttackToUnit(unitOnSquare);
-                    battleLog.AddLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
+                    //battleLog.AddLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
+                    battleLog.AddBattleLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
                     result = true;
                     result = true;
                     break;
@@ -222,7 +223,8 @@ public class BattleController : MonoBehaviour
 
     public void InitBattle()
     {
-        battleLog.AddLog("Battle Start");
+        //battleLog.AddLog("Battle Start");
+        battleLog.AddBattleLog("Battle Start");
         // something is for testing
         _isPlayerTurn = true;
 
@@ -497,6 +499,47 @@ public class BattleController : MonoBehaviour
 
         sq.unitInSquar = null;
 
+    }
+
+    private bool VictoryConditionCheck ()
+    {
+        int humanUnit = 0;
+        int demonUnit = 0;
+        int neutralUnit = 0;
+
+        foreach (var unit in unitsOnBattleField)
+        {
+            if(unit._team == Unit.Team.Human)
+            {
+                humanUnit++;
+            }
+            else if (unit._team == Unit.Team.Demon)
+            {
+                demonUnit++;
+            }
+            else if (unit._team == Unit.Team.Demon)
+            {
+                neutralUnit++;
+            }
+        }
+
+        if(humanUnit == unitsOnBattleField.Count -1)
+        {
+            // human wins
+        }
+
+        if (demonUnit == unitsOnBattleField.Count -1)
+        {
+            // demon wins
+        }
+
+        if (neutralUnit == unitsOnBattleField.Count -1)
+        {
+            // neutral wins
+        }
+
+
+        return false;
     }
 
     // in this method i can mark squares and maybe change method for move..  Can be more easy to find..
