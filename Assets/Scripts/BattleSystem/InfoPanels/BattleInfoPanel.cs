@@ -47,6 +47,25 @@ public class BattleInfoPanel : MonoBehaviour
             InfoUnitsList.Remove(unit);
             Destroy(unit.gameObject, 0.5f);
         }
-        
     }
+
+    public void UpdateUnitNewTurnOrder (List<Unit> unitsOnBattlefield, GameObject unitPrefab)
+    {
+        foreach (var item in InfoUnitsList)
+        {
+            Destroy(item.gameObject);
+        }
+        InfoUnitsList.Clear();
+
+        foreach (Unit unit in unitsOnBattlefield)
+        {
+            var go = Instantiate(unitPrefab, container);
+            var un = go.GetComponent<Unit>();
+            un.InitUnit(unit);
+            InfoUnitsList.Add(un);
+        }
+
+    }
+
+
 }

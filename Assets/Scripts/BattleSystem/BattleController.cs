@@ -102,7 +102,23 @@ public class BattleController : MonoBehaviour
                  order++;
 
                 if (order >= unitsOnBattleField.Count)
+                {
                     order = 0;
+                    roundCount++;
+                    battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
+
+                    // nova iniciativa a novy order jednotek..
+
+                    foreach (Unit unit in unitsOnBattleField)
+                    {
+                       unit._iniciation =  unit.CalculateIniciation();
+                    }
+
+                    SortUnitAccordingIniciation();
+                    battleInfoPanel.UpdateUnitNewTurnOrder(unitsOnBattleField, _unit);
+                }
+
+                    
 
                 UpdateActiveUnit();
 
@@ -165,14 +181,13 @@ public class BattleController : MonoBehaviour
                 case BattleAction.Move:
                     MoveToSquar(squarToMove);
                     //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
-                    battleLog.AddBattleLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+                    battleLog.AddBattleLog($"{_activeUnit._name} moved");
                     result = true;
                     break;
                 case BattleAction.Attack:
                     AttackInfo attackInfo = null;
                     attackInfo = AttackToUnit(unitOnSquare);
-                    //battleLog.AddLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
-                    battleLog.AddBattleLog($"{_activeUnit._name} attacked to unit {unitOnSquare._name} with {attackInfo.dices} dices and {attackInfo.success} damage");
+                    battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
                     result = true;
                     result = true;
                     break;
@@ -192,6 +207,7 @@ public class BattleController : MonoBehaviour
     public void SkipUnitTurn()
     {
         _turnIsOver = true;
+        battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
     public void CreateBattleField()
@@ -470,7 +486,7 @@ public class BattleController : MonoBehaviour
         AttackInfo attackInfo = new AttackInfo();
 
         int dices = BattleSystem.CalculateAmountDices(_activeUnit);
-        int success = BattleSystem.CalculateAmountSuccess(dices , defendUnit._threat);
+        int success = BattleSystem.CalculateAmountSuccess(dices , defendUnit._threat, out attackInfo.dicesRoll);
 
         defendUnit.CurrentHealth = defendUnit.CurrentHealth - success;
 
@@ -480,6 +496,7 @@ public class BattleController : MonoBehaviour
         {
             KillUnitOnBattleField(defendUnit);
             battleInfoPanel.DeleteUnitFromOrder(defendUnit);
+            battleLog.AddBattleLog($"{defendUnit._name} is dead");
         }
 
         // for info
@@ -826,6 +843,8 @@ public class BattleController : MonoBehaviour
         _activeUnit.IsActive = true;
         _activeUnit.UpdateAnim();
         battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
+
+        battleLog.AddBattleLog($"{_activeUnit._name} has turn");
     }
 
     private void SetSquaresUnvisited()
@@ -897,10 +916,12 @@ public class BattleController : MonoBehaviour
         Heal
     }
 
-    private class AttackInfo
+    public class AttackInfo
     {
         public int dices = 0;
         public int success = 0;
+
+        public List<int> dicesRoll = new List<int>();      
     }
 
 

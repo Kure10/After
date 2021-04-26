@@ -117,7 +117,7 @@ public class Unit : MonoBehaviour
         _imageName = unit._imageName;
         _id = unit._id;
 
-        _iniciation = CalculateIniciation();
+        _iniciation = unit._iniciation;
 
         _team = unit._team;
 

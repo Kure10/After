@@ -18,8 +18,9 @@ public static class BattleSystem
         return amountDices;
     }
 
-    public static int CalculateAmountSuccess(int dices, int enemyThreat)
+    public static int CalculateAmountSuccess(int dices, int enemyThreat , out List<int> dicesRoll)
     {
+        dicesRoll = new List<int>();
         int amountSuccess = 0;
 
         for (int i = 0; i < dices; i++)
@@ -34,6 +35,7 @@ public static class BattleSystem
                     break;
             }
 
+            dicesRoll.Add(diceNumber);
             var success = CalculateThrow(diceNumber, enemyThreat);
 
             if (success)
