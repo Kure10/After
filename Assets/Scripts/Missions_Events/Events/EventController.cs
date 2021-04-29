@@ -123,7 +123,7 @@ public class EventController : MonoBehaviour
 
     private void ProcessFight(Mission mission, StatsClass item, string title)
     {
-        eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
+        eventPanel.CreateButon( () => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
     }
 
     private void ProcessMonster(Mission mission, StatsClass item, string title)

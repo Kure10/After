@@ -9,19 +9,19 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] Inventory inventory;
 
-    public List<ItemBlueprint> allItems = new List<ItemBlueprint>();
+    public List<ItemBlueprint> allItemsAndResource = new List<ItemBlueprint>();
 
     private void Awake()
     {
       //  Container startContainer = containerManager.GetStartContainer();
 
         ItemXmlLoader xmlLoader = new ItemXmlLoader();
-        allItems = xmlLoader.GetItemsFromXML();
+        allItemsAndResource = xmlLoader.GetItemsFromXML();
       //  var startItems = FindStartingItem(startContainer);
 
        
 
-        inventory.InicializedStartInventory(allItems);
+        inventory.InicializedStartInventory(allItemsAndResource);
     }
 
     public List<ItemBlueprint> FindStartingItem (Container container)
@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (SubContainerData subData in container.containerSubData)
         {
-            foreach (ItemBlueprint item in allItems)
+            foreach (ItemBlueprint item in allItemsAndResource)
             {
                 if(subData.dropItemID == item.itemID)
                 {

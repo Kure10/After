@@ -6139,6 +6139,7 @@ Transform:
   - {fileID: 699561099}
   - {fileID: 1607481414}
   - {fileID: 755581407}
+  - {fileID: 1429772087}
   m_Father: {fileID: 1128306967}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13128,6 +13129,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c4237b19cdae43843bbbe805e38f318a, type: 3}
   - {fileID: 21300000, guid: 6178eaacaffe96a4db083486868e0318, type: 3}
   - {fileID: 21300000, guid: 8c91797018427994996323511c47f1ec, type: 3}
+  unitResources: []
   itemResources:
   - {fileID: 21300000, guid: be016a39f1f75ac4380f06386014a970, type: 3}
   - {fileID: 21300000, guid: 3b1d3b86e77eac549bd674a2fc299fb8, type: 3}
@@ -14848,6 +14850,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413875977}
   m_CullTransparentMesh: 0
+--- !u!1 &1429772086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429772087}
+  - component: {fileID: 1429772088}
+  - component: {fileID: 1429772089}
+  m_Layer: 0
+  m_Name: BestionaryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1429772087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429772086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 528192277}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1429772088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429772086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5eb49532cde9949b133ab4c7550479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1429772089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429772086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c31a9fdbfef354c91b9f612f0789ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1430776344 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8453105377846858872, guid: 6eabfb382f848734ca4745484cd82337,

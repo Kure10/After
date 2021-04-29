@@ -119,7 +119,6 @@ public class BattleController : MonoBehaviour
                 }
 
                     
-
                 UpdateActiveUnit();
 
                 FindSquaresInUnitMoveRange();
