@@ -30,9 +30,14 @@
         <Key v="20211838641368" t="String" n="RoomKind" />
       </Data>
       <Data n="4">
-        <Key v="2" t="Int32" n="$T" />
+        <Key v="-1" t="Int32" n="$T" />
+        <Key v="G3" t="String" n="GT" />
+        <Key v="3" t="Int32" n="Con" />
       </Data>
       <Data n="5">
+        <Key v="2" t="Int32" n="$T" />
+      </Data>
+      <Data n="6">
         <Key v="3" t="Int32" n="$T" />
         <Key v="TaskSpecRes" t="String" n="TaskCategory" />
         <Key v="Ownership" t="String" n="TargetTask" />
@@ -56,11 +61,23 @@
         <Key v="3" t="String" n="$E" />
       </Data>
       <Data n="4">
-        <Key v="4" t="String" n="$E" />
+        <Key v="5" t="String" n="$E" />
       </Data>
       <Data n="5">
-        <Key v="4" t="String" n="$S" />
-        <Key v="5" t="String" n="$E" />
+        <Key v="5" t="String" n="$S" />
+        <Key v="6" t="String" n="$E" />
+      </Data>
+      <Data n="6">
+        <Key v="3" t="String" n="$S" />
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="7">
+        <Key v="1" t="String" n="$S" />
+        <Key v="4" t="String" n="$E" />
+      </Data>
+      <Data n="8">
+        <Key v="6" t="String" n="$S" />
+        <Key v="4" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
@@ -137,6 +154,47 @@
       <Data n="7">
         <Key v="6" t="String" n="$S" />
         <Key v="7" t="String" n="$E" />
+      </Data>
+    </Data>
+  </Data>
+  <Data n="20211983891155">
+    <Data n="$E">
+      <Data n="0">
+        <Key v="3" t="Int32" n="$T" />
+      </Data>
+      <Data n="1">
+        <Key v="2" t="Int32" n="$T" />
+      </Data>
+      <Data n="2">
+        <Key v="3" t="Int32" n="$T" />
+        <Key v="TaskEnemy" t="String" n="TaskCategory" />
+        <Key v="Caputres" t="String" n="TargetTask" />
+        <Key v="2" t="Int32" n="V" />
+        <Key v="20208511692583" t="String" n="EnemyKind" />
+      </Data>
+      <Data n="3">
+        <Key v="3" t="Int32" n="$T" />
+        <Key v="TaskRoom" t="String" n="TaskCategory" />
+        <Key v="Ownership" t="String" n="TargetTask" />
+        <Key v="2" t="Int32" n="V" />
+        <Key v="20203997031263" t="String" n="RoomKind" />
+      </Data>
+    </Data>
+    <Data n="$C">
+      <Data n="0">
+        <Key v="1" t="String" n="$E" />
+      </Data>
+      <Data n="1">
+        <Key v="1" t="String" n="$S" />
+        <Key v="2" t="String" n="$E" />
+      </Data>
+      <Data n="2">
+        <Key v="1" t="String" n="$S" />
+        <Key v="3" t="String" n="$E" />
+      </Data>
+      <Data n="3">
+        <Key v="1" t="String" n="$S" />
+        <Key v="0" t="String" n="$E" />
       </Data>
     </Data>
   </Data>
