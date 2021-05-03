@@ -51,7 +51,7 @@ public class MonsterXmlLoader : MonoBehaviour
 
             Monster monster = new Monster(idNumber, item.GetStrStat("Name"), item.GetStrStat("Description")
                 , item.GetIntStat("Treath"), item.GetIntStat("MiL"), item.GetIntStat("Lives")
-                , item.GetDecStat("Speed"), item.GetIntStat("Danger"));
+                , item.GetDecStat("Speed"), item.GetIntStat("Danger"), item.GetIntStat("Range"));
 
             Monster.MonsterType type = Monster.MonsterType.Demon;
             string kind = item.GetStrStat("EnemyKind");

@@ -5,9 +5,9 @@ using UnityEngine;
 public enum BattleType
 {
     Testing,
-    Standard,
+    BattleBasic,
     Ambush,
-    HordeAttack
+    HordeAttack,
 }
 
 
@@ -18,14 +18,31 @@ public class BattleStartData
 
     public BattlePlayerStartData playerData = new BattlePlayerStartData();
 
-    public BattleAIStartData aiData = new BattleAIStartData();
+    public BattleAIStartData enemyData = new BattleAIStartData();
 
     // BattleField data
 
-    public BattleType battleType = BattleType.Standard;
+    public int Collumn;
 
+    public int Rows;
 
+    public BattleType battleType = BattleType.BattleBasic;
 
+    public bool isRandomEnemyPosition = true;
+
+    public void AddMonsterBattleData(Monster monster)
+    {
+        DataUnit dataUnit = new DataUnit(monster);
+
+        enemyData.enemieUnits.Add(dataUnit);
+    }
+
+    public void AddPlayerBattleData(Character character)
+    {
+        DataUnit dataUnit = new DataUnit(character);
+
+        playerData.playerUnits.Add(dataUnit);
+    }
 }
 
 public class BattlePlayerStartData

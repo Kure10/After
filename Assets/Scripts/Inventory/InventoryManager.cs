@@ -17,9 +17,7 @@ public class InventoryManager : MonoBehaviour
 
         ItemXmlLoader xmlLoader = new ItemXmlLoader();
         allItemsAndResource = xmlLoader.GetItemsFromXML();
-      //  var startItems = FindStartingItem(startContainer);
-
-       
+        //  var startItems = FindStartingItem(startContainer);
 
         inventory.InicializedStartInventory(allItemsAndResource);
     }
@@ -39,5 +37,12 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return startingItems;
+    }
+
+    public ItemBlueprint GetResourcesByID (long id)
+    {
+        var result = allItemsAndResource.Find(x => x.itemID == id);
+
+        return result;
     }
 }

@@ -17,6 +17,10 @@ public class EventController : MonoBehaviour
 
     [SerializeField] ResourceSpriteLoader spriteLoader;
 
+    [SerializeField] Bestionary bestionary;
+
+    [SerializeField] BattleController battleController;
+
     [SerializeField] GameObject eventBlocker;
 
     private ResolveSlave slave;
@@ -25,6 +29,8 @@ public class EventController : MonoBehaviour
 
     private bool finalTestResult = false;
     private TestCase tCase;
+
+    private BattleStartData _battleStartData = new BattleStartData();
 
     public GameObject GetEventPanel { get { return this.eventPanel.gameObject; } }
 
@@ -83,30 +89,30 @@ public class EventController : MonoBehaviour
     }
 
 
-    private Mission SetNextStepEvent(StatsClass item, Mission mission)
+    private Mission SetNextStepEvent(StatsClass statClass, Mission mission)
     {
-        var title = item.Title;
-        var number = item.GetIntStat("$T");
+        var title = statClass.Title;
+        var number = statClass.GetIntStat("$T");
 
         switch (number)
         {
             case 1:
-                ProcessOptions(mission, item, title);
+                ProcessOptions(mission, statClass, title);
                 return mission;
             case 2:
-                ProcessFight(mission, item, title);
+                ProcessFight(mission, statClass, title);
                 return mission;
             case 3:
-                ProcessMonster(mission, item, title);
+                ProcessMonster(mission, statClass, title);
                 return mission;
             case 4:
-                ProcessTest(mission, item, title);
+                ProcessTest(mission, statClass, title);
                 return mission;
             case 5:
-                ProcessChange(mission, item, title);
+                ProcessChange(mission, statClass, title);
                 return mission;
             case 6:
-                ProcessEvaluation(mission, item, title);
+                ProcessEvaluation(mission, statClass, title);
                 return mission;
             default:
                 Debug.LogWarning("Warning event was created with error: " + number + " : " + title);
@@ -121,14 +127,37 @@ public class EventController : MonoBehaviour
         eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), buttonText, buttonDescription);
     }
 
-    private void ProcessFight(Mission mission, StatsClass item, string title)
+    private void ProcessFight(Mission mission, StatsClass statClass, string title)
     {
-        eventPanel.CreateButon( () => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
+        // eventPanel.CreateButon( () => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
+
+        foreach (Character character in mission.GetCharactersOnMission)
+        {
+            _battleStartData.AddPlayerBattleData(character);
+        }
+
+        BattleType battleType = BattleType.Testing;
+        string type = statClass.GetStrStat("BattleType");
+        bool checkParse = Enum.TryParse(type, out battleType);
+        _battleStartData.battleType = battleType;
+
+        battleController.StartBattle(_battleStartData);
     }
 
-    private void ProcessMonster(Mission mission, StatsClass item, string title)
+    private void ProcessMonster(Mission mission, StatsClass statClass, string title)
     {
-        // Todo
+        string stringID = statClass.GetStrStat("Monster");
+        int monsterCount = statClass.GetIntStat("BeastNumber");
+
+        long.TryParse(stringID, out long idNumber);
+        long monsterID = idNumber;
+
+        Monster monster = bestionary.GetMonsterByID(monsterID);
+
+        for (int i = 0; i < monsterCount; i++)
+        {
+            _battleStartData.AddMonsterBattleData(monster);
+        }
     }
 
     private void ProcessTest(Mission mission, StatsClass item, string title)
@@ -619,7 +648,6 @@ public class EventController : MonoBehaviour
 
     private bool CalculateSuccess(int amountDices , out int numberOfIndividualSuccesses)
     {
-        bool result;
         int totalNumberOfSuccesses = 0;
         numberOfIndividualSuccesses = 0;
         int resultOfOneThrow = 0;

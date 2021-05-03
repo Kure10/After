@@ -70,7 +70,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, PositionSquar startPosition, int id, int movement, string imageName, Team tea)
+    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, string imageName, Team tea)
     {
         _name = name;
         _maxHealth = health;
@@ -80,8 +80,8 @@ public class Unit : MonoBehaviour
 
         _movement = movement;
 
-        CurrentPos.XPosition = startPosition.XPosition;
-        CurrentPos.YPosition = startPosition.YPosition;
+        CurrentPos.XPosition = XPosition;
+        CurrentPos.YPosition = YPosition;
 
         _imageName = imageName;
         _id = id;
@@ -134,6 +134,7 @@ public class Unit : MonoBehaviour
         _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
+    // threat x hod kostkou.
     public int CalculateIniciation ()
     {
         int result = 0;
@@ -194,21 +195,85 @@ public class Unit : MonoBehaviour
 
 public class DataUnit 
 {
-    public string imageName = "Defaul";
+    private string imageName = "Defaul";  // todo musím se zamyslet jestli je potrebuji a nebo kde budu nahravat obrazek..
+    private string _name = "Zombie";
 
-    public Unit.PositionSquar StartPos;
+    private Unit.PositionSquar StartPos;
 
-    public string _name = "Zombie";
-    public int health = 5;
-    public int damage = 0;
-    public int threat = 0;
-    public int range = 0;
+    private int health = 5;
+    private int damage = 0;
+    private int threat = 0;
+    private int range = 0;
+    private int _movement = 1;
 
-    public int _movement = 1;
+    public string ImageName { get { return this.imageName; } }
 
+    public string Name { get { return this._name; } }
 
-    // special abilities 
+    public int Health { get { return this.health; } }
 
+    public int Damage { get { return this.damage; } }
 
-    private int currentHealth = 1;
+    public int Threat { get { return this.threat; } }
+
+    public int Range { get { return this.range; } }
+
+    public int Movement { get { return this._movement; } }
+
+    public int StartYPosition { get { return this.StartPos.YPosition; } }
+
+    public int StartXPosition { get { return this.StartPos.XPosition; } }
+
+    public DataUnit()
+    {
+
+    }
+
+    public DataUnit(Monster monster)
+    {
+        this._name = monster.Name;
+        this.health = monster.Health;
+        this.damage = monster.Military;
+        this.threat = monster.Threat;
+        this.range = monster.Range;
+        this._movement = monster.BattleSpeed;
+    }
+
+    // Todo .....
+    public DataUnit(Character character)
+    {
+        this._name = character.GetName();
+        this.health = (int)character.LifeEnergy.CurrentLife;
+        this.damage = character.Stats.military;
+        this.threat = 2; // Todo
+        this.range = 1; // Todo
+        this._movement = 1; // Todo
+    }
+
+    // Testing will be remove
+    public DataUnit(int xPos , int yPos , int health, int damage, int threat, int range, int movement, string name, string imgName)
+    {
+        this._name = name;
+        this.health = health;
+        this.damage = damage;
+        this.threat = threat;
+        this.range = range;
+        this._movement = movement;
+
+        StartPos.XPosition = xPos;
+        StartPos.YPosition = yPos;
+    }
+
+    public (int x , int y) SetRandomStartingPosition(List<(int x, int y)> freePosition)
+    {
+        int count = freePosition.Count;
+        int randomPositionIndex = Random.Range(0, count);
+
+        (int x, int y) newPos = freePosition[randomPositionIndex];
+
+        StartPos.XPosition = newPos.x;
+        StartPos.YPosition = newPos.y;
+
+        return newPos;
+    }
 }

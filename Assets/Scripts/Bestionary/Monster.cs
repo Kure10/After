@@ -15,6 +15,7 @@ public class Monster
     private float _speed = 0;
     private int _danger = 0;
     private int _battleSpeed = 0;
+    private int _range = 0;
 
     private Sprite _sprite = null; // Todo doesnt have use
 
@@ -26,6 +27,17 @@ public class Monster
 
     public long ID { get { return _id; } }
 
+    public string Name { get { return this._name; } }
+    public string Description { get { return this._description; } }
+    public int Threat { get { return this._threat; } }
+    public int Military { get { return this._military; } }
+    public int Range { get { return this._range; } }
+    public int Health { get { return this._health; } }
+    public float Speed { get { return this._speed; } }
+    public int Danger { get { return this._danger; } }
+    public int BattleSpeed { get { return this._battleSpeed; } }
+    public Sprite Sprite { get { return this._sprite; } }
+
     public Monster(long idNumber, string name, string description)
     {
         this._id = idNumber;
@@ -33,7 +45,7 @@ public class Monster
         this._description = description;
     }
 
-    public Monster(long idNumber, string name, string description, int threat, int military, int health, decimal speed, int danger)
+    public Monster(long idNumber, string name, string description, int threat, int military, int health, decimal speed, int danger, int range)
     {
         this._id = idNumber;
         this._name = name;
@@ -44,6 +56,7 @@ public class Monster
         this._health = health;
         this._speed = (float)speed;
         this._danger = danger;
+        this._range = range;
 
         float value = (float)speed + 1;
         _battleSpeed = Mathf.RoundToInt(value);  

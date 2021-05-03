@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class BattleController : MonoBehaviour
 {
-    private BattleStartData battleData = new BattleStartData();
-
     [Header("Info Panels")]
     [SerializeField] private BattleInfoPanel battleInfoPanel;
     [SerializeField] private UnitInfoPanel leftUnitInfo;
@@ -19,9 +17,10 @@ public class BattleController : MonoBehaviour
     [SerializeField] private DetailUnitPopup detailPopup;
 
     [Header("Dimensions")]
-    [SerializeField] List<GameObject> rows = new List<GameObject>();
+    [SerializeField] List<GameObject> _rows = new List<GameObject>();
     [Space]
-    [SerializeField] int collumCount = 16;
+    [SerializeField] int _collumCount = 16;
+    [SerializeField] int _rowsCount = 16;
 
     [Space]
     [Header("Others")]
@@ -61,9 +60,9 @@ public class BattleController : MonoBehaviour
 
     private void Start()
     {
-        CreateBattleField();
-        InitBattle();
-        TestStartBattle();
+        //CreateBattleField(5,12);
+        //InitBattle();
+        //TestStartBattle();
     }
 
     private void Update()
@@ -137,7 +136,7 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    public bool DetectPlayerInputs()
+    private bool DetectPlayerInputs()
     {
         bool result = false;
         BattleAction action = BattleAction.None;
@@ -209,63 +208,74 @@ public class BattleController : MonoBehaviour
         battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
-    public void CreateBattleField()
+    public void StartBattle(BattleStartData battleStartData)
     {
+        // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
+        // minumum is 6 and 10 
+        battleStartData.Rows = 8;
+        battleStartData.Collumn = 16;
 
-        _squaresInBattleField = new Squar[rows.Count, collumCount];
+        CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
+        SetUnitPosition(battleStartData);
+        InitBattle(battleStartData);
+        TestStartBattle();
+    }
 
-        int j = 0;
-        foreach (GameObject row in rows)
+    private void CreateBattleField(int rowsCount, int collumCount)
+    {
+        this._collumCount = collumCount;
+        this._rowsCount = rowsCount;
+
+        _squaresInBattleField = new Squar[this._rowsCount, this._collumCount];
+
+        for (int j = 0; j < this._rowsCount; j++)
         {
-            for (int i = 0; i < collumCount; i++)
+            GameObject row = _rows[j];
+
+            for (int i = 0; i < this._collumCount; i++)
             {
                 GameObject squarGameObject = Instantiate(squarTemplate, row.transform);
                 Squar square = squarGameObject.GetComponent<Squar>();
                 square.SetCoordinates(j, i);
-                
+
                 _squaresInBattleField[j, i] = square;
 
-                square.InitEvent(delegate (Squar squ) 
+                square.InitEvent(delegate (Squar squ)
                 {
                     SetCursor(squ);
                     UpdateRightPanel(squ);
                 });
             }
-            j++;
         }
-
     }
 
-    public void InitBattle()
+    private void InitBattle(BattleStartData battleData)
     {
-        //battleLog.AddLog("Battle Start");
         battleLog.AddBattleLog("Battle Start");
-        // something is for testing
-        _isPlayerTurn = true;
+       
+        _isPlayerTurn = true; // todo for now is not decided who will turn first .. ? ?? Now player...
 
-        battleData = InitTestBattleData();
+        // This is for testing purpose only when u are in BATTLEGROUND scene!!
+        if(battleData.battleType == BattleType.Testing)
+        {
+            battleData = InitTestBattleData(); 
+        }
+
         order = 0;
-
-        int amountEnemies = battleData.aiData.enemieUnits.Count;
-
+        int amountEnemies = battleData.enemyData.enemieUnits.Count;
         int amountPlayers = battleData.playerData.playerUnits.Count;
 
         int uniqNumber = 0;
 
         for (int i = 0; i < amountEnemies; i++)
         {
-            DataUnit dataUnit = battleData.aiData.enemieUnits[i];
-            Squar squar = GetSquareFromGrid(dataUnit.StartPos.XPosition, dataUnit.StartPos.YPosition);
-
-            if (squar == null)
-            {
-                Debug.LogError("critical Error while inicialization Battle");
-            }
+            DataUnit dataUnit = battleData.enemyData.enemieUnits[i];
+            Squar squar = GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unt = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unt.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit._name, dataUnit.health, dataUnit.damage, dataUnit.threat, dataUnit.range, dataUnit.StartPos, uniqNumber, dataUnit._movement,dataUnit.imageName,Unit.Team.Demon);
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.Range, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Demon);
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
             uniqNumber++;
@@ -274,17 +284,12 @@ public class BattleController : MonoBehaviour
         for (int i = 0; i < amountPlayers; i++)
         {
             DataUnit dataUnit = battleData.playerData.playerUnits[i];
-            Squar squar = GetSquareFromGrid(dataUnit.StartPos.XPosition, dataUnit.StartPos.YPosition);
-
-            if (squar == null)
-            {
-                Debug.LogError("critical Error while inicialization Battle");
-            }
+            Squar squar = GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unit1 = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit._name, dataUnit.health, dataUnit.damage, dataUnit.threat, dataUnit.range, dataUnit.StartPos, uniqNumber, dataUnit._movement,dataUnit.imageName,Unit.Team.Human);
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.Range, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Human);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
@@ -297,72 +302,122 @@ public class BattleController : MonoBehaviour
 
     }
 
-    public BattleStartData InitTestBattleData()
+    private void SetUnitPosition(BattleStartData battleStartData)
+    {
+
+        SetPlayersUnitPosition(battleStartData);
+
+        if (battleStartData.isRandomEnemyPosition)
+        {
+            SetEnemyRandomPosition(battleStartData);
+        }
+        else
+        {
+            // TODo
+            SetEnemyRandomPosition(battleStartData); // třeba když je ambush tak by se měli nastavit specialni pozice atd..
+        }
+    }
+
+    private void SetPlayersUnitPosition (BattleStartData battleStartData)
+    {
+        List<(int x, int y)> posiblePositions = new List<(int x , int y)>();
+
+        int startSeachXPosition = 0;
+        int radius = 3; // Hard coded not good..
+
+        if (battleStartData.Rows % 2 == 0)
+        {
+            startSeachXPosition = (battleStartData.Rows -1 )/ 2 - 1;
+        }
+        else
+        {
+            startSeachXPosition = (battleStartData.Rows - 1) / 2 ;
+        }
+
+        for (int i = startSeachXPosition; i < startSeachXPosition + radius; i++)
+        {
+            (int x, int y) position = (0,0);
+
+            for (int j = 0; j < radius; j++)
+            {
+                position = (i, j);
+                posiblePositions.Add(position);
+            }
+        }
+
+        // todo
+        if (battleStartData.playerData.playerUnits.Count > posiblePositions.Count)
+        {
+            Debug.LogError("Number of Players is bigger than posiblePositions to put unit on BattleField Critical Error");
+        }
+
+        foreach (DataUnit dataUnit in battleStartData.playerData.playerUnits)
+        {
+            (int x, int y) occupiedPosition = dataUnit.SetRandomStartingPosition(posiblePositions);
+
+            posiblePositions.Remove(occupiedPosition);
+        }
+    }
+
+
+    private void SetEnemyRandomPosition (BattleStartData battleStartData)
+    {
+        List<(int x, int y)> posiblePositions = new List<(int x, int y)>();
+
+        int startSeachYPosition = 0;
+        int radius = 3; // Hard coded not good..
+        int minDistanceFromPlayer = 5; // Hard coded not good..
+
+        foreach (DataUnit dataUnit in battleStartData.playerData.playerUnits)
+        {
+            if(dataUnit.StartYPosition > startSeachYPosition)
+            {
+                startSeachYPosition = dataUnit.StartYPosition;
+            }
+        }
+
+        startSeachYPosition += minDistanceFromPlayer;
+
+        for (int i = 0; i < battleStartData.Rows -1; i++)
+        {
+            (int x, int y) position = (0, 0);
+
+            for (int j = startSeachYPosition; j < battleStartData.Collumn -1; j++)
+            {
+                position = (i, j);
+                posiblePositions.Add(position);
+            }
+        }
+
+        // todo
+        if (battleStartData.enemyData.enemieUnits.Count > posiblePositions.Count)
+        {
+            Debug.LogError("Number of Enemis is bigger than posiblePositions to put unit on BattleField Critical Error");
+        }
+
+        foreach (DataUnit dataUnit in battleStartData.enemyData.enemieUnits)
+        {
+            (int x, int y) occupiedPosition = dataUnit.SetRandomStartingPosition(posiblePositions);
+
+            posiblePositions.Remove(occupiedPosition);
+        }
+    }
+
+    private BattleStartData InitTestBattleData()
     {
         BattleStartData battleStartData = new BattleStartData();
 
-        DataUnit newA = new DataUnit();
-        DataUnit newB = new DataUnit();
-        DataUnit newC = new DataUnit();
-        DataUnit newx = new DataUnit();
-        DataUnit newy = new DataUnit();
-        // newA
-        newA.StartPos.XPosition = 6;
-        newA.StartPos.YPosition = 13;
-        newA._name = "Player1";
-        newA.imageName = "Gargoyle";
-        newA.health = 14;
-        newA.damage = 6;
-        newA.threat = 3;
-        newA.range = 0;
-        newA._movement = 2;
-
-
-
-        newB.StartPos.XPosition = 0;
-        newB.StartPos.YPosition = 0;
-        newB._name = "Zombie1";
-        newB.imageName = "Zombie 1";
-        newB.health = 9;
-        newB.damage = 4;
-        newB.threat = 5;
-        newB.range = 2;
-        newB._movement = 1;
-
-        newC.StartPos.XPosition = 0;
-        newC.StartPos.YPosition = 6;
-        newC._name = "Zombie2";
-        newC.imageName = "Zombie 2";
-        newC.health = 8;
-        newC.damage = 3;
-        newC.threat = 1;
-        newC.range = 1;
-
-        newx.StartPos.XPosition = 5;
-        newx.StartPos.YPosition = 2;
-        newx._name = "Zombie3";
-        newx.imageName = "Zombie 1";
-        newx.health = 8;
-        newx.damage = 3;
-        newx.threat = 2;
-        newx.range = 0;
-
-
-        newy.StartPos.XPosition = 4;
-        newy.StartPos.YPosition = 6;
-        newy._name = "Player2";
-        newy.imageName = "Gargoyle";
-        newy.health = 11;
-        newy.damage = 1;
-        newy.threat = 2;
-        newy.range = 2;
-        newy._movement = 3;
+        DataUnit newA = new DataUnit(2,3,10,5,3,2,2, "Player1", "Gargoyle");
+        DataUnit newB = new DataUnit(4, 5, 5, 5, 4, 1, 2, "Player2", "Gargoyle");
+        DataUnit newC = new DataUnit(3, 0, 6, 2, 2, 1, 2, "Zombie1", "Zombie");
+        DataUnit newx = new DataUnit(2, 7, 8, 2, 1, 2, 1, "Zombie2", "Zombie2");
+        DataUnit newy = new DataUnit(5, 10, 6, 1, 3, 1, 1, "Zombie3", "Zombie");
 
         battleStartData.playerData.playerUnits.Add(newA);
-        battleStartData.playerData.playerUnits.Add(newy);
-        battleStartData.aiData.enemieUnits.Add(newB);
-        battleStartData.aiData.enemieUnits.Add(newC);
-        battleStartData.aiData.enemieUnits.Add(newx);
+        battleStartData.playerData.playerUnits.Add(newB);
+        battleStartData.enemyData.enemieUnits.Add(newC);
+        battleStartData.enemyData.enemieUnits.Add(newx);
+        battleStartData.enemyData.enemieUnits.Add(newy);
 
         return battleStartData;
     }
@@ -419,12 +474,12 @@ public class BattleController : MonoBehaviour
     // this is TMP method
     private Squar FindSquarForAI()
     {
-        int rowsCount = rows.Count - 1;
+        int rowsCount = _rows.Count - 1;
 
         while (true)
         {
             int xCor = Random.Range(0, rowsCount);
-            int yCor = Random.Range(0, collumCount);
+            int yCor = Random.Range(0, _collumCount);
 
             if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
             {
@@ -655,7 +710,7 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    public List<Squar> GetTheAdjacentSquare(Squar centerSquar) 
+    private List<Squar> GetTheAdjacentSquare(Squar centerSquar) 
     {
         List<Squar> checkedSquars = new List<Squar>();
 
@@ -665,7 +720,7 @@ public class BattleController : MonoBehaviour
         Squar downSquare = null;
 
         // check up direction
-        if (centerSquar.xCoordinate + 1 >= rows.Count)
+        if (centerSquar.xCoordinate + 1 >= _rows.Count)
             upSquare = null;
         else
             upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
@@ -677,7 +732,7 @@ public class BattleController : MonoBehaviour
             downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
 
         // check right direction
-        if (centerSquar.yCoordinate + 1 >= collumCount)
+        if (centerSquar.yCoordinate + 1 >= _collumCount)
             rightSquare = null;
         else
             rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
@@ -707,7 +762,7 @@ public class BattleController : MonoBehaviour
         return checkedSquars;
     }
 
-    public List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool searchForBorders = false)
+    private List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool searchForBorders = false)
     {
         List<Squar> checkedSquars = new List<Squar>();
 
@@ -717,7 +772,7 @@ public class BattleController : MonoBehaviour
         Squar downSquare = null;
 
         // check up direction
-        if (centerSquar.xCoordinate + 1 >= rows.Count)
+        if (centerSquar.xCoordinate + 1 >= _rows.Count)
             upSquare = null;
         else
             upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
@@ -729,7 +784,7 @@ public class BattleController : MonoBehaviour
             downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
 
         // check right direction
-        if (centerSquar.yCoordinate + 1 >= collumCount)
+        if (centerSquar.yCoordinate + 1 >= _collumCount)
             rightSquare = null;
         else
             rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
@@ -776,7 +831,8 @@ public class BattleController : MonoBehaviour
         return checkedSquars;
     }
 
-    public List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
+    // Get Cross Squares (maybe will be useable)
+    private List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
     {
         List<Squar> checkedSquars = new List<Squar>();
         centerSquar.isInReach = true;
@@ -787,7 +843,7 @@ public class BattleController : MonoBehaviour
         Squar downCrossSquare = null;
 
         // check upLeft direction
-        if (centerSquar.xCoordinate + 1 >= rows.Count || centerSquar.yCoordinate - 1 < 0)
+        if (centerSquar.xCoordinate + 1 >= _rows.Count || centerSquar.yCoordinate - 1 < 0)
             upCrossSquare = null;
         else
             upCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate - 1);
@@ -799,13 +855,13 @@ public class BattleController : MonoBehaviour
             downCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate - 1);
 
         // check upRight direction
-        if (centerSquar.xCoordinate + 1 >= rows.Count || centerSquar.yCoordinate + 1 >= collumCount)
+        if (centerSquar.xCoordinate + 1 >= _rows.Count || centerSquar.yCoordinate + 1 >= _collumCount)
             rightCrossSquare = null;
         else
             rightCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate + 1);
 
         // check downRight direction
-        if (centerSquar.xCoordinate - 1 < 0 || centerSquar.yCoordinate + 1 >= collumCount)
+        if (centerSquar.xCoordinate - 1 < 0 || centerSquar.yCoordinate + 1 >= _collumCount)
             leftCrossSquare = null;
         else
             leftCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate + 1);
@@ -864,7 +920,7 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    public void SetCursor(Squar sq)
+    private void SetCursor(Squar sq)
     {
         sq.CursorEvent.canAttack = false;
         sq.CursorEvent.isInMoveRange = false;
@@ -891,7 +947,7 @@ public class BattleController : MonoBehaviour
         unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
     }
 
-    public void UpdateRightPanel (Squar sq)
+    private void UpdateRightPanel (Squar sq)
     {
         Unit unit = sq.unitInSquar;
 
