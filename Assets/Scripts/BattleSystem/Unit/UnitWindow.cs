@@ -22,7 +22,7 @@ public class UnitWindow : MonoBehaviour
 
         health.text = unit.MaxHealth.ToString();
 
-        UpdateRange(unit._range);
+        UpdateRange(unit._rangeMax);
 
         damage.text = unit._damage.ToString();
 

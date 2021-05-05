@@ -25,7 +25,8 @@ public class Unit : MonoBehaviour
     private int _maxHealth = 5;
     public int _damage = 0;
     public int _threat = 0;
-    public int _range = 0;
+    public int _rangeMax = 0;
+    public int _rangeMin = 0;
 
     public int _movement = 1;
 
@@ -70,13 +71,14 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, string imageName, Team tea)
+    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, string imageName, Team tea, int rangeMin)
     {
         _name = name;
         _maxHealth = health;
         _damage = dmg;
         _threat = threat;
-        _range = range;
+        _rangeMax = range;
+        _rangeMin = rangeMin;
 
         _movement = movement;
 
@@ -109,7 +111,8 @@ public class Unit : MonoBehaviour
         _maxHealth = unit._maxHealth;
         _damage = unit._damage;
         _threat = unit._threat;
-        _range = unit._range;
+        _rangeMax = unit._rangeMax;
+        _rangeMin = unit._rangeMin;
 
         CurrentPos.XPosition = unit.CurrentPos.XPosition;
         CurrentPos.YPosition = unit.CurrentPos.YPosition;
@@ -195,7 +198,7 @@ public class Unit : MonoBehaviour
 
 public class DataUnit 
 {
-    private string imageName = "Defaul";  // todo musím se zamyslet jestli je potrebuji a nebo kde budu nahravat obrazek..
+    private string _imageName = "Defaul";  // todo musím se zamyslet jestli je potrebuji a nebo kde budu nahravat obrazek..
     private string _name = "Zombie";
 
     private Unit.PositionSquar StartPos;
@@ -203,10 +206,11 @@ public class DataUnit
     private int health = 5;
     private int damage = 0;
     private int threat = 0;
-    private int range = 0;
+    private int rangeMax = 0;
+    private int rangeMin = 0;
     private int _movement = 1;
 
-    public string ImageName { get { return this.imageName; } }
+    public string ImageName { get { return this._imageName; } }
 
     public string Name { get { return this._name; } }
 
@@ -216,7 +220,9 @@ public class DataUnit
 
     public int Threat { get { return this.threat; } }
 
-    public int Range { get { return this.range; } }
+    public int RangeMax { get { return this.rangeMax; } }
+
+    public int RangeMin { get { return this.rangeMin; } }
 
     public int Movement { get { return this._movement; } }
 
@@ -235,7 +241,7 @@ public class DataUnit
         this.health = monster.Health;
         this.damage = monster.Military;
         this.threat = monster.Threat;
-        this.range = monster.Range;
+        this.rangeMax = monster.Range;
         this._movement = monster.BattleSpeed;
     }
 
@@ -245,20 +251,24 @@ public class DataUnit
         this._name = character.GetName();
         this.health = (int)character.LifeEnergy.CurrentLife;
         this.damage = character.Stats.military;
-        this.threat = 2; // Todo
-        this.range = 1; // Todo
-        this._movement = 1; // Todo
+        this.threat = CalculateThreat(character.Stats);
+        this.rangeMax = 1; // Todo
+        this._movement = 1; // Todo pak bude nato nejaky vzorec
     }
 
     // Testing will be remove
-    public DataUnit(int xPos , int yPos , int health, int damage, int threat, int range, int movement, string name, string imgName)
+    public DataUnit(int xPos , int yPos , int health, int damage, int threat, int range, int movement, string name, string imgName, int minRange)
     {
         this._name = name;
         this.health = health;
         this.damage = damage;
         this.threat = threat;
-        this.range = range;
+        this.rangeMax = range;
         this._movement = movement;
+
+        this.rangeMin = minRange;
+
+        this._imageName = imgName;
 
         StartPos.XPosition = xPos;
         StartPos.YPosition = yPos;
@@ -275,5 +285,14 @@ public class DataUnit
         StartPos.YPosition = newPos.y;
 
         return newPos;
+    }
+
+    public int CalculateThreat (CurrentStats stats)
+    {
+        //  Patern -> 2+(0,5MiL+0,25TiL+0,15SvL+0,1SoL+Kar/30)↓ (min 2)
+        float floatThreat = 2 + (0.5f * stats.military + 0.25f * stats.tech + 0.15f * stats.science + 0.1f * stats.social);
+        int finalThreat = Mathf.FloorToInt(floatThreat);
+
+        return finalThreat;
     }
 }

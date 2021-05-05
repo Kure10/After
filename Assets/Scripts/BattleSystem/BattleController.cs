@@ -60,9 +60,13 @@ public class BattleController : MonoBehaviour
 
     private void Start()
     {
-        //CreateBattleField(5,12);
-        //InitBattle();
-        //TestStartBattle();
+        // This is for testing purpose only when u are in BATTLEGROUND scene!!
+
+        BattleStartData battleStartData = InitTestBattleData();
+
+        CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
+        InitBattle(battleStartData);
+        TestStartBattle();
     }
 
     private void Update()
@@ -255,12 +259,6 @@ public class BattleController : MonoBehaviour
        
         _isPlayerTurn = true; // todo for now is not decided who will turn first .. ? ?? Now player...
 
-        // This is for testing purpose only when u are in BATTLEGROUND scene!!
-        if(battleData.battleType == BattleType.Testing)
-        {
-            battleData = InitTestBattleData(); 
-        }
-
         order = 0;
         int amountEnemies = battleData.enemyData.enemieUnits.Count;
         int amountPlayers = battleData.playerData.playerUnits.Count;
@@ -275,7 +273,7 @@ public class BattleController : MonoBehaviour
             GameObject unt = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unt.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.Range, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Demon);
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Demon, dataUnit.RangeMin);
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
             uniqNumber++;
@@ -289,7 +287,7 @@ public class BattleController : MonoBehaviour
             GameObject unit1 = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.Range, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Human);
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Human, dataUnit.RangeMin);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
@@ -407,11 +405,14 @@ public class BattleController : MonoBehaviour
     {
         BattleStartData battleStartData = new BattleStartData();
 
-        DataUnit newA = new DataUnit(2,3,10,5,3,2,2, "Player1", "Gargoyle");
-        DataUnit newB = new DataUnit(4, 5, 5, 5, 4, 1, 2, "Player2", "Gargoyle");
-        DataUnit newC = new DataUnit(3, 0, 6, 2, 2, 1, 2, "Zombie1", "Zombie");
-        DataUnit newx = new DataUnit(2, 7, 8, 2, 1, 2, 1, "Zombie2", "Zombie2");
-        DataUnit newy = new DataUnit(5, 10, 6, 1, 3, 1, 1, "Zombie3", "Zombie");
+        battleStartData.Rows = 8;
+        battleStartData.Collumn = 16;
+
+        DataUnit newA = new DataUnit(2,3,10,5,3,3,2, "Player1", "Gargoyle", 2);
+        DataUnit newB = new DataUnit(4, 5, 5, 5, 7, 5, 2, "Player2", "Gargoyle", 2);
+        DataUnit newC = new DataUnit(3, 0, 6, 2, 2, 1, 2, "Zombie1", "Zombie 1", 1);
+        DataUnit newx = new DataUnit(2, 7, 8, 2, 1, 2, 1, "Zombie2", "Zombie 2", 0);
+        DataUnit newy = new DataUnit(5, 10, 6, 1, 3, 1, 1, "Zombie3", "Zombie 1", 0);
 
         battleStartData.playerData.playerUnits.Add(newA);
         battleStartData.playerData.playerUnits.Add(newB);
@@ -653,42 +654,54 @@ public class BattleController : MonoBehaviour
     {
         _squaresInUnitAttackRange.Clear();
 
-        int attackRange = _activeUnit._range;
+        int attackMaxRange = _activeUnit._rangeMax;
+        int attackMinRange = _activeUnit._rangeMin;
+
         Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
 
         _squaresInUnitAttackRange.AddRange(GetTheAdjacentAttackSquare(centerSquar));
 
-        //if (attackRange >= 1)
-        //{
-        //    _squaresInUnitAttackRange.AddRange(GetTheAdjacentCrossSquare(centerSquar));
-        //}
+        List<Squar> squaresToMinAtackRange = new List<Squar>();
 
         List<Squar> lastAdjectedSq = new List<Squar>();
         lastAdjectedSq.AddRange(_squaresInUnitAttackRange);
 
-        for (int i = 1; i < attackRange; i++)
+        squaresToMinAtackRange.AddRange(_squaresInUnitAttackRange);
+
+
+        for (int i = 1; i < attackMaxRange; i++)
         {
             List<Squar> adjectedSquarsInCurrentRange = new List<Squar>();
 
             foreach (Squar sq in lastAdjectedSq)
             {
                 adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentAttackSquare(sq));
-               // adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentCrossSquare(sq));
             }
 
             lastAdjectedSq.Clear();
             lastAdjectedSq.AddRange(adjectedSquarsInCurrentRange);
+
+            if (i < attackMinRange)  //  i <= by znamenalo ze zahrnuje hranici minimalniho range.
+            {
+                squaresToMinAtackRange.AddRange(adjectedSquarsInCurrentRange);
+            }
 
             _squaresInUnitAttackRange.AddRange(lastAdjectedSq);
         }
 
         _squaresInUnitAttackRange.Add(centerSquar);
 
-        // search and activate borders for attack range
-        //foreach (Squar squ in _squaresInUnitAttackRange)
-        //{
-        //    GetTheAdjacentAttackSquare(squ, true);
-        //}
+        if (attackMinRange != 0 && attackMinRange < attackMaxRange)
+        {
+            _squaresInUnitAttackRange.Remove(centerSquar);
+            centerSquar.isInReach = false;
+
+            foreach (Squar squar in squaresToMinAtackRange)
+            {
+                _squaresInUnitAttackRange.Remove(squar);
+                squar.isInReach = false;
+            }
+        }
     }
 
     private void ShowSquaresWithinRange(bool makeVisible)
@@ -772,7 +785,7 @@ public class BattleController : MonoBehaviour
         Squar downSquare = null;
 
         // check up direction
-        if (centerSquar.xCoordinate + 1 >= _rows.Count)
+        if (centerSquar.xCoordinate + 1 >= _rowsCount)
             upSquare = null;
         else
             upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
