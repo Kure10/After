@@ -17,7 +17,7 @@ public class Monster
     private int _battleSpeed = 0;
     private int _range = 0;
 
-    private Sprite _sprite = null; // Todo doesnt have use
+    private string _spriteName = null;
 
     public MonsterType _monsterType = MonsterType.Demon;
 
@@ -36,7 +36,7 @@ public class Monster
     public float Speed { get { return this._speed; } }
     public int Danger { get { return this._danger; } }
     public int BattleSpeed { get { return this._battleSpeed; } }
-    public Sprite Sprite { get { return this._sprite; } }
+    public string SpriteName { get { return this._spriteName; } }
 
     public Monster(long idNumber, string name, string description)
     {
@@ -45,7 +45,7 @@ public class Monster
         this._description = description;
     }
 
-    public Monster(long idNumber, string name, string description, int threat, int military, int health, decimal speed, int danger, int range)
+    public Monster(long idNumber, string name, string description, int threat, int military, int health, decimal speed, int danger, int range, string spriteName)
     {
         this._id = idNumber;
         this._name = name;
@@ -57,6 +57,7 @@ public class Monster
         this._speed = (float)speed;
         this._danger = danger;
         this._range = range;
+        this._spriteName = spriteName;
 
         float value = (float)speed + 1;
         _battleSpeed = Mathf.RoundToInt(value);  

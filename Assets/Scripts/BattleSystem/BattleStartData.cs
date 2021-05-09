@@ -33,27 +33,22 @@ public class BattleStartData
     public void AddMonsterBattleData(Monster monster)
     {
         DataUnit dataUnit = new DataUnit(monster);
-
         enemyData.enemieUnits.Add(dataUnit);
     }
 
     public void AddPlayerBattleData(Character character)
     {
         DataUnit dataUnit = new DataUnit(character);
-
         playerData.playerUnits.Add(dataUnit);
     }
 }
 
 public class BattlePlayerStartData
 {
-
     public List<DataUnit> playerUnits = new List<DataUnit>();
 }
 
 public class BattleAIStartData
 {
    public List<DataUnit> enemieUnits = new List<DataUnit>();
-
-
 }

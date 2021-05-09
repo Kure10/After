@@ -26,10 +26,7 @@ public class UnitWindow : MonoBehaviour
 
         damage.text = unit._damage.ToString();
 
-        // tmp
-        var spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
-        var sprite = spriteLoader.LoadUnitSprite(unit._imageName);
-        image.sprite = sprite;
+        image.sprite = unit._sprite;
     }
 
     public void UpdateHealthBar (int current , int max)

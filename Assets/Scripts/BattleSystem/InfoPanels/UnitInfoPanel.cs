@@ -32,11 +32,7 @@ public class UnitInfoPanel : MonoBehaviour
 
         _damage.text = unit._damage.ToString();
 
-        // tmp
-        var spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
-        var sprite = spriteLoader.LoadUnitSprite(unit._imageName);
-        _image.sprite = sprite;
-
+        _image.sprite = unit._sprite;
     }
 
     private void UpdateHealthBar(int current, int max)

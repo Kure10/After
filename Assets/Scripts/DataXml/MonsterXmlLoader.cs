@@ -51,7 +51,7 @@ public class MonsterXmlLoader : MonoBehaviour
 
             Monster monster = new Monster(idNumber, item.GetStrStat("Name"), item.GetStrStat("Description")
                 , item.GetIntStat("Treath"), item.GetIntStat("MiL"), item.GetIntStat("Lives")
-                , item.GetDecStat("Speed"), item.GetIntStat("Danger"), item.GetIntStat("Range"));
+                , item.GetDecStat("Speed"), item.GetIntStat("Danger"), item.GetIntStat("Range"), item.GetStrStat("BeastPicture"));
 
             Monster.MonsterType type = Monster.MonsterType.Demon;
             string kind = item.GetStrStat("EnemyKind");
@@ -100,51 +100,9 @@ public class MonsterXmlLoader : MonoBehaviour
                 }
             }
 
-            //if (spriteLoader != null)
-            //{
-            //    string spriteName = item.GetStrStat("SpecAvatar");
-            //    spec.Sprite = spriteLoader.LoadSpecialistSprite(spriteName);
-            //}
-            //else
-            //{
-            //    Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded -> " + this.name);
-            //}
-
-            //// for data which can be translated
-            //spec.Povolani = item.GetStrStat("SpecClass");
-            //spec.Story = item.GetStrStat("SpecStory");
-            //// spec.na = spec.FullName + " - " + spec.Povolani; // for unity inspector.
-
-
-
             allMonsters.Add(monster);
         }
 
         return allMonsters;
     }
-
-    public Monster.PerkType Neco(string perkInText)
-    {
-        Monster.PerkType perk = Monster.PerkType.FirstStrike;
-
-        if (perkInText.Contains("dsad"))
-        {
-
-        }
-        else if(perkInText.Contains("dsad"))
-        {
-
-        }
-        else if (perkInText.Contains("dsad"))
-        {
-
-        }
-        else if (perkInText.Contains("dsad"))
-        {
-
-        }
-
-        return perk;
-    }
-
 }

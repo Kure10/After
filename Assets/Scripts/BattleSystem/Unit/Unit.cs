@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 
@@ -17,6 +18,7 @@ public class Unit : MonoBehaviour
 
     public int _id = 0;
     public string _imageName = "Defaul";
+    public Sprite _sprite = null;
 
     public PositionSquar CurrentPos;
     //
@@ -71,7 +73,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, string imageName, Team tea, int rangeMin)
+    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, Sprite sprite, Team tea, int rangeMin)
     {
         _name = name;
         _maxHealth = health;
@@ -85,7 +87,7 @@ public class Unit : MonoBehaviour
         CurrentPos.XPosition = XPosition;
         CurrentPos.YPosition = YPosition;
 
-        _imageName = imageName;
+        _sprite = sprite;
         _id = id;
 
         _iniciation = CalculateIniciation();
@@ -114,10 +116,12 @@ public class Unit : MonoBehaviour
         _rangeMax = unit._rangeMax;
         _rangeMin = unit._rangeMin;
 
+
         CurrentPos.XPosition = unit.CurrentPos.XPosition;
         CurrentPos.YPosition = unit.CurrentPos.YPosition;
 
         _imageName = unit._imageName;
+        _sprite = unit._sprite;
         _id = unit._id;
 
         _iniciation = unit._iniciation;
@@ -243,11 +247,13 @@ public class DataUnit
         this.threat = monster.Threat;
         this.rangeMax = monster.Range;
         this._movement = monster.BattleSpeed;
+        this._imageName = monster.SpriteName;
     }
 
     // Todo .....
     public DataUnit(Character character)
     {
+        this._imageName = character.GetBlueprint().SpriteString;
         this._name = character.GetName();
         this.health = (int)character.LifeEnergy.CurrentLife;
         this.damage = character.Stats.military;

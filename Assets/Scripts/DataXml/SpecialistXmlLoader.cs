@@ -76,6 +76,7 @@ public class SpecialistXmlLoader : MonoBehaviour
             if (spriteLoader != null)
             {
                 string spriteName = item.GetStrStat("SpecAvatar");
+                spec.SpriteString = spriteName;
                 spec.Sprite = spriteLoader.LoadSpecialistSprite(spriteName);
             }
             else

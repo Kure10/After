@@ -58,15 +58,21 @@ public class BattleController : MonoBehaviour
 
     private List<Squar> _squaresInUnitAttackRange = new List<Squar>();
 
+    private ResourceSpriteLoader spriteLoader = null;
+
+    private void Awake()
+    {
+        
+    }
     private void Start()
     {
         // This is for testing purpose only when u are in BATTLEGROUND scene!!
 
-        BattleStartData battleStartData = InitTestBattleData();
+        //BattleStartData battleStartData = InitTestBattleData();
 
-        CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
-        InitBattle(battleStartData);
-        TestStartBattle();
+        //CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
+        //InitBattle(battleStartData);
+        //TestStartBattle();
     }
 
     private void Update()
@@ -214,6 +220,8 @@ public class BattleController : MonoBehaviour
 
     public void StartBattle(BattleStartData battleStartData)
     {
+        spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
         battleStartData.Rows = 8;
@@ -273,7 +281,12 @@ public class BattleController : MonoBehaviour
             GameObject unt = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unt.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Demon, dataUnit.RangeMin);
+            var sprite = spriteLoader.LoadUnitSprite(dataUnit.ImageName);
+
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
+                dataUnit.StartXPosition, uniqNumber, dataUnit.Movement, sprite, Unit.Team.Demon, dataUnit.RangeMin);
+
+
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
             uniqNumber++;
@@ -287,7 +300,10 @@ public class BattleController : MonoBehaviour
             GameObject unit1 = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition, dataUnit.StartXPosition, uniqNumber, dataUnit.Movement,dataUnit.ImageName,Unit.Team.Human, dataUnit.RangeMin);
+            var sprite = spriteLoader.LoadSpecialistSprite(dataUnit.ImageName);
+
+            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
+                dataUnit.StartXPosition, uniqNumber, dataUnit.Movement, sprite, Unit.Team.Human, dataUnit.RangeMin);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);

@@ -11,6 +11,7 @@ public class Specialists
     [Header("Identification")]
     [SerializeField] private long identification = 0;
     [SerializeField] private Sprite sprite = null;
+    private string spriteString = null;
     [SerializeField] private string fullName = "Pavel";
     // [SerializeField] Povolani povolani;
     [SerializeField] private string story = "Byl jsme na ceste";
@@ -54,6 +55,8 @@ public class Specialists
     public long Id { get { return this.identification; } set { this.identification = value; } }
 
     public Sprite Sprite { get { return this.sprite; } set { this.sprite = value; } }
+
+    public string SpriteString { get { return this.spriteString; } set { this.spriteString = value; } }
 
     public Color SpecialistColor { get { return this.backgroundColor; } set { this.backgroundColor = value; } }
 
