@@ -8,8 +8,7 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
     public Animator animator;
-    public UnitWindow _unitWindow;
-
+    
     public struct PositionSquar
     {
         public int XPosition;
@@ -38,19 +37,22 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private GameObject activePanel;
 
+    private UnitWindow _unitWindow;
     private bool _isActive;
-
     private int _currentHealth = 1;
 
+    private bool _isDead = false;
+
+    public bool IsDead { get { return this._isDead; } }
     public int MaxHealth { get { return this._maxHealth; } }
     public bool IsActive
-    { 
+    {
         get { return this._isActive; }
-        set 
-        { 
+        set
+        {
             _isActive = value;
             activePanel.SetActive(_isActive);
-        } 
+        }
     }
 
     public int CurrentHealth
@@ -60,7 +62,7 @@ public class Unit : MonoBehaviour
         {
             _currentHealth = value;
 
-            if(_currentHealth < 0)
+            if (_currentHealth < 0)
             {
                 _currentHealth = 0;
             }
@@ -69,8 +71,18 @@ public class Unit : MonoBehaviour
                 _currentHealth = _maxHealth;
             }
 
-            _unitWindow.UpdateHealthBar(_currentHealth,_maxHealth);
+            _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
         }
+    }
+
+    public void UpdateData(Unit unit)
+    {
+        if(_unitWindow == null)
+        {
+            _unitWindow = GetComponent<UnitWindow>();
+        }
+
+        this._unitWindow.UpdateStats(unit);
     }
 
     public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, Sprite sprite, Team tea, int rangeMin)
@@ -110,7 +122,7 @@ public class Unit : MonoBehaviour
     public void InitUnit(Unit unit)
     {
         _name = unit.name;
-        _maxHealth = unit._maxHealth;
+        _maxHealth = unit.MaxHealth;
         _damage = unit._damage;
         _threat = unit._threat;
         _rangeMax = unit._rangeMax;
@@ -128,9 +140,7 @@ public class Unit : MonoBehaviour
 
         _team = unit._team;
 
-        // tmp
-        _currentHealth = _maxHealth;
-        //
+        _currentHealth = unit.CurrentHealth;
 
         if (_unitWindow == null)
         {
@@ -164,11 +174,12 @@ public class Unit : MonoBehaviour
         bool isDead = false;
         if (_currentHealth <= 0)
         {
-            // unit is dead
+            _isDead = true;
+
             // animation
             // what ever call back///
 
-            return isDead = true;
+            return isDead = _isDead;
         }
 
         return isDead;
@@ -189,7 +200,6 @@ public class Unit : MonoBehaviour
     }
 
     // enums
-
     public enum Team
     {
         Human,

@@ -41,10 +41,10 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public void InicializedStartInventory(List<ItemBlueprint> blueprits)
+    public void InicializedStartInventory(List<ItemBlueprint> loot)
     {
         int size = _baseInventorySize + _additionalInventorySize;
-        int count = blueprits.Count;
+        int count = loot.Count;
 
         // init Slots
         for (int i = 0; i < size; i++)
@@ -59,9 +59,9 @@ public class Inventory : MonoBehaviour
             // if Nomore items t
             if (i < count)
             {
-                ItemBlueprint blueprint = blueprits[i];
+                ItemBlueprint blueprint = loot[i];
 
-                GameObject game = itemCreator.CreateItemByType(blueprits[i], _itemPrefab);
+                GameObject game = itemCreator.CreateItemByType(loot[i], _itemPrefab);
                 var item = game.GetComponent<Item>();
 
                 if (item == null) // Todo Res and None type.. 

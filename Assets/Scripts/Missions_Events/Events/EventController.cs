@@ -136,6 +136,8 @@ public class EventController : MonoBehaviour
             _battleStartData.AddPlayerBattleData(character);
         }
 
+        _battleStartData.AddCharacterFromMission(mission.GetCharactersOnMission);
+
         BattleType battleType = BattleType.Testing;
         string type = statClass.GetStrStat("BattleType");
         bool checkParse = Enum.TryParse(type, out battleType);

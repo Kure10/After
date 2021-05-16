@@ -20,7 +20,7 @@ public class UnitWindow : MonoBehaviour
     {
         threat.text = unit._threat.ToString();
 
-        health.text = unit.MaxHealth.ToString();
+        UpdateHealthBar(unit.CurrentHealth,unit.MaxHealth);
 
         UpdateRange(unit._rangeMax);
 

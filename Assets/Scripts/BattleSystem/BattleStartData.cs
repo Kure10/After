@@ -30,6 +30,13 @@ public class BattleStartData
 
     public bool isRandomEnemyPosition = true;
 
+    private List<Character> charactersInBattleFromMission = new List<Character>();
+
+    public void AddCharacterFromMission(List<Character> charactersFromMission)
+    {
+        charactersInBattleFromMission.AddRange(charactersFromMission);
+    }
+
     public void AddMonsterBattleData(Monster monster)
     {
         DataUnit dataUnit = new DataUnit(monster);

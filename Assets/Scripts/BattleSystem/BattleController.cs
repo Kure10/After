@@ -12,6 +12,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private UnitInfoPanel leftUnitInfo;
     [SerializeField] private UnitInfoPanel rightUnitInfo;
     [SerializeField] private BattleLogPanel battleLog;
+    [SerializeField] private BattleResultPopup battleResultPopup;
 
     [Header("Info Popup")]
     [SerializeField] private DetailUnitPopup detailPopup;
@@ -27,8 +28,6 @@ public class BattleController : MonoBehaviour
     private Squar[,] _squaresInBattleField; 
 
     public List<Unit> unitsOnBattleField = new List<Unit>();
-
-
 
     [Space]
     public GameObject _unit;
@@ -50,7 +49,7 @@ public class BattleController : MonoBehaviour
 
     private Unit _activeUnit = null;
 
-    private int order = 0;
+    private int _order = 0;
 
     private int roundCount = 1;
 
@@ -60,6 +59,8 @@ public class BattleController : MonoBehaviour
 
     private ResourceSpriteLoader spriteLoader = null;
 
+    private BattleStartData _battleStartData;
+
     private void Awake()
     {
         
@@ -68,11 +69,12 @@ public class BattleController : MonoBehaviour
     {
         // This is for testing purpose only when u are in BATTLEGROUND scene!!
 
-        //BattleStartData battleStartData = InitTestBattleData();
+        spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+        _battleStartData = InitTestBattleData();
 
-        //CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
-        //InitBattle(battleStartData);
-        //TestStartBattle();
+        CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+        InitBattle(_battleStartData);
+        TestStartBattle();
     }
 
     private void Update()
@@ -108,26 +110,37 @@ public class BattleController : MonoBehaviour
                 SetSquaresUnvisited();
                 ShowSquaresWithinRange(false);
 
-                 order++;
+                 _order++;
 
-                if (order >= unitsOnBattleField.Count)
+                int countAliveUnit = 0;
+                foreach (Unit unit in unitsOnBattleField)
                 {
-                    order = 0;
+                    if(!unit.IsDead)
+                    {
+                        countAliveUnit++;
+                    }
+                }
+
+                // Next round so calc new iniciative
+                if (_order >= countAliveUnit)
+                {
+                    _order = 0;
                     roundCount++;
                     battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
 
-                    // nova iniciativa a novy order jednotek..
-
+                   // new iniciative
                     foreach (Unit unit in unitsOnBattleField)
                     {
-                       unit._iniciation =  unit.CalculateIniciation();
+                        if(!unit.IsDead)
+                        {
+                            unit._iniciation = unit.CalculateIniciation();
+                        }
                     }
 
                     SortUnitAccordingIniciation();
                     battleInfoPanel.UpdateUnitNewTurnOrder(unitsOnBattleField, _unit);
                 }
-
-                    
+ 
                 UpdateActiveUnit();
 
                 FindSquaresInUnitMoveRange();
@@ -141,9 +154,30 @@ public class BattleController : MonoBehaviour
 
                 _turnIsOver = false;
 
-                // check if is a victory.
+                VictoryConditionCheck();
             }
         }
+    }
+
+    private void UpdateActiveUnit()
+    {
+        battleInfoPanel.UpdateUnitOrder(_activeUnit, false);
+        _activeUnit.IsActive = false;
+        _activeUnit.UpdateAnim();
+
+        for (int i = _order; i < unitsOnBattleField.Count; i++)
+        {
+            _activeUnit = unitsOnBattleField[i];
+
+            if (!_activeUnit.IsDead)
+                break;
+        }
+
+        _activeUnit.IsActive = true;
+        _activeUnit.UpdateAnim();
+        battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
+
+        battleLog.AddBattleLog($"{_activeUnit._name} has turn");
     }
 
     private bool DetectPlayerInputs()
@@ -196,7 +230,7 @@ public class BattleController : MonoBehaviour
                     AttackInfo attackInfo = null;
                     attackInfo = AttackToUnit(unitOnSquare);
                     battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
-                    result = true;
+                    battleInfoPanel.UpdateUnitData(unitOnSquare);
                     result = true;
                     break;
                 case BattleAction.Heal:
@@ -220,16 +254,18 @@ public class BattleController : MonoBehaviour
 
     public void StartBattle(BattleStartData battleStartData)
     {
+        _battleStartData = battleStartData;
+
         spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
-        battleStartData.Rows = 8;
-        battleStartData.Collumn = 16;
+        _battleStartData.Rows = 8;
+        _battleStartData.Collumn = 16;
 
-        CreateBattleField(battleStartData.Rows, battleStartData.Collumn);
-        SetUnitPosition(battleStartData);
-        InitBattle(battleStartData);
+        CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+        SetUnitPosition(_battleStartData);
+        InitBattle(_battleStartData);
         TestStartBattle();
     }
 
@@ -267,7 +303,7 @@ public class BattleController : MonoBehaviour
        
         _isPlayerTurn = true; // todo for now is not decided who will turn first .. ? ?? Now player...
 
-        order = 0;
+        _order = 0;
         int amountEnemies = battleData.enemyData.enemieUnits.Count;
         int amountPlayers = battleData.playerData.playerUnits.Count;
 
@@ -445,7 +481,7 @@ public class BattleController : MonoBehaviour
 
         if (unitsOnBattleField.Count > 0)
         {
-            _activeUnit = unitsOnBattleField[order];
+            _activeUnit = unitsOnBattleField[_order];
             _activeUnit.IsActive = true;
             _activeUnit.UpdateAnim();
             battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
@@ -491,7 +527,7 @@ public class BattleController : MonoBehaviour
     // this is TMP method
     private Squar FindSquarForAI()
     {
-        int rowsCount = _rows.Count - 1;
+        int rowsCount = _rowsCount - 1;
 
         while (true)
         {
@@ -565,7 +601,7 @@ public class BattleController : MonoBehaviour
 
         if (isDead)
         {
-            KillUnitOnBattleField(defendUnit);
+            DestroyUnitFromBattleField(defendUnit);
             battleInfoPanel.DeleteUnitFromOrder(defendUnit);
             battleLog.AddBattleLog($"{defendUnit._name} is dead");
         }
@@ -577,55 +613,73 @@ public class BattleController : MonoBehaviour
         return attackInfo;
     }
 
-    private void KillUnitOnBattleField(Unit unit)
+    private void DestroyUnitFromBattleField(Unit unit)
     {
-        unitsOnBattleField.Remove(unit);
+        Squar sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
 
-        var sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
+        sq.unitInSquar.gameObject.SetActive(false);
 
-        Destroy(sq.unitInSquar.gameObject, 0.5f);
+       // deadUnitsOnBattleField.Add(sq.unitInSquar);
 
+        // Destroy(sq.unitInSquar.gameObject, 0.5f);
         sq.unitInSquar = null;
-
     }
 
     private bool VictoryConditionCheck ()
     {
+        bool battleIsOver = false;
         int humanUnit = 0;
         int demonUnit = 0;
         int neutralUnit = 0;
 
         foreach (var unit in unitsOnBattleField)
         {
-            if(unit._team == Unit.Team.Human)
+            if(!unit.IsDead)
             {
-                humanUnit++;
-            }
-            else if (unit._team == Unit.Team.Demon)
-            {
-                demonUnit++;
-            }
-            else if (unit._team == Unit.Team.Demon)
-            {
-                neutralUnit++;
+                if (unit._team == Unit.Team.Human)
+                {
+                    humanUnit++;
+                }
+                else if (unit._team == Unit.Team.Demon)
+                {
+                    demonUnit++;
+                }
+                else if (unit._team == Unit.Team.Demon)
+                {
+                    neutralUnit++;
+                }
             }
         }
 
-        if(humanUnit == unitsOnBattleField.Count -1)
+        if(demonUnit == 0 && neutralUnit == 0)
         {
             // human wins
+            Debug.Log("Human wins");
+            //battleResultPopup.neco`
+            battleResultPopup.ShowBattleResult();
+            battleResultPopup.InitPlayerUnits(unitsOnBattleField, _unit);
+            battleIsOver = true;
         }
 
-        if (demonUnit == unitsOnBattleField.Count -1)
+        if (humanUnit == 0 && neutralUnit == 0)
         {
             // demon wins
+            Debug.Log("Demon wins");
+            battleIsOver = true;
         }
 
-        if (neutralUnit == unitsOnBattleField.Count -1)
+        if (demonUnit == 0 && humanUnit == 0)
         {
             // neutral wins
+            Debug.Log("Neutral wins");
+            battleIsOver = true;
         }
 
+        if (battleIsOver)
+        {
+            _isBattleOnline = false;
+        }
+        
 
         return false;
     }
@@ -749,11 +803,11 @@ public class BattleController : MonoBehaviour
         Squar downSquare = null;
 
         // check up direction
-        if (centerSquar.xCoordinate + 1 >= _rows.Count)
+        if (centerSquar.xCoordinate + 1 >= _rowsCount)
             upSquare = null;
         else
             upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
-
+   
         // check down direction
         if (centerSquar.xCoordinate - 1 < 0)
             downSquare = null;
@@ -872,7 +926,7 @@ public class BattleController : MonoBehaviour
         Squar downCrossSquare = null;
 
         // check upLeft direction
-        if (centerSquar.xCoordinate + 1 >= _rows.Count || centerSquar.yCoordinate - 1 < 0)
+        if (centerSquar.xCoordinate + 1 >= _rowsCount || centerSquar.yCoordinate - 1 < 0)
             upCrossSquare = null;
         else
             upCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate - 1);
@@ -884,7 +938,7 @@ public class BattleController : MonoBehaviour
             downCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate - 1);
 
         // check upRight direction
-        if (centerSquar.xCoordinate + 1 >= _rows.Count || centerSquar.yCoordinate + 1 >= _collumCount)
+        if (centerSquar.xCoordinate + 1 >= _rowsCount || centerSquar.yCoordinate + 1 >= _collumCount)
             rightCrossSquare = null;
         else
             rightCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate + 1);
@@ -918,18 +972,7 @@ public class BattleController : MonoBehaviour
         return sq;
     }
 
-    private void UpdateActiveUnit()
-    {
-        battleInfoPanel.UpdateUnitOrder(_activeUnit, false);
-        _activeUnit.IsActive = false;
-        _activeUnit.UpdateAnim();
-        _activeUnit = unitsOnBattleField[order];
-        _activeUnit.IsActive = true;
-        _activeUnit.UpdateAnim();
-        battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
-
-        battleLog.AddBattleLog($"{_activeUnit._name} has turn");
-    }
+    
 
     private void SetSquaresUnvisited()
     {

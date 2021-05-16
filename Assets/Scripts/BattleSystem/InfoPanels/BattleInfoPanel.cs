@@ -21,7 +21,7 @@ public class BattleInfoPanel : MonoBehaviour
 
     public void UpdateUnitOrder(Unit selectedUnit, bool activate)
     {
-        foreach (var item in InfoUnitsList)
+        foreach (Unit item in InfoUnitsList)
         {
             if (selectedUnit._id == item._id)
             {
@@ -59,13 +59,26 @@ public class BattleInfoPanel : MonoBehaviour
 
         foreach (Unit unit in unitsOnBattlefield)
         {
-            var go = Instantiate(unitPrefab, container);
-            var un = go.GetComponent<Unit>();
-            un.InitUnit(unit);
-            InfoUnitsList.Add(un);
+            if(!unit.IsDead)
+            {
+                var go = Instantiate(unitPrefab, container);
+                var un = go.GetComponent<Unit>();
+                un.InitUnit(unit);
+                InfoUnitsList.Add(un);
+            }
+        }
+    }
+
+    public void UpdateUnitData(Unit unitToUpdate)
+    {
+        foreach (var unit in InfoUnitsList)
+        {
+            if (unitToUpdate._id == unit._id)
+            {
+                unit.UpdateData(unitToUpdate);
+            }
         }
 
     }
-
 
 }
