@@ -27,6 +27,7 @@ public class TileFactory : MonoBehaviour
     private Vector2Int specPosition;
 
     private List<Vector2Int> occupiedTiles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +38,7 @@ public class TileFactory : MonoBehaviour
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
         specControler.CreateStartingCharacters(specPosition);
 
-      //  specControler.TestMove();
+        //  specControler.TestMove();
 
         //var spec = specControler.GetStartedCharacters(specPosition);
         //List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
@@ -48,9 +49,8 @@ public class TileFactory : MonoBehaviour
         //    var person = Instantiate(character, Geometry.PointFromGrid(gridPoint), Quaternion.identity);
         //    person.GetComponent<Character>().SetBlueprint(specialist);
         //}
-
-
     }
+
     //Mark tile as occupied (for ie by specilalist) so no one else can move here
     //return false if already occupied
     public bool OccupyTile(Vector2Int coord)
@@ -61,11 +61,13 @@ public class TileFactory : MonoBehaviour
             occupiedTiles.Add(coord);
             return true;
         }
+
         return false;
     }
 
     private static int columns = 0;
     private static int rows = 0;
+
     public void UpdateFog()
     {
         if (columns == 0)
@@ -74,44 +76,44 @@ public class TileFactory : MonoBehaviour
             rows = grid.Length / columns - 1;
         }
 
-        for (int x = 0; x < columns ; x++)
+        for (int x = 0; x < columns; x++)
         {
-            for (int y = 0; y < rows ; y++)
+            for (int y = 0; y < rows; y++)
             {
                 if (grid[x, y] is DebrisTile d)
                 {
                     checkFog(d.tile, x, y);
                 }
-                else if (grid[x,y] is WallTile w)
+                else if (grid[x, y] is WallTile w)
                 {
                     checkFog(w.tile, x, y);
                 }
-                
             }
         }
     }
 
     private void checkFog(GameObject tile, int x, int y)
     {
-                    bool found = false;
-                    //check if any of neighbourhood's tiles is empty tile - if so, remove the fog
-                    for (int x2 = -1; x2 <= 1; x2++)
-                    {
-                        for (int y2 = -1; y2 <= 1; y2++)
-                        {
-                            if (x + x2 < 0) continue;
-                            if (y + y2 < 0) continue;
-                            if (x + x2 > columns) continue;
-                            if (y + y2 > rows) continue;
-                            if (grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
-                            {
-                                tile.transform.Find("Fog").transform.gameObject.SetActive(false);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (found) break;
-                    }
+        bool found = false;
+        //check if any of neighbourhood's tiles is empty tile - if so, remove the fog
+        for (int x2 = -1; x2 <= 1; x2++)
+        {
+            for (int y2 = -1; y2 <= 1; y2++)
+            {
+                if (x + x2 < 0) continue;
+                if (y + y2 < 0) continue;
+                if (x + x2 > columns) continue;
+                if (y + y2 > rows) continue;
+                if (grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
+                {
+                    tile.transform.Find("Fog").transform.gameObject.SetActive(false);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) break;
+        }
     }
 
     public bool IsOccupied(Vector2Int coord)
@@ -123,8 +125,10 @@ public class TileFactory : MonoBehaviour
                 return true;
             }
         }
+
         return false;
     }
+
     public void LeaveTile(Vector2Int coord)
     {
         foreach (var candidate in occupiedTiles.ToArray())
@@ -205,9 +209,9 @@ public class TileFactory : MonoBehaviour
                     case 'd':
                         var item = new DebrisTile(generateTilePrefab(debrisTile, gridPoint), x, z);
                         var holder = item.tile.transform.Find("Hromadka_suti/holder");
-                        holder.Rotate(Vector3.up, (float)rng.NextDouble() * 180);
-                        var rand = (float)rng.NextDouble() * 0.2f;
-                        var newscale = new Vector3(0.9f + rand, 0.5f + (float)rng.NextDouble(), 0.9f + rand);
+                        holder.Rotate(Vector3.up, (float) rng.NextDouble() * 180);
+                        var rand = (float) rng.NextDouble() * 0.2f;
+                        var newscale = new Vector3(0.9f + rand, 0.5f + (float) rng.NextDouble(), 0.9f + rand);
                         holder.localScale = newscale;
                         col.Add(item);
                         break;
@@ -235,7 +239,6 @@ public class TileFactory : MonoBehaviour
             }
         }
 
-     
 
         return ret;
     }
@@ -284,7 +287,7 @@ public class TileFactory : MonoBehaviour
 
             foreach (var neighbour in GetNeighbours(node))
             {
-                if ((!neighbour.walkthrough && !node.walkthrough))
+                if (!neighbour.walkthrough)
                 {
                     continue;
                 }
@@ -367,8 +370,10 @@ public class TileFactory : MonoBehaviour
         {
             return t.building;
         }
+
         return null;
     }
+
     public bool Buildable(Vector2Int coord)
     {
         bool ret = false;
@@ -474,14 +479,16 @@ public class TileFactory : MonoBehaviour
 
                             if (empty)
                             {
-                               ret.Add(Geometry.GridFromPoint(t.tile.transform.position));
+                                ret.Add(Geometry.GridFromPoint(t.tile.transform.position));
                             }
                         }
                     }
                 }
             }
+
             distance++;
         }
+
         return ret;
     }
 
