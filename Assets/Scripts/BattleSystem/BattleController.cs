@@ -7,6 +7,9 @@ using UnityEngine.Events;
 
 public class BattleController : MonoBehaviour
 {
+    [Header("Main")]
+    [SerializeField] InventoryManager _inventoryManager;
+
     [Header("Info Panels")]
     [SerializeField] private BattleInfoPanel battleInfoPanel;
     [SerializeField] private UnitInfoPanel leftUnitInfo;
@@ -69,12 +72,12 @@ public class BattleController : MonoBehaviour
     {
         // This is for testing purpose only when u are in BATTLEGROUND scene!!
 
-        spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
-        _battleStartData = InitTestBattleData();
+        //spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+        //_battleStartData = InitTestBattleData();
 
-        CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
-        InitBattle(_battleStartData);
-        TestStartBattle();
+        //CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+        //InitBattle(_battleStartData);
+        //TestStartBattle();
     }
 
     private void Update()
@@ -258,6 +261,7 @@ public class BattleController : MonoBehaviour
 
         spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
+
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
         _battleStartData.Rows = 8;
@@ -300,14 +304,14 @@ public class BattleController : MonoBehaviour
     private void InitBattle(BattleStartData battleData)
     {
         battleLog.AddBattleLog("Battle Start");
-       
+
+        this.gameObject.SetActive(true);
         _isPlayerTurn = true; // todo for now is not decided who will turn first .. ? ?? Now player...
 
         _order = 0;
         int amountEnemies = battleData.enemyData.enemieUnits.Count;
         int amountPlayers = battleData.playerData.playerUnits.Count;
 
-        int uniqNumber = 0;
 
         for (int i = 0; i < amountEnemies; i++)
         {
@@ -320,12 +324,11 @@ public class BattleController : MonoBehaviour
             var sprite = spriteLoader.LoadUnitSprite(dataUnit.ImageName);
 
             newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
-                dataUnit.StartXPosition, uniqNumber, dataUnit.Movement, sprite, Unit.Team.Demon, dataUnit.RangeMin);
+                dataUnit.StartXPosition, dataUnit.Id, dataUnit.Movement, sprite, Unit.Team.Demon, dataUnit.RangeMin);
 
 
             squar.unitInSquar = newUnit;
-            unitsOnBattleField.Add(newUnit);
-            uniqNumber++;
+            unitsOnBattleField.Add(newUnit); 
         }
 
         for (int i = 0; i < amountPlayers; i++)
@@ -339,11 +342,10 @@ public class BattleController : MonoBehaviour
             var sprite = spriteLoader.LoadSpecialistSprite(dataUnit.ImageName);
 
             newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
-                dataUnit.StartXPosition, uniqNumber, dataUnit.Movement, sprite, Unit.Team.Human, dataUnit.RangeMin);
+                dataUnit.StartXPosition, dataUnit.Id, dataUnit.Movement, sprite, Unit.Team.Human, dataUnit.RangeMin);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
-            uniqNumber++;
         }
 
         // Sort unit order.
@@ -469,8 +471,8 @@ public class BattleController : MonoBehaviour
         battleStartData.playerData.playerUnits.Add(newA);
         battleStartData.playerData.playerUnits.Add(newB);
         battleStartData.enemyData.enemieUnits.Add(newC);
-        battleStartData.enemyData.enemieUnits.Add(newx);
-        battleStartData.enemyData.enemieUnits.Add(newy);
+        //battleStartData.enemyData.enemieUnits.Add(newx);
+        //battleStartData.enemyData.enemieUnits.Add(newy);
 
         return battleStartData;
     }
@@ -651,14 +653,39 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        if(demonUnit == 0 && neutralUnit == 0)
+        if (demonUnit == 0 && neutralUnit == 0)
         {
             // human wins
             Debug.Log("Human wins");
             //battleResultPopup.neco`
-            battleResultPopup.ShowBattleResult();
+            _battleStartData.UpdateMainPlayerData(unitsOnBattleField);
+
             battleResultPopup.InitPlayerUnits(unitsOnBattleField, _unit);
+
+            List<ItemBlueprint> itemsLoot = new List<ItemBlueprint>();
+
+            foreach (DataUnit dataUnit in _battleStartData.enemyData.enemieUnits)
+            {
+                foreach (Monster.Loot loot in dataUnit.GetLoot)
+                {
+                    int randomNumber = Random.Range(0,101); // Todo Lepsi random.
+                    int itemCount = Random.Range(loot.itemCountMin, loot.itemCountMax +1); // Todo Lepsi random.
+                    if (randomNumber <= loot.dropChange)
+                    {
+                        for (int i = 0; i < itemCount; i++)
+                        {
+                            itemsLoot.Add(_inventoryManager.GetResourcesByID(loot.lootID));
+                        } 
+                    }
+                }
+            }
+
+            battleResultPopup.InicializedStartInventory(itemsLoot);
+
+            battleResultPopup.InicializedCharacter(_battleStartData.GetCharacterFromBattle);
             battleIsOver = true;
+
+            battleResultPopup.ShowBattleResult();
         }
 
         if (humanUnit == 0 && neutralUnit == 0)

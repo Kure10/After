@@ -10149,6 +10149,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -22
       objectReference: {fileID: 0}
+    - target: {fileID: 3383673098797584497, guid: 53029ec437231784ba6c0ca270a19c32,
+        type: 3}
+      propertyPath: _itemCreator
+      value: 
+      objectReference: {fileID: 1607481417}
     - target: {fileID: 3469118664996810700, guid: 53029ec437231784ba6c0ca270a19c32,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -10184,6 +10189,11 @@ PrefabInstance:
       propertyPath: _rows.Array.size
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4159085284923827311, guid: 53029ec437231784ba6c0ca270a19c32,
+        type: 3}
+      propertyPath: _inventoryManager
+      value: 
+      objectReference: {fileID: 1607481415}
     - target: {fileID: 4159085284923827311, guid: 53029ec437231784ba6c0ca270a19c32,
         type: 3}
       propertyPath: _rows.Array.data[0]
@@ -11661,7 +11671,6 @@ GameObject:
   - component: {fileID: 1055640480}
   - component: {fileID: 1055640482}
   - component: {fileID: 1055640481}
-  - component: {fileID: 1055640483}
   m_Layer: 5
   m_Name: Panel - Base Info
   m_TagString: Untagged
@@ -11728,18 +11737,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055640479}
   m_CullTransparentMesh: 0
---- !u!114 &1055640483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055640479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14f5b10bdcbdd8a48b3e2b0596b84469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1060583897 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6887389812060612115, guid: 53029ec437231784ba6c0ca270a19c32,
@@ -17547,6 +17544,7 @@ GameObject:
   - component: {fileID: 1607481414}
   - component: {fileID: 1607481415}
   - component: {fileID: 1607481416}
+  - component: {fileID: 1607481417}
   m_Layer: 0
   m_Name: InventoryManager
   m_TagString: Untagged
@@ -17596,11 +17594,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uWindowSpecController: {fileID: 1355431889}
+  _itemCreator: {fileID: 1607481417}
   _itemPrefab: {fileID: 1630212127835737023, guid: a95790e04be2fa54b9ebd790ea1fd78a,
     type: 3}
   _itemSlot: {fileID: 3456231362756869532, guid: 339d8db77719d7f47af8cc154133f49c,
     type: 3}
   inventory: []
+--- !u!114 &1607481417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607481413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf38eb2b33aa9cc439e93e03db29acc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1611219965
 GameObject:
   m_ObjectHideFlags: 0
@@ -18139,7 +18150,6 @@ GameObject:
   - component: {fileID: 1643620423}
   - component: {fileID: 1643620425}
   - component: {fileID: 1643620424}
-  - component: {fileID: 1643620426}
   m_Layer: 5
   m_Name: Panel - Material
   m_TagString: Untagged
@@ -18205,18 +18215,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643620422}
   m_CullTransparentMesh: 0
---- !u!114 &1643620426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643620422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14f5b10bdcbdd8a48b3e2b0596b84469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1655887543
 GameObject:
   m_ObjectHideFlags: 0
@@ -19354,7 +19352,6 @@ GameObject:
   - component: {fileID: 1755604461}
   - component: {fileID: 1755604463}
   - component: {fileID: 1755604462}
-  - component: {fileID: 1755604464}
   m_Layer: 5
   m_Name: Panel - Building - TMP
   m_TagString: Untagged
@@ -19419,18 +19416,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755604460}
   m_CullTransparentMesh: 0
---- !u!114 &1755604464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1755604460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14f5b10bdcbdd8a48b3e2b0596b84469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1759873697 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8453105377846858872, guid: 6eabfb382f848734ca4745484cd82337,
@@ -28069,18 +28054,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16dbc3f7342b90e49933f3d5cfe0a476, type: 3}
---- !u!114 &5295283499040093909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8812553533804059557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6519b0e34ccae1f4bb11eac87b25dd37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6142297063725928597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29386,7 +29359,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2466071968156463297}
   - component: {fileID: 1870303662287801189}
-  - component: {fileID: 5295283499040093909}
   m_Layer: 5
   m_Name: Map NotificationtHolder - TMP
   m_TagString: Untagged

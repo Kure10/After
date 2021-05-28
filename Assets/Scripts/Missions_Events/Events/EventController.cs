@@ -32,7 +32,7 @@ public class EventController : MonoBehaviour
 
     private BattleStartData _battleStartData = new BattleStartData();
 
-    public GameObject GetEventPanel { get { return this.eventPanel.gameObject; } }
+    public EventPanel GetEventPanel { get { return this.eventPanel; } }
 
     public void Awake()
     {
@@ -279,14 +279,16 @@ public class EventController : MonoBehaviour
         {
             Character character = mission.GetCharactersOnMission[i];
             GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab);
+            go.transform.localScale = new Vector3(1, 1, 1);
 
             uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
             eventPanel.AddCharacterToSelectionContent(go, character);
-            uWindow.PopulateItemSlots(character);
+            uWindow.PopulateItemSlots(character, false);
+            uWindow.PopulateBackpackItemSlots(character, false);
+
             uWindow.AddActionsOnItemClicked(delegate { eventPanel.ReCalculatePositions();});
             uWindow.GetMainButton.onClick.RemoveAllListeners();
-
         }
 
         eventPanel.ActivateCharacterContent();

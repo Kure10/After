@@ -48,6 +48,25 @@ public class Character : MonoBehaviour, IResourceHolder
         }
     }
 
+    public Backpack GetCharacterBackpack
+    {
+        get
+        {
+            Backpack backpack = null;
+
+            foreach (SpecInventorySlot item in charactersSlots)
+            {
+                if(item != null && item.CurrentItem.item is Backpack back)
+                {
+                    backpack = back;
+                    break;
+                }
+            }
+
+            return backpack;
+        }
+    }
+
     public int AmountDicesInLastTest = 0;
     public int AmountSuccessDicesInLastTest = 0;
     public bool PassedTheTest = false;

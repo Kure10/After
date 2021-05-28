@@ -30,7 +30,7 @@ public class SpecInventorySlot : Slot
 
     public event Action OnCloseBackPack = delegate { };
 
-    public event Action<List<int>> dsadas = delegate { };
+    public event UnityAction OnGridSizeChange = delegate { };
 
     public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
 
@@ -69,28 +69,23 @@ public class SpecInventorySlot : Slot
         gameObject.transform.SetParent(container);
     }
 
-    public override void AddAction(UnityAction<int> action, UnityAction action2)
-    {
-        if (!isEmpty)
-        {
-            if (_currentItem.item is Backpack back)
-            {
-                actionButton.onClick.AddListener(delegate { action(back.Capacity); });
-                actionButton.onClick.AddListener(delegate { action2(); });
-            }
-        }
-    }
+    //public void AddBackpackAction(UnityAction<int> action, UnityAction action2, int capacity)
+    //{
+    //    actionButton.onClick.RemoveAllListeners();
+    //    actionButton.onClick.AddListener(delegate { action(capacity); });
+    //    actionButton.onClick.AddListener(delegate { action2(); });
+    //}
 
     public void CloseBackpack()
     {
-       // Debug.Log("Closing Backpack");
         OnCloseBackPack?.Invoke();
+        OnGridSizeChange?.Invoke();
     }
 
     public void OpenBackPack(int capacity)
     {
-       // Debug.Log("Opening Backpack");
         OnOpenBackPack?.Invoke(capacity);
+        OnGridSizeChange?.Invoke();
     }
 
     public bool HasSlotThatType(ItemBlueprint.ItemType type)

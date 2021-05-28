@@ -15,7 +15,7 @@ public class Unit : MonoBehaviour
         public int YPosition;
     }
 
-    public int _id = 0;
+    public long _id = 0;
     public string _imageName = "Defaul";
     public Sprite _sprite = null;
 
@@ -43,6 +43,7 @@ public class Unit : MonoBehaviour
 
     private bool _isDead = false;
 
+    public long Id { get { return this._id; } }
     public bool IsDead { get { return this._isDead; } }
     public int MaxHealth { get { return this._maxHealth; } }
     public bool IsActive
@@ -85,7 +86,7 @@ public class Unit : MonoBehaviour
         this._unitWindow.UpdateStats(unit);
     }
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, int id, int movement, Sprite sprite, Team tea, int rangeMin)
+    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, long id, int movement, Sprite sprite, Team tea, int rangeMin)
     {
         _name = name;
         _maxHealth = health;
@@ -209,9 +210,10 @@ public class Unit : MonoBehaviour
 }
 
 
-
 public class DataUnit 
 {
+    private long identification = 0;
+
     private string _imageName = "Defaul";  // todo musím se zamyslet jestli je potrebuji a nebo kde budu nahravat obrazek..
     private string _name = "Zombie";
 
@@ -224,6 +226,9 @@ public class DataUnit
     private int rangeMin = 0;
     private int _movement = 1;
 
+    private List<Monster.Loot> _loot = new List<Monster.Loot>();
+
+    public long Id { get { return this.identification; } }
     public string ImageName { get { return this._imageName; } }
 
     public string Name { get { return this._name; } }
@@ -244,6 +249,8 @@ public class DataUnit
 
     public int StartXPosition { get { return this.StartPos.XPosition; } }
 
+    public List<Monster.Loot> GetLoot { get { return this._loot; } }
+
     public DataUnit()
     {
 
@@ -258,6 +265,10 @@ public class DataUnit
         this.rangeMax = monster.Range;
         this._movement = monster.BattleSpeed;
         this._imageName = monster.SpriteName;
+
+        this.identification = monster.ID;
+
+        this._loot.AddRange(monster._loot);
     }
 
     // Todo .....
@@ -270,6 +281,8 @@ public class DataUnit
         this.threat = CalculateThreat(character.Stats);
         this.rangeMax = 1; // Todo
         this._movement = 1; // Todo pak bude nato nejaky vzorec
+
+        this.identification = character.GetBlueprint().Id;
     }
 
     // Testing will be remove

@@ -32,6 +32,7 @@ public class BattleStartData
 
     private List<Character> charactersInBattleFromMission = new List<Character>();
 
+    public List<Character> GetCharacterFromBattle { get { return charactersInBattleFromMission; } }
     public void AddCharacterFromMission(List<Character> charactersFromMission)
     {
         charactersInBattleFromMission.AddRange(charactersFromMission);
@@ -47,6 +48,25 @@ public class BattleStartData
     {
         DataUnit dataUnit = new DataUnit(character);
         playerData.playerUnits.Add(dataUnit);
+    }
+
+    // update inventory a taky zivoty.
+    // 
+    public void UpdateMainPlayerData(List<Unit> battlePlayerUnit)
+    {
+        foreach (Unit unit in battlePlayerUnit)
+        {
+            if(unit._team == Unit.Team.Human)
+            {
+                foreach (Character character in charactersInBattleFromMission)
+                {
+                    if (character.GetBlueprint().Id == unit.Id)
+                    {
+                        character.ModifyLife(unit.CurrentHealth);
+                    }
+                }
+            }
+        }
     }
 }
 

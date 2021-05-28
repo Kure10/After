@@ -47,12 +47,6 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
         actionButton = this.gameObject.GetComponent<Button>();
     }
 
-    // Todo tohle bude asi abstraktni..
-    public virtual void AddAction(UnityAction<int> action, UnityAction action2)
-    {
-        actionButton.onClick.AddListener(delegate { action(-1);});
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         var result = DragAndDropManager.Instantion.HandleDrop(this);

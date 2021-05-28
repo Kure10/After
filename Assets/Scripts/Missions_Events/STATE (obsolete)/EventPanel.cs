@@ -29,6 +29,12 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] Button continueButton;
 
+    [Header("Event Slots")]
+
+    [SerializeField] List<ItemSlot> eventSlots = new List<ItemSlot>();
+
+    [SerializeField] Scrollbar scrollBar;
+
     [Header("Information For Player")]
 
     [SerializeField] Text eventSubTitle;
@@ -116,6 +122,8 @@ public class EventPanel : MonoBehaviour
                 selectionInfoContent.SetActive(true);
                 testButtonContent.SetActive(false);
             }
+
+            scrollBar.value = 1;
         }
     }
 
@@ -139,6 +147,7 @@ public class EventPanel : MonoBehaviour
     {
         var gameObjectButton = Instantiate(this.caseButtonPrefab, this.transform.position, Quaternion.identity);
         gameObjectButton.transform.SetParent(buttonHolder.transform);
+        gameObjectButton.transform.localScale = new Vector3(1, 1, 1);
 
         var eventButton = gameObjectButton.GetComponent<EventButton>();
         eventButton.Text.text = text;
@@ -255,6 +264,22 @@ public class EventPanel : MonoBehaviour
         }
 
 
+    }
+
+    public ItemSlot FindEmptySlot()
+    {
+        ItemSlot emptySlot = new ItemSlot();
+
+        foreach (ItemSlot item in eventSlots)
+        {
+            if (item.IsEmpty)
+            {
+                emptySlot = item;
+                break;
+            }
+        }
+
+        return emptySlot;
     }
 
     #endregion

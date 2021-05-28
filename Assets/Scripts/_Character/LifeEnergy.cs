@@ -20,12 +20,15 @@ public class LifeEnergy
         RestroToMax();
     }
 
+    public int MaxLife { get { return (int)this.maxLife; } }
+    public int MaxStamina { get { return (int)this.maxStamina; } }
+
     public float CurrentLife
     {
         get { return this.currentLife; }
         set
         {
-            currentLife += value;
+            currentLife = value;
             if (currentLife > maxLife)
                 currentLife = maxLife;
             if (currentLife < 0)

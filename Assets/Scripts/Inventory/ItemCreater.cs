@@ -38,47 +38,39 @@ public class ItemCreater : MonoBehaviour
                 break;
         }
 
+
         return gameObject;
     }
 
-    // razena kolence neni tak mocna jak jsem si myslel.
-    // neda se vni uchovavat hodnota.. ToDo -> nějak to zmen až budes mit silu..
-    public Item CreateObjectForInventory(Item item, GameObject newObject)
+    public GameObject CreateItemFromItem(Item item, GameObject prefab)
     {
-        Item newItem = new Item();
+        GameObject gameObject = Instantiate(prefab);
+        gameObject.name = item.name;
 
         if (item is Backpack backpack)
         {
-            Backpack back = newObject.AddComponent<Backpack>();
-            back.SetupItem(backpack.Capacity, backpack.name, backpack.Type, backpack.Sprite);
-            newItem = backpack;
+            CreateBackpack(backpack, gameObject);
         }
-        else if(item is Weapon weapon)
+        else if (item is Weapon weapon)
         {
-            Weapon weap = newObject.AddComponent<Weapon>();
-            weap.SetupItem(weapon.UseCount,weapon.IsRepairable,weapon.name,weapon.Type,weapon.Sprite);
-            newItem = weapon;
+            CreateWeapon(weapon, gameObject);
         }
         else if (item is Armor armor)
         {
-            Armor arm = newObject.AddComponent<Armor>();
-            arm.SetupItem(armor.Absorbation,armor.IsRepairable,armor.name, armor.Type,armor.Sprite);
-            newItem = armor;
+            CreateArmor(armor, gameObject);
         }
         else if (item is ActiveItem activeItem)
         {
-            ActiveItem activeI = newObject.AddComponent<ActiveItem>();
-            activeI.SetupItem(activeItem.UseCount, activeItem.IsRepairable, activeItem.name, activeItem.Type, activeItem.Sprite);
-            newItem = activeItem;
+            CreateActiveItem(activeItem, gameObject);
         }
         else
         {
-            var it = newObject.AddComponent<Item>();
-            it.SetupItem(item.name, item.Type, item.Sprite);
-            newItem.SetupItem(item.name,item.Type,item.Sprite);
+            CreateResource(item, gameObject);
+
+           // CreateResourceSpecial(blueprint, gameObject);
         }
 
-        return newItem;
+        return gameObject;
     }
 
     private void CreateResourceSpecial(ItemBlueprint blueprint, GameObject gameObject)
@@ -91,12 +83,25 @@ public class ItemCreater : MonoBehaviour
         Debug.LogWarning("Todo Resource is not implemented"); // Todo
     }
 
+    private void CreateResource(Item item, GameObject gameObject)
+    {
+        Debug.LogWarning("Todo Resource is not implemented"); // Todo
+    }
+
     private void CreateBackpack(ItemBlueprint blueprint, GameObject gameObject)
     {
         Backpack backpack = gameObject.AddComponent<Backpack>();
         backpack.SetupItem(blueprint.capacity, blueprint.name, blueprint.Type, blueprint.Sprite);
 
         AddModifications(blueprint, backpack);
+    }
+
+    private void CreateBackpack(Backpack _backpack, GameObject gameObject)
+    {
+        Backpack backpack = gameObject.AddComponent<Backpack>();
+        backpack.SetupItem(_backpack.Capacity, _backpack.name, _backpack.Type, _backpack.Sprite);
+
+        AddModifications(_backpack, backpack);
     }
 
     private void CreateActiveItem(ItemBlueprint blueprint, GameObject gameObject)
@@ -107,12 +112,28 @@ public class ItemCreater : MonoBehaviour
         AddModifications(blueprint, activeItem);
     }
 
+    private void CreateActiveItem(ActiveItem _activeItem, GameObject gameObject)
+    {
+        ActiveItem activeItem = gameObject.AddComponent<ActiveItem>();
+        activeItem.SetupItem(_activeItem.UseCount, _activeItem.IsRepairable, _activeItem.Name, _activeItem.Type, _activeItem.Sprite);
+
+        AddModifications(_activeItem, activeItem);
+    }
+
     private void CreateArmor(ItemBlueprint blueprint, GameObject gameObject)
     {
         Armor armor = gameObject.AddComponent<Armor>();
         armor.SetupItem(blueprint.absorbation, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
 
         AddModifications(blueprint, armor);
+    }
+
+    private void CreateArmor(Armor _armor, GameObject gameObject)
+    {
+        Armor armor = gameObject.AddComponent<Armor>();
+        armor.SetupItem(_armor.Absorbation, _armor.IsRepairable, _armor.name, _armor.Type, _armor.Sprite);
+
+        AddModifications(_armor, armor);
     }
 
     private void CreateWeapon(ItemBlueprint blueprint, GameObject gameObject)
@@ -134,9 +155,32 @@ public class ItemCreater : MonoBehaviour
         AddModifications(blueprint, weapon);
     }
 
+    private void CreateWeapon(Weapon _weapon, GameObject gameObject)
+    {
+        Weapon weapon = gameObject.AddComponent<Weapon>();
+        weapon.SetupItem(_weapon.UseCount, _weapon.IsRepairable, _weapon.name, _weapon.Type, _weapon.Sprite);
+
+        weapon.IsIndestructible = _weapon.IsIndestructible;
+
+        if (weapon.IsRepairable)
+        {
+            weapon.RepairCost = _weapon.RepairCost;
+            weapon.RepairBlock = _weapon.RepairBlock;
+        }
+
+        weapon.RangeMin = _weapon.RangeMin;
+        weapon.RangeMax = _weapon.RangeMax;
+
+        AddModifications(_weapon, weapon);
+    }
+
     private void AddModifications(ItemBlueprint blueprint, Item item)
     {
         item.Modificators = blueprint.modificators;
     }
 
+    private void AddModifications(Item item, Item itemToModifi)
+    {
+        itemToModifi.Modificators = item.Modificators;
+    }
 }

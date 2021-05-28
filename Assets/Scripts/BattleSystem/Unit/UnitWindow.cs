@@ -13,6 +13,9 @@ public class UnitWindow : MonoBehaviour
     [SerializeField] Text damage;
     [SerializeField] GameObject healthImageValue;
 
+    [Space]
+    [SerializeField] GameObject deadCross;
+
     [Header("Image")]
     [SerializeField] Image image;
 
@@ -27,6 +30,8 @@ public class UnitWindow : MonoBehaviour
         damage.text = unit._damage.ToString();
 
         image.sprite = unit._sprite;
+
+        UpdateAliveStatus(unit.IsDead);
     }
 
     public void UpdateHealthBar (int current , int max)
@@ -48,6 +53,11 @@ public class UnitWindow : MonoBehaviour
         {
             this.range.text = range.ToString();
         }
+    }
+
+    public void UpdateAliveStatus(bool isDead)
+    {
+        deadCross.SetActive(isDead);
     }
 
 

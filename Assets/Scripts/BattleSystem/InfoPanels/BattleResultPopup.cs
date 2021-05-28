@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class BattleResultPopup : MonoBehaviour
 {
     [Header("Controllers")]
-    [SerializeField] private ItemCreater itemCreator;
+    [SerializeField] private ItemCreater _itemCreator;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject _panelSpecialist;
@@ -19,37 +20,96 @@ public class BattleResultPopup : MonoBehaviour
 
     [Header("Holder")]
     [SerializeField] private RectTransform _specHolder;
-    [SerializeField] private Transform _slotHolder;
 
     [SerializeField] private List<Transform> _playerUnitHolder = new List<Transform>();
     [SerializeField] private List<Transform> _enemyUnitHolder = new List<Transform>();
 
-    [Header("Holder")]
+    [Header("Buttons")]
     [SerializeField] private Button _lootButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _backButton;
 
+    [Header("ItemSlots")]
+    [SerializeField] private List<ItemSlot> _itemSlots = new List<ItemSlot>();
+
+
+    private int _sortCategory = 0;
+  
     private void Awake()
     {
         _lootButton.onClick.AddListener(OnPressLoot);
         _exitButton.onClick.AddListener(OnPressExit);
+        _backButton.onClick.AddListener(OnPressBack);
     }
-
+    // Buttons
     public void OnPressLoot()
     {
         _resultPanel.SetActive(false);
         _lootPanel.SetActive(true);
-    }
 
+        _sortCategory = -1;
+        OnPressSort(1);
+    }
+    // Buttons
     public void OnPressExit ()
     {
         // Battle Is over :. 
         // refresh battle some shit what ever
     }
+    // Buttons
+    public void OnPressBack()
+    {
+        _resultPanel.SetActive(true);
+        _lootPanel.SetActive(false);
+    }
+    // Buttons
+    public void OnPressSort(int currentSortCategory)
+    {
+        List<uWindowSpecialist> specList = new List<uWindowSpecialist>();
+        specList.AddRange(_specHolder.gameObject.GetComponentsInChildren<uWindowSpecialist>());
+
+        if (_sortCategory == currentSortCategory)
+        {
+            foreach (var spec in specList)
+            {
+                spec.transform.SetAsFirstSibling();
+            }
+        }
+        else
+        {
+            _sortCategory = currentSortCategory;
+
+            switch (_sortCategory)
+            {
+                case 0:
+                    specList = specList.OrderBy(x => x.GetKarma).ToList();
+                    break;
+                case 1:
+                    specList = specList.OrderBy(x => x.GetName).ToList();
+                    break;
+                case 2:
+                    specList = specList.OrderBy(x => x.GetLevel).ToList();
+                    break;
+                case 3:
+                    specList = specList.OrderBy(x => x.GetPercentHelth).ToList();
+                    break;
+                default:
+                    Debug.Log("Error in sorting wrong sortCategory");
+                    break;
+            }
+
+            foreach (var spec in specList)
+            {
+                spec.transform.SetAsFirstSibling();
+            }
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+    }
 
     public void ShowBattleResult()
     {
         this.gameObject.SetActive(true);
-
     }
 
     public void InitPlayerUnits(List<Unit> battleUnits , GameObject unitPrefab)
@@ -62,6 +122,7 @@ public class BattleResultPopup : MonoBehaviour
         {
             int row = 0;
             unit.gameObject.SetActive(true);
+            unit.UpdateData(unit);
 
             if (unit._team == Unit.Team.Human)
             {
@@ -86,88 +147,77 @@ public class BattleResultPopup : MonoBehaviour
                 unit.gameObject.transform.SetParent(_playerUnitHolder[row]);
                 k++;
             }
-
-            
         }
-
-
     }
-
 
     public void InicializedStartInventory(List<ItemBlueprint> blueprits)
     {
-        int size = 30;
-        int count = blueprits.Count;
-
-        // init Slots
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < blueprits.Count; i++)
         {
-            // create and set slot
-            GameObject slot = Instantiate(_itemSlot);
-            slot.transform.SetParent(_specHolder);
-            slot.transform.localScale = new Vector3(1f, 1f, 1f);
-            ItemSlot itemSlot = slot.GetComponent<ItemSlot>();
+            ItemBlueprint itemBlueprint = blueprits[i];
 
-            // create and set item
-            if (i < count)
+            GameObject game = _itemCreator.CreateItemByType(itemBlueprint, _itemPrefab);
+            var item = game.GetComponent<Item>();
+
+            if (item == null) // Todo Res and None type.. 
             {
-                ItemBlueprint blueprint = blueprits[i];
+                Debug.LogWarning("somewhere is mistake Error in Inventory");
+                item = game.AddComponent<Item>();
+                item.SetupItem(itemBlueprint.name, itemBlueprint.Type, itemBlueprint.Sprite);
+            }
 
-                GameObject game = itemCreator.CreateItemByType(blueprint, _itemPrefab);
-                var item = game.GetComponent<Item>();
+            item.MySlot = _itemSlots[i];
+            game.GetComponent<DragAndDropHandler>().InitDragHandler();
+            _itemSlots[i].SetSlot(i, game, item);
+        }
+    }
 
-                if (item == null) // Todo Res and None type.. 
+    public void InicializedCharacter(List<Character> characters)
+    {
+        foreach (Character character in characters)
+        {
+            GameObject gameObject = Instantiate(_panelSpecialist);
+            gameObject.transform.SetParent(_specHolder);
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+            uWindowSpecialist window = gameObject.GetComponent<uWindowSpecialist>();
+            window.CharacterInWindow = character;
+            window.SetAll(character);
+
+            List<SpecInventorySlot> charSlots = window.GetCharacterSlots();
+            //character.SetCharacterSlots = slots;
+            List<SpecInventorySlot> backpackSlots = window.GetCharacterBackpackSlots();
+            //character.SetCharacterBackPackSlots = backpackSlots;
+
+            foreach (SpecInventorySlot slot in charSlots)
+            {
+                slot.OnItemChangeCallBack += character.OnItemChange;
+               // DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
+
+                // Todo..
+                if (slot.GetFirstSlotType == ItemBlueprint.ItemType.BagSpec || slot.GetSecondSlotType == ItemBlueprint.ItemType.BagSpec)
                 {
-                    Debug.LogWarning("somewhere is mistake Error in Inventory");
-                    item = game.AddComponent<Item>();
-                    item.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite);
+                    //slot.OnOpenBackPack += window.OpenBackpackInventory;
+                    //slot.OnOpenBackPack += RebuildLayout;
+                    //slot.OnCloseBackPack += window.CloseBackpackInventory;
+                    //slot.OnCloseBackPack += RebuildLayout;
                 }
 
-                item.MySlot = itemSlot;
-
-                game.GetComponent<DragAndDropHandler>().InitDragHandler();
-
-                itemSlot.SetSlot(i, game, item);
             }
-            else
-                itemSlot.SetSlot(i, null, null);
-
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
     }
 
-    public void InicializedCharacter(Character character)
+    public void RebuildLayout(int i)
     {
-        GameObject ga = Instantiate(_panelSpecialist);
-        ga.transform.SetParent(_specHolder);
-        ga.transform.localScale = new Vector3(1f, 1f, 1f);
-        uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
-        uWindowSpec.CharacterInWindow = character;
-        uWindowSpec.SetAll(character);
-
-        // specInGame.Add(uWindowSpec);
-
-        List<SpecInventorySlot> slots = uWindowSpec.GetCharacterSlots();
-        //character.SetCharacterSlots = slots;
-
-        List<SpecInventorySlot> backpackSlots = uWindowSpec.GetCharacterBackpackSlots();
-        //character.SetCharacterBackPackSlots = backpackSlots;
-
-        // todo onitem change  pro backpack
-
-        foreach (SpecInventorySlot slot in slots)
-        {
-            slot.OnItemChangeCallBack += character.OnItemChange;
-            //DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
-
-            // Todo..
-            if (slot.GetFirstSlotType == ItemBlueprint.ItemType.BagSpec || slot.GetSecondSlotType == ItemBlueprint.ItemType.BagSpec)
-            {
-                slot.OnOpenBackPack += uWindowSpec.OpenBackpackInventory;
-              //  slot.OnOpenBackPack += RebuildLayout;
-                slot.OnCloseBackPack += uWindowSpec.CloseBackpackInventory;
-              //  slot.OnCloseBackPack += RebuildLayout;
-            }
-
-        }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
     }
+
+    public void RebuildLayout()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+    }
+
 }
+
+

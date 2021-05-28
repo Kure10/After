@@ -8,6 +8,8 @@ public class DragAndDropManager : MonoBehaviour
 
     [SerializeField] Inventory inventory;
 
+    [SerializeField] EventController eventController;
+
     [SerializeField] Transform dragHolder;
 
     [SerializeField] Transform dragBackpackHolder;
@@ -219,11 +221,23 @@ public class DragAndDropManager : MonoBehaviour
             {
                 if (backpackItem != (null, null))
                 {
-                    ItemSlot emptySlot = inventory.FindEmptySlot();
-                    emptySlot.CurrentItem = backpackItem;
-                    emptySlot.CurrentItem.go.transform.SetParent(emptySlot.GetItemContainer);
-                    backpackItem.item.MySlot = emptySlot;
-                    emptySlot.IsEmpty = false;
+                    if(EventController.isEventRunning)
+                    {
+                        EventPanel eventWindow = eventController.GetEventPanel;
+                        ItemSlot emptySlot = eventWindow.FindEmptySlot();
+                        emptySlot.CurrentItem = backpackItem;
+                        emptySlot.CurrentItem.go.transform.SetParent(emptySlot.GetItemContainer);
+                        backpackItem.item.MySlot = emptySlot;
+                        emptySlot.IsEmpty = false;
+                    }
+                    else
+                    {
+                        ItemSlot emptySlot = inventory.FindEmptySlot();
+                        emptySlot.CurrentItem = backpackItem;
+                        emptySlot.CurrentItem.go.transform.SetParent(emptySlot.GetItemContainer);
+                        backpackItem.item.MySlot = emptySlot;
+                        emptySlot.IsEmpty = false;
+                    }
                 }
             }
 

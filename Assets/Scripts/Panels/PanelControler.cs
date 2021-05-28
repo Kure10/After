@@ -84,7 +84,7 @@ public class PanelControler : MonoBehaviour
         {
             CameraMovement.MovementAllEnable(true);
 
-            if (EventController.isEventRunning && eventControler.GetEventPanel.activeSelf)
+            if (EventController.isEventRunning && eventControler.GetEventPanel.gameObject.activeSelf)
             {
                 eventControler.Minimaze();
                 return;

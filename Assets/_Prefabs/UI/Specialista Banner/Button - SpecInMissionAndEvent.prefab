@@ -134,8 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   container: {fileID: 1145451959969859357}
-  _index: 0
+  actionButton: {fileID: 0}
+  specialist: {fileID: 0}
+  isBackPack: 0
   firstType: 6
   secondType: 3
   backgroundImage: {fileID: 3640578365854085260}
@@ -498,8 +501,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   container: {fileID: 6543213919982098837}
-  _index: 0
+  actionButton: {fileID: 0}
+  specialist: {fileID: 0}
+  isBackPack: 0
   firstType: 2
   secondType: 0
   backgroundImage: {fileID: 8417193210754524645}
@@ -1974,8 +1980,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   container: {fileID: 8241559225631167468}
-  _index: 0
+  actionButton: {fileID: 0}
+  specialist: {fileID: 0}
+  isBackPack: 0
   firstType: 1
   secondType: 0
   backgroundImage: {fileID: 6115174176139984755}
@@ -2479,6 +2488,8 @@ MonoBehaviour:
   backgroundImage: {fileID: 0}
   healthBar: {fileID: 6673139950315744889}
   staminaBar: {fileID: 6673139950275854673}
+  healthValueText: {fileID: 0}
+  staminaValueText: {fileID: 0}
   militaryValue: {fileID: 6673139950931855801}
   socialValue: {fileID: 1898616321206342614}
   technicianValue: {fileID: 2175694812551526908}
@@ -2489,6 +2500,10 @@ MonoBehaviour:
   - {fileID: 2948176075710684607}
   - {fileID: 4943046969229184100}
   - {fileID: 7763144086999652982}
+  backPackSlots: []
+  backPackGameObject: {fileID: 0}
+  backPackCollums: []
+  BackPack: {fileID: 0}
   currentActivity: {fileID: 6673139949105992677}
   mainButton: {fileID: 8578955365191000493}
   selectedPanel: {fileID: 4741996930529227015}
@@ -4379,8 +4394,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041b163125552b4ebec2a8dbd22f96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   container: {fileID: 8546588679926178413}
-  _index: 0
+  actionButton: {fileID: 0}
+  specialist: {fileID: 0}
+  isBackPack: 0
   firstType: 6
   secondType: 3
   backgroundImage: {fileID: 8693633783019003662}

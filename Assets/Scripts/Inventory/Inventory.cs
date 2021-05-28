@@ -9,6 +9,8 @@ public class Inventory : MonoBehaviour
     [Space]
     [SerializeField] uWindowSpecController _uWindowSpecController;
 
+    [SerializeField] ItemCreater _itemCreator;
+
     [Header("Prefabs")]
     [SerializeField] public GameObject _itemPrefab;
     [SerializeField] private GameObject _itemSlot;
@@ -19,7 +21,7 @@ public class Inventory : MonoBehaviour
     private int _baseInventorySize = 15;
     private int _additionalInventorySize = 70;
 
-    private ItemCreater itemCreator = new ItemCreater();
+    
     public GameObject GetItemPrefab { get { return _itemPrefab; }}
 
     public static event Action<Mission> OnInventoryChange = delegate { };
@@ -61,7 +63,7 @@ public class Inventory : MonoBehaviour
             {
                 ItemBlueprint blueprint = loot[i];
 
-                GameObject game = itemCreator.CreateItemByType(loot[i], _itemPrefab);
+                GameObject game = _itemCreator.CreateItemByType(loot[i], _itemPrefab);
                 var item = game.GetComponent<Item>();
 
                 if (item == null) // Todo Res and None type.. 

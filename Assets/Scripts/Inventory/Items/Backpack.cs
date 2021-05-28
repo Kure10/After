@@ -15,5 +15,4 @@ public class Backpack : Item
 
         capacity = _capacity;
     }
-
 }

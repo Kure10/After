@@ -22,6 +22,9 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] Transform healthBar;
     [SerializeField] Transform staminaBar;
     [Space]
+    [SerializeField] Text healthValueText;
+    [SerializeField] Text staminaValueText;
+    [Space]
     [SerializeField] Text militaryValue;
     [SerializeField] Text socialValue;
     [SerializeField] Text technicianValue;
@@ -36,9 +39,6 @@ public class uWindowSpecialist : MonoBehaviour
     [SerializeField] GameObject backPackGameObject;
 
     [SerializeField] List<GameObject> backPackCollums = new List<GameObject>();
-
-    [Space]
-    [SerializeField] GameObject BackPack;
 
     [Header("Activity Stats")]
     [SerializeField] Text currentActivity;
@@ -126,6 +126,15 @@ public class uWindowSpecialist : MonoBehaviour
         this.percentStamina = character.LifeEnergy.PercentStamina;
         healthBar.transform.localScale = new Vector3(this.percentHealth / 100, 1f, 1f);
         staminaBar.transform.localScale = new Vector3(this.percentStamina / 100, 1f, 1f);
+
+        var currentLife = (int)character.LifeEnergy.CurrentLife;
+        var currentStamina = (int)character.LifeEnergy.CurrentStamina;
+        
+        if(healthValueText != null )
+            healthValueText.text = $"{currentLife} / {character.LifeEnergy.MaxLife}";
+
+        if (staminaValueText != null)
+            staminaValueText.text = $"{currentStamina} / {character.LifeEnergy.MaxStamina}";
     }
 
     private void SetStatsPanel(Character character)
@@ -180,40 +189,117 @@ public class uWindowSpecialist : MonoBehaviour
         CalcHealtandStamina(_character);
     }
 
-    public void PopulateItemSlots(Character character)
+    public void PopulateItemSlots(Character character, bool disableDrag)
     {
         ItemCreater itemCreator = new ItemCreater();
+
         foreach (Item item in character.GetInventory)
         {
             if (item == null)
                 continue;
 
-            GameObject newGameObject = Instantiate(itemPrefab);
-            Item newColection = itemCreator.CreateObjectForInventory(item, newGameObject);
-
+            GameObject newGameObject = itemCreator.CreateItemFromItem(item , itemPrefab);
+            Item newItem = newGameObject.GetComponent<Item>();
+           
             DragAndDropHandler dragHandler = newGameObject.GetComponent<DragAndDropHandler>();
-            dragHandler._disableDrag = true; // disable drag..
+            dragHandler._disableDrag = disableDrag;
 
             for (int i = 0; i < characterSlots.Count; i++)
             {
-                if (characterSlots[i].GetFirstSlotType == newColection.Type || characterSlots[i].GetSecondSlotType == newColection.Type)
+                if (characterSlots[i].GetFirstSlotType == newItem.Type || characterSlots[i].GetSecondSlotType == newItem.Type)
                 {
                     if (characterSlots[i].IsEmpty)
                     {
-                        characterSlots[i].SetSlot(newGameObject, newColection);
-                        newColection.MySlot = characterSlots[i];
+                        characterSlots[i].SetSlot(newGameObject, newItem);
+                        newItem.MySlot = characterSlots[i];
                         break;
                     }
                 }
             }
+
+            if (!disableDrag)
+            {
+                dragHandler.InitDragHandler();
+            }
+        }
+    }
+
+    public void PopulateBackpackItemSlots(Character character, bool disableDrag)
+    {
+        ItemCreater itemCreator = new ItemCreater();
+
+        int j = 0;
+        foreach (Item backpackItem in character.GetBackpackInventory)
+        {
+            if (backpackItem == null)
+            {
+                j++;
+                continue;
+            }
+
+            GameObject newGameObject = itemCreator.CreateItemFromItem(backpackItem, itemPrefab);
+            Item newItem = newGameObject.GetComponent<Item>();
+
+            DragAndDropHandler dragHandler = newGameObject.GetComponent<DragAndDropHandler>();
+            dragHandler._disableDrag = disableDrag;
+
+            if (backPackSlots[j].IsEmpty)
+            {
+                backPackSlots[j].SetSlot(newGameObject, newItem);
+                newItem.MySlot = backPackSlots[j];
+            }
+
+            if (!disableDrag)
+            {
+                dragHandler.InitDragHandler();
+            }
+
+            j++;
+        }
+
+        Backpack backPack = character.GetCharacterBackpack;
+        if(backPack != null)
+        {
+            OpenBackpackInventory(backPack.Capacity);
+        }
+        else
+        {
+            CloseBackpackInventory();
         }
     }
 
     public void AddActionsOnItemClicked( UnityAction action)
     {
-        foreach (SpecInventorySlot item in characterSlots)
+        foreach (SpecInventorySlot slot in characterSlots)
         {
-            item.AddAction(OpenAndCloseBackpack, action);
+            if(!slot.IsEmpty)
+            {
+                if (slot.CurrentItem.item is Backpack back)
+                {
+                    slot.OnOpenBackPack += OpenBackpackInventory;
+                    slot.OnGridSizeChange += action;
+                    slot.OnCloseBackPack += CloseBackpackInventory;
+
+                    
+                    // slot.AddBackpackAction(OpenAndCloseBackpack, action, back.Capacity);
+                }
+                else if (slot.CurrentItem.item is Weapon weapon)
+                {
+                  // todo
+                }
+                else if (slot.CurrentItem.item is Armor armor)
+                {
+                    // todo
+                }
+                else if (slot.CurrentItem.item is ActiveItem activeItem)
+                {
+                    // todo
+                }
+                else
+                {
+                    // todo
+                }
+            }  
         }
     }
 
