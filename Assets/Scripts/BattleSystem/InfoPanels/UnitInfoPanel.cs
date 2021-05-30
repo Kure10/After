@@ -21,6 +21,8 @@ public class UnitInfoPanel : MonoBehaviour
 
     [Header("Buttons")]
     [SerializeField] Button _skipTurnButton;
+    [SerializeField] Button _firstWeaponTurnButton;
+    [SerializeField] Button _secondWeaponButton;
 
     public void UpdateStats(Unit unit)
     {
@@ -30,7 +32,7 @@ public class UnitInfoPanel : MonoBehaviour
 
         UpdateRange(unit._rangeMax);
 
-        _damage.text = unit._damage.ToString();
+        _damage.text = unit._military.ToString();
 
         _image.sprite = unit._sprite;
     }
@@ -55,16 +57,4 @@ public class UnitInfoPanel : MonoBehaviour
             this._range.text = range.ToString();
         }
     }
-
-    //public void DisablePanel()
-    //{
-    //    StartCoroutine(Disable(1.5f));
-    //}
-
-    //IEnumerator Disable (float time)
-    //{
-    //    yield return new WaitForSeconds(time);
-    //    this.gameObject.SetActive(false);
-    //}
-
 }

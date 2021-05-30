@@ -21,12 +21,12 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 
     protected (Item item, GameObject go) _currentItem;
 
+    public int GetIndex { get { return this.index; } }
+
     #region Property
     public Transform GetItemContainer { get { return container; } }
 
     public bool IsEmpty { get { return isEmpty; } set { isEmpty = value; } }
-
-   // public Action InvokeAction { get { return this.actionButton.onClick.Invoke; } }
 
     public virtual (Item item, GameObject go) CurrentItem 
     {

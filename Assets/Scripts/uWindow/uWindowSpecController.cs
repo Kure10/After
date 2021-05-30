@@ -30,13 +30,11 @@ public class uWindowSpecController : MonoBehaviour
         {
             item.RefreshCharacterInfo();
         }
-
-        RefreshGrid();
     }
 
     private void Start()
     {
-        RefreshGrid();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
     }
 
     private void Update()
@@ -63,7 +61,6 @@ public class uWindowSpecController : MonoBehaviour
         ga.transform.SetParent(specHolder);
         ga.transform.localScale = new Vector3(1f, 1f, 1f);
         uWindowSpecialist uWindowSpec = ga.GetComponent<uWindowSpecialist>();
-        uWindowSpec.CharacterInWindow = character;
         uWindowSpec.SetAll(character);
 
         specInGame.Add(uWindowSpec);
@@ -78,7 +75,7 @@ public class uWindowSpecController : MonoBehaviour
 
         foreach (SpecInventorySlot slot in slots)
         {
-            slot.OnItemChangeCallBack += character.OnItemChange;
+            //slot.OnItemChangeCallBack += character.OnItemChange;
             DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
 
             // Todo..
@@ -100,7 +97,6 @@ public class uWindowSpecController : MonoBehaviour
     // From Editor
     public void Sort(int currentSortCategory)
     {
-        
         switch (currentSortCategory)
         {
             case 0:

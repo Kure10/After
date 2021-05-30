@@ -180,7 +180,6 @@ public class BattleResultPopup : MonoBehaviour
             gameObject.transform.SetParent(_specHolder);
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             uWindowSpecialist window = gameObject.GetComponent<uWindowSpecialist>();
-            window.CharacterInWindow = character;
             window.SetAll(character);
 
             List<SpecInventorySlot> charSlots = window.GetCharacterSlots();

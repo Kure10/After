@@ -11,6 +11,10 @@ public class SpecInventorySlot : Slot
     [Header("Specific")]
 
     [SerializeField] private uWindowSpecialist specialist;
+
+   // public int aaaa = 0;
+    [SerializeField] BodyPart bodyPart;
+
     [SerializeField] private bool isBackPack;
 
     [SerializeField] ItemBlueprint.ItemType firstType;
@@ -23,7 +27,7 @@ public class SpecInventorySlot : Slot
 
     public uWindowSpecialist GetSpecialist { get { return this.specialist; } }
 
-    public event Action<Item, SpecInventorySlot> OnItemChangeCallBack = delegate { };
+    public event Action<Item, GameObject, SpecInventorySlot> OnItemChangeCallBack = delegate { };
 
     // tady pridat akci na open back pack
     public event Action<int> OnOpenBackPack = delegate { };
@@ -35,6 +39,8 @@ public class SpecInventorySlot : Slot
     public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
 
     public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
+
+    public BodyPart GetBodyPart { get { return this.bodyPart; } }
 
     public bool IsBackpack { get { return this.isBackPack; } }
     //public int Index { get { return this.index; } }
@@ -48,7 +54,19 @@ public class SpecInventorySlot : Slot
         set
         {
             _currentItem = value;
-            OnItemChangeCallBack?.Invoke(_currentItem.item, this);
+            OnItemChangeCallBack?.Invoke(_currentItem.item, _currentItem.go, this);
+        }
+    }
+
+    public (Item item, GameObject go) SerCurrentItemWithoutNotify
+    {
+        get
+        {
+            return _currentItem;
+        }
+        set
+        {
+            _currentItem = value;
         }
     }
 
@@ -68,13 +86,6 @@ public class SpecInventorySlot : Slot
         this.CurrentItem = (item, gameObject);
         gameObject.transform.SetParent(container);
     }
-
-    //public void AddBackpackAction(UnityAction<int> action, UnityAction action2, int capacity)
-    //{
-    //    actionButton.onClick.RemoveAllListeners();
-    //    actionButton.onClick.AddListener(delegate { action(capacity); });
-    //    actionButton.onClick.AddListener(delegate { action2(); });
-    //}
 
     public void CloseBackpack()
     {
@@ -98,4 +109,14 @@ public class SpecInventorySlot : Slot
 
         return result;
     }
+
+    public enum BodyPart
+    {
+        Back,
+        Chest,
+        LeftHand,
+        RightHand
+    }
 }
+
+

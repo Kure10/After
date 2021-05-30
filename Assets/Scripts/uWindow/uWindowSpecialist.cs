@@ -73,7 +73,7 @@ public class uWindowSpecialist : MonoBehaviour
     #endregion
 
     #region Properity
-    public Character CharacterInWindow { get { return this._character; } set { _character = value; } }
+    public Character CharacterInWindow { get { return this._character; } /*set { _character = value; }*/ }
     public float GetPercentHelth { get => this.percentHealth; }
     public string GetName { get => this.characterName.text.ToString(); }
     public int GetKarma { get => int.Parse(this.karmaValue.text); }
@@ -153,6 +153,7 @@ public class uWindowSpecialist : MonoBehaviour
     #region Public Methods
     public void SetAll(Character character)
     {
+        this._character = character;
         SetImage(character.GetBlueprint());
         CalcHealtandStamina(character);
         SetStatsPanel(character);

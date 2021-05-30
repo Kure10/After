@@ -54,9 +54,9 @@ public class Character : MonoBehaviour, IResourceHolder
         {
             Backpack backpack = null;
 
-            foreach (SpecInventorySlot item in charactersSlots)
+            foreach (SpecInventorySlot slot in charactersSlots)
             {
-                if(item != null && item.CurrentItem.item is Backpack back)
+                if(slot != null && slot.CurrentItem.item is Backpack back)
                 {
                     backpack = back;
                     break;
@@ -65,6 +65,37 @@ public class Character : MonoBehaviour, IResourceHolder
 
             return backpack;
         }
+    }
+
+    public Weapon GetCharacterWeapon (bool forLeftHand)
+    {
+        Weapon weapon = null;
+
+        foreach (SpecInventorySlot slot in charactersSlots)
+        {
+            if(forLeftHand)
+            {
+                if (slot.GetBodyPart == SpecInventorySlot.BodyPart.LeftHand)
+                {
+                    if (slot != null && slot.CurrentItem.item is Weapon weapon1)
+                    {
+                        weapon = weapon1;
+                    }
+                }
+            }
+            else
+            {
+                if (slot.GetBodyPart == SpecInventorySlot.BodyPart.RightHand)
+                {
+                    if (slot != null && slot.CurrentItem.item is Weapon weapon1)
+                    {
+                        weapon = weapon1;
+                    }
+                }
+            }
+        }
+
+        return weapon;
     }
 
     public int AmountDicesInLastTest = 0;
@@ -234,41 +265,31 @@ public class Character : MonoBehaviour, IResourceHolder
     }
 
     // modifi current Stats.. According wearing items..
-    public void OnItemChange (Item item, SpecInventorySlot specSlot)
+    public void OnItemChange(Item item, GameObject itemGo , SpecInventorySlot specSlot)
     {
+        SpecInventorySlot slot;
 
-        //Item previousItem = GetItemFromSlotType(specSlot);
+        if (specSlot.IsBackpack)
+        {
+            slot = backPackSlots[specSlot.GetIndex];
+        }
+        else
+        {
+            slot = charactersSlots[specSlot.GetIndex];
+        }
 
-        //// pridavam item do volneho pole..
-        //if (previousItem == null && item != null)
-        //{
-        //    inventory.Add(item);
-        //}
-        //else if (item == null) // odebiram item
-        //{
-        //    if (inventory.Contains(previousItem))
-        //    {
-        //        inventory.Remove(previousItem);
-        //    }
-        //}
-        //else // menim item za jiny..
-        //{
-        //    if (inventory.Contains(previousItem))
-        //    {
-        //        inventory.Remove(previousItem);
-        //        inventory.Add(item);
-        //    }
-        //}
+        //add item
+        if (item != null)
+        {
+            slot.SerCurrentItemWithoutNotify = (item, itemGo);
 
-        //var tmp = inventory.Count;
-        //Debug.Log("Character: " + this.blueprint.FullName + "  Pocet: " + tmp);
+        }
+        else // remove item
+        {
+            slot.SerCurrentItemWithoutNotify = (null, null);
+        }
 
-        // vypis
-        //foreach (SpecInventorySlot it in charactersSlots)
-        //{
-        //    if (it.CurrentItem != (null,null) )
-        //        Debug.Log("Name of Item in slot :  " + it.CurrentItem.item.Name + " |||| Item Slot : ->  "  + it.CurrentItem.item.MySlot + "  |||| Character name : " + this.blueprint.FullName );
-        //}
-        //Debug.Log("---------- ");
+        // možna nastavic item slot atd.
+
     }
 }

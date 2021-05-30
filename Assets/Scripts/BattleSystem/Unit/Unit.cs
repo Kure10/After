@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour
 
     public string _name = "Zombie";
     private int _maxHealth = 5;
-    public int _damage = 0;
+    public int _military = 0;
     public int _threat = 0;
     public int _rangeMax = 0;
     public int _rangeMin = 0;
@@ -37,11 +37,21 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private GameObject activePanel;
 
+    private Weapon _activeWeapon;
+    private Weapon _firstWeapon;
+    private Weapon _secondWeapon;
+
     private UnitWindow _unitWindow;
     private bool _isActive;
     private int _currentHealth = 1;
 
     private bool _isDead = false;
+
+    public Weapon FirstWeapon { get { return this._firstWeapon; } }
+
+    public Weapon SecondWeapon { get { return this._secondWeapon; } }
+
+    public Weapon ActiveWeapon { get { return this._activeWeapon; } set { this._activeWeapon = value; } }
 
     public long Id { get { return this._id; } }
     public bool IsDead { get { return this._isDead; } }
@@ -86,26 +96,31 @@ public class Unit : MonoBehaviour
         this._unitWindow.UpdateStats(unit);
     }
 
-    public void InitUnit(string name, int health, int dmg , int threat , int range, int YPosition, int XPosition, long id, int movement, Sprite sprite, Team tea, int rangeMin)
+    public void InitUnit(DataUnit dataUnit, Sprite sprite , Team tea)
     {
-        _name = name;
-        _maxHealth = health;
-        _damage = dmg;
-        _threat = threat;
-        _rangeMax = range;
-        _rangeMin = rangeMin;
+        _name = dataUnit.Name;
+        _maxHealth = dataUnit.Health;
+        _military = dataUnit.Damage;
+        _threat = dataUnit.Threat;
+        _rangeMax = dataUnit.RangeMax;
+        _rangeMin = dataUnit.RangeMin;
 
-        _movement = movement;
+        _movement = dataUnit.Movement;
 
-        CurrentPos.XPosition = XPosition;
-        CurrentPos.YPosition = YPosition;
+        CurrentPos.XPosition = dataUnit.StartXPosition;
+        CurrentPos.YPosition = dataUnit.StartYPosition;
 
         _sprite = sprite;
-        _id = id;
+        _id = dataUnit.Id;
 
         _iniciation = CalculateIniciation();
 
         _team = tea;
+
+        _firstWeapon = dataUnit.firstWeapon;
+        _secondWeapon = dataUnit.secondWeapon;
+
+        _activeWeapon = _firstWeapon;
 
         // tmp
         _currentHealth = _maxHealth;
@@ -124,7 +139,7 @@ public class Unit : MonoBehaviour
     {
         _name = unit.name;
         _maxHealth = unit.MaxHealth;
-        _damage = unit._damage;
+        _military = unit._military;
         _threat = unit._threat;
         _rangeMax = unit._rangeMax;
         _rangeMin = unit._rangeMin;
@@ -192,8 +207,6 @@ public class Unit : MonoBehaviour
         CurrentPos.YPosition = posY;
     }
 
-    
-
     // tmp pak poresit lepe
     public void UpdateAnim()
     {
@@ -227,6 +240,9 @@ public class DataUnit
     private int _movement = 1;
 
     private List<Monster.Loot> _loot = new List<Monster.Loot>();
+
+    public Weapon firstWeapon;
+    public Weapon secondWeapon;
 
     public long Id { get { return this.identification; } }
     public string ImageName { get { return this._imageName; } }
@@ -283,10 +299,13 @@ public class DataUnit
         this._movement = 1; // Todo pak bude nato nejaky vzorec
 
         this.identification = character.GetBlueprint().Id;
+
+        firstWeapon = character.GetCharacterWeapon(false);
+        secondWeapon = character.GetCharacterWeapon(true);
     }
 
     // Testing will be remove
-    public DataUnit(int xPos , int yPos , int health, int damage, int threat, int range, int movement, string name, string imgName, int minRange)
+    public DataUnit(int xPos , int yPos , int health, int damage, int threat, int range, int movement, string name, string imgName, int minRange , Weapon weapon = null , Weapon weapon2 = null)
     {
         this._name = name;
         this.health = health;
@@ -298,6 +317,9 @@ public class DataUnit
         this.rangeMin = minRange;
 
         this._imageName = imgName;
+
+        firstWeapon = weapon;
+        secondWeapon = weapon2;
 
         StartPos.XPosition = xPos;
         StartPos.YPosition = yPos;

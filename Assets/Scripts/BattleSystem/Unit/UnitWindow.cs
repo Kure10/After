@@ -23,11 +23,11 @@ public class UnitWindow : MonoBehaviour
     {
         threat.text = unit._threat.ToString();
 
-        UpdateHealthBar(unit.CurrentHealth,unit.MaxHealth);
+        UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
 
         UpdateRange(unit._rangeMax);
 
-        damage.text = unit._damage.ToString();
+        UpdateMilitary(unit);
 
         image.sprite = unit._sprite;
 
@@ -60,5 +60,16 @@ public class UnitWindow : MonoBehaviour
         deadCross.SetActive(isDead);
     }
 
-
+    private void UpdateMilitary(Unit unit)
+    {
+        if(unit.ActiveWeapon != null)
+        {
+            int military = unit.ActiveWeapon.Modificators[0].TestChangeVal + unit._military;
+            damage.text = military.ToString();
+        }
+        else
+        {
+            damage.text = unit._military.ToString();
+        }
+    }
 }

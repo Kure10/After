@@ -33,4 +33,28 @@ public class Weapon : Item
         isRepairable = _isRepairable;
     }
 
+    // testing
+    public Weapon ()
+    {
+
+    }
+    // testing
+    public Weapon(int maxRange , int minRange , int useCount, int power)
+    {
+        this.rangeMax = maxRange;
+        this.rangeMin = minRange;
+        this.useCount = useCount;
+
+        BonusModificators bm = new BonusModificators();
+        bm.AtributeModificator = AtributeModificator.MiL;
+        bm.AtributeChangeVal = power;
+        bm.MathKind = MathKind.plus;
+
+        bm.TestModificator = TestModificator.None;
+        bm.TypeModificator = TypeModificator.DiceCountMod;
+
+        Modificators = new BonusModificators[1];
+        Modificators[0] = bm;
+    }
+
 }

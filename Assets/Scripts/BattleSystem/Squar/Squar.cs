@@ -33,8 +33,8 @@ public class Squar : MonoBehaviour
 
     public Unit unitInSquar;
 
-    public bool isVisited = false;
-    public bool isInReach = false;
+    public bool isInMoveRange = false;
+    public bool isInAttackReach = false;
 
     public CursorColorEvent CursorEvent;
 

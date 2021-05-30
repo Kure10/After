@@ -283,12 +283,24 @@ public class EventController : MonoBehaviour
 
             uWindowSpecialist uWindow = go.GetComponent<uWindowSpecialist>();
             uWindow.SetAll(character);
+            //uWindow.CharacterInWindow = character;
             eventPanel.AddCharacterToSelectionContent(go, character);
             uWindow.PopulateItemSlots(character, false);
             uWindow.PopulateBackpackItemSlots(character, false);
 
             uWindow.AddActionsOnItemClicked(delegate { eventPanel.ReCalculatePositions();});
             uWindow.GetMainButton.onClick.RemoveAllListeners();
+
+            foreach (SpecInventorySlot slot in uWindow.GetCharacterSlots())
+            {
+                slot.OnItemChangeCallBack += character.OnItemChange;
+                //DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce
+            }
+
+            foreach (SpecInventorySlot backpackSlot in uWindow.GetCharacterBackpackSlots())
+            {
+                backpackSlot.OnItemChangeCallBack += character.OnItemChange;
+            }
         }
 
         eventPanel.ActivateCharacterContent();

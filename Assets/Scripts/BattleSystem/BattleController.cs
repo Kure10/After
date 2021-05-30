@@ -7,6 +7,9 @@ using UnityEngine.Events;
 
 public class BattleController : MonoBehaviour
 {
+    [Header("Testing")]
+    public bool TestingBattle = false;
+
     [Header("Main")]
     [SerializeField] InventoryManager _inventoryManager;
 
@@ -37,7 +40,6 @@ public class BattleController : MonoBehaviour
 
     public GameObject squarTemplate;
 
-    //
 
     /// <summary>
     /// ////////////////////
@@ -71,13 +73,16 @@ public class BattleController : MonoBehaviour
     private void Start()
     {
         // This is for testing purpose only when u are in BATTLEGROUND scene!!
+        if(TestingBattle)
+        {
+            spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
+            _battleStartData = InitTestBattleData();
 
-        //spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
-        //_battleStartData = InitTestBattleData();
+            CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+            InitBattle(_battleStartData);
+            TestStartBattle();
+        }
 
-        //CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
-        //InitBattle(_battleStartData);
-        //TestStartBattle();
     }
 
     private void Update()
@@ -110,7 +115,7 @@ public class BattleController : MonoBehaviour
             if (_turnIsOver)
             {
                 SetSquaresOutOfAttackReach();
-                SetSquaresUnvisited();
+                SetSquaresOutOfMoveRange();
                 ShowSquaresWithinRange(false);
 
                  _order++;
@@ -150,7 +155,7 @@ public class BattleController : MonoBehaviour
                 ShowSquaresWithinRange(true);
 
 
-                FindSquaresInUnitAttackRange();
+                FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
                 ShowSquaresWithingAttackRange();
 
                 leftUnitInfo.UpdateStats(_activeUnit);
@@ -255,6 +260,35 @@ public class BattleController : MonoBehaviour
         battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
+    // for buttons
+    public void ChangeWeapon(bool changeToLeft)
+    {
+        if(changeToLeft)
+        {
+            if (_activeUnit.ActiveWeapon == _activeUnit.SecondWeapon)
+                return;
+
+            _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
+        }
+        else
+        {
+            if (_activeUnit.ActiveWeapon == _activeUnit.FirstWeapon)
+                return;
+
+            _activeUnit.ActiveWeapon = _activeUnit.FirstWeapon;
+        }
+
+        SetSquaresOutOfAttackReach();
+        FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
+        ShowSquaresWithingAttackRange();
+
+        _activeUnit.UpdateData(_activeUnit);
+        // zmenit panel jednotky
+        // i info panel
+        // a i panel left botton
+
+    }
+
     public void StartBattle(BattleStartData battleStartData)
     {
         _battleStartData = battleStartData;
@@ -323,9 +357,7 @@ public class BattleController : MonoBehaviour
 
             var sprite = spriteLoader.LoadUnitSprite(dataUnit.ImageName);
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
-                dataUnit.StartXPosition, dataUnit.Id, dataUnit.Movement, sprite, Unit.Team.Demon, dataUnit.RangeMin);
-
+            newUnit.InitUnit(dataUnit, sprite, Unit.Team.Demon);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit); 
@@ -341,8 +373,7 @@ public class BattleController : MonoBehaviour
 
             var sprite = spriteLoader.LoadSpecialistSprite(dataUnit.ImageName);
 
-            newUnit.InitUnit(dataUnit.Name, dataUnit.Health, dataUnit.Damage, dataUnit.Threat, dataUnit.RangeMax, dataUnit.StartYPosition,
-                dataUnit.StartXPosition, dataUnit.Id, dataUnit.Movement, sprite, Unit.Team.Human, dataUnit.RangeMin);
+            newUnit.InitUnit(dataUnit, sprite, Unit.Team.Human);
 
             squar.unitInSquar = newUnit;
             unitsOnBattleField.Add(newUnit);
@@ -400,9 +431,11 @@ public class BattleController : MonoBehaviour
         // todo
         if (battleStartData.playerData.playerUnits.Count > posiblePositions.Count)
         {
+            // max position is 9
             Debug.LogError("Number of Players is bigger than posiblePositions to put unit on BattleField Critical Error");
         }
 
+        // set randomPosition from list of available positions
         foreach (DataUnit dataUnit in battleStartData.playerData.playerUnits)
         {
             (int x, int y) occupiedPosition = dataUnit.SetRandomStartingPosition(posiblePositions);
@@ -462,8 +495,11 @@ public class BattleController : MonoBehaviour
         battleStartData.Rows = 8;
         battleStartData.Collumn = 16;
 
-        DataUnit newA = new DataUnit(2,3,10,5,3,3,2, "Player1", "Gargoyle", 2);
-        DataUnit newB = new DataUnit(4, 5, 5, 5, 7, 5, 2, "Player2", "Gargoyle", 2);
+        Weapon weapon = new Weapon(3,1,5,6);
+        Weapon weapon2 = new Weapon(4, 2, 3, 4);
+
+        DataUnit newA = new DataUnit(2,3,10,5,3,3,2, "Player1", "Gargoyle", 2, weapon, weapon2);
+        DataUnit newB = new DataUnit(4, 5, 5, 5, 7, 5, 2, "Player2", "Gargoyle", 2, weapon, weapon2);
         DataUnit newC = new DataUnit(3, 0, 6, 2, 2, 1, 2, "Zombie1", "Zombie 1", 1);
         DataUnit newx = new DataUnit(2, 7, 8, 2, 1, 2, 1, "Zombie2", "Zombie 2", 0);
         DataUnit newy = new DataUnit(5, 10, 6, 1, 3, 1, 1, "Zombie3", "Zombie 1", 0);
@@ -493,7 +529,7 @@ public class BattleController : MonoBehaviour
             ShowSquaresWithinRange(true);
 
             // testing fire range
-            FindSquaresInUnitAttackRange();
+            FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
             ShowSquaresWithingAttackRange();
 
             leftUnitInfo.UpdateStats(_activeUnit);
@@ -735,7 +771,7 @@ public class BattleController : MonoBehaviour
 
             foreach (Squar sq in adjectedSq)
             {
-                sq.isVisited = true;
+                sq.isInMoveRange = true;
             }
 
             adjectedSq.Clear();
@@ -747,12 +783,23 @@ public class BattleController : MonoBehaviour
         _squaresInUnitRange.Add(centerSquar);
     }
 
-    private void FindSquaresInUnitAttackRange()
+    private void FindSquaresInUnitAttackRange(Item weapon)
     {
-        _squaresInUnitAttackRange.Clear();
+        int attackMaxRange = 0;
+        int attackMinRange = 0;
+        //todo
+        if (weapon == null)
+        {
+            attackMinRange = _activeUnit._rangeMin;
+            attackMaxRange = _activeUnit._rangeMax;
+        }
+        else
+        {
+             attackMaxRange = _activeUnit.ActiveWeapon.RangeMax;
+             attackMinRange = _activeUnit.ActiveWeapon.RangeMin;
+        }
 
-        int attackMaxRange = _activeUnit._rangeMax;
-        int attackMinRange = _activeUnit._rangeMin;
+        _squaresInUnitAttackRange.Clear();
 
         Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
 
@@ -791,12 +838,12 @@ public class BattleController : MonoBehaviour
         if (attackMinRange != 0 && attackMinRange < attackMaxRange)
         {
             _squaresInUnitAttackRange.Remove(centerSquar);
-            centerSquar.isInReach = false;
+            centerSquar.isInAttackReach = false;
 
             foreach (Squar squar in squaresToMinAtackRange)
             {
                 _squaresInUnitAttackRange.Remove(squar);
-                squar.isInReach = false;
+                squar.isInAttackReach = false;
             }
         }
     }
@@ -853,20 +900,20 @@ public class BattleController : MonoBehaviour
         else
             leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
 
-        if (rightSquare != null && !rightSquare.isVisited)
+        if (rightSquare != null && !rightSquare.isInMoveRange)
             checkedSquars.Add(rightSquare);
-        if (leftSquare != null && !leftSquare.isVisited)
+        if (leftSquare != null && !leftSquare.isInMoveRange)
             checkedSquars.Add(leftSquare);
-        if (upSquare != null && !upSquare.isVisited)
+        if (upSquare != null && !upSquare.isInMoveRange)
             checkedSquars.Add(upSquare);
-        if (downSquare != null && !downSquare.isVisited)
+        if (downSquare != null && !downSquare.isInMoveRange)
             checkedSquars.Add(downSquare);
 
-        centerSquar.isVisited = true;
+        centerSquar.isInMoveRange = true;
 
         foreach (Squar sq in checkedSquars)
         {
-            sq.isVisited = true;
+            sq.isInMoveRange = true;
         }
 
         return checkedSquars;
@@ -907,34 +954,34 @@ public class BattleController : MonoBehaviour
 
         if(searchForBorders)
         {
-            if (leftSquare == null || !leftSquare.isInReach)
+            if (leftSquare == null || !leftSquare.isInAttackReach)
                 centerSquar.leftBorder.SetActive(true);
 
-            if (rightSquare == null || !rightSquare.isInReach)
+            if (rightSquare == null || !rightSquare.isInAttackReach)
                 centerSquar.rightBorder.SetActive(true);
 
-            if (downSquare == null || !downSquare.isInReach)
+            if (downSquare == null || !downSquare.isInAttackReach)
                 centerSquar.downBorder.SetActive(true);
 
-            if (upSquare == null || !upSquare.isInReach)
+            if (upSquare == null || !upSquare.isInAttackReach)
                 centerSquar.upBorder.SetActive(true);
         }
         else
         {
-            if (rightSquare != null && !rightSquare.isInReach)
+            if (rightSquare != null && !rightSquare.isInAttackReach)
                 checkedSquars.Add(rightSquare);
-            if (leftSquare != null && !leftSquare.isInReach)
+            if (leftSquare != null && !leftSquare.isInAttackReach)
                 checkedSquars.Add(leftSquare);
-            if (upSquare != null && !upSquare.isInReach)
+            if (upSquare != null && !upSquare.isInAttackReach)
                 checkedSquars.Add(upSquare);
-            if (downSquare != null && !downSquare.isInReach)
+            if (downSquare != null && !downSquare.isInAttackReach)
                 checkedSquars.Add(downSquare);
 
-            centerSquar.isInReach = true;
+            centerSquar.isInAttackReach = true;
 
             foreach (Squar sq in checkedSquars)
             {
-                sq.isInReach = true;
+                sq.isInAttackReach = true;
             }
         }
 
@@ -945,7 +992,7 @@ public class BattleController : MonoBehaviour
     private List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
     {
         List<Squar> checkedSquars = new List<Squar>();
-        centerSquar.isInReach = true;
+        centerSquar.isInAttackReach = true;
 
         Squar rightCrossSquare = null;
         Squar leftCrossSquare = null;
@@ -976,18 +1023,18 @@ public class BattleController : MonoBehaviour
         else
             leftCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate + 1);
 
-        if (rightCrossSquare != null && !rightCrossSquare.isInReach)
+        if (rightCrossSquare != null && !rightCrossSquare.isInAttackReach)
             checkedSquars.Add(rightCrossSquare);
-        if (leftCrossSquare != null && !leftCrossSquare.isInReach)
+        if (leftCrossSquare != null && !leftCrossSquare.isInAttackReach)
             checkedSquars.Add(leftCrossSquare);
-        if (upCrossSquare != null && !upCrossSquare.isInReach)
+        if (upCrossSquare != null && !upCrossSquare.isInAttackReach)
             checkedSquars.Add(upCrossSquare);
-        if (downCrossSquare != null && !downCrossSquare.isInReach)
+        if (downCrossSquare != null && !downCrossSquare.isInAttackReach)
             checkedSquars.Add(downCrossSquare);
 
         foreach (Squar sq in checkedSquars)
         {
-            sq.isInReach = true;
+            sq.isInAttackReach = true;
         }
 
         return checkedSquars;
@@ -1001,12 +1048,12 @@ public class BattleController : MonoBehaviour
 
     
 
-    private void SetSquaresUnvisited()
+    private void SetSquaresOutOfMoveRange()
     {
-        foreach (Squar item in _squaresInUnitRange)
+        foreach (Squar squar in _squaresInUnitRange)
         {
-            item.inRangeBackground.SetActive(false);
-            item.isVisited = false;
+            squar.inRangeBackground.SetActive(false);
+            squar.isInMoveRange = false;
         }
     }
 
@@ -1015,7 +1062,7 @@ public class BattleController : MonoBehaviour
         foreach (Squar item in _squaresInUnitAttackRange)
         {
             item.DisableAttackBorders();
-            item.isInReach = false;
+            item.isInAttackReach = false;
         }
     }
 

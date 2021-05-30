@@ -13,8 +13,18 @@ public static class BattleSystem
 
     public static int CalculateAmountDices(Unit unit)
     {
+        
         int amountDices = 0;
-        amountDices += unit._damage;
+
+        if (unit.ActiveWeapon != null)
+        {
+            amountDices = unit._military + unit.ActiveWeapon.Modificators[0].AtributeChangeVal;
+        }
+        else
+        {
+            amountDices = unit._military;
+        }
+
         return amountDices;
     }
 

@@ -5831,6 +5831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb0549afbac1844aaaec74ab51f6d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestingBattle: 0
   _inventoryManager: {fileID: 0}
   battleInfoPanel: {fileID: 3323017301052694526}
   leftUnitInfo: {fileID: 7547998710755347646}
@@ -7824,6 +7825,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6076628201854877732}
     m_Modifications:
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4159085284923827311}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2971184496464809650, guid: ccc2bb1b4ac562f46acc9629205ec10d,
         type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -7973,6 +8004,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LeftBottonPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4159085284923827311}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccc2bb1b4ac562f46acc9629205ec10d, type: 3}
