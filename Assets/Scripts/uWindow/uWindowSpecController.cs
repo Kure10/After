@@ -26,9 +26,9 @@ public class uWindowSpecController : MonoBehaviour
 
     private void OnEnable()
     {
-        foreach (var item in specInGame)
+        foreach (uWindowSpecialist uWindowSpec in specInGame)
         {
-            item.RefreshCharacterInfo();
+            uWindowSpec.RefreshCharacterInfo();
         }
     }
 

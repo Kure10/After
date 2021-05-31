@@ -31,9 +31,9 @@ public class BattleLogPanel : MonoBehaviour
         string roll = string.Empty;
 
         int i = 0;
-        foreach (int rollNumber in attackInfo.dicesRoll)
+        foreach (int rollNumber in attackInfo.dicesValueRoll)
         {
-            if(i >= attackInfo.dicesRoll.Count -1)
+            if(i >= attackInfo.dicesValueRoll.Count -1)
                 roll += rollNumber.ToString();
             else
                 roll += rollNumber.ToString() +",";

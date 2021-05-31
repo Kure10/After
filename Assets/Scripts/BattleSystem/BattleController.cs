@@ -283,6 +283,9 @@ public class BattleController : MonoBehaviour
         ShowSquaresWithingAttackRange();
 
         _activeUnit.UpdateData(_activeUnit);
+        leftUnitInfo.UpdateStats(_activeUnit);
+        battleInfoPanel.UpdateUnitData(_activeUnit);
+
         // zmenit panel jednotky
         // i info panel
         // a i panel left botton
@@ -444,7 +447,6 @@ public class BattleController : MonoBehaviour
         }
     }
 
-
     private void SetEnemyRandomPosition (BattleStartData battleStartData)
     {
         List<(int x, int y)> posiblePositions = new List<(int x, int y)>();
@@ -579,7 +581,6 @@ public class BattleController : MonoBehaviour
         }
     }
 
-
     private BattleAction OnClickIntoGrid(Squar squarToMove)
     {
         BattleAction action = BattleAction.None;
@@ -631,7 +632,7 @@ public class BattleController : MonoBehaviour
         AttackInfo attackInfo = new AttackInfo();
 
         int dices = BattleSystem.CalculateAmountDices(_activeUnit);
-        int success = BattleSystem.CalculateAmountSuccess(dices , defendUnit._threat, out attackInfo.dicesRoll);
+        int success = BattleSystem.CalculateAmountSuccess(dices , _activeUnit ,defendUnit, out attackInfo.dicesValueRoll);
 
         defendUnit.CurrentHealth = defendUnit.CurrentHealth - success;
 
@@ -1046,8 +1047,6 @@ public class BattleController : MonoBehaviour
         return sq;
     }
 
-    
-
     private void SetSquaresOutOfMoveRange()
     {
         foreach (Squar squar in _squaresInUnitRange)
@@ -1122,7 +1121,7 @@ public class BattleController : MonoBehaviour
         public int dices = 0;
         public int success = 0;
 
-        public List<int> dicesRoll = new List<int>();      
+        public List<int> dicesValueRoll = new List<int>();      
     }
 
 

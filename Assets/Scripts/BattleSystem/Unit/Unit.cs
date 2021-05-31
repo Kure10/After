@@ -156,6 +156,8 @@ public class Unit : MonoBehaviour
 
         _team = unit._team;
 
+        _activeWeapon = unit._activeWeapon;
+
         _currentHealth = unit.CurrentHealth;
 
         if (_unitWindow == null)
@@ -296,6 +298,7 @@ public class DataUnit
         this.damage = character.Stats.military;
         this.threat = CalculateThreat(character.Stats);
         this.rangeMax = 1; // Todo
+        this.rangeMin = 1; // todo  Range pro Fist souboj.
         this._movement = 1; // Todo pak bude nato nejaky vzorec
 
         this.identification = character.GetBlueprint().Id;

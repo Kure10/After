@@ -359,6 +359,7 @@ public class WindowMissionController : MonoBehaviour
                 var uWindow = go.GetComponent<uWindowSpecialist>();
                 uWindow.SetAll(character);
                 uWindow.DeactivateCoverPanel();
+                uWindow.PopulateItemSlots(character, true);
 
                 charactersReadyToMission.Add(character);
             }

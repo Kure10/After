@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class BattleSystem
 {
+    static public int minimumThreat = 2;
+
     public static int CalculateAmountDices(Character character)
     {
         int amountDices = 0;
@@ -13,12 +15,11 @@ public static class BattleSystem
 
     public static int CalculateAmountDices(Unit unit)
     {
-        
         int amountDices = 0;
 
         if (unit.ActiveWeapon != null)
         {
-            amountDices = unit._military + unit.ActiveWeapon.Modificators[0].AtributeChangeVal;
+            amountDices = CalcMilitary(unit);
         }
         else
         {
@@ -28,10 +29,114 @@ public static class BattleSystem
         return amountDices;
     }
 
-    public static int CalculateAmountSuccess(int dices, int enemyThreat , out List<int> dicesRoll)
+    public static int CalcMilitary(Unit unit)
+    {
+        int amountDices = 0;
+
+        foreach (ItemBlueprint.BonusModificators modificator in unit.ActiveWeapon.Modificators)
+        {
+            if (modificator.TestModificator == ItemBlueprint.TestModificator.Battle)
+            {
+                if (modificator.TypeModificator == ItemBlueprint.TypeModificator.DiceCountMod)
+                {
+                    ItemBlueprint.MathKind type = modificator.MathKind;
+                    int value = modificator.TestChangeVal;
+
+                    switch (type)
+                    {
+                        case ItemBlueprint.MathKind.None:
+                            break;
+                        case ItemBlueprint.MathKind.plus:
+                            amountDices = unit._military + value;
+                            break;
+                        case ItemBlueprint.MathKind.minus:
+                            amountDices = unit._military - value;
+                            break;
+                        case ItemBlueprint.MathKind.times:
+                            float floatMilitaryPower = unit._military * value;
+                            int finalPower = Mathf.RoundToInt(floatMilitaryPower);
+                            amountDices = finalPower;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            if (modificator.AtributeModificator == ItemBlueprint.AtributeModificator.MiL)
+            {
+                ItemBlueprint.MathKind type = modificator.MathKind;
+                int value = modificator.AtributeChangeVal;
+
+                switch (type)
+                {
+                    case ItemBlueprint.MathKind.None:
+                        break;
+                    case ItemBlueprint.MathKind.plus:
+                        amountDices = unit._military + value;
+                        break;
+                    case ItemBlueprint.MathKind.minus:
+                        amountDices = unit._military - value;
+                        break;
+                    case ItemBlueprint.MathKind.times:
+                        float floatMilitaryPower = unit._military * value;
+                        int finalPower = Mathf.RoundToInt(floatMilitaryPower);
+                        amountDices = finalPower;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return amountDices;
+    }
+
+    public static int CalculateAmountSuccess(int dices, Unit attackingUnit, Unit defendingUnit, out List<int> dicesRoll)
     {
         dicesRoll = new List<int>();
         int amountSuccess = 0;
+
+        int finalThreat = defendingUnit._threat;
+
+        if(attackingUnit.ActiveWeapon != null)
+        {
+            foreach (ItemBlueprint.BonusModificators modificator in attackingUnit.ActiveWeapon.Modificators)
+            {
+                if (modificator.TestModificator == ItemBlueprint.TestModificator.Battle)
+                {
+                    if (modificator.TypeModificator == ItemBlueprint.TypeModificator.DiffChange)
+                    {
+                        ItemBlueprint.MathKind type = modificator.MathKind;
+                        int value = modificator.TestChangeVal;
+
+                        switch (type)
+                        {
+                            case ItemBlueprint.MathKind.None:
+                                break;
+                            case ItemBlueprint.MathKind.plus:
+                                finalThreat += value;
+                                break;
+                            case ItemBlueprint.MathKind.minus:
+                                finalThreat -= value;
+                                break;
+                            case ItemBlueprint.MathKind.times:
+
+                                float floatThreat = finalThreat * value;
+                                finalThreat = Mathf.RoundToInt(floatThreat);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(finalThreat < 2)
+        {
+            finalThreat = minimumThreat;
+        }
 
         for (int i = 0; i < dices; i++)
         {
@@ -46,11 +151,10 @@ public static class BattleSystem
             }
 
             dicesRoll.Add(diceNumber);
-            var success = CalculateThrow(diceNumber, enemyThreat);
+            var success = CalculateThrow(diceNumber, finalThreat);
 
             if (success)
                 amountSuccess++;
-            
         }
 
         return amountSuccess;

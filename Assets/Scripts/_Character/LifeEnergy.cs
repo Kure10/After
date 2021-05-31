@@ -44,7 +44,11 @@ public class LifeEnergy
             if (currentStamina > maxStamina)
                 currentStamina = maxStamina;
             if (currentStamina <= 0)
+            {
+                currentStamina = 0;
                 Debug.Log("Character is out of Stamina -> Probably dead");
+            }
+               
         }
     }
 

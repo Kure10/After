@@ -182,6 +182,10 @@ public class BattleResultPopup : MonoBehaviour
             uWindowSpecialist window = gameObject.GetComponent<uWindowSpecialist>();
             window.SetAll(character);
 
+            window.PopulateItemSlots(character,false);
+            window.PopulateBackpackItemSlots(character,false);
+
+
             List<SpecInventorySlot> charSlots = window.GetCharacterSlots();
             //character.SetCharacterSlots = slots;
             List<SpecInventorySlot> backpackSlots = window.GetCharacterBackpackSlots();

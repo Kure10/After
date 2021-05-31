@@ -69,17 +69,19 @@ public class ItemBlueprint
     public enum TestModificator
     {
         None,
-        Sneaking,
-        Leverage,
-        LockPicking,
-        Repair,
-        Hunting,
+        Battle,
         Comunication,
+        Hunting,
+        Repair,
+        LockPicking,
+        Leverage,
+        Sneaking,
         Scouting,
+        ScoutingBuild,
         Scavenging,
-        Gathering,
         Research,
-        DiggBuild
+        DiggBuild,
+        Selection
     }
 
     public enum MathKind
@@ -101,7 +103,11 @@ public class ItemBlueprint
     {
         None,
         MiL,
-        SoL
+        SoL,
+        Scl,
+        Tel,
+        LvL,
+        Special
     }
 
     #endregion

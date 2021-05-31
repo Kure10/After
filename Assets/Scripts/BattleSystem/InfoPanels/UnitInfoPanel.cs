@@ -30,9 +30,9 @@ public class UnitInfoPanel : MonoBehaviour
 
         UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
 
-        UpdateRange(unit._rangeMax);
+        UpdateRange(unit);
 
-        _damage.text = unit._military.ToString();
+        UpdateMilitary(unit);
 
         _image.sprite = unit._sprite;
     }
@@ -46,15 +46,43 @@ public class UnitInfoPanel : MonoBehaviour
         healthImageValue.transform.localScale = new Vector3(amount, 1, 1);
     }
 
-    private void UpdateRange(int range)
+    private void UpdateRange(Unit unit)
     {
-        if (range == 0)
+        int rangeMax = 0;
+        int rangeMin = 0;
+
+        if (unit.ActiveWeapon == null)
         {
-            this._range.text = "M";
+            rangeMax = unit._rangeMax;
+            rangeMin = unit._rangeMin;
         }
         else
         {
-            this._range.text = range.ToString();
+            rangeMax = unit.ActiveWeapon.RangeMax;
+            rangeMin = unit.ActiveWeapon.RangeMin;
+        }
+
+        string rangeText = $"{rangeMin}/{rangeMax}";
+
+        if(rangeMin == rangeMax)
+        {
+            rangeText = rangeMax.ToString();
+        }
+
+        _range.text = rangeText;
+    }
+
+    private void UpdateMilitary(Unit unit)
+    {
+        if (unit.ActiveWeapon != null)
+        {
+            int military = BattleSystem.CalcMilitary(unit);
+
+            _damage.text = military.ToString();
+        }
+        else
+        {
+            _damage.text = unit._military.ToString();
         }
     }
 }

@@ -25,7 +25,7 @@ public class UnitWindow : MonoBehaviour
 
         UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
 
-        UpdateRange(unit._rangeMax);
+        UpdateRange(unit);
 
         UpdateMilitary(unit);
 
@@ -43,16 +43,30 @@ public class UnitWindow : MonoBehaviour
         healthImageValue.transform.localScale = new Vector3(amount,1,1);
     }
 
-    public void UpdateRange(int range)
+    public void UpdateRange(Unit unit)
     {
-        if(range <= 1)
+        int rangeMax = 0;
+        int rangeMin = 0;
+
+        if (unit.ActiveWeapon == null)
         {
-            this.range.text = "M";
+            rangeMax = unit._rangeMax;
+            rangeMin = unit._rangeMin;
         }
         else
         {
-            this.range.text = range.ToString();
+            rangeMax = unit.ActiveWeapon.RangeMax;
+            rangeMin = unit.ActiveWeapon.RangeMin;
         }
+
+        string rangeText = $"{rangeMin}/{rangeMax}";
+
+        if (rangeMin == rangeMax)
+        {
+            rangeText = rangeMax.ToString();
+        }
+
+        range.text = rangeText;
     }
 
     public void UpdateAliveStatus(bool isDead)
@@ -64,7 +78,8 @@ public class UnitWindow : MonoBehaviour
     {
         if(unit.ActiveWeapon != null)
         {
-            int military = unit.ActiveWeapon.Modificators[0].TestChangeVal + unit._military;
+            int military = BattleSystem.CalcMilitary(unit);
+            
             damage.text = military.ToString();
         }
         else

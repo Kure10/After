@@ -188,6 +188,15 @@ public class uWindowSpecialist : MonoBehaviour
             return;
 
         CalcHealtandStamina(_character);
+
+        if (_character.GetBlueprint().IsOnMission)
+        {
+            ActivateCoverPanel("Character is on Mission");
+        }
+        else
+        {
+            DeactivateCoverPanel();
+        }
     }
 
     public void PopulateItemSlots(Character character, bool disableDrag)
