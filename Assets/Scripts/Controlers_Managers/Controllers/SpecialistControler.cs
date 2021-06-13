@@ -30,6 +30,31 @@ public class SpecialistControler : MonoBehaviour
 
     private List<Character> OutGoingCharacters = new List<Character>();
 
+    public uWindowSpecController GetSpecUWindowUi { get { return this.specUWindowUi; } }
+
+    public void Awake()
+    {
+        EventController.OnEventEnd += RefreshUI;
+    }
+    void Update()
+    {
+        for (int i = OutGoingCharacters.Count - 1; i >= 0; i--)
+        {
+            Character character = OutGoingCharacters[i];
+
+            var tmp = character.Execute();
+            if (tmp == Result.Success /*== "Waiting"*/)
+            {
+                // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
+                character.GetBlueprint().IsOnMission = true;
+                onCharacterLeaveCoreGame?.Invoke(); // Zatim nema využití.. Ale bude.
+                character.transform.gameObject.SetActive(false);
+
+                this.InMissionSpecialist.Add(character);
+                this.OutGoingCharacters.Remove(character);
+            }
+        }
+    }
 
     public void CreateStartingCharacters(Vector2Int charStartingPosition)
     {
@@ -52,19 +77,7 @@ public class SpecialistControler : MonoBehaviour
             InGameSpecialists.Add(character);
         }
 
-        AddAllSpecialistToUI();
-    }
-
-    public void AddAllSpecialistToUI()
-    {
-        List<Character> collectedCharactersInGame = new List<Character>();
-
-        collectedCharactersInGame.AddRange(this.ReturnAllCharactersInGame());
-
-        for (int i = 0; i < collectedCharactersInGame.Count; i++)
-        {
-            specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
-        }
+        AddInGameSpecialistToUI();
     }
 
     public List<Character> PassSpecToMissionSelection()
@@ -92,8 +105,13 @@ public class SpecialistControler : MonoBehaviour
         }
     }
 
-    
+    public void RefreshUI (Mission mission)
+    {
 
+        specUWindowUi.RemoveInGameCharacterUI();
+        AddInGameSpecialistToUI();
+    }
+   
     public void CharacterOnMissionReturn( List <Character> incomingCharacters)
     {
         for (int i = incomingCharacters.Count - 1; i >= 0; i--)
@@ -113,23 +131,15 @@ public class SpecialistControler : MonoBehaviour
 
     #region Private Methods
 
-    void Update()
+    private void AddInGameSpecialistToUI()
     {
-        for (int i = OutGoingCharacters.Count -1 ; i >= 0 ; i--)
+        List<Character> collectedCharactersInGame = new List<Character>();
+
+        collectedCharactersInGame.AddRange(this.ReturnAllCharactersInGame());
+
+        for (int i = 0; i < collectedCharactersInGame.Count; i++)
         {
-            Character character = OutGoingCharacters[i];
-
-            var tmp = character.Execute();
-            if (tmp == Result.Success /*== "Waiting"*/)
-            {
-                // TodO k tomuto Eventu pak pripsat vsechno co se ma stat až odejde.......
-                character.GetBlueprint().IsOnMission = true;
-                onCharacterLeaveCoreGame?.Invoke(); // Zatim nema využití.. Ale bude.
-                character.transform.gameObject.SetActive(false);
-
-                this.InMissionSpecialist.Add(character);
-                this.OutGoingCharacters.Remove(character);
-            }
+            specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
         }
     }
 

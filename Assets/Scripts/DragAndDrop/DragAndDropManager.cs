@@ -303,7 +303,21 @@ public class DragAndDropManager : MonoBehaviour
         {
             if(itemSlotOrigin2 is SpecInventorySlot originSlotInventory)
             {
-                if (_dragingObject.item.Type != originSlotInventory.GetFirstSlotType && _dragingObject.item.Type != originSlotInventory.GetSecondSlotType)
+                bool isSameType = false;
+
+                foreach (ItemBlueprint.ItemType slotType in originSlotInventory.GetSlotTypes)
+                {
+                    if (_dragingObject.item.Type == slotType)
+                    {
+                        isSameType = true;
+                    }
+                }
+
+                if (isSameType)
+                {
+                    ReturnToOriginSlot(itemSlotOrigin2);
+                }
+                else
                 {
                     ItemSlot emptySlot = inventory.FindEmptySlot();
 
@@ -315,6 +329,21 @@ public class DragAndDropManager : MonoBehaviour
                     SetDefault();
                     return false;
                 }
+
+                //if (_dragingObject.item.Type != originSlotInventory.GetFirstSlotType && _dragingObject.item.Type != originSlotInventory.GetSecondSlotType)
+                //{
+                //    ItemSlot emptySlot = inventory.FindEmptySlot();
+
+                //    // TODO Edge case
+                //    if (emptySlot == null)
+                //        Debug.LogError("Osudova chyba už neni empty slot takže se to musi rozširit inventar GG..");
+
+                //    ReturnToOriginSlot(emptySlot);
+                //    SetDefault();
+                //    return false;
+                //}
+
+                //ReturnToOriginSlot(itemSlotOrigin2);
             }
 
             // vrat item na puvodni pozici...
@@ -584,7 +613,16 @@ public class DragAndDropManager : MonoBehaviour
     }
     private bool ItemCanNotBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
     {
-        bool result = (_dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType);
-        return result;
+        bool canBePlaced = false;
+        foreach (ItemBlueprint.ItemType slotType in specSlotDestination2.GetSlotTypes)
+        {
+            if(_dragingObject.item.Type == slotType)
+            {
+                canBePlaced = true;
+            }
+        }
+        return !canBePlaced;
+        //bool result = (_dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType);
+        //return result;
     }
 }

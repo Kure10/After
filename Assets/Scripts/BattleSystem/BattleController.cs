@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 using UnityEngine.Events;
 
@@ -14,11 +15,11 @@ public class BattleController : MonoBehaviour
     [SerializeField] InventoryManager _inventoryManager;
 
     [Header("Info Panels")]
-    [SerializeField] private BattleInfoPanel battleInfoPanel;
-    [SerializeField] private UnitInfoPanel leftUnitInfo;
-    [SerializeField] private UnitInfoPanel rightUnitInfo;
-    [SerializeField] private BattleLogPanel battleLog;
-    [SerializeField] private BattleResultPopup battleResultPopup;
+    [SerializeField] private BattleInfoPanel _battleInfoPanel;
+    [SerializeField] private UnitInfoPanel _leftUnitInfo;
+    [SerializeField] private UnitInfoPanel _rightUnitInfo;
+    [SerializeField] private BattleLogPanel _battleLog;
+    [SerializeField] private BattleResultPopup _battleResultPopup;
 
     [Header("Info Popup")]
     [SerializeField] private DetailUnitPopup detailPopup;
@@ -48,6 +49,10 @@ public class BattleController : MonoBehaviour
     /// </summary>
     /// 
 
+    public static event Action<StatsClass> OnBattleLost = delegate { };
+
+    public static event Action OnBattleEnd = delegate { };
+
     bool _turnIsOver = false;
     private bool _isBattleOnline = false;
     private bool _isPlayerTurn = false;
@@ -68,7 +73,7 @@ public class BattleController : MonoBehaviour
 
     private void Awake()
     {
-        
+        _battleResultPopup.InicializedControlles( ()=> CloseBattle ());
     }
     private void Start()
     {
@@ -134,7 +139,7 @@ public class BattleController : MonoBehaviour
                 {
                     _order = 0;
                     roundCount++;
-                    battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
+                    _battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
 
                    // new iniciative
                     foreach (Unit unit in unitsOnBattleField)
@@ -146,7 +151,7 @@ public class BattleController : MonoBehaviour
                     }
 
                     SortUnitAccordingIniciation();
-                    battleInfoPanel.UpdateUnitNewTurnOrder(unitsOnBattleField, _unit);
+                    _battleInfoPanel.UpdateUnitNewTurnOrder(unitsOnBattleField, _unit);
                 }
  
                 UpdateActiveUnit();
@@ -158,7 +163,7 @@ public class BattleController : MonoBehaviour
                 FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
                 ShowSquaresWithingAttackRange();
 
-                leftUnitInfo.UpdateStats(_activeUnit);
+                _leftUnitInfo.UpdateStats(_activeUnit);
 
                 _turnIsOver = false;
 
@@ -169,7 +174,7 @@ public class BattleController : MonoBehaviour
 
     private void UpdateActiveUnit()
     {
-        battleInfoPanel.UpdateUnitOrder(_activeUnit, false);
+        _battleInfoPanel.UpdateUnitOrder(_activeUnit, false);
         _activeUnit.IsActive = false;
         _activeUnit.UpdateAnim();
 
@@ -183,9 +188,9 @@ public class BattleController : MonoBehaviour
 
         _activeUnit.IsActive = true;
         _activeUnit.UpdateAnim();
-        battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
+        _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
-        battleLog.AddBattleLog($"{_activeUnit._name} has turn");
+        _battleLog.AddBattleLog($"{_activeUnit._name} has turn");
     }
 
     private bool DetectPlayerInputs()
@@ -231,14 +236,14 @@ public class BattleController : MonoBehaviour
                 case BattleAction.Move:
                     MoveToSquar(squarToMove);
                     //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
-                    battleLog.AddBattleLog($"{_activeUnit._name} moved");
+                    _battleLog.AddBattleLog($"{_activeUnit._name} moved");
                     result = true;
                     break;
                 case BattleAction.Attack:
                     AttackInfo attackInfo = null;
                     attackInfo = AttackToUnit(unitOnSquare);
-                    battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
-                    battleInfoPanel.UpdateUnitData(unitOnSquare);
+                    _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
+                    _battleInfoPanel.UpdateUnitData(unitOnSquare);
                     result = true;
                     break;
                 case BattleAction.Heal:
@@ -254,10 +259,18 @@ public class BattleController : MonoBehaviour
     }
 
     // for buttons
+    public void CloseBattle()
+    {
+        OnBattleEnd.Invoke();
+        this.gameObject.SetActive(false);
+        _battleResultPopup.OnPressExit();
+    }
+
+    // for buttons
     public void SkipUnitTurn()
     {
         _turnIsOver = true;
-        battleLog.AddBattleLog($"{_activeUnit._name} skip round");
+        _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
     // for buttons
@@ -283,8 +296,8 @@ public class BattleController : MonoBehaviour
         ShowSquaresWithingAttackRange();
 
         _activeUnit.UpdateData(_activeUnit);
-        leftUnitInfo.UpdateStats(_activeUnit);
-        battleInfoPanel.UpdateUnitData(_activeUnit);
+        _leftUnitInfo.UpdateStats(_activeUnit);
+        _battleInfoPanel.UpdateUnitData(_activeUnit);
 
         // zmenit panel jednotky
         // i info panel
@@ -340,7 +353,7 @@ public class BattleController : MonoBehaviour
 
     private void InitBattle(BattleStartData battleData)
     {
-        battleLog.AddBattleLog("Battle Start");
+        _battleLog.AddBattleLog("Battle Start");
 
         this.gameObject.SetActive(true);
         _isPlayerTurn = true; // todo for now is not decided who will turn first .. ? ?? Now player...
@@ -384,7 +397,7 @@ public class BattleController : MonoBehaviour
 
         // Sort unit order.
         SortUnitAccordingIniciation();
-        battleInfoPanel.InitStartOrder(unitsOnBattleField, _unit);
+        _battleInfoPanel.InitStartOrder(unitsOnBattleField, _unit);
 
     }
 
@@ -524,7 +537,7 @@ public class BattleController : MonoBehaviour
             _activeUnit = unitsOnBattleField[_order];
             _activeUnit.IsActive = true;
             _activeUnit.UpdateAnim();
-            battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
+            _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
             //
             FindSquaresInUnitMoveRange();
@@ -534,7 +547,7 @@ public class BattleController : MonoBehaviour
             FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
             ShowSquaresWithingAttackRange();
 
-            leftUnitInfo.UpdateStats(_activeUnit);
+            _leftUnitInfo.UpdateStats(_activeUnit);
         }
         else
         {
@@ -571,8 +584,8 @@ public class BattleController : MonoBehaviour
 
         while (true)
         {
-            int xCor = Random.Range(0, rowsCount);
-            int yCor = Random.Range(0, _collumCount);
+            int xCor = UnityEngine.Random.Range(0, rowsCount);
+            int yCor = UnityEngine.Random.Range(0, _collumCount);
 
             if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
             {
@@ -641,8 +654,8 @@ public class BattleController : MonoBehaviour
         if (isDead)
         {
             DestroyUnitFromBattleField(defendUnit);
-            battleInfoPanel.DeleteUnitFromOrder(defendUnit);
-            battleLog.AddBattleLog($"{defendUnit._name} is dead");
+            _battleInfoPanel.DeleteUnitFromOrder(defendUnit);
+            _battleLog.AddBattleLog($"{defendUnit._name} is dead");
         }
 
         // for info
@@ -692,60 +705,49 @@ public class BattleController : MonoBehaviour
 
         if (demonUnit == 0 && neutralUnit == 0)
         {
-            // human wins
-            Debug.Log("Human wins");
-            //battleResultPopup.neco`
-            _battleStartData.UpdateMainPlayerData(unitsOnBattleField);
-
-            battleResultPopup.InitPlayerUnits(unitsOnBattleField, _unit);
-
-            List<ItemBlueprint> itemsLoot = new List<ItemBlueprint>();
-
-            foreach (DataUnit dataUnit in _battleStartData.enemyData.enemieUnits)
-            {
-                foreach (Monster.Loot loot in dataUnit.GetLoot)
-                {
-                    int randomNumber = Random.Range(0,101); // Todo Lepsi random.
-                    int itemCount = Random.Range(loot.itemCountMin, loot.itemCountMax +1); // Todo Lepsi random.
-                    if (randomNumber <= loot.dropChange)
-                    {
-                        for (int i = 0; i < itemCount; i++)
-                        {
-                            itemsLoot.Add(_inventoryManager.GetResourcesByID(loot.lootID));
-                        } 
-                    }
-                }
-            }
-
-            battleResultPopup.InicializedStartInventory(itemsLoot);
-
-            battleResultPopup.InicializedCharacter(_battleStartData.GetCharacterFromBattle);
+            HumanVictory();
             battleIsOver = true;
-
-            battleResultPopup.ShowBattleResult();
         }
 
         if (humanUnit == 0 && neutralUnit == 0)
         {
-            // demon wins
-            Debug.Log("Demon wins");
+            DemonVictory();
             battleIsOver = true;
         }
 
         if (demonUnit == 0 && humanUnit == 0)
         {
-            // neutral wins
-            Debug.Log("Neutral wins");
+            NeutralVictory();
             battleIsOver = true;
         }
 
         if (battleIsOver)
         {
             _isBattleOnline = false;
+            // Todo Clean BattleField . And prepair for next Battle
         }
         
-
         return false;
+    }
+
+    private StatsClass CreateStatClassBattleResult (bool positiveResult)
+    {
+        StatsClass statClass = new StatsClass();
+
+        if(positiveResult)
+        {
+            statClass.AddStat("$T", _battleStartData.WinEvaluation.statClassNumber);
+        }
+        else
+        {
+            statClass.AddStat("$T", 5);
+            statClass.AddStat("BattleLost", 1);
+
+        }
+        statClass.AddStat("Mission", _battleStartData.WinEvaluation.mission);
+        statClass.AddStat("BattleResult", positiveResult);
+   
+        return statClass;
     }
 
     // in this method i can mark squares and maybe change method for move..  Can be more easy to find..
@@ -920,6 +922,58 @@ public class BattleController : MonoBehaviour
         return checkedSquars;
     }
 
+    public void HumanVictory()
+    {
+        Debug.Log("Human wins");
+
+        _battleStartData.UpdateMainPlayerData(unitsOnBattleField);
+
+        _battleResultPopup.InitPlayerUnits(unitsOnBattleField, _unit);
+
+        List<ItemBlueprint> itemsLoot = new List<ItemBlueprint>();
+
+        foreach (DataUnit dataUnit in _battleStartData.enemyData.enemieUnits)
+        {
+            foreach (Monster.Loot loot in dataUnit.GetLoot)
+            {
+                int randomNumber = UnityEngine.Random.Range(0, 101); // Todo Lepsi random.
+                int itemCount = UnityEngine.Random.Range(loot.itemCountMin, loot.itemCountMax + 1); // Todo Lepsi random.
+                if (randomNumber <= loot.dropChange)
+                {
+                    for (int i = 0; i < itemCount; i++)
+                    {
+                        itemsLoot.Add(_inventoryManager.GetResourcesByID(loot.lootID));
+                    }
+                }
+            }
+        }
+
+        _battleResultPopup.InicializedStartInventory(itemsLoot);
+
+        _battleResultPopup.InicializedCharacter(_battleStartData.GetCharacterFromBattle);
+        
+
+        _battleResultPopup.ShowBattleResult();
+
+        StatsClass statClass = CreateStatClassBattleResult(true);
+        OnBattleLost.Invoke(statClass);
+    }
+
+    public void DemonVictory()
+    {
+        Debug.Log("Demon wins");
+        
+        StatsClass statClass = CreateStatClassBattleResult(false);
+        OnBattleLost.Invoke(statClass);
+    }
+    public void NeutralVictory()
+    {
+        // neutral wins
+        Debug.Log("Neutral wins");
+       
+        StatsClass statClass = CreateStatClassBattleResult(false);
+        OnBattleLost.Invoke(statClass);
+    }
     private List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool searchForBorders = false)
     {
         List<Squar> checkedSquars = new List<Squar>();
@@ -1098,8 +1152,8 @@ public class BattleController : MonoBehaviour
 
         if (unit != null)
         {
-            rightUnitInfo.UpdateStats(unit);
-            rightUnitInfo.gameObject.SetActive(true);
+            _rightUnitInfo.UpdateStats(unit);
+            _rightUnitInfo.gameObject.SetActive(true);
 
         }
         //else

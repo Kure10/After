@@ -11,6 +11,7 @@ public class uWindowSpecController : MonoBehaviour
 
     [Header("Prefabs")]
     [SerializeField] private GameObject panelSpecialist;
+    [SerializeField] GameObject itemPrefab;
 
     [Header("Holder")]
     [SerializeField] private RectTransform specHolder;
@@ -22,8 +23,12 @@ public class uWindowSpecController : MonoBehaviour
 
     private int lastSortCategory = -1;
 
-    private SpecialistControler specController;
+    public List<uWindowSpecialist> GetSpecInGameWindows { get { return this.specInGame; } }
 
+    public void Awake()
+    {
+       // EventController.OnEventEnd += RefreshCharacterWindowData;
+    }
     private void OnEnable()
     {
         foreach (uWindowSpecialist uWindowSpec in specInGame)
@@ -48,7 +53,6 @@ public class uWindowSpecController : MonoBehaviour
                 {
                     if(back.CurrentItem != (null,null))
                         Debug.Log(back.CurrentItem.item.Name +  "   item name " + " name spec-> " + item.GetName); 
-
                 }
             }
 
@@ -65,11 +69,49 @@ public class uWindowSpecController : MonoBehaviour
 
         specInGame.Add(uWindowSpec);
 
+        List<SpecInventorySlot> charSlots = new List<SpecInventorySlot>();
+        List<SpecInventorySlot> backPackSlots = new List<SpecInventorySlot>();
+        if (character.CharacterSlots != null)
+        {
+            foreach (var slot in character.CharacterSlots)
+            {
+                charSlots.Add(slot);
+            }
+        }
+
+        if(character.CharacterBackPackSlots != null)
+        {
+            foreach (var slot in character.CharacterBackPackSlots)
+            {
+                backPackSlots.Add(slot);
+            }
+        }
+
         var slots = uWindowSpec.GetCharacterSlots();
-        character.SetCharacterSlots = slots;
+        character.CharacterSlots = slots;
 
         var backpackSlots = uWindowSpec.GetCharacterBackpackSlots();
-        character.SetCharacterBackPackSlots = backpackSlots;
+        character.CharacterBackPackSlots = backpackSlots;
+
+        for (int i = 0; i < charSlots.Count ; i++)
+        {
+            SpecInventorySlot firstSlot = charSlots[i];
+            SpecInventorySlot charSlot = character.CharacterSlots[i];
+
+            charSlot.CurrentItem = firstSlot.CurrentItem;
+        }
+
+        for (int i = 0; i < backPackSlots.Count; i++)
+        {
+            SpecInventorySlot firstSlot = backPackSlots[i];
+            SpecInventorySlot charSlot = character.CharacterBackPackSlots[i];
+
+            charSlot.CurrentItem = firstSlot.CurrentItem;
+        }
+
+        // inventory
+        uWindowSpec.PopulateItemSlots(character,false);
+        uWindowSpec.PopulateBackpackItemSlots(character, false);
 
         // todo onitem change  pro backpack
 
@@ -78,15 +120,49 @@ public class uWindowSpecController : MonoBehaviour
             //slot.OnItemChangeCallBack += character.OnItemChange;
             DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
 
-            // Todo..
-            if (slot.GetFirstSlotType == ItemBlueprint.ItemType.BagSpec || slot.GetSecondSlotType == ItemBlueprint.ItemType.BagSpec)
+            if (slot.HasSlotThatType(ItemBlueprint.ItemType.BagSpec))
             {
                 slot.OnOpenBackPack += uWindowSpec.OpenBackpackInventory;
                 slot.OnOpenBackPack += RebuildLayout;
                 slot.OnCloseBackPack += uWindowSpec.CloseBackpackInventory;
                 slot.OnCloseBackPack += RebuildLayout;
             }
+        }
+    }
 
+    public void RemoveInGameCharacterUI()
+    {
+        foreach (uWindowSpecialist window in specInGame)
+        {
+            Destroy(window.gameObject);
+        }
+
+        specInGame.Clear();
+    }
+
+    //public void RefresAfterEvent (Mission mission)
+    //{
+    //    foreach (uWindowSpecialist window in specInGame)
+    //    {
+    //        Character character = window.CharacterInWindow;
+
+    //        window.RefreshCharacterInfo();
+    //        window.CleanAllItemSlots();
+    //        window.PopulateItemSlots(character, false);
+    //        window.PopulateBackpackItemSlots(character, false);
+    //    }
+    //}
+
+    public void RefreshCharacterWindowData(Mission mission = null)
+    {
+        foreach (uWindowSpecialist window in specInGame)
+        {
+            Character character = window.CharacterInWindow;
+
+            window.RefreshCharacterInfo();
+            window.CleanAllItemSlots();
+            window.PopulateItemSlots(character,false);
+            window.PopulateBackpackItemSlots(character, false);
         }
     }
 
@@ -143,10 +219,21 @@ public class uWindowSpecController : MonoBehaviour
                 List<SpecInventorySlot> slots = character.GetCharacterSlots();
                 foreach (SpecInventorySlot slot in slots)
                 {
-                    if (dragingItem.Type == slot.GetFirstSlotType || dragingItem.Type == slot.GetSecondSlotType)
+                    bool hasSlot = false;
+                    if(slot.HasSlotThatType(dragingItem.Type))
+                    {
+                        hasSlot = true;
+                    }
+
+                    if(hasSlot)
                     {
                         slot.ShowDragPosibility();
                     }
+
+                    //if (dragingItem.Type == slot.GetFirstSlotType || dragingItem.Type == slot.GetSecondSlotType)
+                    //{
+                    //    slot.ShowDragPosibility();
+                    //}
                 }
             }
         }

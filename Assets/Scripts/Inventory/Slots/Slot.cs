@@ -28,13 +28,13 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
 
     public bool IsEmpty { get { return isEmpty; } set { isEmpty = value; } }
 
-    public virtual (Item item, GameObject go) CurrentItem 
+    public virtual (Item item, GameObject go) CurrentItem
     {
         get
-        { 
+        {
             return _currentItem;
-        } 
-        set 
+        }
+        set
         {
             _currentItem = value;
         }
@@ -45,6 +45,16 @@ public abstract class Slot : MonoBehaviour, IPointerHandler, IDropHandler
     private void Awake()
     {
         actionButton = this.gameObject.GetComponent<Button>();
+    }
+
+    public void CleanSlot ()
+    {
+        isEmpty = true;
+        Destroy(_currentItem.go);
+        if (_currentItem.go != null)
+        {
+            _currentItem = (null, null);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Events;
 
 public class BattleResultPopup : MonoBehaviour
 {
@@ -37,9 +38,7 @@ public class BattleResultPopup : MonoBehaviour
   
     private void Awake()
     {
-        _lootButton.onClick.AddListener(OnPressLoot);
-        _exitButton.onClick.AddListener(OnPressExit);
-        _backButton.onClick.AddListener(OnPressBack);
+
     }
     // Buttons
     public void OnPressLoot()
@@ -53,8 +52,9 @@ public class BattleResultPopup : MonoBehaviour
     // Buttons
     public void OnPressExit ()
     {
-        // Battle Is over :. 
-        // refresh battle some shit what ever
+        // clean this panel
+        // reset it
+        this.gameObject.SetActive(false);
     }
     // Buttons
     public void OnPressBack()
@@ -105,6 +105,13 @@ public class BattleResultPopup : MonoBehaviour
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+    }
+
+    public void InicializedControlles(UnityAction action)
+    {
+        _lootButton.onClick.AddListener(OnPressLoot);
+        _exitButton.onClick.AddListener(action);
+        _backButton.onClick.AddListener(OnPressBack);
     }
 
     public void ShowBattleResult()
@@ -194,17 +201,24 @@ public class BattleResultPopup : MonoBehaviour
             foreach (SpecInventorySlot slot in charSlots)
             {
                 slot.OnItemChangeCallBack += character.OnItemChange;
-               // DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
+                // DragAndDropManager.Instantion.OnItemResponseReaction += OnItemDragResponce;
 
-                // Todo..
-                if (slot.GetFirstSlotType == ItemBlueprint.ItemType.BagSpec || slot.GetSecondSlotType == ItemBlueprint.ItemType.BagSpec)
+                //Todo
+                foreach (ItemBlueprint.ItemType slotType in slot.GetSlotTypes)
                 {
-                    //slot.OnOpenBackPack += window.OpenBackpackInventory;
-                    //slot.OnOpenBackPack += RebuildLayout;
-                    //slot.OnCloseBackPack += window.CloseBackpackInventory;
-                    //slot.OnCloseBackPack += RebuildLayout;
+                    if(slotType == ItemBlueprint.ItemType.BagSpec)
+                    {
+                        //slot.OnOpenBackPack += window.OpenBackpackInventory;
+                        //slot.OnOpenBackPack += RebuildLayout;
+                        //slot.OnCloseBackPack += window.CloseBackpackInventory;
+                        //slot.OnCloseBackPack += RebuildLayout;
+                    }
                 }
+            }
 
+            foreach (SpecInventorySlot slot in backpackSlots)
+            {
+                slot.OnItemChangeCallBack += character.OnItemChange;
             }
         }
 

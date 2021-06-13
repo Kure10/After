@@ -25,6 +25,8 @@ public class EventController : MonoBehaviour
 
     private ResolveSlave slave;
 
+    private Mission _currentMission = null;
+
     List<Character> CharactersSelectedForTesting = new List<Character>();
 
     private bool finalTestResult = false;
@@ -44,8 +46,9 @@ public class EventController : MonoBehaviour
 
     public void EventTrigered(Mission mission)
     {
+        _currentMission = mission;
         // choise Random Event..
-        StatsClass _event = eventManager.ChoiseRandomEvent(mission.DifficultyMin, mission.DifficultyMax, mission.GetEmergingTerrains);
+        StatsClass _event = eventManager.ChoiseRandomEvent(_currentMission.DifficultyMin, _currentMission.DifficultyMax, _currentMission.GetEmergingTerrains);
 
         // PreWarm Pictureteamevent
         Sprite sprite = spriteLoader.LoadEventSprite(_event.GetStrStat("EventPicture"));
@@ -56,13 +59,13 @@ public class EventController : MonoBehaviour
         slave.StartResolve();
         Dictionary<string, List<StatsClass>> output = slave.Resolve();
 
-        AddCharactersPrefabFromMissionToEvent(mission);
+        AddCharactersPrefabFromMissionToEvent();
         eventPanel.AmountCharacterSelectedText.text = "";
 
         eventBlocker.SetActive(true);
         this.eventPanel.gameObject.SetActive(true);
 
-        LoadEventSteps(output, mission);
+        LoadEventSteps(output);
 
     }
 
@@ -70,7 +73,7 @@ public class EventController : MonoBehaviour
 
     #region Private Methods
 
-    private void LoadEventSteps(Dictionary<string, List<StatsClass>> output, Mission mission)
+    private void LoadEventSteps(Dictionary<string, List<StatsClass>> output)
     {
         // windowSpec nastavit na default..
         foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
@@ -78,18 +81,19 @@ public class EventController : MonoBehaviour
             uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
             Character character = characterInEvent.Value;
 
+            uWindow.RefreshCharacterInfo(false);
             uWindow.TurnOffResult();
         }
 
-        // Jedu pres vsechny slavy
-        foreach (StatsClass item in output["Result"])
+        // Jedu pres vsechny stavy
+        foreach (StatsClass statsClass in output["Result"])
         {
-            SetNextStepEvent(item, mission);
+            SetNextStepEvent(statsClass);
         }
     }
 
 
-    private Mission SetNextStepEvent(StatsClass statClass, Mission mission)
+    private Mission SetNextStepEvent(StatsClass statClass)
     {
         var title = statClass.Title;
         var number = statClass.GetIntStat("$T");
@@ -97,56 +101,67 @@ public class EventController : MonoBehaviour
         switch (number)
         {
             case 1:
-                ProcessOptions(mission, statClass, title);
-                return mission;
+                ProcessOptions(statClass, title);
+                return _currentMission;
             case 2:
-                ProcessFight(mission, statClass, title);
-                return mission;
+                ProcessFight(statClass, title);
+                return _currentMission;
             case 3:
-                ProcessMonster(mission, statClass, title);
-                return mission;
+                ProcessMonster( statClass, title);
+                return _currentMission;
             case 4:
-                ProcessTest(mission, statClass, title);
-                return mission;
+                ProcessTest( statClass, title);
+                return _currentMission;
             case 5:
-                ProcessChange(mission, statClass, title);
-                return mission;
+                ProcessChange( statClass, title);
+                return _currentMission;
             case 6:
-                ProcessEvaluation(mission, statClass, title);
-                return mission;
+                ProcessEvaluation(statClass, title);
+                return _currentMission;
             default:
                 Debug.LogWarning("Warning event was created with error: " + number + " : " + title);
-                return mission;
+                return _currentMission;
         }
     }
 
-    private void ProcessOptions(Mission mission,StatsClass item, string title)
+    private void ProcessOptions(StatsClass item, string title)
     {
         var buttonText = item.GetStrStat("OptionType");
         var buttonDescription = item.GetStrStat("Option");
-        eventPanel.CreateButon(() => SelectionButton(int.Parse(title), mission), buttonText, buttonDescription);
+        eventPanel.CreateButon(() => SelectionButton(int.Parse(title)), buttonText, buttonDescription);
     }
 
-    private void ProcessFight(Mission mission, StatsClass statClass, string title)
+    private void ProcessFight(StatsClass statClass, string title)
     {
-        // eventPanel.CreateButon( () => SelectionButton(int.Parse(title), mission), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
+        //
+        eventPanel.CreateButon( () => SelectionButton(int.Parse(title)), "Won Battle.." + title, "Tady nic neni proste jsi vyhral..");
 
-        foreach (Character character in mission.GetCharactersOnMission)
+        BattleController.OnBattleLost -= BattleEvaluation;
+        BattleController.OnBattleLost += BattleEvaluation;
+
+        BattleController.OnBattleEnd -= RefreshCharacterSlots;
+        BattleController.OnBattleEnd += RefreshCharacterSlots;
+
+
+        foreach (Character character in _currentMission.GetCharactersOnMission)
         {
             _battleStartData.AddPlayerBattleData(character);
         }
 
-        _battleStartData.AddCharacterFromMission(mission.GetCharactersOnMission);
+        _battleStartData.AddCharacterFromMission(_currentMission.GetCharactersOnMission);
 
         BattleType battleType = BattleType.Testing;
         string type = statClass.GetStrStat("BattleType");
         bool checkParse = Enum.TryParse(type, out battleType);
         _battleStartData.battleType = battleType;
 
+        _battleStartData.WinEvaluation.statClassNumber = int.Parse(title);
+        _battleStartData.WinEvaluation.mission = _currentMission;
+
         battleController.StartBattle(_battleStartData);
     }
 
-    private void ProcessMonster(Mission mission, StatsClass statClass, string title)
+    private void ProcessMonster(StatsClass statClass, string title)
     {
         string stringID = statClass.GetStrStat("Monster");
         int monsterCount = statClass.GetIntStat("BeastNumber");
@@ -162,7 +177,7 @@ public class EventController : MonoBehaviour
         }
     }
 
-    private void ProcessTest(Mission mission, StatsClass item, string title)
+    private void ProcessTest(StatsClass item, string title)
     {
 
         tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
@@ -188,13 +203,13 @@ public class EventController : MonoBehaviour
         eventPanel.GetContinueButton.onClick.AddListener(() => ContinueButton());
 
         eventPanel.buttonForTMPProceed.onClick.RemoveAllListeners();
-        eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), mission));
+        eventPanel.buttonForTMPProceed.onClick.AddListener(() => TMP_ProceedButton(int.Parse(title), _currentMission));
 
         // cerna magie vratit se k tomuto
         eventManager.resolveMaster.ResolveCondition += OncheckTest;
     }
 
-    private void ProcessChange(Mission mission, StatsClass item, string title)
+    private void ProcessChange(StatsClass item, string title)
     {
         if (item.GetBoolStat("AddTimeChange"))
         {
@@ -202,9 +217,9 @@ public class EventController : MonoBehaviour
             int timeDelay = item.GetIntStat("TimeDelay");
 
             if (isDelayed == "Delay")
-                mission.Distance += timeDelay;
+                _currentMission.Distance += timeDelay;
             else
-                mission.Distance -= timeDelay;
+                _currentMission.Distance -= timeDelay;
         }
         else if (item.GetBoolStat("AddTextWindow"))
         {
@@ -213,6 +228,7 @@ public class EventController : MonoBehaviour
             this.eventPanel.SelectionInfoText.text = $"Tvoji Speciaiste na misi";
             this.eventPanel.TitleField.text = item.GetStrStat("TitleTextWindow");
             this.eventPanel.DescriptionTextField.text = item.GetStrStat("TextWindow");
+
         }
         else if (item.GetBoolStat("AddPerk"))
         {
@@ -221,7 +237,7 @@ public class EventController : MonoBehaviour
         else if (item.GetBoolStat("AddSecAtr"))
         {
             // todo when type is "vyber rozsahem" bude chyba poresit..
-            List<Character> afectedCharacters = SelectTarget(item.GetStrStat("SecAtrChangeTarg"), mission);
+            List<Character> afectedCharacters = SelectTarget(item.GetStrStat("SecAtrChangeTarg"), _currentMission);
             ModifyAtribute(item.GetStrStat("SecAtrChangeType"), afectedCharacters, item.GetStrStat("SecAtr"), item.GetIntStat("SecAtrChange"));
         }
         else if (item.GetBoolStat("ChangeSource"))
@@ -247,13 +263,27 @@ public class EventController : MonoBehaviour
             RemoveCharactersGameObjectFromEvent();
             this.eventPanel.gameObject.SetActive(false);
             TimeControl.IsTimeBlocked = false;
-            OnEventEnd.Invoke(mission);
+            OnEventEnd.Invoke(_currentMission);
             eventBlocker.SetActive(false);
             isEventRunning = false;
+
+        }
+        else if (item.GetBoolStat("BattleLost"))
+        {
+            finalTestResult = false;
+            CharactersSelectedForTesting.Clear();
+            RemoveCharactersGameObjectFromEvent();
+            this.eventPanel.gameObject.SetActive(false);
+            TimeControl.IsTimeBlocked = false;
+            OnEventEnd.Invoke(_currentMission);
+            eventBlocker.SetActive(false);
+            isEventRunning = false;
+
+            _currentMission.Distance = 0;
         }
     }
 
-    private void ProcessEvaluation(Mission mission, StatsClass item, string title)
+    private void ProcessEvaluation( StatsClass item, string title)
     {
         foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
         {
@@ -270,14 +300,16 @@ public class EventController : MonoBehaviour
         }
     }
 
-    private void AddCharactersPrefabFromMissionToEvent(Mission mission)
+
+
+    private void AddCharactersPrefabFromMissionToEvent()
     {
         eventPanel.GetCharactersOnEvent.Clear();
         eventPanel.DisableCharacterContent();
 
-        for (int i = 0; i < mission.GetCharactersOnMission.Count; i++)
+        for (int i = 0; i < _currentMission.GetCharactersOnMission.Count; i++)
         {
-            Character character = mission.GetCharactersOnMission[i];
+            Character character = _currentMission.GetCharactersOnMission[i];
             GameObject go = Instantiate(eventPanel.GetCharacterButtonPrefab);
             go.transform.localScale = new Vector3(1, 1, 1);
 
@@ -319,6 +351,20 @@ public class EventController : MonoBehaviour
     #endregion
 
     #region Helping Methods
+
+    public void RefreshCharacterSlots ()
+    {
+        foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
+        {
+            uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
+            Character character = characterInEvent.Value;
+
+            uWindow.CleanAllItemSlots();
+            uWindow.RefreshCharacterInfo(false);
+            uWindow.PopulateItemSlots(character,false);
+            uWindow.PopulateBackpackItemSlots(character,false);
+        }
+    }
 
     private void ModifyAtribute (string type , List<Character> targets , string atribute , int value)
     {
@@ -367,6 +413,29 @@ public class EventController : MonoBehaviour
         return null;
     }
 
+    public void BattleEvaluation(StatsClass statClass)
+    {
+        var objectResult = statClass.GetStat("BattleResult");
+        bool isVictory = (bool)objectResult;
+        object unknowMission = statClass.GetStat("Mission");
+        Mission mission = unknowMission as Mission;
+ 
+        int tittle = statClass.GetIntStat("$T");
+    
+        if (isVictory)
+        {
+            // victory
+            SelectionButton(tittle);
+        }
+        else
+        {
+            // lost
+            eventPanel.DestroyAllButtons();
+            SetNextStepEvent(statClass);
+        }
+
+    }
+
     #endregion
 
     #region Buttons Methods
@@ -376,17 +445,17 @@ public class EventController : MonoBehaviour
         slave.StartResolve(numberOfBrachToResolve);
         var output = slave.Resolve();
 
-        LoadEventSteps(output, mission);
+        LoadEventSteps(output);
     }
 
-    private void SelectionButton(int numberOfBrachToResolve, Mission mission)
+    private void SelectionButton(int numberOfBrachToResolve)
     {
         eventPanel.DestroyAllButtons();
 
         slave.StartResolve(numberOfBrachToResolve);
         var output = slave.Resolve();
 
-        LoadEventSteps(output, mission);
+        LoadEventSteps(output);
     }
 
     private void ContinueButton()
@@ -487,6 +556,10 @@ public class EventController : MonoBehaviour
         // karmaDescription , Todo
         #region Constructor 
 
+        public TestCase()
+        {
+
+        }
         public TestCase(string _testTarget, string _testName, string _kindTest, string _testType,
             string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription,
             int _min, int _max, string _resultPriority)

@@ -19,9 +19,9 @@ public class Character : MonoBehaviour, IResourceHolder
 
     private List<SpecInventorySlot> backPackSlots;
 
-    public List<SpecInventorySlot> SetCharacterSlots { set { charactersSlots = value; } }
+    public List<SpecInventorySlot> CharacterSlots { get { return charactersSlots; } set { charactersSlots = value; } }
 
-    public List<SpecInventorySlot> SetCharacterBackPackSlots { set { backPackSlots = value; } }
+    public List<SpecInventorySlot> CharacterBackPackSlots { get { return backPackSlots; } set { backPackSlots = value; } }
 
     public List<Item> GetInventory 
     { 

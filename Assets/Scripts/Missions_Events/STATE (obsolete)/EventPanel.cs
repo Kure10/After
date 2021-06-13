@@ -73,7 +73,7 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] Button minimize;
 
-    Dictionary<GameObject, Character> charactersInContent = new Dictionary<GameObject, Character>();
+    private Dictionary<GameObject, Character> charactersInContent = new Dictionary<GameObject, Character>();
 
     [Space]
     [Space]

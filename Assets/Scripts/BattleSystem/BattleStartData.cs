@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum BattleType
 {
@@ -30,7 +31,10 @@ public class BattleStartData
 
     public bool isRandomEnemyPosition = true;
 
+    public (int statClassNumber, Mission mission) WinEvaluation = (0, null);
+
     private List<Character> charactersInBattleFromMission = new List<Character>();
+
 
     public List<Character> GetCharacterFromBattle { get { return charactersInBattleFromMission; } }
     public void AddCharacterFromMission(List<Character> charactersFromMission)

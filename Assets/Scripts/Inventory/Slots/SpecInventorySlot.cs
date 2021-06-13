@@ -17,8 +17,7 @@ public class SpecInventorySlot : Slot
 
     [SerializeField] private bool isBackPack;
 
-    [SerializeField] ItemBlueprint.ItemType firstType;
-    [SerializeField] ItemBlueprint.ItemType secondType;
+    [SerializeField] private List<ItemBlueprint.ItemType> slotTypes;
     [Space]
     // Todo zatim se nepouziva..
     [SerializeField] Image backgroundImage;
@@ -36,15 +35,11 @@ public class SpecInventorySlot : Slot
 
     public event UnityAction OnGridSizeChange = delegate { };
 
-    public ItemBlueprint.ItemType GetFirstSlotType { get { return this.firstType; } }
-
-    public ItemBlueprint.ItemType GetSecondSlotType { get { return this.secondType; } }
+    public List<ItemBlueprint.ItemType> GetSlotTypes { get { return this.slotTypes;} }    
 
     public BodyPart GetBodyPart { get { return this.bodyPart; } }
 
     public bool IsBackpack { get { return this.isBackPack; } }
-    //public int Index { get { return this.index; } }
-    // budu potrebovat
     public override (Item item, GameObject go) CurrentItem
     {
         get
@@ -102,9 +97,12 @@ public class SpecInventorySlot : Slot
     public bool HasSlotThatType(ItemBlueprint.ItemType type)
     {
         bool result = false;
-        if(type == GetFirstSlotType || type == GetSecondSlotType)
+        foreach (ItemBlueprint.ItemType slotType in GetSlotTypes)
         {
-            result = true;
+            if (type == slotType)
+            {
+                result = true;
+            }
         }
 
         return result;

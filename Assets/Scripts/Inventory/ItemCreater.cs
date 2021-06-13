@@ -66,8 +66,6 @@ public class ItemCreater : MonoBehaviour
         else
         {
             CreateResource(item, gameObject);
-
-           // CreateResourceSpecial(blueprint, gameObject);
         }
 
         return gameObject;
@@ -85,7 +83,10 @@ public class ItemCreater : MonoBehaviour
 
     private void CreateResource(Item item, GameObject gameObject)
     {
-        Debug.LogWarning("Todo Resource is not implemented"); // Todo
+        Item it = gameObject.AddComponent<Item>();
+        it.SetupItem(item.Name, item.Type, item.Sprite);
+
+        AddModifications(it, item);
     }
 
     private void CreateBackpack(ItemBlueprint blueprint, GameObject gameObject)

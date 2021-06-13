@@ -66,8 +66,6 @@ public class uWindowSpecialist : MonoBehaviour
     private float percentHealth = 0;
     private float percentStamina = 0;
 
-    private bool isOpenBackPack = false;
-
     private Character _character;
 
     #endregion
@@ -181,22 +179,25 @@ public class uWindowSpecialist : MonoBehaviour
             ActivateCoverPanel("Specialista byl je vybran");
     }
 
-    // Todo
-    public void RefreshCharacterInfo()
+    public void RefreshCharacterInfo(bool UpdatePanel = true)
     {
         if (_character == null)
             return;
 
         CalcHealtandStamina(_character);
 
-        if (_character.GetBlueprint().IsOnMission)
+        if(UpdatePanel)
         {
-            ActivateCoverPanel("Character is on Mission");
+            if (_character.GetBlueprint().IsOnMission)
+            {
+                ActivateCoverPanel("Character is on Mission");
+            }
+            else
+            {
+                DeactivateCoverPanel();
+            }
         }
-        else
-        {
-            DeactivateCoverPanel();
-        }
+
     }
 
     public void PopulateItemSlots(Character character, bool disableDrag)
@@ -216,7 +217,16 @@ public class uWindowSpecialist : MonoBehaviour
 
             for (int i = 0; i < characterSlots.Count; i++)
             {
-                if (characterSlots[i].GetFirstSlotType == newItem.Type || characterSlots[i].GetSecondSlotType == newItem.Type)
+                bool slotHasType = false;
+                foreach (ItemBlueprint.ItemType slotType in characterSlots[i].GetSlotTypes)
+                {
+                    if(slotType == newItem.Type)
+                    {
+                        slotHasType = true;
+                    }
+                }
+
+                if(slotHasType)
                 {
                     if (characterSlots[i].IsEmpty)
                     {
@@ -225,6 +235,7 @@ public class uWindowSpecialist : MonoBehaviour
                         break;
                     }
                 }
+
             }
 
             if (!disableDrag)
@@ -278,6 +289,19 @@ public class uWindowSpecialist : MonoBehaviour
         }
     }
 
+    public void CleanAllItemSlots ()
+    {
+        foreach (SpecInventorySlot slot in characterSlots)
+        {
+            slot.CleanSlot();
+        }
+
+        foreach (SpecInventorySlot slot in backPackSlots)
+        {
+            slot.CleanSlot();
+        }
+    }
+
     public void AddActionsOnItemClicked( UnityAction action)
     {
         foreach (SpecInventorySlot slot in characterSlots)
@@ -311,40 +335,6 @@ public class uWindowSpecialist : MonoBehaviour
                 }
             }  
         }
-    }
-
-    // Open and Close.. backpack
-    public void OpenAndCloseBackpack(int backPackCapacity)
-    {
-        if (backPackCapacity <= 0)
-            return;
-
-        if (backPackGameObject != null)
-            backPackGameObject.SetActive(!backPackGameObject.activeSelf);
-
-        var count = backPackCapacity / 2;
-
-        if (isOpenBackPack)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                backPackCollums[i].SetActive(false);
-            }
-            isOpenBackPack = false;
-        }
-        else
-        {
-            for (int i = 0; i < count; i++)
-            {
-                backPackCollums[i].SetActive(true);
-            }
-            isOpenBackPack = true;
-        }
-
-        var tmp = this.transform.GetComponentInParent<Transform>();
-
-        tmp.SetAsFirstSibling();
-        // reorder.. 
     }
 
     public void OpenBackpackInventory(int backPackCapacity)

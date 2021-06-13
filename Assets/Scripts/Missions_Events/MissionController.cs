@@ -31,7 +31,7 @@ public class MissionController : MonoBehaviour
     {
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
-      
+
 
         EventController.OnEventEnd += RemoveEventNotification;
     }
@@ -125,6 +125,12 @@ public class MissionController : MonoBehaviour
                
 
                 MissionReward(missionsInProcces[i]);
+
+                
+                // refresh character window
+                // Vsechny materialy presipat na podlahu.
+
+               // specialistControler.GetSpecUWindowUi.RefresAfterEvent(procesingMission);
 
                 specialistControler.CharacterOnMissionReturn(procesingMission.GetCharactersOnMission);
                 // ToDo Specialiste se obeví..
