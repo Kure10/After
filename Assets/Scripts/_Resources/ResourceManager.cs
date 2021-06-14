@@ -181,6 +181,30 @@ public class ResourceManager : MonoBehaviour
 
     Vector2Int defaultSpawnPoint = new Vector2Int(20, 20);
 
+    public void AddResource(int resourceType, int value)
+    {
+        switch (resourceType)
+        {
+            case 0:
+                IncPotraviny(value);
+                break;
+            case 1:
+                IncCivilniMaterial(value);
+                break;
+            case 2:
+                IncTechnickyMaterial(value);
+                break;
+            case 3:
+                IncVojenskyMaterialy(value);
+                break;
+            case 4:
+                IncPohonneHmoty(value);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void IncPohonneHmoty(int value)
     {
         var val = new ResourceAmount();

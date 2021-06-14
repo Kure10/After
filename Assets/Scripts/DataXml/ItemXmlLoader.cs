@@ -68,6 +68,11 @@ public class ItemXmlLoader
 
             ItemBlueprint item = new ItemBlueprint(id, name, type);
 
+            string stringResourceType = statClass.GetStrStat("ItemResourceType");
+            ItemBlueprint.ItemResourceType resourceType;
+            checkParse = Enum.TryParse(stringResourceType, out resourceType);
+            item.ResourceType = resourceType;
+
             item.capacity = statClass.GetIntStat("Capacity");
             item.absorbation = statClass.GetIntStat("Absorption");
 

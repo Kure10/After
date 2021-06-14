@@ -25,10 +25,12 @@ public class MissionController : MonoBehaviour
 
     private TimeControl theTC;
     private PanelTime thePT;
-  
+
+    private ResourceManager resourceManager;
 
     private void Awake()
     {
+        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         this.theTC = GameObject.FindGameObjectWithTag("TimeController").GetComponent<TimeControl>();
         this.thePT = GameObject.FindObjectOfType<PanelTime>();
 
@@ -104,7 +106,7 @@ public class MissionController : MonoBehaviour
                     {
                         procesingMission.RepeatableTime = procesingMission.RepeatableIn;
                         missionsInRepate.Add(procesingMission);
-                        
+
                         if (!procesingMission.WasSuccessfullyExecuted)
                         {
                             procesingMission.WasSuccessfullyExecuted = true;
@@ -112,25 +114,23 @@ public class MissionController : MonoBehaviour
                         }
                         else
                         {
-                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer,true);
+                            procesingMission.RegionOperator.CompleteMission(true, procesingMission.MissionPointer, true);
                         }
                     }
                     else
                     {
                         procesingMission.WasSuccessfullyExecuted = true;
-                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.MissionPointer,true);
+                        procesingMission.RegionOperator.CompleteMission(false, procesingMission.MissionPointer, true);
                     }
-                    
+
                 }
-               
+
 
                 MissionReward(missionsInProcces[i]);
 
-                
-                // refresh character window
-                // Vsechny materialy presipat na podlahu.
+                UnloadImportedGoodsFromMission(missionsInProcces[i].GetCharactersOnMission);
 
-               // specialistControler.GetSpecUWindowUi.RefresAfterEvent(procesingMission);
+                // Vsechny materialy presipat na podlahu.
 
                 specialistControler.CharacterOnMissionReturn(procesingMission.GetCharactersOnMission);
                 // ToDo Specialiste se obeví..
@@ -160,6 +160,37 @@ public class MissionController : MonoBehaviour
         }
         missionsInProcces.Remove(mission); 
         infoController.DeleteFromInfoRow(mission);
+    }
+
+    private void UnloadImportedGoodsFromMission (List<Character> characterOnMission)
+    {
+        foreach (Character character in characterOnMission)
+        {
+
+            foreach (Item item in character.GetInventory)
+            {
+                if (item != null)
+                {
+                    if (item.Type == ItemBlueprint.ItemType.ResBasic)
+                    {
+                        resourceManager.AddResource(1,1);
+                    }
+                }
+            }
+
+            foreach (Item item in character.GetBackpackInventory)
+            {
+                if (item != null)
+                {
+                    if (item.Type == ItemBlueprint.ItemType.ResBasic)
+                    {
+
+                    }
+                }
+            }
+        }
+
+
     }
 
     public void MissionRefresh(Mission mission)

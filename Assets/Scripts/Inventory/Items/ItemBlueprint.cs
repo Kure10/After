@@ -9,6 +9,7 @@ public class ItemBlueprint
     public new string name;
     private Sprite sprite;
     private ItemType type;
+    private ItemResourceType resourceType = ItemResourceType.None;
     public int capacity;
     public int absorbation;
     public bool isRepairable;
@@ -24,6 +25,8 @@ public class ItemBlueprint
     public Sprite Sprite { get { return sprite; } set { sprite = value; } }
 
     public ItemType Type { get { return type; } }
+
+    public ItemResourceType ResourceType { get { return resourceType; } set { resourceType = value; } }
 
     public ItemBlueprint()
     {
@@ -46,6 +49,16 @@ public class ItemBlueprint
         ResBasic,
         ResSpecial,
         WeapSpec
+    }
+
+    public enum ItemResourceType
+    {
+        None,
+        Civil,
+        Military,
+        Fuel,
+        Food,
+        TechMaterial
     }
 
     public struct BonusModificators
