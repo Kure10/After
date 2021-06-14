@@ -125,15 +125,12 @@ public class MissionController : MonoBehaviour
 
                 }
 
-
-                MissionReward(missionsInProcces[i]);
-
                 UnloadImportedGoodsFromMission(missionsInProcces[i].GetCharactersOnMission);
 
-                // Vsechny materialy presipat na podlahu.
-
                 specialistControler.CharacterOnMissionReturn(procesingMission.GetCharactersOnMission);
-                // ToDo Specialiste se obeví..
+
+                MissionReward(missionsInProcces[i]);
+               
                 continue;
             }
         }
@@ -166,31 +163,36 @@ public class MissionController : MonoBehaviour
     {
         foreach (Character character in characterOnMission)
         {
-
-            foreach (Item item in character.GetInventory)
+            foreach (SpecInventorySlot slot in character.CharacterSlots)
             {
+                Item item = slot.CurrentItem.item;
                 if (item != null)
                 {
                     if (item.Type == ItemBlueprint.ItemType.ResBasic)
                     {
-                        resourceManager.AddResource(1,1);
+                        // Todo put it on some specific place
+                        // Todo Value should be diferent than 1.
+                        resourceManager.AddResource(item.ResourceType, 1);
+                        slot.CleanSlot();
                     }
                 }
             }
 
-            foreach (Item item in character.GetBackpackInventory)
+            foreach (SpecInventorySlot slot in character.CharacterBackPackSlots)
             {
+                Item item = slot.CurrentItem.item;
                 if (item != null)
                 {
                     if (item.Type == ItemBlueprint.ItemType.ResBasic)
                     {
-
+                        // Todo put it on some specific place
+                        // Todo Value should be diferent than 1.
+                        resourceManager.AddResource(item.ResourceType, 1);
+                        slot.CleanSlot();
                     }
                 }
             }
         }
-
-
     }
 
     public void MissionRefresh(Mission mission)

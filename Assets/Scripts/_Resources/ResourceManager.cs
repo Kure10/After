@@ -181,24 +181,26 @@ public class ResourceManager : MonoBehaviour
 
     Vector2Int defaultSpawnPoint = new Vector2Int(20, 20);
 
-    public void AddResource(int resourceType, int value)
+    public void AddResource(ItemBlueprint.ItemResourceType type, int value)
     {
-        switch (resourceType)
+        switch (type)
         {
-            case 0:
-                IncPotraviny(value);
+            case ItemBlueprint.ItemResourceType.None:
                 break;
-            case 1:
+            case ItemBlueprint.ItemResourceType.Civil:
                 IncCivilniMaterial(value);
                 break;
-            case 2:
-                IncTechnickyMaterial(value);
-                break;
-            case 3:
+            case ItemBlueprint.ItemResourceType.Military:
                 IncVojenskyMaterialy(value);
                 break;
-            case 4:
+            case ItemBlueprint.ItemResourceType.Fuel:
                 IncPohonneHmoty(value);
+                break;
+            case ItemBlueprint.ItemResourceType.Food:
+                IncPotraviny(value);
+                break;
+            case ItemBlueprint.ItemResourceType.TechMaterial:
+                IncTechnickyMaterial(value);
                 break;
             default:
                 break;

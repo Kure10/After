@@ -155,6 +155,13 @@ public class ItemXmlLoader
             string spriteName = statClass.GetStrStat("ItemPicture");
             Sprite sprite = spriteLoader.LoadItemSpriteForType(spriteName);
             item.Sprite = sprite;
+
+            if(item.Type == ItemBlueprint.ItemType.ResBasic || item.Type == ItemBlueprint.ItemType.ResSpecial)
+            {
+                sprite = spriteLoader.LoadSpriteForResource(item.ResourceType);
+                item.Sprite = sprite;
+            }
+
             if(sprite == null || item.Sprite == null)
             {
                 // ToDo sprite is loaded randomly.  Kdzbz nahodou

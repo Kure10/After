@@ -28,11 +28,11 @@ public class InventoryManager : MonoBehaviour
 
         foreach (SubContainerData subData in container.containerSubData)
         {
-            foreach (ItemBlueprint item in allItemsAndResource)
+            foreach (ItemBlueprint itemBlueprint in allItemsAndResource)
             {
-                if(subData.dropItemID == item.itemID)
+                if(subData.dropItemID == itemBlueprint.itemID)
                 {
-                    startingItems.Add(item);
+                    startingItems.Add(itemBlueprint);
                 }
             }
         }

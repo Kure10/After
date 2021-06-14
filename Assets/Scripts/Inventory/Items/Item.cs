@@ -13,6 +13,7 @@ public class Item : MonoBehaviour
     [SerializeField] private Image image;
     private string name;
     private ItemType type;
+    private ItemResourceType resourceType;
     private Slot mySlot;
     private BonusModificators[] modificators;
 
@@ -28,13 +29,16 @@ public class Item : MonoBehaviour
 
     public ItemType Type { get { return this.type; } }
 
+    public ItemResourceType ResourceType { get { return this.resourceType; } }
+
     public BonusModificators[] Modificators { get { return this.modificators; } set { this.modificators = value; } }
 
-    public void SetupItem(string _name, ItemType _type, Sprite _sprite)
+    public void SetupItem(string _name, ItemType _type, Sprite _sprite, ItemResourceType _resourceType = ItemResourceType.None)
     {
         name = _name;
         image.sprite = _sprite;
         type = _type;
+        resourceType = _resourceType;
     }
 
     private void Awake()

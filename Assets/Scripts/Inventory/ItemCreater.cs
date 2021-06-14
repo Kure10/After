@@ -78,15 +78,18 @@ public class ItemCreater : MonoBehaviour
 
     private void CreateResource(ItemBlueprint blueprint, GameObject gameObject)
     {
-        Debug.LogWarning("Todo Resource is not implemented"); // Todo
+        Item it = gameObject.AddComponent<Item>();
+        it.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite, blueprint.ResourceType);
+
+        AddModifications(blueprint, it);
     }
 
     private void CreateResource(Item item, GameObject gameObject)
     {
         Item it = gameObject.AddComponent<Item>();
-        it.SetupItem(item.Name, item.Type, item.Sprite);
+        it.SetupItem(item.Name, item.Type, item.Sprite, item.ResourceType);
 
-        AddModifications(it, item);
+        AddModifications(item, it);
     }
 
     private void CreateBackpack(ItemBlueprint blueprint, GameObject gameObject)
@@ -175,9 +178,9 @@ public class ItemCreater : MonoBehaviour
         AddModifications(_weapon, weapon);
     }
 
-    private void AddModifications(ItemBlueprint blueprint, Item item)
+    private void AddModifications(ItemBlueprint blueprint, Item itemToModifi)
     {
-        item.Modificators = blueprint.modificators;
+        itemToModifi.Modificators = blueprint.modificators;
     }
 
     private void AddModifications(Item item, Item itemToModifi)

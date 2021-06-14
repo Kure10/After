@@ -34,9 +34,18 @@ public class ResourceSpriteLoader : MonoBehaviour
     [SerializeField]
     private List<Sprite> itemResources2 = new List<Sprite>();
 
+    [SerializeField]
+    private List<Sprite> basicAndSpecialResource = new List<Sprite>();
+
     [Space]
     [SerializeField] private Sprite defaultResource;
 
+    public Sprite LoadSpriteForResource(ItemResourceType type)
+    {
+        string spriteName = type.ToString();
+
+        return this.basicAndSpecialResource.Find(sprite => sprite.name == spriteName);
+    }
     public Sprite LoadItemSpriteForType(string resourceName)
     {
         return this.itemResources2.Find(sprite => sprite.name == resourceName);

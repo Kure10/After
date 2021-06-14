@@ -141,6 +141,8 @@ public class SpecialistControler : MonoBehaviour
         {
             specUWindowUi.AddSpecHolder(collectedCharactersInGame[i]);
         }
+
+        specUWindowUi.SimpleSort();
     }
 
     private void OrderCharactersLeave(Character character)
