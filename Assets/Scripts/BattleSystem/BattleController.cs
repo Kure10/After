@@ -34,7 +34,7 @@ public class BattleController : MonoBehaviour
     [Header("Others")]
     private Squar[,] _squaresInBattleField; 
 
-    public List<Unit> unitsOnBattleField = new List<Unit>();
+    public List<Unit> _unitsOnBattleField = new List<Unit>();
 
     [Space]
     public GameObject _unit;
@@ -94,6 +94,8 @@ public class BattleController : MonoBehaviour
     {
         if (_isBattleOnline)
         {
+            InputProcess();
+
             if (_isPlayerTurn)
             {
                 if (DetectPlayerInputs())
@@ -126,7 +128,7 @@ public class BattleController : MonoBehaviour
                  _order++;
 
                 int countAliveUnit = 0;
-                foreach (Unit unit in unitsOnBattleField)
+                foreach (Unit unit in _unitsOnBattleField)
                 {
                     if(!unit.IsDead)
                     {
@@ -142,7 +144,7 @@ public class BattleController : MonoBehaviour
                     _battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
 
                    // new iniciative
-                    foreach (Unit unit in unitsOnBattleField)
+                    foreach (Unit unit in _unitsOnBattleField)
                     {
                         if(!unit.IsDead)
                         {
@@ -151,7 +153,7 @@ public class BattleController : MonoBehaviour
                     }
 
                     SortUnitAccordingIniciation();
-                    _battleInfoPanel.UpdateUnitNewTurnOrder(unitsOnBattleField, _unit);
+                    _battleInfoPanel.UpdateUnitNewTurnOrder(_unitsOnBattleField, _unit);
                 }
  
                 UpdateActiveUnit();
@@ -178,9 +180,9 @@ public class BattleController : MonoBehaviour
         _activeUnit.IsActive = false;
         _activeUnit.UpdateAnim();
 
-        for (int i = _order; i < unitsOnBattleField.Count; i++)
+        for (int i = _order; i < _unitsOnBattleField.Count; i++)
         {
-            _activeUnit = unitsOnBattleField[i];
+            _activeUnit = _unitsOnBattleField[i];
 
             if (!_activeUnit.IsDead)
                 break;
@@ -273,22 +275,26 @@ public class BattleController : MonoBehaviour
         _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
-    // for buttons
-    public void ChangeWeapon(bool changeToLeft)
-    {
-        if(changeToLeft)
-        {
-            if (_activeUnit.ActiveWeapon == _activeUnit.SecondWeapon)
-                return;
 
-            _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
+    public void ChangeWeapon()
+    {
+        bool changeFirst = false;
+        if (_activeUnit.ActiveWeapon != _activeUnit.FirstWeapon)
+        {
+            changeFirst = true;
         }
         else
         {
-            if (_activeUnit.ActiveWeapon == _activeUnit.FirstWeapon)
-                return;
+            changeFirst = false;
+        }
 
+        if (changeFirst)
+        {
             _activeUnit.ActiveWeapon = _activeUnit.FirstWeapon;
+        }
+        else
+        {
+            _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
         }
 
         SetSquaresOutOfAttackReach();
@@ -298,11 +304,33 @@ public class BattleController : MonoBehaviour
         _activeUnit.UpdateData(_activeUnit);
         _leftUnitInfo.UpdateStats(_activeUnit);
         _battleInfoPanel.UpdateUnitData(_activeUnit);
+    }
 
-        // zmenit panel jednotky
-        // i info panel
-        // a i panel left botton
+    // for buttons
+    public void ChangeWeapon(bool changeFirst)
+    {
+        if (changeFirst)
+        {
+            if (_activeUnit.ActiveWeapon == _activeUnit.FirstWeapon)
+                return;
 
+            _activeUnit.ActiveWeapon = _activeUnit.FirstWeapon;
+        }
+        else
+        {
+            if (_activeUnit.ActiveWeapon == _activeUnit.SecondWeapon)
+                return;
+
+            _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
+        }
+
+        SetSquaresOutOfAttackReach();
+        FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
+        ShowSquaresWithingAttackRange();
+
+        _activeUnit.UpdateData(_activeUnit);
+        _leftUnitInfo.UpdateStats(_activeUnit);
+        _battleInfoPanel.UpdateUnitData(_activeUnit);
     }
 
     public void StartBattle(BattleStartData battleStartData)
@@ -311,6 +339,10 @@ public class BattleController : MonoBehaviour
 
         spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
 
+        // Setup Before Battle Start
+        SetupForNewBattle();
+        _battleResultPopup.InitBeforeBattleStart();
+        _battleInfoPanel.RestartDataForNewBattle();
 
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
@@ -376,7 +408,7 @@ public class BattleController : MonoBehaviour
             newUnit.InitUnit(dataUnit, sprite, Unit.Team.Demon);
 
             squar.unitInSquar = newUnit;
-            unitsOnBattleField.Add(newUnit); 
+            _unitsOnBattleField.Add(newUnit); 
         }
 
         for (int i = 0; i < amountPlayers; i++)
@@ -392,12 +424,12 @@ public class BattleController : MonoBehaviour
             newUnit.InitUnit(dataUnit, sprite, Unit.Team.Human);
 
             squar.unitInSquar = newUnit;
-            unitsOnBattleField.Add(newUnit);
+            _unitsOnBattleField.Add(newUnit);
         }
 
         // Sort unit order.
         SortUnitAccordingIniciation();
-        _battleInfoPanel.InitStartOrder(unitsOnBattleField, _unit);
+        _battleInfoPanel.InitStartOrder(_unitsOnBattleField, _unit);
 
     }
 
@@ -532,9 +564,9 @@ public class BattleController : MonoBehaviour
     {
         _isBattleOnline = true;
 
-        if (unitsOnBattleField.Count > 0)
+        if (_unitsOnBattleField.Count > 0)
         {
-            _activeUnit = unitsOnBattleField[_order];
+            _activeUnit = _unitsOnBattleField[_order];
             _activeUnit.IsActive = true;
             _activeUnit.UpdateAnim();
             _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
@@ -684,7 +716,7 @@ public class BattleController : MonoBehaviour
         int demonUnit = 0;
         int neutralUnit = 0;
 
-        foreach (var unit in unitsOnBattleField)
+        foreach (var unit in _unitsOnBattleField)
         {
             if(!unit.IsDead)
             {
@@ -723,6 +755,7 @@ public class BattleController : MonoBehaviour
 
         if (battleIsOver)
         {
+            _battleResultPopup.ShowBattleResult(_unitsOnBattleField, _unit, _battleStartData.GetCharacterFromBattle);
             _isBattleOnline = false;
             // Todo Clean BattleField . And prepair for next Battle
         }
@@ -924,14 +957,9 @@ public class BattleController : MonoBehaviour
 
     public void HumanVictory()
     {
-        Debug.Log("Human wins");
-
-        _battleStartData.UpdateMainPlayerData(unitsOnBattleField);
-
-        _battleResultPopup.InitPlayerUnits(unitsOnBattleField, _unit);
+        _battleStartData.UpdateMainPlayerData(_unitsOnBattleField);
 
         List<ItemBlueprint> itemsLoot = new List<ItemBlueprint>();
-
         foreach (DataUnit dataUnit in _battleStartData.enemyData.enemieUnits)
         {
             foreach (Monster.Loot loot in dataUnit.GetLoot)
@@ -947,13 +975,7 @@ public class BattleController : MonoBehaviour
                 }
             }
         }
-
         _battleResultPopup.InicializedStartInventory(itemsLoot);
-
-        _battleResultPopup.InicializedCharacter(_battleStartData.GetCharacterFromBattle);
-        
-
-        _battleResultPopup.ShowBattleResult();
 
         StatsClass statClass = CreateStatClassBattleResult(true);
         OnBattleLost.Invoke(statClass);
@@ -961,16 +983,11 @@ public class BattleController : MonoBehaviour
 
     public void DemonVictory()
     {
-        Debug.Log("Demon wins");
-        
         StatsClass statClass = CreateStatClassBattleResult(false);
         OnBattleLost.Invoke(statClass);
     }
     public void NeutralVictory()
     {
-        // neutral wins
-        Debug.Log("Neutral wins");
-       
         StatsClass statClass = CreateStatClassBattleResult(false);
         OnBattleLost.Invoke(statClass);
     }
@@ -1143,7 +1160,7 @@ public class BattleController : MonoBehaviour
 
     private void SortUnitAccordingIniciation()
     {
-        unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
+        _unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
     }
 
     private void UpdateRightPanel (Squar sq)
@@ -1160,6 +1177,49 @@ public class BattleController : MonoBehaviour
         //{
         //   // rightUnitInfo.DisablePanel();
         //}
+    }
+
+    private void SetupForNewBattle()
+    {
+        foreach (Unit unit in _unitsOnBattleField)
+        {
+            Destroy(unit.gameObject);
+        }
+
+        _unitsOnBattleField.Clear();
+
+        // Todo Hodne smutne..  Musím to delat tak ze budu deaktivovat ty ktere nepotrebuji a hnedna na startu určím jak velke je pole
+        // a tím padem jaké battleSquary maji byt aktivni.
+
+        if(_squaresInBattleField != null)
+        {
+            int sizeX = _squaresInBattleField.GetLength(0);
+            int sizeY = _squaresInBattleField.GetLength(1);
+            for (int j = 0; j < sizeX; j++)
+            {
+                GameObject row = _rows[j];
+
+                for (int i = 0; i < sizeY; i++)
+                {
+                    Destroy(_squaresInBattleField[j, i].gameObject);
+                }
+            }
+            _squaresInBattleField = null;
+        }
+
+    }
+
+    private void InputProcess ()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ChangeWeapon();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            SkipUnitTurn();
+        }
     }
 
     enum BattleAction 

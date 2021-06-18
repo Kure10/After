@@ -33,13 +33,8 @@ public class BattleResultPopup : MonoBehaviour
     [Header("ItemSlots")]
     [SerializeField] private List<ItemSlot> _itemSlots = new List<ItemSlot>();
 
-
     private int _sortCategory = 0;
-  
-    private void Awake()
-    {
 
-    }
     // Buttons
     public void OnPressLoot()
     {
@@ -114,12 +109,57 @@ public class BattleResultPopup : MonoBehaviour
         _backButton.onClick.AddListener(OnPressBack);
     }
 
-    public void ShowBattleResult()
+    public void ShowBattleResult(List<Unit> battleUnits, GameObject unitPrefab , List<Character> characterInBattle)
     {
+        InitUnits(battleUnits, unitPrefab);
+        InicializedCharacter(characterInBattle);
+
         this.gameObject.SetActive(true);
     }
 
-    public void InitPlayerUnits(List<Unit> battleUnits , GameObject unitPrefab)
+    public void InitBeforeBattleStart()
+    {
+        this.gameObject.SetActive(false);
+        _resultPanel.SetActive(true);
+        _lootPanel.SetActive(false);
+
+        CleanLootPanel();
+        CleanCharacterList();
+    }
+
+    public void InicializedStartInventory(List<ItemBlueprint> blueprits)
+    {
+        for (int i = 0; i < blueprits.Count; i++)
+        {
+            ItemBlueprint itemBlueprint = blueprits[i];
+
+            GameObject game = _itemCreator.CreateItemByType(itemBlueprint, _itemPrefab);
+            var item = game.GetComponent<Item>();
+
+            if (item == null) // Todo Res and None type.. 
+            {
+                Debug.LogWarning("somewhere is mistake Error in Inventory");
+                item = game.AddComponent<Item>();
+                item.SetupItem(itemBlueprint.name, itemBlueprint.Type, itemBlueprint.Sprite);
+            }
+
+            item.MySlot = _itemSlots[i];
+            game.GetComponent<DragAndDropHandler>().InitDragHandler();
+            _itemSlots[i].SetSlot(i, game, item);
+        }
+    }
+
+    public void RebuildLayout(int i)
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+    }
+
+    public void RebuildLayout()
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+    }
+
+    private void InitUnits(List<Unit> battleUnits, GameObject unitPrefab)
     {
         int i = 0;
         int j = 0;
@@ -157,29 +197,7 @@ public class BattleResultPopup : MonoBehaviour
         }
     }
 
-    public void InicializedStartInventory(List<ItemBlueprint> blueprits)
-    {
-        for (int i = 0; i < blueprits.Count; i++)
-        {
-            ItemBlueprint itemBlueprint = blueprits[i];
-
-            GameObject game = _itemCreator.CreateItemByType(itemBlueprint, _itemPrefab);
-            var item = game.GetComponent<Item>();
-
-            if (item == null) // Todo Res and None type.. 
-            {
-                Debug.LogWarning("somewhere is mistake Error in Inventory");
-                item = game.AddComponent<Item>();
-                item.SetupItem(itemBlueprint.name, itemBlueprint.Type, itemBlueprint.Sprite);
-            }
-
-            item.MySlot = _itemSlots[i];
-            game.GetComponent<DragAndDropHandler>().InitDragHandler();
-            _itemSlots[i].SetSlot(i, game, item);
-        }
-    }
-
-    public void InicializedCharacter(List<Character> characters)
+    private void InicializedCharacter(List<Character> characters)
     {
         foreach (Character character in characters)
         {
@@ -225,14 +243,20 @@ public class BattleResultPopup : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
     }
 
-    public void RebuildLayout(int i)
+    private void CleanLootPanel()
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+        foreach (ItemSlot slot in _itemSlots)
+        {
+            slot.CleanSlot();
+        }
     }
 
-    public void RebuildLayout()
+    private void CleanCharacterList()
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_specHolder);
+        foreach (Transform child in _specHolder.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
 }

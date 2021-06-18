@@ -81,4 +81,13 @@ public class BattleInfoPanel : MonoBehaviour
 
     }
 
+    public void RestartDataForNewBattle()
+    {
+        foreach (Unit unit in InfoUnitsList)
+        {
+            Destroy(unit.gameObject);
+        }
+        InfoUnitsList.Clear();
+    }
+
 }

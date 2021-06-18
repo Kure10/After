@@ -30,7 +30,7 @@ public class EventController : MonoBehaviour
     List<Character> CharactersSelectedForTesting = new List<Character>();
 
     private bool finalTestResult = false;
-    private TestCase tCase;
+    private TestCase _tCase;
 
     private BattleStartData _battleStartData = new BattleStartData();
 
@@ -142,6 +142,9 @@ public class EventController : MonoBehaviour
         BattleController.OnBattleEnd -= RefreshCharacterSlots;
         BattleController.OnBattleEnd += RefreshCharacterSlots;
 
+        BattleController.OnBattleEnd -= RestartBattleStartData;
+        BattleController.OnBattleEnd += RestartBattleStartData;
+
 
         foreach (Character character in _currentMission.GetCharactersOnMission)
         {
@@ -180,7 +183,7 @@ public class EventController : MonoBehaviour
     private void ProcessTest(StatsClass item, string title)
     {
 
-        tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
+        _tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
 
         eventPanel.SetState = EventPanel.PanelStates.Test;
 
@@ -192,12 +195,12 @@ public class EventController : MonoBehaviour
             uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
         }
 
-        tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
+        _tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
             item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
             item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"), item.GetStrStat("ResultPriority"));
 
-        eventPanel.SetupTestingState(tCase);
-        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
+        eventPanel.SetupTestingState(_tCase);
+        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + _tCase.GetMaxCharParticipation;
 
         eventPanel.GetContinueButton.onClick.RemoveAllListeners();
         eventPanel.GetContinueButton.onClick.AddListener(() => ContinueButton());
@@ -207,6 +210,32 @@ public class EventController : MonoBehaviour
 
         // cerna magie vratit se k tomuto
         eventManager.resolveMaster.ResolveCondition += OncheckTest;
+
+        StringBuilder sb = new StringBuilder();
+        sb.Clear();
+
+        _tCase.GetType.ToString();
+
+        sb.Append("Info Testu:");
+        sb.AppendLine();
+        sb.Append("Typ testu : " + _tCase.GetType.ToString() + " Naročnost : " + _tCase.GetDifficulty);
+        sb.AppendLine();
+        sb.Append("Zahrnuta karma : " + _tCase.GetKarmaInfluence);
+        sb.AppendLine();
+        sb.Append("Modifikator Miry uspechu : " + _tCase.GetRateMod);
+        sb.AppendLine();
+        sb.Append("Testing Atribute : " + _tCase.ReturnTestingAtribute());
+        sb.AppendLine();
+        sb.Append("Druh testu : " + _tCase.GetClass.ToString());
+        sb.AppendLine();
+        sb.Append("Prioritizace : " + _tCase.GetPriority);
+        sb.AppendLine();
+        sb.Append("Testovany subject : " + _tCase.GetTestingSubjects.ToString()) ;
+        sb.AppendLine();
+        sb.Append("Min subjektu : " + _tCase.GetMinCharParticipation + " Max subjektu : " + _tCase.GetMaxCharParticipation);
+
+        eventPanel.testingTMPinfo2.text = sb.ToString();
+
     }
 
     private void ProcessChange(StatsClass item, string title)
@@ -352,7 +381,7 @@ public class EventController : MonoBehaviour
 
     #region Helping Methods
 
-    public void RefreshCharacterSlots ()
+    private void RefreshCharacterSlots ()
     {
         foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
         {
@@ -364,6 +393,11 @@ public class EventController : MonoBehaviour
             uWindow.PopulateItemSlots(character,false);
             uWindow.PopulateBackpackItemSlots(character,false);
         }
+    }
+
+    private void RestartBattleStartData()
+    {
+        _battleStartData.RestartDataForNewCombat();
     }
 
     private void ModifyAtribute (string type , List<Character> targets , string atribute , int value)
@@ -462,7 +496,7 @@ public class EventController : MonoBehaviour
     {
         int selectedCharacters = CharactersSelectedForTesting.Count;
 
-        if (selectedCharacters >= tCase.GetMinCharParticipation && selectedCharacters <= tCase.GetMaxCharParticipation)
+        if (selectedCharacters >= _tCase.GetMinCharParticipation && selectedCharacters <= _tCase.GetMaxCharParticipation)
         {
             this.finalTestResult = StartThrowTest();
         }
@@ -484,7 +518,7 @@ public class EventController : MonoBehaviour
             int failure = item.AmountDicesInLastTest - item.AmountSuccessDicesInLastTest;
             sb.Append(item.GetName() + " " + "měl kostek: " + item.AmountDicesInLastTest + " " +
                 "Z toho uspel: " + item.AmountSuccessDicesInLastTest + " neuspel: " + failure + "." +
-                "---->  uspechy s modifikatore. " + item.AmountSuccessDicesInLastTest / tCase.GetRateMod);
+                "---->  uspechy s modifikatore. " + item.AmountSuccessDicesInLastTest / _tCase.GetRateMod);
             sb.AppendLine();
         }
 
@@ -507,7 +541,7 @@ public class EventController : MonoBehaviour
             uWindow.ActivateCoverPanel("Specialista je vybran");
         }
 
-        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + tCase.GetMaxCharParticipation;
+        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + _tCase.GetMaxCharParticipation;
     }
 
     public void Minimaze()
@@ -595,15 +629,35 @@ public class EventController : MonoBehaviour
         public bool IsTestingTechnical { get { return this.isTestingTechnical; } }
         public string GetPriority { get { return this.priority; } }
 
-        public void ChooseTestingSkills (string _testAtribute)
+        #endregion
+
+        public void ChooseTestingSkills(string _testAtribute)
         {
-            isTestingLevel =  _testAtribute.Contains("LvL");
+            isTestingLevel = _testAtribute.Contains("LvL");
             isTestingMilitary = _testAtribute.Contains("MiL");
             isTestingScience = _testAtribute.Contains("ScL");
             isTestingSocial = _testAtribute.Contains("SoL");
             isTestingTechnical = _testAtribute.Contains("TeL");
         }
-        #endregion
+
+        public string ReturnTestingAtribute()
+        {
+            string testingSkill = "none";
+
+            if(isTestingLevel)
+                testingSkill = "Level";
+            if (isTestingMilitary)
+                testingSkill = "Military";
+            if (isTestingScience)
+                testingSkill = "Science";
+            if (isTestingSocial)
+                testingSkill = "Social";
+            if (isTestingTechnical)
+                testingSkill = "Technical";
+
+            return testingSkill;
+        }
+
     }
 
     #endregion
@@ -649,7 +703,7 @@ public class EventController : MonoBehaviour
         bool colectiveResult = false;
         int successDices = 0;
 
-        if (tCase.GetClass == ClassTest.Separately)
+        if (_tCase.GetClass == ClassTest.Separately)
         {
             foreach (Character character in CharactersSelectedForTesting)
             {
@@ -660,7 +714,7 @@ public class EventController : MonoBehaviour
                 character.AmountSuccessDicesInLastTest = successDices;
             }
         }
-        else if (tCase.GetClass == ClassTest.Together)
+        else if (_tCase.GetClass == ClassTest.Together)
         {
             int dices = 0;
 
@@ -680,7 +734,7 @@ public class EventController : MonoBehaviour
                 
         }
 
-        if (tCase.GetClass == ClassTest.Separately)
+        if (_tCase.GetClass == ClassTest.Separately)
         {
             bool everyBodySuccess = true;
             bool everyBodyFailed = true;
@@ -704,7 +758,7 @@ public class EventController : MonoBehaviour
             }
 
             // Pokud jsem tady. Skupina se sklada se clenu co uspeli a aji co neuspeli.
-            if(tCase.GetPriority == "Success") // Alespon jeden uspel. (Staci jeden character aby uspel na celkovy uspech)
+            if(_tCase.GetPriority == "Success") // Alespon jeden uspel. (Staci jeden character aby uspel na celkovy uspech)
                 finalResult = true;
             else // Alespon jeden neuspel. (Staci jeden character aby neuspel na celkovy neuspech)
                 finalResult = false;
@@ -721,15 +775,15 @@ public class EventController : MonoBehaviour
     {
         int amountDices = 0;
 
-        if (tCase.IsTestingLevel)
+        if (_tCase.IsTestingLevel)
             amountDices += character.Stats.level;
-        if (tCase.IsTestingMilitary)
+        if (_tCase.IsTestingMilitary)
             amountDices += character.Stats.military;
-        if (tCase.IsTestingTechnical)
+        if (_tCase.IsTestingTechnical)
             amountDices += character.Stats.tech;
-        if (tCase.IsTestingSocial)
+        if (_tCase.IsTestingSocial)
             amountDices += character.Stats.social;
-        if (tCase.IsTestingScience)
+        if (_tCase.IsTestingScience)
             amountDices += character.Stats.science;
 
         return amountDices;
@@ -751,18 +805,18 @@ public class EventController : MonoBehaviour
                 continue;
             }
 
-            if (resultOfOneThrow >= tCase.GetDifficulty)
+            if (resultOfOneThrow >= _tCase.GetDifficulty)
                 numberOfIndividualSuccesses++;
 
             resultOfOneThrow = 0;
         }
 
-        if(tCase.GetRateMod == 0)
+        if(_tCase.GetRateMod == 0)
         {
             Debug.LogError("Vole delis nulou ....");
         }
 
-        totalNumberOfSuccesses = numberOfIndividualSuccesses / tCase.GetRateMod;
+        totalNumberOfSuccesses = numberOfIndividualSuccesses / _tCase.GetRateMod;
 
 
         if (totalNumberOfSuccesses > 0)

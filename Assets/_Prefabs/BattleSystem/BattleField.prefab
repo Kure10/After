@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemCreator: {fileID: 0}
-  _panelSpecialist: {fileID: 6673139948930423964, guid: cd0582eeec4ae304eb8360e371d216d9,
+  _panelSpecialist: {fileID: 6673139948930423964, guid: 09a3a2faba8a89a4d850b514ed4d3ba3,
     type: 3}
   _itemSlot: {fileID: 3456231362756869532, guid: 339d8db77719d7f47af8cc154133f49c,
     type: 3}
@@ -5852,7 +5852,7 @@ MonoBehaviour:
   - {fileID: 922101892105924038}
   _collumCount: 16
   _rowsCount: 16
-  unitsOnBattleField: []
+  _unitsOnBattleField: []
   _unit: {fileID: 3091871265957222101, guid: 43dee6c35f52b764bb641187d11e50b7, type: 3}
   squarTemplate: {fileID: 38739050903012047, guid: 23f5265c002b6414592ed696c64f0ee7,
     type: 3}
@@ -7852,6 +7852,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2561144691464612313, guid: ccc2bb1b4ac562f46acc9629205ec10d,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -8033,7 +8038,7 @@ PrefabInstance:
     - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8436027248911946101, guid: ccc2bb1b4ac562f46acc9629205ec10d,
         type: 3}

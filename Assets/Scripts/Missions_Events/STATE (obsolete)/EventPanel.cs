@@ -83,6 +83,8 @@ public class EventPanel : MonoBehaviour
 
     [SerializeField] public Text testingTMPinfo;
 
+    [SerializeField] public Text testingTMPinfo2;
+
 
 
     #region Properities

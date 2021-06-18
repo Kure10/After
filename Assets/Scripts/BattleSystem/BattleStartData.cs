@@ -72,14 +72,41 @@ public class BattleStartData
             }
         }
     }
+
+    public void RestartDataForNewCombat()
+    {
+        Collumn = 0;
+        Rows = 0;
+
+        battleType = BattleType.BattleBasic;
+        isRandomEnemyPosition = true;
+
+        playerData.ClearData();
+        enemyData.ClearData();
+
+        charactersInBattleFromMission.Clear();
+
+        WinEvaluation = (0, null);
+    }
+
 }
 
 public class BattlePlayerStartData
 {
     public List<DataUnit> playerUnits = new List<DataUnit>();
+
+    public void ClearData()
+    {
+        playerUnits.Clear();
+    }
 }
 
 public class BattleAIStartData
 {
    public List<DataUnit> enemieUnits = new List<DataUnit>();
+
+    public void ClearData()
+    {
+        enemieUnits.Clear();
+    }
 }
