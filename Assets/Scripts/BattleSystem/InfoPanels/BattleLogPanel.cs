@@ -25,7 +25,7 @@ public class BattleLogPanel : MonoBehaviour
         scrollBar.value = 1;
     }
 
-    public void AddAttackBattleLog(BattleController.AttackInfo attackInfo, Unit activeUnit , Unit otherUnit)
+    public void AddAttackBattleLog(BattleGridController.AttackInfo attackInfo, Unit activeUnit , Unit otherUnit)
     {
         string logMessage = string.Empty;
         string roll = string.Empty;

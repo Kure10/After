@@ -13,6 +13,7 @@ public class BattleController : MonoBehaviour
 
     [Header("Main")]
     [SerializeField] InventoryManager _inventoryManager;
+    [SerializeField] BattleGridController _battleGridController;
 
     [Header("Info Panels")]
     [SerializeField] private BattleInfoPanel _battleInfoPanel;
@@ -24,33 +25,15 @@ public class BattleController : MonoBehaviour
     [Header("Info Popup")]
     [SerializeField] private DetailUnitPopup detailPopup;
 
-    [Header("Dimensions")]
-    [SerializeField] List<GameObject> _rows = new List<GameObject>();
-    [Space]
-    [SerializeField] int _collumCount = 16;
-    [SerializeField] int _rowsCount = 16;
-
     [Space]
     [Header("Others")]
-    private Squar[,] _squaresInBattleField; 
 
     public List<Unit> _unitsOnBattleField = new List<Unit>();
 
     [Space]
     public GameObject _unit;
 
-    public GameObject squarTemplate;
-
-
-    /// <summary>
-    /// ////////////////////
-    ///   FOR now needed we will see 
-    ///    musim v tom udelat poradek neco budu potrebovat neco ne
-    /// </summary>
-    /// 
-
     public static event Action<StatsClass> OnBattleLost = delegate { };
-
     public static event Action OnBattleEnd = delegate { };
 
     bool _turnIsOver = false;
@@ -60,15 +43,12 @@ public class BattleController : MonoBehaviour
     private Unit _activeUnit = null;
 
     private int _order = 0;
-
     private int roundCount = 1;
 
-    private List<Squar> _squaresInUnitRange = new List<Squar>();
-
+    private List<Squar> _squaresInUnitMoveRange = new List<Squar>();
     private List<Squar> _squaresInUnitAttackRange = new List<Squar>();
 
     private ResourceSpriteLoader spriteLoader = null;
-
     private BattleStartData _battleStartData;
 
     private void Awake()
@@ -83,11 +63,13 @@ public class BattleController : MonoBehaviour
             spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
             _battleStartData = InitTestBattleData();
 
-            CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+            _battleGridController.CreateBattleField(_battleStartData);
+
+           // CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+
             InitBattle(_battleStartData);
             TestStartBattle();
         }
-
     }
 
     private void Update()
@@ -121,6 +103,7 @@ public class BattleController : MonoBehaviour
 
             if (_turnIsOver)
             {
+                
                 SetSquaresOutOfAttackReach();
                 SetSquaresOutOfMoveRange();
                 ShowSquaresWithinRange(false);
@@ -158,11 +141,12 @@ public class BattleController : MonoBehaviour
  
                 UpdateActiveUnit();
 
-                FindSquaresInUnitMoveRange();
+                _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
+
                 ShowSquaresWithinRange(true);
 
+                _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
 
-                FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
                 ShowSquaresWithingAttackRange();
 
                 _leftUnitInfo.UpdateStats(_activeUnit);
@@ -172,6 +156,21 @@ public class BattleController : MonoBehaviour
                 VictoryConditionCheck();
             }
         }
+    }
+
+    // for buttons
+    public void CloseBattle()
+    {
+        OnBattleEnd.Invoke();
+        this.gameObject.SetActive(false);
+        _battleResultPopup.OnPressExit();
+    }
+
+    // for buttons
+    public void SkipUnitTurn()
+    {
+        _turnIsOver = true;
+        _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
     private void UpdateActiveUnit()
@@ -199,28 +198,28 @@ public class BattleController : MonoBehaviour
     {
         bool result = false;
         BattleAction action = BattleAction.None;
-        Squar squarToMove = null;
+        Squar actionOnSquare = null;
         Unit unitOnSquare = null;
 
         if (Input.GetMouseButtonDown(0))
         {
-            squarToMove = RaycastTargetSquar();
-            if (squarToMove != null)
+            actionOnSquare = RaycastTargetSquar();
+            if (actionOnSquare != null)
             {
-                action = OnClickIntoGrid(squarToMove);
-                unitOnSquare = squarToMove.unitInSquar;
+                action = OnClickIntoGrid(actionOnSquare);
+                unitOnSquare = actionOnSquare.unitInSquar;
                 result = true;
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            squarToMove = RaycastTargetSquar();
-            if (squarToMove != null)
+            actionOnSquare = RaycastTargetSquar();
+            if (actionOnSquare != null)
             {
-                if(squarToMove.unitInSquar != null)
+                if (actionOnSquare.unitInSquar != null)
                 {
-                    detailPopup.ShowPopup(squarToMove.unitInSquar);
+                    detailPopup.ShowPopup(actionOnSquare.unitInSquar);
                 }
 
                 Debug.Log("Info unit panel popup");
@@ -236,14 +235,25 @@ public class BattleController : MonoBehaviour
                     result = false;
                     break;
                 case BattleAction.Move:
-                    MoveToSquar(squarToMove);
+                    _battleGridController.MoveToSquar(_activeUnit, actionOnSquare);
+
                     //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+
                     _battleLog.AddBattleLog($"{_activeUnit._name} moved");
                     result = true;
                     break;
                 case BattleAction.Attack:
-                    AttackInfo attackInfo = null;
-                    attackInfo = AttackToUnit(unitOnSquare);
+
+                    BattleGridController.AttackInfo attackInfo = null;
+                    attackInfo = _battleGridController.AttackToUnit(_activeUnit, unitOnSquare);
+
+                    if (attackInfo.unitDied)
+                    {
+                        _battleGridController.DestroyUnitFromBattleField(unitOnSquare);
+                        _battleInfoPanel.DeleteUnitFromOrder(unitOnSquare);
+                        _battleLog.AddBattleLog($"{unitOnSquare._name} is dead");
+                    }
+
                     _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
                     _battleInfoPanel.UpdateUnitData(unitOnSquare);
                     result = true;
@@ -258,21 +268,6 @@ public class BattleController : MonoBehaviour
         }
 
         return result;
-    }
-
-    // for buttons
-    public void CloseBattle()
-    {
-        OnBattleEnd.Invoke();
-        this.gameObject.SetActive(false);
-        _battleResultPopup.OnPressExit();
-    }
-
-    // for buttons
-    public void SkipUnitTurn()
-    {
-        _turnIsOver = true;
-        _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
 
@@ -297,8 +292,9 @@ public class BattleController : MonoBehaviour
             _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
         }
 
+      
         SetSquaresOutOfAttackReach();
-        FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
+        _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
         ShowSquaresWithingAttackRange();
 
         _activeUnit.UpdateData(_activeUnit);
@@ -325,7 +321,7 @@ public class BattleController : MonoBehaviour
         }
 
         SetSquaresOutOfAttackReach();
-        FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
+        _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
         ShowSquaresWithingAttackRange();
 
         _activeUnit.UpdateData(_activeUnit);
@@ -342,45 +338,17 @@ public class BattleController : MonoBehaviour
         // Setup Before Battle Start
         SetupForNewBattle();
         _battleResultPopup.InitBeforeBattleStart();
-        _battleInfoPanel.RestartDataForNewBattle();
-
+        
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
         _battleStartData.Rows = 8;
         _battleStartData.Collumn = 16;
 
-        CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+        _battleGridController.CreateBattleField(_battleStartData);
+
         SetUnitPosition(_battleStartData);
         InitBattle(_battleStartData);
         TestStartBattle();
-    }
-
-    private void CreateBattleField(int rowsCount, int collumCount)
-    {
-        this._collumCount = collumCount;
-        this._rowsCount = rowsCount;
-
-        _squaresInBattleField = new Squar[this._rowsCount, this._collumCount];
-
-        for (int j = 0; j < this._rowsCount; j++)
-        {
-            GameObject row = _rows[j];
-
-            for (int i = 0; i < this._collumCount; i++)
-            {
-                GameObject squarGameObject = Instantiate(squarTemplate, row.transform);
-                Squar square = squarGameObject.GetComponent<Squar>();
-                square.SetCoordinates(j, i);
-
-                _squaresInBattleField[j, i] = square;
-
-                square.InitEvent(delegate (Squar squ)
-                {
-                    SetCursor(squ);
-                    UpdateRightPanel(squ);
-                });
-            }
-        }
     }
 
     private void InitBattle(BattleStartData battleData)
@@ -398,7 +366,7 @@ public class BattleController : MonoBehaviour
         for (int i = 0; i < amountEnemies; i++)
         {
             DataUnit dataUnit = battleData.enemyData.enemieUnits[i];
-            Squar squar = GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
+            Squar squar = _battleGridController.GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unt = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unt.GetComponent<Unit>();
@@ -414,7 +382,7 @@ public class BattleController : MonoBehaviour
         for (int i = 0; i < amountPlayers; i++)
         {
             DataUnit dataUnit = battleData.playerData.playerUnits[i];
-            Squar squar = GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
+            Squar squar = _battleGridController.GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unit1 = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
@@ -430,6 +398,16 @@ public class BattleController : MonoBehaviour
         // Sort unit order.
         SortUnitAccordingIniciation();
         _battleInfoPanel.InitStartOrder(_unitsOnBattleField, _unit);
+
+        // init Event
+        foreach (Squar square in _battleGridController.GetSquarsFromBattleField)
+        {
+            square.InitEvent(delegate (Squar squ)
+            {
+                SetCursor(squ);
+                UpdateRightPanel(squ);
+            });
+        }
 
     }
 
@@ -571,12 +549,10 @@ public class BattleController : MonoBehaviour
             _activeUnit.UpdateAnim();
             _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
-            //
-            FindSquaresInUnitMoveRange();
+            _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
             ShowSquaresWithinRange(true);
 
-            // testing fire range
-            FindSquaresInUnitAttackRange(_activeUnit.ActiveWeapon);
+            _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
             ShowSquaresWithingAttackRange();
 
             _leftUnitInfo.UpdateStats(_activeUnit);
@@ -610,21 +586,28 @@ public class BattleController : MonoBehaviour
     }
 
     // this is TMP method
-    private Squar FindSquarForAI()
-    {
-        int rowsCount = _rowsCount - 1;
 
-        while (true)
-        {
-            int xCor = UnityEngine.Random.Range(0, rowsCount);
-            int yCor = UnityEngine.Random.Range(0, _collumCount);
+    //private void OnSimpleAIMove()
+    //{
+    //    Squar squarToMove = FindSquarForAI();
+    //    MoveToSquar(squarToMove);
+    //}
 
-            if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
-            {
-                return _squaresInBattleField[xCor, yCor];
-            }
-        }
-    }
+    //private Squar FindSquarForAI()
+    //{
+    //    int rowsCount = _rowsCount - 1;
+
+    //    while (true)
+    //    {
+    //        int xCor = UnityEngine.Random.Range(0, rowsCount);
+    //        int yCor = UnityEngine.Random.Range(0, _collumCount);
+
+    //        if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
+    //        {
+    //            return _squaresInBattleField[xCor, yCor];
+    //        }
+    //    }
+    //}
 
     private BattleAction OnClickIntoGrid(Squar squarToMove)
     {
@@ -648,7 +631,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if (_squaresInUnitRange.Contains(squarToMove))
+            if (_squaresInUnitMoveRange.Contains(squarToMove))
             {
                 action = BattleAction.Move;
             }
@@ -656,58 +639,7 @@ public class BattleController : MonoBehaviour
             return action;
         }
     }
-    private void OnSimpleAIMove()
-    {
-        Squar squarToMove = FindSquarForAI();
-        MoveToSquar(squarToMove);
-    }
 
-    private void MoveToSquar(Squar squarToMove)
-    {
-        Squar selectedUnitSquar = GetSquareFromGrid(_activeUnit.CurrentPos.XPosition,_activeUnit.CurrentPos.YPosition);
-
-        selectedUnitSquar.unitInSquar.transform.SetParent(squarToMove.container.transform);
-        selectedUnitSquar.unitInSquar.SetNewCurrentPosition(squarToMove.xCoordinate, squarToMove.yCoordinate);
-        squarToMove.unitInSquar = selectedUnitSquar.unitInSquar;
-        selectedUnitSquar.unitInSquar = null;
-    }
-
-    private AttackInfo AttackToUnit(Unit defendUnit)
-    {
-        AttackInfo attackInfo = new AttackInfo();
-
-        int dices = BattleSystem.CalculateAmountDices(_activeUnit);
-        int success = BattleSystem.CalculateAmountSuccess(dices , _activeUnit ,defendUnit, out attackInfo.dicesValueRoll);
-
-        defendUnit.CurrentHealth = defendUnit.CurrentHealth - success;
-
-        var isDead = defendUnit.CheckIfUnitIsNotDead();
-
-        if (isDead)
-        {
-            DestroyUnitFromBattleField(defendUnit);
-            _battleInfoPanel.DeleteUnitFromOrder(defendUnit);
-            _battleLog.AddBattleLog($"{defendUnit._name} is dead");
-        }
-
-        // for info
-        attackInfo.dices = dices;
-        attackInfo.success = success;
-
-        return attackInfo;
-    }
-
-    private void DestroyUnitFromBattleField(Unit unit)
-    {
-        Squar sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
-
-        sq.unitInSquar.gameObject.SetActive(false);
-
-       // deadUnitsOnBattleField.Add(sq.unitInSquar);
-
-        // Destroy(sq.unitInSquar.gameObject, 0.5f);
-        sq.unitInSquar = null;
-    }
 
     private bool VictoryConditionCheck ()
     {
@@ -783,110 +715,9 @@ public class BattleController : MonoBehaviour
         return statClass;
     }
 
-    // in this method i can mark squares and maybe change method for move..  Can be more easy to find..
-    private void FindSquaresInUnitMoveRange()
-    {
-        _squaresInUnitRange.Clear();
-
-        int moveRange = _activeUnit._movement;
-        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
-
-        _squaresInUnitRange.AddRange(GetTheAdjacentSquare(centerSquar));
-
-        List<Squar> adjectedSq = new List<Squar>();
-        adjectedSq.AddRange(_squaresInUnitRange);
-
-        for (int i = 1; i < moveRange; i++)
-        {
-            List<Squar> adjectedSquarsInCurrentRange = new List<Squar>();
-
-            foreach (Squar sq in adjectedSq)
-            {
-                adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentSquare(sq));
-            }
-
-            foreach (Squar sq in adjectedSq)
-            {
-                sq.isInMoveRange = true;
-            }
-
-            adjectedSq.Clear();
-            adjectedSq.AddRange(adjectedSquarsInCurrentRange);
-
-            _squaresInUnitRange.AddRange(adjectedSq);
-        }
-
-        _squaresInUnitRange.Add(centerSquar);
-    }
-
-    private void FindSquaresInUnitAttackRange(Item weapon)
-    {
-        int attackMaxRange = 0;
-        int attackMinRange = 0;
-        //todo
-        if (weapon == null)
-        {
-            attackMinRange = _activeUnit._rangeMin;
-            attackMaxRange = _activeUnit._rangeMax;
-        }
-        else
-        {
-             attackMaxRange = _activeUnit.ActiveWeapon.RangeMax;
-             attackMinRange = _activeUnit.ActiveWeapon.RangeMin;
-        }
-
-        _squaresInUnitAttackRange.Clear();
-
-        Squar centerSquar = _squaresInBattleField[_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition];
-
-        _squaresInUnitAttackRange.AddRange(GetTheAdjacentAttackSquare(centerSquar));
-
-        List<Squar> squaresToMinAtackRange = new List<Squar>();
-
-        List<Squar> lastAdjectedSq = new List<Squar>();
-        lastAdjectedSq.AddRange(_squaresInUnitAttackRange);
-
-        squaresToMinAtackRange.AddRange(_squaresInUnitAttackRange);
-
-
-        for (int i = 1; i < attackMaxRange; i++)
-        {
-            List<Squar> adjectedSquarsInCurrentRange = new List<Squar>();
-
-            foreach (Squar sq in lastAdjectedSq)
-            {
-                adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentAttackSquare(sq));
-            }
-
-            lastAdjectedSq.Clear();
-            lastAdjectedSq.AddRange(adjectedSquarsInCurrentRange);
-
-            if (i < attackMinRange)  //  i <= by znamenalo ze zahrnuje hranici minimalniho range.
-            {
-                squaresToMinAtackRange.AddRange(adjectedSquarsInCurrentRange);
-            }
-
-            _squaresInUnitAttackRange.AddRange(lastAdjectedSq);
-        }
-
-        _squaresInUnitAttackRange.Add(centerSquar);
-
-        if (attackMinRange != 0 && attackMinRange < attackMaxRange)
-        {
-            _squaresInUnitAttackRange.Remove(centerSquar);
-            centerSquar.isInAttackReach = false;
-
-            foreach (Squar squar in squaresToMinAtackRange)
-            {
-                _squaresInUnitAttackRange.Remove(squar);
-                squar.isInAttackReach = false;
-            }
-        }
-    }
-
     private void ShowSquaresWithinRange(bool makeVisible)
     {
-        foreach (Squar sq in _squaresInUnitRange)
+        foreach (Squar sq in _squaresInUnitMoveRange)
         {
             if (sq.unitInSquar == null)
             {
@@ -897,62 +728,11 @@ public class BattleController : MonoBehaviour
 
     private void ShowSquaresWithingAttackRange()
     {
+        // Todo Predelat metodu GetTheAdjacentAttackSquare  -> rozdelit
         foreach (Squar squ in _squaresInUnitAttackRange)
         {
-            GetTheAdjacentAttackSquare(squ, true);
+            _battleGridController.GetTheAdjacentAttackSquare(squ, true);
         }
-    }
-
-    private List<Squar> GetTheAdjacentSquare(Squar centerSquar) 
-    {
-        List<Squar> checkedSquars = new List<Squar>();
-
-        Squar rightSquare = null;
-        Squar leftSquare = null;
-        Squar upSquare = null;
-        Squar downSquare = null;
-
-        // check up direction
-        if (centerSquar.xCoordinate + 1 >= _rowsCount)
-            upSquare = null;
-        else
-            upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
-   
-        // check down direction
-        if (centerSquar.xCoordinate - 1 < 0)
-            downSquare = null;
-        else
-            downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
-
-        // check right direction
-        if (centerSquar.yCoordinate + 1 >= _collumCount)
-            rightSquare = null;
-        else
-            rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
-
-        // check left direction
-        if (centerSquar.yCoordinate - 1 < 0)
-            leftSquare = null;
-        else
-            leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
-
-        if (rightSquare != null && !rightSquare.isInMoveRange)
-            checkedSquars.Add(rightSquare);
-        if (leftSquare != null && !leftSquare.isInMoveRange)
-            checkedSquars.Add(leftSquare);
-        if (upSquare != null && !upSquare.isInMoveRange)
-            checkedSquars.Add(upSquare);
-        if (downSquare != null && !downSquare.isInMoveRange)
-            checkedSquars.Add(downSquare);
-
-        centerSquar.isInMoveRange = true;
-
-        foreach (Squar sq in checkedSquars)
-        {
-            sq.isInMoveRange = true;
-        }
-
-        return checkedSquars;
     }
 
     public void HumanVictory()
@@ -991,140 +771,15 @@ public class BattleController : MonoBehaviour
         StatsClass statClass = CreateStatClassBattleResult(false);
         OnBattleLost.Invoke(statClass);
     }
-    private List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool searchForBorders = false)
-    {
-        List<Squar> checkedSquars = new List<Squar>();
-
-        Squar rightSquare = null;
-        Squar leftSquare = null;
-        Squar upSquare = null;
-        Squar downSquare = null;
-
-        // check up direction
-        if (centerSquar.xCoordinate + 1 >= _rowsCount)
-            upSquare = null;
-        else
-            upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
-
-        // check down direction
-        if (centerSquar.xCoordinate - 1 < 0)
-            downSquare = null;
-        else
-            downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
-
-        // check right direction
-        if (centerSquar.yCoordinate + 1 >= _collumCount)
-            rightSquare = null;
-        else
-            rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
-
-        // check left direction
-        if (centerSquar.yCoordinate - 1 < 0)
-            leftSquare = null;
-        else
-            leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
-
-        if(searchForBorders)
-        {
-            if (leftSquare == null || !leftSquare.isInAttackReach)
-                centerSquar.leftBorder.SetActive(true);
-
-            if (rightSquare == null || !rightSquare.isInAttackReach)
-                centerSquar.rightBorder.SetActive(true);
-
-            if (downSquare == null || !downSquare.isInAttackReach)
-                centerSquar.downBorder.SetActive(true);
-
-            if (upSquare == null || !upSquare.isInAttackReach)
-                centerSquar.upBorder.SetActive(true);
-        }
-        else
-        {
-            if (rightSquare != null && !rightSquare.isInAttackReach)
-                checkedSquars.Add(rightSquare);
-            if (leftSquare != null && !leftSquare.isInAttackReach)
-                checkedSquars.Add(leftSquare);
-            if (upSquare != null && !upSquare.isInAttackReach)
-                checkedSquars.Add(upSquare);
-            if (downSquare != null && !downSquare.isInAttackReach)
-                checkedSquars.Add(downSquare);
-
-            centerSquar.isInAttackReach = true;
-
-            foreach (Squar sq in checkedSquars)
-            {
-                sq.isInAttackReach = true;
-            }
-        }
-
-        return checkedSquars;
-    }
-
-    // Get Cross Squares (maybe will be useable)
-    private List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
-    {
-        List<Squar> checkedSquars = new List<Squar>();
-        centerSquar.isInAttackReach = true;
-
-        Squar rightCrossSquare = null;
-        Squar leftCrossSquare = null;
-        Squar upCrossSquare = null;
-        Squar downCrossSquare = null;
-
-        // check upLeft direction
-        if (centerSquar.xCoordinate + 1 >= _rowsCount || centerSquar.yCoordinate - 1 < 0)
-            upCrossSquare = null;
-        else
-            upCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate - 1);
-
-        // check downLeft direction
-        if (centerSquar.xCoordinate - 1 < 0 || centerSquar.yCoordinate - 1 < 0)
-            downCrossSquare = null;
-        else
-            downCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate - 1);
-
-        // check upRight direction
-        if (centerSquar.xCoordinate + 1 >= _rowsCount || centerSquar.yCoordinate + 1 >= _collumCount)
-            rightCrossSquare = null;
-        else
-            rightCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate + 1);
-
-        // check downRight direction
-        if (centerSquar.xCoordinate - 1 < 0 || centerSquar.yCoordinate + 1 >= _collumCount)
-            leftCrossSquare = null;
-        else
-            leftCrossSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate + 1);
-
-        if (rightCrossSquare != null && !rightCrossSquare.isInAttackReach)
-            checkedSquars.Add(rightCrossSquare);
-        if (leftCrossSquare != null && !leftCrossSquare.isInAttackReach)
-            checkedSquars.Add(leftCrossSquare);
-        if (upCrossSquare != null && !upCrossSquare.isInAttackReach)
-            checkedSquars.Add(upCrossSquare);
-        if (downCrossSquare != null && !downCrossSquare.isInAttackReach)
-            checkedSquars.Add(downCrossSquare);
-
-        foreach (Squar sq in checkedSquars)
-        {
-            sq.isInAttackReach = true;
-        }
-
-        return checkedSquars;
-    }
-
-    private Squar GetSquareFromGrid(int x , int y)
-    {
-        Squar sq = _squaresInBattleField[x, y];
-        return sq;
-    }
-
+    
     private void SetSquaresOutOfMoveRange()
     {
-        foreach (Squar squar in _squaresInUnitRange)
+        foreach (Squar squar in _squaresInUnitMoveRange)
         {
             squar.inRangeBackground.SetActive(false);
             squar.isInMoveRange = false;
         }
+        _squaresInUnitMoveRange.Clear();
     }
 
     private void SetSquaresOutOfAttackReach()
@@ -1134,6 +789,7 @@ public class BattleController : MonoBehaviour
             item.DisableAttackBorders();
             item.isInAttackReach = false;
         }
+        _squaresInUnitAttackRange.Clear();
     }
 
     private void SetCursor(Squar sq)
@@ -1143,7 +799,7 @@ public class BattleController : MonoBehaviour
 
         if (sq.unitInSquar is null)
         {
-            if (_squaresInUnitRange.Contains(sq))
+            if (_squaresInUnitMoveRange.Contains(sq))
             {
                 sq.CursorEvent.isInMoveRange = true;
             }
@@ -1155,7 +811,6 @@ public class BattleController : MonoBehaviour
                 sq.CursorEvent.canAttack = true;
             }
         }
-        
     }
 
     private void SortUnitAccordingIniciation()
@@ -1166,6 +821,9 @@ public class BattleController : MonoBehaviour
     private void UpdateRightPanel (Squar sq)
     {
         Unit unit = sq.unitInSquar;
+
+        if (unit == _activeUnit)
+            return;
 
         if (unit != null)
         {
@@ -1187,26 +845,15 @@ public class BattleController : MonoBehaviour
         }
 
         _unitsOnBattleField.Clear();
+        _squaresInUnitAttackRange.Clear();
+        _squaresInUnitMoveRange.Clear();
+
+        _battleInfoPanel.RestartDataForNewBattle();
 
         // Todo Hodne smutne..  Musím to delat tak ze budu deaktivovat ty ktere nepotrebuji a hnedna na startu určím jak velke je pole
         // a tím padem jaké battleSquary maji byt aktivni.
 
-        if(_squaresInBattleField != null)
-        {
-            int sizeX = _squaresInBattleField.GetLength(0);
-            int sizeY = _squaresInBattleField.GetLength(1);
-            for (int j = 0; j < sizeX; j++)
-            {
-                GameObject row = _rows[j];
-
-                for (int i = 0; i < sizeY; i++)
-                {
-                    Destroy(_squaresInBattleField[j, i].gameObject);
-                }
-            }
-            _squaresInBattleField = null;
-        }
-
+        _battleGridController.ClearnSquaresInBattleField();
     }
 
     private void InputProcess ()
@@ -1229,15 +876,4 @@ public class BattleController : MonoBehaviour
         Attack,
         Heal
     }
-
-    public class AttackInfo
-    {
-        public int dices = 0;
-        public int success = 0;
-
-        public List<int> dicesValueRoll = new List<int>();      
-    }
-
-
-
 }

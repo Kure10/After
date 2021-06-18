@@ -54,7 +54,6 @@ public class Squar : MonoBehaviour
     }
 
     // Events actions
-
     public void InitEvent(UnityAction<Squar> call)
     {
         if (CursorEvent == null)
@@ -104,7 +103,6 @@ public class Squar : MonoBehaviour
     {
         canAttackMark.SetActive(false);
     }
-
 
 }
 
