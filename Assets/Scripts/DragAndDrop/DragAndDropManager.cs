@@ -90,14 +90,6 @@ public class DragAndDropManager : MonoBehaviour
         OnItemResponseReaction.Invoke(dragingObject.item);
     }
 
-    public bool IsThisDragingItem((Item item, GameObject go) item)
-    {
-        if (_dragingObject == item)
-            return true;
-
-        return false;
-    }
-
     private void Update()
     {
         if (IsDraging && _dragingObject != (null,null))
@@ -162,6 +154,17 @@ public class DragAndDropManager : MonoBehaviour
                 return _successDrop = true;
             }
         }
+
+        if(destination.CurrentItem.item != null && destination.CurrentItem.item.IsStackAble && _dragingObject.item.IsStackAble)
+        {
+            _successDrop = HandleStack(destination);
+
+            if(_successDrop)
+            {
+                return _successDrop;
+            }
+        }
+
 
         if (destination is SpecInventorySlot specSlotDestination && _originalSlot is SpecInventorySlot specSlotOrigin)
         {
@@ -330,20 +333,6 @@ public class DragAndDropManager : MonoBehaviour
                     return false;
                 }
 
-                //if (_dragingObject.item.Type != originSlotInventory.GetFirstSlotType && _dragingObject.item.Type != originSlotInventory.GetSecondSlotType)
-                //{
-                //    ItemSlot emptySlot = inventory.FindEmptySlot();
-
-                //    // TODO Edge case
-                //    if (emptySlot == null)
-                //        Debug.LogError("Osudova chyba už neni empty slot takže se to musi rozširit inventar GG..");
-
-                //    ReturnToOriginSlot(emptySlot);
-                //    SetDefault();
-                //    return false;
-                //}
-
-                //ReturnToOriginSlot(itemSlotOrigin2);
             }
 
             // vrat item na puvodni pozici...
@@ -538,6 +527,21 @@ public class DragAndDropManager : MonoBehaviour
         slotOrigin.CurrentItem = (null, null);
         slotOrigin.IsEmpty = true;
     }
+
+    private bool HandleStack(Slot destination)
+    {
+        if(destination.CurrentItem.item.ResourceType == _dragingObject.item.ResourceType)
+        {
+            destination.CurrentItem.item.AddAmountToStack(_dragingObject.item.GetStackAmount);
+            Destroy(_dragingObject.go);
+            _dragingObject = (null, null);
+
+            return true;
+        }
+
+        return false;
+    }
+
     private void ReturnToOriginSlot(Slot specSlotOrigin2)
     {
         if (specSlotOrigin2 == null) return;
@@ -609,7 +613,6 @@ public class DragAndDropManager : MonoBehaviour
 
             inventorySlot.OpenBackPack(backpack.Capacity);
         }
-
     }
     private bool ItemCanNotBePlacedIntoDestinationSlot(SpecInventorySlot specSlotDestination2)
     {
@@ -622,7 +625,15 @@ public class DragAndDropManager : MonoBehaviour
             }
         }
         return !canBePlaced;
-        //bool result = (_dragingObject.item.Type != specSlotDestination2.GetFirstSlotType && _dragingObject.item.Type != specSlotDestination2.GetSecondSlotType);
-        //return result;
     }
+
+    public void TryEndDrag()
+    {
+        if(_dragingObject.item == null)
+        {
+            IsDraging = false;
+            SetDefault();
+        }
+    }
+
 }

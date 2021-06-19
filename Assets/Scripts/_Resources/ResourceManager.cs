@@ -179,10 +179,17 @@ public class ResourceManager : MonoBehaviour
         return PotravinyBigBox; //shouldn't happen, TODO use some other 'red warning box' or something
     }
 
+    Vector2Int missionSpawnPoint = new Vector2Int(5, 12);
     Vector2Int defaultSpawnPoint = new Vector2Int(20, 20);
+    Vector2Int currentSpawnPoint = new Vector2Int(20, 20);
 
-    public void AddResource(ItemBlueprint.ItemResourceType type, int value)
+    public void AddResource(ItemBlueprint.ItemResourceType type, int value, bool toMissionSpot = false)
     {
+        if(toMissionSpot)
+        {
+            currentSpawnPoint = currentSpawnPoint;
+        }
+
         switch (type)
         {
             case ItemBlueprint.ItemResourceType.None:
@@ -205,6 +212,8 @@ public class ResourceManager : MonoBehaviour
             default:
                 break;
         }
+
+        currentSpawnPoint = defaultSpawnPoint;
     }
 
     public void IncPohonneHmoty(int value)
@@ -212,7 +221,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Fuel = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncPotraviny(int value)
@@ -239,7 +248,7 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-            SpawnResource(val, defaultSpawnPoint);
+            SpawnResource(val, currentSpawnPoint);
         }
     }
 
@@ -249,7 +258,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Military = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncTechnickyMaterial(int value)
@@ -258,7 +267,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Technical = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncCivilniMaterial(int value)
@@ -266,7 +275,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Civilian = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncEnergie(int value)
@@ -274,7 +283,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Energy = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncDeti(int value)
@@ -282,7 +291,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Kids = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void IncKarma(int value)
@@ -290,7 +299,7 @@ public class ResourceManager : MonoBehaviour
         var val = new ResourceAmount();
         val.Karma = value;
 
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     public void SetToZero()
@@ -340,7 +349,7 @@ public class ResourceManager : MonoBehaviour
         // val.Kids = value;
         val.Military = value;
         val.Technical = value;
-        SpawnResource(val, defaultSpawnPoint);
+        SpawnResource(val, currentSpawnPoint);
     }
 
     //for backward compatibility

@@ -18,6 +18,7 @@ public class ItemBlueprint
     public int useCount;
     public int rangeMin = 0;
     public int rangeMax = 0;
+    public int sizeStock = 1;
 
     public RepairCost repairCost;
     public BonusModificators[] modificators;

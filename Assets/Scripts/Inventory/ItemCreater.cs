@@ -79,7 +79,7 @@ public class ItemCreater : MonoBehaviour
     private void CreateResource(ItemBlueprint blueprint, GameObject gameObject)
     {
         Item it = gameObject.AddComponent<Item>();
-        it.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite, blueprint.ResourceType);
+        it.SetupItem(blueprint);
 
         AddModifications(blueprint, it);
     }
@@ -87,7 +87,7 @@ public class ItemCreater : MonoBehaviour
     private void CreateResource(Item item, GameObject gameObject)
     {
         Item it = gameObject.AddComponent<Item>();
-        it.SetupItem(item.Name, item.Type, item.Sprite, item.ResourceType);
+        it.SetupItem(item);
 
         AddModifications(item, it);
     }

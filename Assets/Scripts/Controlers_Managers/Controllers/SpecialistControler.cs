@@ -32,6 +32,8 @@ public class SpecialistControler : MonoBehaviour
 
     public uWindowSpecController GetSpecUWindowUi { get { return this.specUWindowUi; } }
 
+    private Vector2Int coordToLeave = new Vector2Int(5, 10);
+
     public void Awake()
     {
         EventController.OnEventEnd += RefreshUI;
@@ -147,7 +149,7 @@ public class SpecialistControler : MonoBehaviour
 
     private void OrderCharactersLeave(Character character)
     {
-        Vector2Int coord = new Vector2Int(5, 10);
+        Vector2Int coord = coordToLeave;
         var path = tileFactory.FindPath(Geometry.GridFromPoint(character.transform.position), coord);
         if (path != null)
         {

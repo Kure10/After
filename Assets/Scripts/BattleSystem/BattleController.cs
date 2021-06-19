@@ -408,12 +408,10 @@ public class BattleController : MonoBehaviour
                 UpdateRightPanel(squ);
             });
         }
-
     }
 
     private void SetUnitPosition(BattleStartData battleStartData)
     {
-
         SetPlayersUnitPosition(battleStartData);
 
         if (battleStartData.isRandomEnemyPosition)
@@ -748,10 +746,15 @@ public class BattleController : MonoBehaviour
                 int itemCount = UnityEngine.Random.Range(loot.itemCountMin, loot.itemCountMax + 1); // Todo Lepsi random.
                 if (randomNumber <= loot.dropChange)
                 {
-                    for (int i = 0; i < itemCount; i++)
-                    {
-                        itemsLoot.Add(_inventoryManager.GetResourcesByID(loot.lootID));
-                    }
+                    ItemBlueprint itemBlueprint = _inventoryManager.GetResourcesByID(loot.lootID);
+                    itemBlueprint.sizeStock = itemCount;
+                    itemsLoot.Add(itemBlueprint);
+
+                    // Kdyby je nef chtel mit rozdelene..
+                    //for (int i = 0; i < itemCount; i++)
+                    //{
+                    //    itemsLoot.Add(_inventoryManager.GetResourcesByID(loot.lootID));
+                    //}
                 }
             }
         }

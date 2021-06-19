@@ -31,7 +31,6 @@ public class ContainerManager : MonoBehaviour
         return startingItems;
     }
 
-
     [System.Serializable]
     public struct ContainerInfo
     {

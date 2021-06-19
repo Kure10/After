@@ -96,7 +96,8 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
                 }
             }
         }
-          
+
+        DragAndDropManager.Instantion.TryEndDrag();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -115,6 +116,8 @@ public class DragAndDropHandler : MonoBehaviour, IPointerHandler, IDragable , ID
         {
             DragAndDropManager.Instantion.HandleDrop(itemInSlot.item.MySlot);
         }
+
+        DragAndDropManager.Instantion.TryEndDrag();
     }
 
     public void MakeTransparent(bool transparent)

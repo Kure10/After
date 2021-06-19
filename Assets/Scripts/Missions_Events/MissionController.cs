@@ -170,9 +170,7 @@ public class MissionController : MonoBehaviour
                 {
                     if (item.Type == ItemBlueprint.ItemType.ResBasic)
                     {
-                        // Todo put it on some specific place
-                        // Todo Value should be diferent than 1.
-                        resourceManager.AddResource(item.ResourceType, 1);
+                        resourceManager.AddResource(item.ResourceType, item.GetStackAmount, true);
                         slot.CleanSlot();
                     }
                 }
@@ -185,9 +183,7 @@ public class MissionController : MonoBehaviour
                 {
                     if (item.Type == ItemBlueprint.ItemType.ResBasic)
                     {
-                        // Todo put it on some specific place
-                        // Todo Value should be diferent than 1.
-                        resourceManager.AddResource(item.ResourceType, 1);
+                        resourceManager.AddResource(item.ResourceType, item.GetStackAmount, true);
                         slot.CleanSlot();
                     }
                 }

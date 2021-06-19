@@ -70,7 +70,7 @@ public class Inventory : MonoBehaviour
                 {
                     Debug.LogWarning("somewhere is mistake Error in Inventory");
                     item = game.AddComponent<Item>();
-                    item.SetupItem(blueprint.name, blueprint.Type, blueprint.Sprite);
+                    item.SetupItem(blueprint);
                 }
 
                 item.MySlot = itemSlot;

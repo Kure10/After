@@ -140,7 +140,7 @@ public class BattleResultPopup : MonoBehaviour
             {
                 Debug.LogWarning("somewhere is mistake Error in Inventory");
                 item = game.AddComponent<Item>();
-                item.SetupItem(itemBlueprint.name, itemBlueprint.Type, itemBlueprint.Sprite);
+                item.SetupItem(itemBlueprint);
             }
 
             item.MySlot = _itemSlots[i];
