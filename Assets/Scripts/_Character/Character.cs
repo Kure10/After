@@ -193,9 +193,10 @@ public class Character : MonoBehaviour, IResourceHolder
 
     #endregion
 
-    public void ModifyStamina (float value)
+    public float ModifyStamina(float value)
     {
         lifeEnergy.CurrentStamina = value;
+        return lifeEnergy.CurrentStamina;
     }
 
     public void ModifyLife(float value)

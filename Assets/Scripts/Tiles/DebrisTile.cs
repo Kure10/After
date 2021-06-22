@@ -68,13 +68,31 @@ public class DebrisTile : Tile, IWorkSource
                         worker.character.AddCommand(new Build());
                     }
                     break;
+                case WorkerState.resting:
+                    worker.character.Execute();
+                    if (worker.character.GetCommand() is Build bCmd)
+                    {
+                        var stamina = bCmd.GetBuildPoints(worker.character.Stats.tech);
+                        var remaining = worker.character.ModifyStamina(stamina);
+                        if (remaining > stamina * 1000) //TODO how much stamina is gained and when to start again?
+                        {
+                            worker.state = WorkerState.working;
+                            worker.character.State = "Clearing debris";
+                        }
+                    }
+                    break;
                 case WorkerState.working:
                     worker.character.Execute();
                     float buildPoints = 0;
                     if (worker.character.GetCommand() is Build buildCmd)
                     {
                         buildPoints = buildCmd.GetBuildPoints(worker.character.Stats.tech);
-                        worker.character.ModifyStamina(-buildPoints);
+                        var remaining = worker.character.ModifyStamina(-buildPoints);
+                        if (remaining < 1)
+                        {
+                            worker.state = WorkerState.resting;
+                            worker.character.State = "Resting";
+                        }
                     }
                     if (DoDamage(buildPoints))
                     {
