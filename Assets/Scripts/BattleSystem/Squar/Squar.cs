@@ -45,6 +45,11 @@ public class Squar : MonoBehaviour
 
     public Action action;
 
+    public Vector2 GetCoordinates ()
+    {
+        return new Vector2(xCoordinate, yCoordinate);
+    }
+
     public void SetCoordinates(int x, int y)
     {
         xCoordinate = x;

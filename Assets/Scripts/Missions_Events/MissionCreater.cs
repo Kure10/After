@@ -38,7 +38,7 @@ public class MissionCreater : MonoBehaviour
         PassMissionToManager();
     }
 
-    public void SortMissions(List<Mission> createdMissions)
+    private void SortMissions(List<Mission> createdMissions)
     {
         foreach (Mission item in createdMissions)
         {
@@ -65,7 +65,6 @@ public class MissionCreater : MonoBehaviour
         eventOccurrenceRange = eventOccurrenceRange - timeBetweenEvents;
 
         firstOccurrenceEvent = SetEventTimeInMission(mis, firstOccurrenceEvent, eventOccurrenceRange);
-
     }
 
     private float SetEventTimeInMission(Mission mis, float firstOccurrenceEvent, float eventOccurrenceRange)

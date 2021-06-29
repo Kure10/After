@@ -95,6 +95,38 @@ public class MissionXmlLoader : MonoBehaviour
             newMission.EventsMin = item.GetIntStat("EventsMin");
             newMission.EventsMax = item.GetIntStat("EventsMax");
 
+            // FinalEvent and DirectEvent
+            var statclass = item.GetData("$E");
+            var keys = statclass.GetKeys();
+
+            foreach (string key in keys)
+            {
+                StatsClass stat = statclass.GetData(key);
+                int tValue = stat.GetIntStat("$T");
+                if (tValue == 1)
+                {
+                    string finalEventId = stat.GetStrStat("FinalEvent");
+                    success = long.TryParse(finalEventId, out long finalID);
+                    if (!success)
+                        finalID = 0;
+
+                    newMission.FinalEventID = finalID;
+                }
+                else if (tValue == 2)
+                {
+                    int order = stat.GetIntStat("Order");
+                    string directEventId = stat.GetStrStat("DirectEvent");
+                    success = long.TryParse(directEventId, out long directID);
+                    if (!success)
+                        directID = 0;
+
+                    DirectEvents directEvent = new DirectEvents();
+                    directEvent.order = order;
+                    directEvent.eventID = directID;
+                    newMission.AddDirectEvent(directEvent);
+                }
+            }
+
             if (newMission.EventsMin > newMission.EventsMax)
                 newMission.EventsMax = newMission.EventsMin;
 

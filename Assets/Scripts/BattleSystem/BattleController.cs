@@ -50,22 +50,23 @@ public class BattleController : MonoBehaviour
 
     private ResourceSpriteLoader spriteLoader = null;
     private BattleStartData _battleStartData;
+    private ResultTurnAction _playerInput = new ResultTurnAction();
 
     private void Awake()
     {
-        _battleResultPopup.InicializedControlles( ()=> CloseBattle ());
+        _battleResultPopup.InicializedControlles(() => CloseBattle());
     }
     private void Start()
     {
         // This is for testing purpose only when u are in BATTLEGROUND scene!!
-        if(TestingBattle)
+        if (TestingBattle)
         {
             spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
             _battleStartData = InitTestBattleData();
 
             _battleGridController.CreateBattleField(_battleStartData);
 
-           // CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
+            // CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
 
             InitBattle(_battleStartData);
             TestStartBattle();
@@ -74,26 +75,42 @@ public class BattleController : MonoBehaviour
 
     private void Update()
     {
+       // bool actionPerformed = false;
         if (_isBattleOnline)
         {
             InputProcess();
 
             if (_isPlayerTurn)
             {
-                if (DetectPlayerInputs())
+                _playerInput = DetectPlayerInputs();
+
+                if (_playerInput.inputResult)
                 {
-                    _turnIsOver = true;
-                    _isPlayerTurn = false;
+                   // actionPerformed = _playerInput.inputResult;
+                    DecreaseActionPoints(_playerInput);
+
+                    if (_activeUnit.ActionPoints <= 0 || _turnIsOver)
+                    {
+                        _turnIsOver = true;
+                        _isPlayerTurn = false;
+                    }
                 }
             }
             else
             {
+                _playerInput = DetectPlayerInputs();
                 // OnSimpleAIMove();
 
-                if (DetectPlayerInputs())
+                if (_playerInput.inputResult)
                 {
-                    _turnIsOver = true;
-                    _isPlayerTurn = true;
+                  //  actionPerformed = _playerInput.inputResult;
+                    DecreaseActionPoints(_playerInput);
+
+                    if (_activeUnit.ActionPoints <= 0 || _turnIsOver)
+                    {
+                        _turnIsOver = true;
+                        _isPlayerTurn = true;
+                    }
                 }
 
                 // AI is on the move 
@@ -101,59 +118,14 @@ public class BattleController : MonoBehaviour
                 // switch to player turn
             }
 
+            if (_playerInput.inputResult && !_turnIsOver)
+            {
+                RecalculatePosibleActions(_playerInput);
+            }
+
             if (_turnIsOver)
             {
-                
-                SetSquaresOutOfAttackReach();
-                SetSquaresOutOfMoveRange();
-                ShowSquaresWithinRange(false);
-
-                 _order++;
-
-                int countAliveUnit = 0;
-                foreach (Unit unit in _unitsOnBattleField)
-                {
-                    if(!unit.IsDead)
-                    {
-                        countAliveUnit++;
-                    }
-                }
-
-                // Next round so calc new iniciative
-                if (_order >= countAliveUnit)
-                {
-                    _order = 0;
-                    roundCount++;
-                    _battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
-
-                   // new iniciative
-                    foreach (Unit unit in _unitsOnBattleField)
-                    {
-                        if(!unit.IsDead)
-                        {
-                            unit._iniciation = unit.CalculateIniciation();
-                        }
-                    }
-
-                    SortUnitAccordingIniciation();
-                    _battleInfoPanel.UpdateUnitNewTurnOrder(_unitsOnBattleField, _unit);
-                }
- 
-                UpdateActiveUnit();
-
-                _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
-
-                ShowSquaresWithinRange(true);
-
-                _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
-
-                ShowSquaresWithingAttackRange();
-
-                _leftUnitInfo.UpdateStats(_activeUnit);
-
-                _turnIsOver = false;
-
-                VictoryConditionCheck();
+                ConfigurateNewTurn();
             }
         }
     }
@@ -173,11 +145,61 @@ public class BattleController : MonoBehaviour
         _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
     }
 
+    public void ConfigurateNewTurn()
+    {
+        SetSquaresOutOfAttackReach();
+        SetSquaresOutOfMoveRange();
+        ShowSquaresWithinMoveRange(false);
+
+        _order++;
+
+        int countAliveUnit = 0;
+        foreach (Unit unit in _unitsOnBattleField)
+        {
+            if (!unit.IsDead)
+            {
+                countAliveUnit++;
+            }
+        }
+
+        // Next round so calc new iniciative
+        if (_order >= countAliveUnit)
+        {
+            _order = 0;
+            roundCount++;
+            _battleLog.AddBattleLog($"<---------- Turn {roundCount} ---------->");
+
+            // new iniciative
+            foreach (Unit unit in _unitsOnBattleField)
+            {
+                if (!unit.IsDead)
+                {
+                    unit._iniciation = unit.CalculateIniciation();
+                }
+            }
+
+            SortUnitAccordingIniciation();
+            _battleInfoPanel.UpdateUnitNewTurnOrder(_unitsOnBattleField, _unit);
+        }
+
+        UpdateActiveUnit();
+        _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
+        ShowSquaresWithinMoveRange(true);
+        _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
+        ShowSquaresWithingAttackRange();
+        _leftUnitInfo.UpdateStats(_activeUnit);
+
+        _turnIsOver = false;
+
+        VictoryConditionCheck();
+    }
+
     private void UpdateActiveUnit()
     {
         _battleInfoPanel.UpdateUnitOrder(_activeUnit, false);
         _activeUnit.IsActive = false;
         _activeUnit.UpdateAnim();
+        _playerInput.ResertTurn();
 
         for (int i = _order; i < _unitsOnBattleField.Count; i++)
         {
@@ -187,17 +209,21 @@ public class BattleController : MonoBehaviour
                 break;
         }
 
+        _activeUnit.ActionPoints = 2;
         _activeUnit.IsActive = true;
         _activeUnit.UpdateAnim();
+        _activeUnit.RefreshMovementPoints();
         _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
         _battleLog.AddBattleLog($"{_activeUnit._name} has turn");
     }
 
-    private bool DetectPlayerInputs()
+    private ResultTurnAction DetectPlayerInputs()
     {
-        bool result = false;
-        BattleAction action = BattleAction.None;
+        ResultTurnAction resultPlayerInput = _playerInput;
+
+        resultPlayerInput.inputResult = false;
+        resultPlayerInput.battleAction = BattleAction.None;
         Squar actionOnSquare = null;
         Unit unitOnSquare = null;
 
@@ -206,9 +232,9 @@ public class BattleController : MonoBehaviour
             actionOnSquare = RaycastTargetSquar();
             if (actionOnSquare != null)
             {
-                action = OnClickIntoGrid(actionOnSquare);
+                resultPlayerInput.battleAction = OnClickIntoGrid(actionOnSquare);
                 unitOnSquare = actionOnSquare.unitInSquar;
-                result = true;
+                resultPlayerInput.inputResult = true;
             }
         }
 
@@ -226,48 +252,109 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        if (result)
+        if (resultPlayerInput.inputResult)
         {
-            switch (action)
+            switch (resultPlayerInput.battleAction)
             {
                 case BattleAction.None:
                     Debug.Log("None Action");
-                    result = false;
+                    resultPlayerInput.inputResult = false;
                     break;
                 case BattleAction.Move:
-                    _battleGridController.MoveToSquar(_activeUnit, actionOnSquare);
 
-                    //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+                    if (!_playerInput.moveIsBlocked)
+                    {
+                        int distance = CalculateMoveDistance(new Vector2(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition), actionOnSquare.GetCoordinates());
+                        _activeUnit.DecreaseMovementPoints(distance);
 
-                    _battleLog.AddBattleLog($"{_activeUnit._name} moved");
-                    result = true;
+                        _battleGridController.MoveToSquar(_activeUnit, actionOnSquare);
+
+                        //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+
+                        _battleLog.AddBattleLog($"{_activeUnit._name} moved");
+                        resultPlayerInput.inputResult = true;
+                    }
+
                     break;
                 case BattleAction.Attack:
 
-                    BattleGridController.AttackInfo attackInfo = null;
-                    attackInfo = _battleGridController.AttackToUnit(_activeUnit, unitOnSquare);
-
-                    if (attackInfo.unitDied)
+                    if (!_playerInput.attackIsBlocked)
                     {
-                        _battleGridController.DestroyUnitFromBattleField(unitOnSquare);
-                        _battleInfoPanel.DeleteUnitFromOrder(unitOnSquare);
-                        _battleLog.AddBattleLog($"{unitOnSquare._name} is dead");
+                        BattleGridController.AttackInfo attackInfo = null;
+                        attackInfo = _battleGridController.AttackToUnit(_activeUnit, unitOnSquare);
+
+                        if (attackInfo.unitDied)
+                        {
+                            _battleGridController.DestroyUnitFromBattleField(unitOnSquare);
+                            _battleInfoPanel.DeleteUnitFromOrder(unitOnSquare);
+                            _battleLog.AddBattleLog($"{unitOnSquare._name} is dead");
+                        }
+
+                        _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
+                        _battleInfoPanel.UpdateUnitData(unitOnSquare);
+                        resultPlayerInput.inputResult = true;
                     }
 
-                    _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
-                    _battleInfoPanel.UpdateUnitData(unitOnSquare);
-                    result = true;
                     break;
                 case BattleAction.Heal:
                     Debug.Log("Heal action");
-                    result = false;
+                    resultPlayerInput.inputResult = false;
                     break;
                 default:
                     break;
             }
         }
 
-        return result;
+        return resultPlayerInput;
+    }
+
+    public void RecalculatePosibleActions(ResultTurnAction playerInput)
+    {
+        SetSquaresOutOfMoveRange();
+        
+        SetSquaresOutOfAttackReach();
+        _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
+
+        if(_activeUnit.GetMovementPoints > 0)
+        {
+            _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
+            ShowSquaresWithinMoveRange(true);
+        }
+
+        ShowSquaresWithingAttackRange();
+
+        playerInput.inputResult = false;
+    }
+
+    public void DecreaseActionPoints(ResultTurnAction playerInput)
+    {
+        switch (playerInput.battleAction)
+        {
+            case BattleAction.None:
+                break;
+            case BattleAction.Move:
+                if(!playerInput.movePerformed)
+                {
+                    _activeUnit.ActionPoints -= 1;
+                    playerInput.movePerformed = true;
+                }
+
+                if (_activeUnit.GetMovementPoints <= 0)
+                {
+                    playerInput.moveIsBlocked = true;
+                }
+
+                break;
+            case BattleAction.Attack:
+                playerInput.attackIsBlocked = true;
+                _activeUnit.ActionPoints -= 1;
+                _turnIsOver = true;
+                break;
+            case BattleAction.Heal:
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -292,7 +379,7 @@ public class BattleController : MonoBehaviour
             _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
         }
 
-      
+
         SetSquaresOutOfAttackReach();
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
         ShowSquaresWithingAttackRange();
@@ -338,7 +425,7 @@ public class BattleController : MonoBehaviour
         // Setup Before Battle Start
         SetupForNewBattle();
         _battleResultPopup.InitBeforeBattleStart();
-        
+
         // this is for testing purpose .. Right now is not decided how we will set battlefield Size.
         // minumum is 6 and 10 
         _battleStartData.Rows = 8;
@@ -376,7 +463,7 @@ public class BattleController : MonoBehaviour
             newUnit.InitUnit(dataUnit, sprite, Unit.Team.Demon);
 
             squar.unitInSquar = newUnit;
-            _unitsOnBattleField.Add(newUnit); 
+            _unitsOnBattleField.Add(newUnit);
         }
 
         for (int i = 0; i < amountPlayers; i++)
@@ -425,25 +512,25 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    private void SetPlayersUnitPosition (BattleStartData battleStartData)
+    private void SetPlayersUnitPosition(BattleStartData battleStartData)
     {
-        List<(int x, int y)> posiblePositions = new List<(int x , int y)>();
+        List<(int x, int y)> posiblePositions = new List<(int x, int y)>();
 
         int startSeachXPosition = 0;
         int radius = 3; // Hard coded not good..
 
         if (battleStartData.Rows % 2 == 0)
         {
-            startSeachXPosition = (battleStartData.Rows -1 )/ 2 - 1;
+            startSeachXPosition = (battleStartData.Rows - 1) / 2 - 1;
         }
         else
         {
-            startSeachXPosition = (battleStartData.Rows - 1) / 2 ;
+            startSeachXPosition = (battleStartData.Rows - 1) / 2;
         }
 
         for (int i = startSeachXPosition; i < startSeachXPosition + radius; i++)
         {
-            (int x, int y) position = (0,0);
+            (int x, int y) position = (0, 0);
 
             for (int j = 0; j < radius; j++)
             {
@@ -468,7 +555,7 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    private void SetEnemyRandomPosition (BattleStartData battleStartData)
+    private void SetEnemyRandomPosition(BattleStartData battleStartData)
     {
         List<(int x, int y)> posiblePositions = new List<(int x, int y)>();
 
@@ -478,7 +565,7 @@ public class BattleController : MonoBehaviour
 
         foreach (DataUnit dataUnit in battleStartData.playerData.playerUnits)
         {
-            if(dataUnit.StartYPosition > startSeachYPosition)
+            if (dataUnit.StartYPosition > startSeachYPosition)
             {
                 startSeachYPosition = dataUnit.StartYPosition;
             }
@@ -486,11 +573,11 @@ public class BattleController : MonoBehaviour
 
         startSeachYPosition += minDistanceFromPlayer;
 
-        for (int i = 0; i < battleStartData.Rows -1; i++)
+        for (int i = 0; i < battleStartData.Rows - 1; i++)
         {
             (int x, int y) position = (0, 0);
 
-            for (int j = startSeachYPosition; j < battleStartData.Collumn -1; j++)
+            for (int j = startSeachYPosition; j < battleStartData.Collumn - 1; j++)
             {
                 position = (i, j);
                 posiblePositions.Add(position);
@@ -518,10 +605,10 @@ public class BattleController : MonoBehaviour
         battleStartData.Rows = 8;
         battleStartData.Collumn = 16;
 
-        Weapon weapon = new Weapon(3,1,5,6);
+        Weapon weapon = new Weapon(3, 1, 5, 6);
         Weapon weapon2 = new Weapon(4, 2, 3, 4);
 
-        DataUnit newA = new DataUnit(2,3,10,5,3,3,2, "Player1", "Gargoyle", 2, weapon, weapon2);
+        DataUnit newA = new DataUnit(2, 3, 10, 5, 3, 3, 2, "Player1", "Gargoyle", 2, weapon, weapon2);
         DataUnit newB = new DataUnit(4, 5, 5, 5, 7, 5, 2, "Player2", "Gargoyle", 2, weapon, weapon2);
         DataUnit newC = new DataUnit(3, 0, 6, 2, 2, 1, 2, "Zombie1", "Zombie 1", 1);
         DataUnit newx = new DataUnit(2, 7, 8, 2, 1, 2, 1, "Zombie2", "Zombie 2", 0);
@@ -542,13 +629,20 @@ public class BattleController : MonoBehaviour
 
         if (_unitsOnBattleField.Count > 0)
         {
+
+            //  UpdateActiveUnit();
+
+            
+            _playerInput.ResertTurn();
             _activeUnit = _unitsOnBattleField[_order];
+            _activeUnit.ActionPoints = 2;
             _activeUnit.IsActive = true;
             _activeUnit.UpdateAnim();
+            _activeUnit.RefreshMovementPoints();
             _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
             _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
-            ShowSquaresWithinRange(true);
+            ShowSquaresWithinMoveRange(true);
 
             _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
             ShowSquaresWithingAttackRange();
@@ -615,7 +709,7 @@ public class BattleController : MonoBehaviour
         {
             bool isFriendlyUnit = squarToMove.unitInSquar._team == _activeUnit._team;
 
-            if(!isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
+            if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
             {
                 action = BattleAction.Attack;
             }
@@ -639,7 +733,7 @@ public class BattleController : MonoBehaviour
     }
 
 
-    private bool VictoryConditionCheck ()
+    private bool VictoryConditionCheck()
     {
         bool battleIsOver = false;
         int humanUnit = 0;
@@ -648,7 +742,7 @@ public class BattleController : MonoBehaviour
 
         foreach (var unit in _unitsOnBattleField)
         {
-            if(!unit.IsDead)
+            if (!unit.IsDead)
             {
                 if (unit._team == Unit.Team.Human)
                 {
@@ -689,15 +783,15 @@ public class BattleController : MonoBehaviour
             _isBattleOnline = false;
             // Todo Clean BattleField . And prepair for next Battle
         }
-        
+
         return false;
     }
 
-    private StatsClass CreateStatClassBattleResult (bool positiveResult)
+    private StatsClass CreateStatClassBattleResult(bool positiveResult)
     {
         StatsClass statClass = new StatsClass();
 
-        if(positiveResult)
+        if (positiveResult)
         {
             statClass.AddStat("$T", _battleStartData.WinEvaluation.statClassNumber);
         }
@@ -709,11 +803,11 @@ public class BattleController : MonoBehaviour
         }
         statClass.AddStat("Mission", _battleStartData.WinEvaluation.mission);
         statClass.AddStat("BattleResult", positiveResult);
-   
+
         return statClass;
     }
 
-    private void ShowSquaresWithinRange(bool makeVisible)
+    private void ShowSquaresWithinMoveRange(bool makeVisible)
     {
         foreach (Squar sq in _squaresInUnitMoveRange)
         {
@@ -774,7 +868,7 @@ public class BattleController : MonoBehaviour
         StatsClass statClass = CreateStatClassBattleResult(false);
         OnBattleLost.Invoke(statClass);
     }
-    
+
     private void SetSquaresOutOfMoveRange()
     {
         foreach (Squar squar in _squaresInUnitMoveRange)
@@ -809,7 +903,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if(_squaresInUnitAttackRange.Contains(sq) && sq.unitInSquar._team != _activeUnit._team)
+            if (_squaresInUnitAttackRange.Contains(sq) && sq.unitInSquar._team != _activeUnit._team)
             {
                 sq.CursorEvent.canAttack = true;
             }
@@ -821,7 +915,7 @@ public class BattleController : MonoBehaviour
         _unitsOnBattleField.Sort((x, y) => y._iniciation.CompareTo(x._iniciation));
     }
 
-    private void UpdateRightPanel (Squar sq)
+    private void UpdateRightPanel(Squar sq)
     {
         Unit unit = sq.unitInSquar;
 
@@ -859,7 +953,16 @@ public class BattleController : MonoBehaviour
         _battleGridController.ClearnSquaresInBattleField();
     }
 
-    private void InputProcess ()
+    private int CalculateMoveDistance (Vector2 startPos, Vector2 destinationPos)
+    {
+        int xDistance = (int)(destinationPos.x - startPos.x);
+        int yDistance = (int)(destinationPos.y - startPos.y);
+        int finalDistance = Math.Abs(xDistance) + Math.Abs(yDistance);
+
+        return finalDistance;
+    }
+
+    private void InputProcess()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -872,11 +975,32 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    enum BattleAction 
+    public enum BattleAction
     {
         None,
         Move,
         Attack,
         Heal
+    }
+
+    public class ResultTurnAction
+    {
+        public bool movePerformed = false;
+        public bool moveIsBlocked;
+        public bool attackIsBlocked;
+
+        public BattleAction battleAction;
+        public bool inputResult;
+
+        public void ResertTurn()
+        {
+            movePerformed = false;
+
+            moveIsBlocked = false;
+            moveIsBlocked = false;        
+
+            battleAction = BattleAction.None;
+            inputResult = false;
+        }
     }
 }

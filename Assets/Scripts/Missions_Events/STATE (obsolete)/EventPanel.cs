@@ -129,7 +129,26 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void SetupTestingState(TestCase tCase)
+    public void SetAmountTestedCharacters(EventTestCase _tCase , int minCharacters)
+    {
+        if (_tCase != null)
+        {
+            if (_tCase.GetClass == EventTestCase.ClassTest.Together)
+            {
+                this.amountCharacterSelectedText.text = $" {minCharacters } / {minCharacters}";
+            }
+            else
+            {
+                this.amountCharacterSelectedText.text = $" {minCharacters } / {_tCase.GetMaxCharParticipation}";
+            }
+        }
+        else
+        {
+            this.amountCharacterSelectedText.text = $" ";
+        }
+    }
+
+    public void SetupTestingState(EventTestCase tCase)
     {
         IsInvolvedKarma(tCase.GetKarmaInfluence);
         IsTestedSeparately(tCase.GetClass);
@@ -137,7 +156,15 @@ public class EventPanel : MonoBehaviour
         rateMod.text = tCase.GetRateMod.ToString();
         SetupConditionAtributes(tCase);
         eventSubTitle.text = tCase.GetName;
-        selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}.";
+
+        if (tCase.GetClass == EventTestCase.ClassTest.Together)
+        {
+            selectionInfoText.text = $" Test je pro vsechny specialisty";
+        }
+        else
+        {
+            selectionInfoText.text = $" Vyber {tCase.GetMinCharParticipation} charakter až {tCase.GetMaxCharParticipation}.";
+        }
     }
 
     public void SetImage(Sprite _sprite)
@@ -174,7 +201,7 @@ public class EventPanel : MonoBehaviour
     }
 
     #region Private Methods
-    private void SetupConditionAtributes(TestCase tCase)
+    private void SetupConditionAtributes(EventTestCase tCase)
     {
         testingCondition[0].SetActive(tCase.IsTestingLevel);
         testingCondition[1].SetActive(tCase.IsTestingMilitary);
@@ -189,9 +216,9 @@ public class EventPanel : MonoBehaviour
         else
             karma.SetActive(false);
     }
-    private void IsTestedSeparately(ClassTest classTest)
+    private void IsTestedSeparately(EventTestCase.ClassTest classTest)
     {
-        if (classTest == ClassTest.Separately)
+        if (classTest == EventTestCase.ClassTest.Separately)
         {
             separatelyGo.SetActive(true);
             togetherGo.SetActive(false);

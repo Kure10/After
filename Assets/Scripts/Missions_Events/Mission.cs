@@ -37,7 +37,7 @@ public class Mission : INotifiable
 
     private string neededTransport; // možna to neni transport co potřebuji ale jaky se na ten event da použit jako bonus.. nevim
 
-    private int finalEventId;
+    private long finalEventId;
 
     private float initialDistance;
 
@@ -117,7 +117,7 @@ public class Mission : INotifiable
 
     public List<DirectEvents> GetdirectEvents { get { return this.directEvents; } }
 
-    public int FinalEventID { get { return this.finalEventId; } set { this.finalEventId = value; } }
+    public long FinalEventID { get { return this.finalEventId; } set { this.finalEventId = value; } }
 
     public List<Terrain> GetEmergingTerrains { get { return this.emergingTerrains; } }
 
@@ -237,9 +237,9 @@ public enum MissionType { pruzkum_oblasti, pruzkum, sberLov, skavender, zachrana
 #region Helpers Class 
 public class DirectEvents
 {
-    int eventID;
+    public long eventID;
 
-    int order;
+    public int order;
 }
 
 #endregion

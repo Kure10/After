@@ -35,22 +35,24 @@ public class CameraMovement : MonoBehaviour
     {
         bool mouseState = Input.GetKey(KeyCode.Mouse0);
 
-        if (Input.GetMouseButtonDown(0))
+        if (scrollEnabled)
         {
-            MouseStart = Input.mousePosition;
-
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            Vector3 mouseDelta = Input.mousePosition - MouseStart;
-            float dx = (mouseDelta.x) * (0.0001f * CameraMouseSpeed);  
-            float dy = (mouseDelta.y) * (0.0001f * CameraMouseSpeed); 
-
-            if (dx != 0 | dy != 0)
+            if (Input.GetMouseButtonDown(0))
             {
-                movement = new Vector3(-dx, 0, -dy);
-                cameraHolder.transform.Translate(movement);
+                MouseStart = Input.mousePosition;
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                Vector3 mouseDelta = Input.mousePosition - MouseStart;
+                float dx = (mouseDelta.x) * (0.0001f * CameraMouseSpeed);
+                float dy = (mouseDelta.y) * (0.0001f * CameraMouseSpeed);
+
+                if (dx != 0 | dy != 0)
+                {
+                    movement = new Vector3(-dx, 0, -dy);
+                    cameraHolder.transform.Translate(movement);
+                }
             }
         }
 

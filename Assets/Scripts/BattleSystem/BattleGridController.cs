@@ -83,7 +83,7 @@ public class BattleGridController : MonoBehaviour
     {
         List<Squar> squaresInUnitMoveRange = new List<Squar>();
   
-        int moveRange = unit._movement;
+        int moveRange = unit.GetMovementPoints;
         Squar centerSquar = _squaresInBattleField[unit.CurrentPos.XPosition, unit.CurrentPos.YPosition];
 
         squaresInUnitMoveRange.AddRange(GetTheAdjacentSquare(centerSquar));

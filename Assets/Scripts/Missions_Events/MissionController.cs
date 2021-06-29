@@ -14,6 +14,7 @@ public class MissionController : MonoBehaviour
     
     private List<Mission> missionsInProcces = new List<Mission>(); /*vsechny probihající misse*/
     private List<Mission> missionsInRepate = new List<Mission>(); /* vsechny Opakovatelne misse. Obnovise po nejakem case */
+    private List<Mission> missionsInReturnWay = new List<Mission>(); /* vsechny mise které probíhají ale specialiste se na nich vraci */
 
     [SerializeField] public WindowMissionController windowMissionController;
 
@@ -80,10 +81,15 @@ public class MissionController : MonoBehaviour
             {
                 CalculateRemainingTimeForRepeatMissions();
             }
+
+            if (this.missionsInReturnWay.Count > 0)
+            {
+                ReturnMissionProccess();
+            }
         }
     }
 
-    public void MissionProcess()
+    private void MissionProcess()
     {
         for (int i = missionsInProcces.Count -1; i >= 0; i--)
         {
@@ -94,8 +100,80 @@ public class MissionController : MonoBehaviour
 
             if (missionsInProcces[i].Distance <= 0)
             {
-                Debug.Log("mission is done!!!");
+                Debug.Log("Final Event Triger!!!");
 
+                if (procesingMission.FinalEventID != 0)
+                {
+                    eventController.EventTrigered(procesingMission, true);
+
+                    this.thePT.Pause(true);
+                    EventController.isEventRunning = true;
+                    NotificationManager.Instantion.AddNotification(procesingMission);
+                }
+
+                PrepareMissionToBackProcess(procesingMission);
+
+                continue;
+            }
+        }
+    }
+
+    private void TryOutbreakEvent()
+    {
+        for (int i = 0; i < missionsInProcces.Count; i++)
+        {
+            Mission currentMission = missionsInProcces[i];
+            int distance = (int)missionsInProcces[i].Distance;
+
+            for (int j = 0; j < missionsInProcces[i].GetEventsContent.Count; j++)
+            {
+
+                EventContent currentEvent = currentMission.GetEventsContent[j];
+
+                if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
+                {
+                    currentEvent.wasTriggered = true;
+
+                    eventController.EventTrigered(currentMission);
+
+                    this.thePT.Pause(true);
+                    EventController.isEventRunning = true;
+
+                    NotificationManager.Instantion.AddNotification(currentMission);
+
+                    /* Time blocked*/
+
+                    /*-------*/
+                    Debug.Log("Event Triggerd");
+                }
+            }
+        }
+    }
+
+    private void CalculateRemainingTimeForRepeatMissions()
+    {
+        for (int i = this.missionsInRepate.Count - 1; i >= 0; i--)
+        {
+            missionsInRepate[i].RepeatableTime -= CalculateTime();
+
+            if (missionsInRepate[i].RepeatableTime <= 0)
+            {
+                MissionRefresh(missionsInRepate[i]);
+            }
+        }
+    }
+
+    private void ReturnMissionProccess()
+    {
+        for (int i = missionsInReturnWay.Count - 1; i >= 0; i--)
+        {
+            Mission procesingMission = missionsInReturnWay[i];
+            float betweenTime = CalculateTime();
+            missionsInReturnWay[i].Distance -= betweenTime;
+            infoController.UpdateInfoRows(missionsInReturnWay);
+
+            if (missionsInReturnWay[i].Distance <= 0)
+            {
                 if (procesingMission.Type == MissionType.pruzkum_oblasti)
                 {
                     procesingMission.RegionOperator.ExploreRegion();
@@ -122,40 +200,43 @@ public class MissionController : MonoBehaviour
                         procesingMission.WasSuccessfullyExecuted = true;
                         procesingMission.RegionOperator.CompleteMission(false, procesingMission.MissionPointer, true);
                     }
-
                 }
 
-                UnloadImportedGoodsFromMission(missionsInProcces[i].GetCharactersOnMission);
+                Debug.Log("Spec are going to return!!!");
+
+                UnloadImportedGoodsFromMission(missionsInReturnWay[i].GetCharactersOnMission);
 
                 specialistControler.CharacterOnMissionReturn(procesingMission.GetCharactersOnMission);
 
-                MissionReward(missionsInProcces[i]);
-               
+                MissionReward(missionsInReturnWay[i]);
+
                 continue;
             }
         }
     }
 
-
-    public void MissionReward(Mission mission)
+    private void PrepareMissionToBackProcess(Mission procesingMission)
     {
+        procesingMission.Distance = procesingMission.InitialDistance;
+        foreach (var item in procesingMission.GetEventsContent)
+        {
+            item.wasTriggered = false;
+        }
+        missionsInProcces.Remove(procesingMission);
+        missionsInReturnWay.Add(procesingMission);
+    }
 
+    private void MissionReward(Mission mission)
+    {
         // delete from info row // pozdeji se asi napise mission complete a bude se cekat na hrace co udela ..
         //player gets reward
-        Debug.Log("Mission Finished -> " + mission.Name);
-        
-        foreach (var item in mission.GetCharactersOnMission)
-        {
-            Debug.Log("name: " + item.GetName());
-        }
 
-        // more shits
         mission.Distance = mission.InitialDistance;
         foreach (var item in mission.GetEventsContent)
         {
             item.wasTriggered = false;
         }
-        missionsInProcces.Remove(mission); 
+        missionsInReturnWay.Remove(mission); 
         infoController.DeleteFromInfoRow(mission);
     }
 
@@ -191,7 +272,7 @@ public class MissionController : MonoBehaviour
         }
     }
 
-    public void MissionRefresh(Mission mission)
+    private void MissionRefresh(Mission mission)
     {
        // mission.RepeatableTime = 0;
         mission.RegionOperator.RefreshMissionButton(mission);
@@ -205,56 +286,6 @@ public class MissionController : MonoBehaviour
         accumulatedTime += Time.deltaTime * theTC.TimePointMultiplier();
 
         return accumulatedTime;
-    }
-
-
-    private void TryOutbreakEvent()
-    {
-        for (int i = 0; i < missionsInProcces.Count; i++)
-        {
-            int distance = (int)missionsInProcces[i].Distance;
-
-            for (int j = 0; j < missionsInProcces[i].GetEventsContent.Count; j++)
-            {
-                Mission currentMission = missionsInProcces[i];
-                EventContent currentEvent = currentMission.GetEventsContent[j];
-
-                if (distance < currentEvent.evocationTime && currentEvent.wasTriggered == false)
-                {
-                    currentEvent.wasTriggered = true;
-                    
-
-                    eventController.EventTrigered(currentMission);
-
-
-                    this.thePT.Pause(true);
-                    EventController.isEventRunning = true;
-
-
-                    NotificationManager.Instantion.AddNotification(currentMission);
-
-
-                    /* Time blocked*/
-                    
-
-                    /*-------*/
-                    Debug.Log("Event Triggerd");
-                }
-            }
-        }
-    }
-
-    private void CalculateRemainingTimeForRepeatMissions()
-    {
-        for (int i = this.missionsInRepate.Count - 1; i >= 0; i--)
-        {
-            missionsInRepate[i].RepeatableTime -= CalculateTime();
-
-            if (missionsInRepate[i].RepeatableTime <= 0)
-            {
-                MissionRefresh(missionsInRepate[i]);
-            }
-        }
     }
 
     // event 

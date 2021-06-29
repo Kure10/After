@@ -30,7 +30,7 @@ public class EventController : MonoBehaviour
     List<Character> CharactersSelectedForTesting = new List<Character>();
 
     private bool finalTestResult = false;
-    private TestCase _tCase;
+    private EventTestCase _tCase;
 
     private BattleStartData _battleStartData = new BattleStartData();
 
@@ -44,11 +44,19 @@ public class EventController : MonoBehaviour
 
     #region Public Methods
 
-    public void EventTrigered(Mission mission)
+    public void EventTrigered(Mission mission, bool isFinalEvent = false)
     {
         _currentMission = mission;
+        StatsClass _event = null;
+        if (isFinalEvent)
+        {
+            _event = eventManager.ChoiseFinalEvent(_currentMission.FinalEventID);
+        }
+        else
+        {
+             _event = eventManager.ChoiseRandomEvent(_currentMission.DifficultyMin, _currentMission.DifficultyMax, _currentMission.GetEmergingTerrains);
+        }
         // choise Random Event..
-        StatsClass _event = eventManager.ChoiseRandomEvent(_currentMission.DifficultyMin, _currentMission.DifficultyMax, _currentMission.GetEmergingTerrains);
 
         // PreWarm Pictureteamevent
         Sprite sprite = spriteLoader.LoadEventSprite(_event.GetStrStat("EventPicture"));
@@ -60,7 +68,7 @@ public class EventController : MonoBehaviour
         Dictionary<string, List<StatsClass>> output = slave.Resolve();
 
         AddCharactersPrefabFromMissionToEvent();
-        eventPanel.AmountCharacterSelectedText.text = "";
+        eventPanel.SetAmountTestedCharacters(_tCase, CharactersSelectedForTesting.Count);
 
         eventBlocker.SetActive(true);
         this.eventPanel.gameObject.SetActive(true);
@@ -180,27 +188,30 @@ public class EventController : MonoBehaviour
         }
     }
 
-    private void ProcessTest(StatsClass item, string title)
+    private void ProcessTest(StatsClass statClass, string title)
     {
 
         _tCase = null; // ToDo nevim co to udela s new tak radci tu davam null musim se zeptat..
 
         eventPanel.SetState = EventPanel.PanelStates.Test;
 
+        _tCase = new EventTestCase(statClass);
+
+        eventPanel.SetupTestingState(_tCase);
+
+        eventPanel.SetAmountTestedCharacters(_tCase, CharactersSelectedForTesting.Count);
+
         foreach (KeyValuePair<GameObject, Character> characterInEvent in eventPanel.GetCharactersOnEvent)
         {
             uWindowSpecialist uWindow = characterInEvent.Key.GetComponent<uWindowSpecialist>();
             Character character = characterInEvent.Value;
             uWindow.GetMainButton.onClick.RemoveAllListeners();
-            uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
+
+            if (_tCase.GetClass == EventTestCase.ClassTest.Together)
+                SelectCharacterForTest(character, uWindow);
+            else
+                uWindow.GetMainButton.onClick.AddListener(delegate () { SelectCharacterForTest(character, uWindow); });
         }
-
-        _tCase = new TestCase(item.GetStrStat("TestTarget"), item.GetStrStat("TestName"), item.GetStrStat("KindTest"), item.GetStrStat("TestType"),
-            item.GetStrStat("TestAtribute"), item.GetIntStat("TestDiff"), item.GetIntStat("TestRateMod"), item.GetIntStat("KarmaInfluence"),
-            item.GetStrStat("KarmaDescription"), item.GetIntStat("SpecTestNumMin"), item.GetIntStat("SpecTestNumMax"), item.GetStrStat("ResultPriority"));
-
-        eventPanel.SetupTestingState(_tCase);
-        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + _tCase.GetMaxCharParticipation;
 
         eventPanel.GetContinueButton.onClick.RemoveAllListeners();
         eventPanel.GetContinueButton.onClick.AddListener(() => ContinueButton());
@@ -496,18 +507,27 @@ public class EventController : MonoBehaviour
     {
         int selectedCharacters = CharactersSelectedForTesting.Count;
 
-        if (selectedCharacters >= _tCase.GetMinCharParticipation && selectedCharacters <= _tCase.GetMaxCharParticipation)
+        if(_tCase.GetClass == EventTestCase.ClassTest.Together)
         {
             this.finalTestResult = StartThrowTest();
         }
         else
         {
-            // ToDo
-            // vyber spravny pocet charakteru
-            // nejake hlaska
-            eventPanel.testingTMPinfo.text = "Vyber spravny pocet specialistu.... !!!!";
-            return;
+            if (selectedCharacters >= _tCase.GetMinCharParticipation && selectedCharacters <= _tCase.GetMaxCharParticipation)
+            {
+                this.finalTestResult = StartThrowTest();
+            }
+            else
+            {
+                // ToDo
+                // vyber spravny pocet charakteru
+                // nejake hlaska
+                eventPanel.testingTMPinfo.text = "Vyber spravny pocet specialistu.... !!!!";
+                return;
+            }
         }
+
+       
 
         // ToDo jenom vypis pro testovani
         StringBuilder sb = new StringBuilder();
@@ -541,7 +561,7 @@ public class EventController : MonoBehaviour
             uWindow.ActivateCoverPanel("Specialista je vybran");
         }
 
-        eventPanel.AmountCharacterSelectedText.text = CharactersSelectedForTesting.Count + " / " + _tCase.GetMaxCharParticipation;
+        eventPanel.SetAmountTestedCharacters(_tCase, CharactersSelectedForTesting.Count);
     }
 
     public void Minimaze()
@@ -558,152 +578,13 @@ public class EventController : MonoBehaviour
 
     #endregion
 
-    #region Helping Classes
-
-    public class TestCase
-    {
-        #region Fields
-        private string testName; 
-
-        /*  Testing atributes */
-        private bool isTestingLevel;
-        private bool isTestingSocial;
-        private bool isTestingTechnical;
-        private bool isTestingScience;
-        private bool isTestingMilitary;
-
-        private int testDiff;
-        private int testRateMod;
-        private string priority;
-
-        private bool karmaInfluence; // ToDO Karma is not finish yet
-
-        //public string karmaDescription;
-
-        private int minimalCharacterParticipation;
-        private int maximalCharacterParticipation;
-        TestType testType;
-        ClassTest classTest;
-        TestingSubjects subject;
-
-        #endregion
-        // karmaDescription , Todo
-        #region Constructor 
-
-        public TestCase()
-        {
-
-        }
-        public TestCase(string _testTarget, string _testName, string _kindTest, string _testType,
-            string _testAtribute, int _testDiff, int _testRate, int _karmaInfluence, string _karmaDescription,
-            int _min, int _max, string _resultPriority)
-        {
-            testType = (TestType)Enum.Parse(typeof(TestType), _testType, true);
-            minimalCharacterParticipation = _min;
-            maximalCharacterParticipation = _max;
-            karmaInfluence = Convert.ToBoolean(_karmaInfluence);
-            testRateMod = _testRate;
-            testDiff = _testDiff;
-            classTest = (ClassTest)Enum.Parse(typeof(ClassTest), _kindTest, true);
-            subject = (TestingSubjects)Enum.Parse(typeof(TestingSubjects), _testTarget, true);
-            ChooseTestingSkills(_testAtribute);
-            testName = _testName;
-            priority = _resultPriority;
-        }
-
-        #endregion
-        #region Properities
-        public int GetMaxCharParticipation { get { return this.maximalCharacterParticipation; } }
-        public int GetMinCharParticipation { get { return this.minimalCharacterParticipation; } }
-        public int GetRateMod { get { return this.testRateMod; } }
-        public int GetDifficulty { get { return this.testDiff; } }
-        public bool GetKarmaInfluence { get { return this.karmaInfluence; } }
-        public TestType GetType { get { return this.testType; } }
-        public ClassTest GetClass { get { return this.classTest; } }
-        public TestingSubjects GetTestingSubjects { get { return this.subject; } }
-        public string GetName { get { return this.testName; } }
-        public bool IsTestingLevel { get { return this.isTestingLevel; } }
-        public bool IsTestingMilitary { get { return this.isTestingMilitary; } }
-        public bool IsTestingSocial { get { return this.isTestingSocial; } }
-        public bool IsTestingScience { get { return this.isTestingScience; } }
-        public bool IsTestingTechnical { get { return this.isTestingTechnical; } }
-        public string GetPriority { get { return this.priority; } }
-
-        #endregion
-
-        public void ChooseTestingSkills(string _testAtribute)
-        {
-            isTestingLevel = _testAtribute.Contains("LvL");
-            isTestingMilitary = _testAtribute.Contains("MiL");
-            isTestingScience = _testAtribute.Contains("ScL");
-            isTestingSocial = _testAtribute.Contains("SoL");
-            isTestingTechnical = _testAtribute.Contains("TeL");
-        }
-
-        public string ReturnTestingAtribute()
-        {
-            string testingSkill = "none";
-
-            if(isTestingLevel)
-                testingSkill = "Level";
-            if (isTestingMilitary)
-                testingSkill = "Military";
-            if (isTestingScience)
-                testingSkill = "Science";
-            if (isTestingSocial)
-                testingSkill = "Social";
-            if (isTestingTechnical)
-                testingSkill = "Technical";
-
-            return testingSkill;
-        }
-
-    }
-
-    #endregion
-    #region Enums
-    public enum TestType
-    {
-        Battle,
-        Comunication,
-        DiggBuild,
-        Gathering,
-        Hunting,
-        Leverage,
-        LockPicking,
-        Repair,
-        Research,
-        Scavenging,
-        Scouting,
-        SelectOnly,
-        Sneaking,
-    }
-
-    public enum ClassTest
-    {
-        Together,
-        Separately
-    }
-
-    public enum TestingSubjects
-    {
-        RangeNum,
-        SpecActive,
-        RangeNumRng,
-        DirectNum,
-        DirectNumRng,
-        AllGroup
-    }
-
-    #endregion
-
     private bool StartThrowTest()
     {
         bool finalResult;
         bool colectiveResult = false;
         int successDices = 0;
 
-        if (_tCase.GetClass == ClassTest.Separately)
+        if (_tCase.GetClass == EventTestCase.ClassTest.Separately)
         {
             foreach (Character character in CharactersSelectedForTesting)
             {
@@ -714,12 +595,14 @@ public class EventController : MonoBehaviour
                 character.AmountSuccessDicesInLastTest = successDices;
             }
         }
-        else if (_tCase.GetClass == ClassTest.Together)
+        else if (_tCase.GetClass == EventTestCase.ClassTest.Together)
         {
             int dices = 0;
 
             foreach (Character character in CharactersSelectedForTesting)
+            {
                 dices += CalculateAmountDices(character);
+            }
 
 
             colectiveResult = CalculateSuccess(dices, out successDices);
@@ -734,7 +617,7 @@ public class EventController : MonoBehaviour
                 
         }
 
-        if (_tCase.GetClass == ClassTest.Separately)
+        if (_tCase.GetClass == EventTestCase.ClassTest.Separately)
         {
             bool everyBodySuccess = true;
             bool everyBodyFailed = true;
@@ -829,6 +712,8 @@ public class EventController : MonoBehaviour
     public bool OncheckTest(string dataNameFile, StatsClass element)
     {
         var tmp = element.GetStrStat("Result");
+
+        return true;
 
         if(tmp == "Success" && this.finalTestResult)
             return true;

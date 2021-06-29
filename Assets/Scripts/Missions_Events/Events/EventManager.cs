@@ -24,13 +24,28 @@ public class EventManager : MonoBehaviour
 
         // ted vybíram jeden porad..
 
-        long id = 20203890660776;
+        long id = 20203890660776; // potulna yombie
+       // id = 20203956336369; // kralici 
 
         StatsClass statclass = new StatsClass();
 
         foreach (var item in allEvents)
         {
             if (item.Title == id.ToString())
+            {
+                statclass = item;
+            }
+        }
+
+        return statclass;
+    }
+
+    public StatsClass ChoiseFinalEvent(long finalEventID)
+    {
+        StatsClass statclass = new StatsClass();
+        foreach (var item in allEvents)
+        {
+            if (item.Title == finalEventID.ToString())
             {
                 statclass = item;
             }

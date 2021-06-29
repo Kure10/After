@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 
 public class Unit : MonoBehaviour
 {
     public Animator animator;
-    
+
     public struct PositionSquar
     {
         public int XPosition;
@@ -33,6 +34,9 @@ public class Unit : MonoBehaviour
 
     public int _iniciation = 0;
 
+    private int _actionPoints = 0;
+    private int _movementPoints = 0;
+
     public Unit.Team _team = Team.Human;
 
     [SerializeField] private GameObject activePanel;
@@ -52,6 +56,11 @@ public class Unit : MonoBehaviour
     public Weapon SecondWeapon { get { return this._secondWeapon; } }
 
     public Weapon ActiveWeapon { get { return this._activeWeapon; } set { this._activeWeapon = value; } }
+
+    public int ActionPoints { get { return this._actionPoints; } set { this._actionPoints = value; } }
+
+    public int GetMovementPoints { get { return _movementPoints; } }
+
 
     public long Id { get { return this._id; } }
     public bool IsDead { get { return this._isDead; } }
@@ -88,12 +97,26 @@ public class Unit : MonoBehaviour
 
     public void UpdateData(Unit unit)
     {
-        if(_unitWindow == null)
+        if (_unitWindow == null)
         {
             _unitWindow = GetComponent<UnitWindow>();
         }
 
         this._unitWindow.UpdateStats(unit);
+    }
+
+    public void DecreaseMovementPoints(int points)
+    {
+        _movementPoints -= points;
+        if (_movementPoints <= 0)
+        {
+            _movementPoints = 0;
+        }
+    }
+
+    public void RefreshMovementPoints ()
+    {
+        _movementPoints = _movement;
     }
 
     public void InitUnit(DataUnit dataUnit, Sprite sprite , Team tea)
@@ -105,7 +128,8 @@ public class Unit : MonoBehaviour
         _rangeMax = dataUnit.RangeMax;
         _rangeMin = dataUnit.RangeMin;
 
-        _movement = dataUnit.Movement;
+        _movement = 5; //dataUnit.Movement;
+        _movementPoints = _movement;
 
         CurrentPos.XPosition = dataUnit.StartXPosition;
         CurrentPos.YPosition = dataUnit.StartYPosition;
@@ -176,7 +200,7 @@ public class Unit : MonoBehaviour
  
         for (int i = 0; i < _threat; i++)
         {
-            int number = Random.Range(1, 7);
+            int number = UnityEngine.Random.Range(1, 7);
 
             if(number == 6)
                 i--;
@@ -331,7 +355,7 @@ public class DataUnit
     public (int x , int y) SetRandomStartingPosition(List<(int x, int y)> freePosition)
     {
         int count = freePosition.Count;
-        int randomPositionIndex = Random.Range(0, count);
+        int randomPositionIndex = UnityEngine.Random.Range(0, count);
 
         (int x, int y) newPos = freePosition[randomPositionIndex];
 
