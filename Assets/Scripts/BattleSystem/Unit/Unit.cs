@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-
-
 public class Unit : MonoBehaviour
 {
     public Animator animator;
@@ -17,6 +15,7 @@ public class Unit : MonoBehaviour
     }
 
     public long _id = 0;
+    public int _level = 0;
     public string _imageName = "Defaul";
     public Sprite _sprite = null;
 
@@ -30,7 +29,7 @@ public class Unit : MonoBehaviour
     public int _rangeMax = 0;
     public int _rangeMin = 0;
 
-    public int _movement = 1;
+    private int _movement = 1;
 
     public int _iniciation = 0;
 
@@ -59,6 +58,7 @@ public class Unit : MonoBehaviour
 
     public int ActionPoints { get { return this._actionPoints; } set { this._actionPoints = value; } }
 
+    public int GetMaxMovement { get { return _movement; } }
     public int GetMovementPoints { get { return _movementPoints; } }
 
 
@@ -136,6 +136,7 @@ public class Unit : MonoBehaviour
 
         _sprite = sprite;
         _id = dataUnit.Id;
+        _level = dataUnit.Level;
 
         _iniciation = CalculateIniciation();
 
@@ -175,6 +176,7 @@ public class Unit : MonoBehaviour
         _imageName = unit._imageName;
         _sprite = unit._sprite;
         _id = unit._id;
+        _level = unit._level;
 
         _iniciation = unit._iniciation;
 
@@ -264,6 +266,7 @@ public class DataUnit
     private int rangeMax = 0;
     private int rangeMin = 0;
     private int _movement = 1;
+    private int _level = 0;
 
     private List<Monster.Loot> _loot = new List<Monster.Loot>();
 
@@ -287,6 +290,8 @@ public class DataUnit
 
     public int Movement { get { return this._movement; } }
 
+    public int Level { get { return this._level; } }
+
     public int StartYPosition { get { return this.StartPos.YPosition; } }
 
     public int StartXPosition { get { return this.StartPos.XPosition; } }
@@ -308,6 +313,8 @@ public class DataUnit
         this._movement = monster.BattleSpeed;
         this._imageName = monster.SpriteName;
 
+        this._level = 1; // monster.level; Todo mozna se bude hodit.
+
         this.identification = monster.ID;
 
         this._loot.AddRange(monster._loot);
@@ -324,6 +331,7 @@ public class DataUnit
         this.rangeMax = 1; // Todo
         this.rangeMin = 1; // todo  Range pro Fist souboj.
         this._movement = 1; // Todo pak bude nato nejaky vzorec
+        this._level = character.Stats.level;
 
         this.identification = character.GetBlueprint().Id;
 

@@ -776,6 +776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraHolder: {fileID: 984389770}
   CameraSpeed: 9
+  CameraMouseSpeed: 3
   MinY: 10
   MaxY: 40
 --- !u!81 &339479525
@@ -1095,8 +1096,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3d8457af443c628478792a0aa805a7a1, type: 3}
   - {fileID: 21300000, guid: 94959dae61b21a448aa0ee1312724652, type: 3}
   - {fileID: 21300000, guid: c118f8d683a90c94db998e624e3129b1, type: 3}
-  itemResources: []
+  itemResources:
+  - {fileID: 21300000, guid: be016a39f1f75ac4380f06386014a970, type: 3}
+  - {fileID: 21300000, guid: 3b1d3b86e77eac549bd674a2fc299fb8, type: 3}
+  - {fileID: 21300000, guid: ab6cac3223d8af3498ccaec43c94a13b, type: 3}
+  - {fileID: 21300000, guid: 531acc80fbe9e0745889442b7cf499c5, type: 3}
+  - {fileID: 21300000, guid: a600dda2c7e0c6e4ba1136abcde36381, type: 3}
+  - {fileID: 21300000, guid: 083df0b828af39445a43b7905b576a33, type: 3}
   itemResources2: []
+  basicAndSpecialResource: []
   defaultResource: {fileID: 0}
 --- !u!4 &500952486
 Transform:

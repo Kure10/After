@@ -19,9 +19,11 @@ public class InventoryManager : MonoBehaviour
         allItemsAndResource = xmlLoader.GetItemsFromXML();
         //  var startItems = FindStartingItem(startContainer);
 
-
-        inventory.InicializedStartInventory(allItemsAndResource);
-        inventory.InicializedStartInventory(allItemsAndResource);
+        if(inventory != null)
+        {
+            inventory.InicializedStartInventory(allItemsAndResource);
+            inventory.InicializedStartInventory(allItemsAndResource);
+        }
     }
 
     public List<ItemBlueprint> FindStartingItem (Container container)

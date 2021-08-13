@@ -66,8 +66,6 @@ public class BattleController : MonoBehaviour
 
             _battleGridController.CreateBattleField(_battleStartData);
 
-            // CreateBattleField(_battleStartData.Rows, _battleStartData.Collumn);
-
             InitBattle(_battleStartData);
             TestStartBattle();
         }
@@ -233,7 +231,7 @@ public class BattleController : MonoBehaviour
             if (actionOnSquare != null)
             {
                 resultPlayerInput.battleAction = OnClickIntoGrid(actionOnSquare);
-                unitOnSquare = actionOnSquare.unitInSquar;
+                unitOnSquare = actionOnSquare.UnitInSquar;
                 resultPlayerInput.inputResult = true;
             }
         }
@@ -243,9 +241,9 @@ public class BattleController : MonoBehaviour
             actionOnSquare = RaycastTargetSquar();
             if (actionOnSquare != null)
             {
-                if (actionOnSquare.unitInSquar != null)
+                if (actionOnSquare.UnitInSquar != null)
                 {
-                    detailPopup.ShowPopup(actionOnSquare.unitInSquar);
+                    detailPopup.ShowPopup(actionOnSquare.UnitInSquar);
                 }
 
                 Debug.Log("Info unit panel popup");
@@ -322,6 +320,8 @@ public class BattleController : MonoBehaviour
         }
 
         ShowSquaresWithingAttackRange();
+
+        _leftUnitInfo.UpdateStats(_activeUnit);
 
         playerInput.inputResult = false;
     }
@@ -462,7 +462,7 @@ public class BattleController : MonoBehaviour
 
             newUnit.InitUnit(dataUnit, sprite, Unit.Team.Demon);
 
-            squar.unitInSquar = newUnit;
+            squar.UnitInSquar = newUnit;
             _unitsOnBattleField.Add(newUnit);
         }
 
@@ -478,7 +478,7 @@ public class BattleController : MonoBehaviour
 
             newUnit.InitUnit(dataUnit, sprite, Unit.Team.Human);
 
-            squar.unitInSquar = newUnit;
+            squar.UnitInSquar = newUnit;
             _unitsOnBattleField.Add(newUnit);
         }
 
@@ -705,9 +705,9 @@ public class BattleController : MonoBehaviour
     {
         BattleAction action = BattleAction.None;
 
-        if (squarToMove.unitInSquar != null)
+        if (squarToMove.UnitInSquar != null)
         {
-            bool isFriendlyUnit = squarToMove.unitInSquar._team == _activeUnit._team;
+            bool isFriendlyUnit = squarToMove.UnitInSquar._team == _activeUnit._team;
 
             if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
             {
@@ -723,7 +723,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if (_squaresInUnitMoveRange.Contains(squarToMove))
+            if (!squarToMove.IsSquearBlocked && _squaresInUnitMoveRange.Contains(squarToMove))
             {
                 action = BattleAction.Move;
             }
@@ -811,7 +811,7 @@ public class BattleController : MonoBehaviour
     {
         foreach (Squar sq in _squaresInUnitMoveRange)
         {
-            if (sq.unitInSquar == null)
+            if (sq.UnitInSquar == null)
             {
                 sq.inRangeBackground.SetActive(makeVisible);
             }
@@ -894,7 +894,7 @@ public class BattleController : MonoBehaviour
         sq.CursorEvent.canAttack = false;
         sq.CursorEvent.isInMoveRange = false;
 
-        if (sq.unitInSquar is null)
+        if (sq.UnitInSquar is null)
         {
             if (_squaresInUnitMoveRange.Contains(sq))
             {
@@ -903,7 +903,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if (_squaresInUnitAttackRange.Contains(sq) && sq.unitInSquar._team != _activeUnit._team)
+            if (_squaresInUnitAttackRange.Contains(sq) && sq.UnitInSquar._team != _activeUnit._team)
             {
                 sq.CursorEvent.canAttack = true;
             }
@@ -917,7 +917,7 @@ public class BattleController : MonoBehaviour
 
     private void UpdateRightPanel(Squar sq)
     {
-        Unit unit = sq.unitInSquar;
+        Unit unit = sq.UnitInSquar;
 
         if (unit == _activeUnit)
             return;
@@ -997,7 +997,7 @@ public class BattleController : MonoBehaviour
             movePerformed = false;
 
             moveIsBlocked = false;
-            moveIsBlocked = false;        
+            attackIsBlocked = false;        
 
             battleAction = BattleAction.None;
             inputResult = false;

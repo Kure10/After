@@ -13,8 +13,10 @@ public class UnitInfoPanel : MonoBehaviour
     [SerializeField] Text _level;
 
     [SerializeField] Text _health;
+    [SerializeField] Text _movement;
 
     [SerializeField] GameObject healthImageValue;
+    [SerializeField] GameObject movementImageValue;
 
     [Header("Image")]
     [SerializeField] Image _image;
@@ -29,12 +31,15 @@ public class UnitInfoPanel : MonoBehaviour
         _threat.text = unit._threat.ToString();
 
         UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
+        UpdateMovementBar(unit.GetMovementPoints, unit.GetMaxMovement);
 
         UpdateRange(unit);
 
         UpdateMilitary(unit);
 
         _image.sprite = unit._sprite;
+
+        _level.text = unit._level.ToString();
     }
 
     private void UpdateHealthBar(int current, int max)
@@ -44,6 +49,16 @@ public class UnitInfoPanel : MonoBehaviour
         float amount = (float)current / (float)max;
 
         healthImageValue.transform.localScale = new Vector3(amount, 1, 1);
+    }
+
+    private void UpdateMovementBar(int current, int max)
+    {
+        if (_movement == null)
+            return;
+        
+        _movement.text = $"{current} / {max}";
+        float amount = (float)current / (float)max;
+        movementImageValue.transform.localScale = new Vector3(amount, 1, 1);
     }
 
     private void UpdateRange(Unit unit)

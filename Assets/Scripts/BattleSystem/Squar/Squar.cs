@@ -14,12 +14,16 @@ public class CursorColorEvent : UnityEvent<Squar>
 
 public class Squar : MonoBehaviour
 {
-
-    public int yCoordinate = 0;
     public int xCoordinate = 0;
+    public int yCoordinate = 0;
 
+    [Header("Holder For Occupied Objects")]
     [SerializeField] public GameObject container;
 
+    [Header("Obstacle")]
+    [SerializeField] public GameObject stoneObstacle;
+
+    [Header("Range Marks")]
     [SerializeField] public GameObject inRangeBackground;
     [SerializeField] public GameObject canAttackMark;
 
@@ -31,10 +35,11 @@ public class Squar : MonoBehaviour
 
     [Space]
 
-    public Unit unitInSquar;
+    public Unit _unitInSquar;
 
     public bool isInMoveRange = false;
     public bool isInAttackReach = false;
+
 
     public CursorColorEvent CursorEvent;
 
@@ -44,6 +49,20 @@ public class Squar : MonoBehaviour
     public Color canAttackColor;
 
     public Action action;
+
+    private bool _isSquarBlocked = false;
+
+    public bool IsSquearBlocked 
+    { 
+        get { return _isSquarBlocked; }
+        set
+        {
+            _isSquarBlocked = value;
+            stoneObstacle.SetActive(value);
+        }  
+    }
+
+    public Unit UnitInSquar { get { return _unitInSquar; } set { _unitInSquar = value; } }
 
     public Vector2 GetCoordinates ()
     {
