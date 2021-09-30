@@ -54,18 +54,17 @@ public class DebrisTile : Tile, IWorkSource
                     {
                         //check if on allowed tile (could ended elsewhere if the tile got occupied)
                         var charPlace = Geometry.GridFromPoint(worker.character.transform.position);
-                        tileFactory.LeaveTile(charPlace);
-                        if (!GetMiningSpots().Contains(charPlace))
+                        if (GetMiningSpots().Contains(charPlace) && tileFactory.OccupyTile(charPlace))
                         {
+                            worker.state = WorkerState.working;
+                            worker.character.State = "Clearing debris";
+                            worker.character.AddCommand(new Build());
+                        } else {
                             //try again
                             Unregister(worker.character);
                             Register(worker.character);
                             continue;
                         }
-                        tileFactory.OccupyTile(charPlace);
-                        worker.state = WorkerState.working;
-                        worker.character.State = "Clearing debris";
-                        worker.character.AddCommand(new Build());
                     }
                     break;
                 case WorkerState.resting:

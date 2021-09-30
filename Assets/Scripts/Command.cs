@@ -37,6 +37,7 @@ public class Move : Command
     private Vector3 startingPoint;
     private bool init;
     private bool ignoreMark;
+    private static readonly int IsMoving = Animator.StringToHash("IsWalking");
 
     public Move(GameObject target, List<Vector2Int> path, bool ignoreMark = false)
     {
@@ -56,6 +57,8 @@ public class Move : Command
             startingPoint = Target.transform.position;
             accumulatedTime = 0;
             tf.LeaveTile(Geometry.GridFromPoint(startingPoint));
+            var animator = Target.GetComponent<Animator>();
+            animator.SetBool(IsMoving, true);
         }
         accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
         //in case of more then one time point from last frame, skip rendering of previous actions
@@ -82,10 +85,15 @@ public class Move : Command
             return Result.Running;
         }
 
-        if (ignoreMark) return Result.Success;
+        if (ignoreMark)
+        {
+            Target.GetComponent<Animator>().SetBool(IsMoving, false);
+            return Result.Success;
+        }
         Vector2Int mark = Geometry.GridFromPoint(Target.transform.position);
         if (tf.OccupyTile(mark))
         {
+            Target.GetComponent<Animator>().SetBool(IsMoving, false);
             return Result.Success;
         }
         
