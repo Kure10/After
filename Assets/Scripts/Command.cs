@@ -119,6 +119,8 @@ public class Move : Command
     void Step(Vector3 to)
     {
         Target.transform.position = Vector3.Lerp(startingPoint, to, accumulatedTime / speed);
+        var lookDirection = to - Target.transform.position;
+        Target.transform.rotation = Quaternion.LookRotation(lookDirection.normalized);
     }
 
 }
