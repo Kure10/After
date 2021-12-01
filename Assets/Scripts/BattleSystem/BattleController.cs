@@ -453,7 +453,7 @@ public class BattleController : MonoBehaviour
         for (int i = 0; i < amountEnemies; i++)
         {
             DataUnit dataUnit = battleData.enemyData.enemieUnits[i];
-            Squar squar = _battleGridController.GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
+            Squar squar = _battleGridController.GetUnBlockedSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unt = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unt.GetComponent<Unit>();
@@ -469,7 +469,7 @@ public class BattleController : MonoBehaviour
         for (int i = 0; i < amountPlayers; i++)
         {
             DataUnit dataUnit = battleData.playerData.playerUnits[i];
-            Squar squar = _battleGridController.GetSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
+            Squar squar = _battleGridController.GetUnBlockedSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unit1 = Instantiate(_unit, squar.container.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
@@ -487,7 +487,7 @@ public class BattleController : MonoBehaviour
         _battleInfoPanel.InitStartOrder(_unitsOnBattleField, _unit);
 
         // init Event
-        foreach (Squar square in _battleGridController.GetSquarsFromBattleField)
+        foreach (Squar square in BattleGridController.GetSquarsFromBattleField)
         {
             square.InitEvent(delegate (Squar squ)
             {

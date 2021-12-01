@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.BattleSystem;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,26 +12,12 @@ public class BattleGridController : MonoBehaviour
     [Header("Dimensions")]
     [SerializeField] List<GameObject> _rows = new List<GameObject>();
 
-    private Squar[,] _squaresInBattleField;
+    static private Squar[,] _squaresInBattleField;
 
     private int _columnCount = 12;
     private int _rowsCount = 4;
 
-    // Test
-
-    private int _groupStoneBlockCount = 0;
-    private int _groupStoneSize = 0;
-    private int _stoneCount = 5;
-    private int _maxStoneInRow = 0;
-    private int _maxStoneInColumn = 0;
-
-    // Test block
-
-
-    public Squar[,] GetSquarsFromBattleField { get { return _squaresInBattleField; } }
-
-
-
+    public static Squar[,] GetSquarsFromBattleField { get { return _squaresInBattleField; } }
 
     public void CreateBattleField(BattleStartData data)
     {
@@ -54,14 +41,8 @@ public class BattleGridController : MonoBehaviour
             }
         }
 
-        // Need this for complicated condition... 
-        _maxStoneInRow = _rowsCount - 2;
-        _maxStoneInColumn = _columnCount - 2;
-
         // modify slots // water // blocked // so on
-
         GenerateRandomTerrain();
-
     }
 
     public void MoveToSquar(Unit unit, Squar squarToMove)
@@ -409,10 +390,40 @@ public class BattleGridController : MonoBehaviour
         return sq;
     }
 
-    // Map Terrain Varianty
+    public Squar GetUnBlockedSquareFromGrid(int x, int y)
+    {
+        Squar sq = null;
+        if(_squaresInBattleField[x, y].IsSquearBlocked || _squaresInBattleField[x, y].UnitInSquar != null)
+        {
+            Squar centerSquare = _squaresInBattleField[x, y];
+            // choise other...
+            while (sq == null)
+            {
+                List<Squar> adjactedSquares = GetTheAdjacentSquare(centerSquare);
+                foreach (Squar squar in adjactedSquares)
+                {
+                    if (!squar.IsSquearBlocked && squar.UnitInSquar == null)
+                    {
+                        sq = squar;
+                        return sq;
+                    }
+                }
 
+                centerSquare = adjactedSquares[Random.Range(0, adjactedSquares.Count)];
+            }
+
+            return sq;
+        }
+        else
+        {
+            return _squaresInBattleField[x, y];
+        }
+    }
+
+    // Map Terrain Varianty
     public void GenerateRandomTerrain()
     {
+
         // vyber spravny druh terenu muže byt random
         TerrainVariants terrainVariaty = TerrainVariants.StoneElShape;
 
@@ -421,7 +432,11 @@ public class BattleGridController : MonoBehaviour
             case TerrainVariants.Normal:
                 break;
             case TerrainVariants.StoneElShape:
-                GenerateStoneElShape();
+
+                StoneElShapeGenerator generator = new StoneElShapeGenerator();
+                generator.InitGenerator(_columnCount, _rowsCount);
+                generator.GenerateStoneElShape();
+
                 break;
             case TerrainVariants.StoneOneSpot:
                 break;
@@ -446,221 +461,6 @@ public class BattleGridController : MonoBehaviour
         }
     }
 
-    //
-    private void GenerateStoneElShape()
-    {
-        int countElShapes = 2; // Kolik utvaru se spawnuje
-        int size = 6;          // celkova velikost utvaru na pocet kostek
-
-        bool isOnRight = false;
-        bool isOnTop = false;
-        int longSize = Mathf.RoundToInt((size * 0.66f));
-        int shortSize =  size - longSize;
-
-        int xHalf = _columnCount / 2;
-        int yHalf = _rowsCount / 2;
-
-        int safeCounterLimit = 10; // This is a safe counter if Stone cant be created. Counter will stop while Loop.
-        bool wasTriggeredSafeCounter = false;
-
-        for (int i = 0; i < countElShapes; i++)
-        {
-            int direction = Random.Range(0, 2); // 0 for vertical // 1 for horizontal -> pro short obracene.
-            int xStartStonePosition = 0;
-            int yStartStonePosition = 0;
-
-            while (true)
-            {
-                xStartStonePosition = Random.Range(2, _columnCount - 3); // Nahodná pozice kde bude starting block.
-                yStartStonePosition = Random.Range(1, _rowsCount - 1);
-
-                bool wasCreated = CreateStone(xStartStonePosition, yStartStonePosition);
-
-                if (xStartStonePosition > xHalf)
-                {
-                    isOnRight = true;
-                }
-                else
-                {
-                    isOnRight = false;
-                }
-
-                if (yStartStonePosition > yHalf)
-                {
-                    isOnTop = true;
-                }
-                else
-                {
-                    isOnTop = false;
-                }
-
-                if (wasCreated)
-                    break;
-
-                safeCounterLimit--;
-                if (safeCounterLimit <= 0)
-                {
-                    Debug.Log("safe counter was trigger.  BattleFiled was not created");
-                    wasTriggeredSafeCounter = true;
-                    break;
-                }
-            }
-
-            if(!wasTriggeredSafeCounter)
-            {
-                for (int l = 0; l < longSize; l++)
-                {
-                    if (isOnRight && isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition - l, yStartStonePosition);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition, yStartStonePosition - l);
-                        }
-                    }
-                    else if (!isOnRight && isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition + l, yStartStonePosition);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition, yStartStonePosition - l);
-                        }
-                    }
-                    else if (isOnRight && !isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition - l, yStartStonePosition);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition, yStartStonePosition + l);
-                        }
-                    }
-                    else
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition + l, yStartStonePosition);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition, yStartStonePosition + l);
-                        }
-                    }
-                }
-
-                int offSet = Random.Range(0, longSize);
-
-                for (int k = 1; k < shortSize + 1; k++)
-                {
-                    if (isOnRight && isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition - offSet, yStartStonePosition - k);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition - k, yStartStonePosition - offSet);
-                        }
-                    }
-                    else if (!isOnRight && isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition + offSet, yStartStonePosition - k);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition + k, yStartStonePosition - offSet);
-                        }
-                    }
-                    else if (isOnRight && !isOnTop)
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition - offSet, yStartStonePosition + k);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition - k, yStartStonePosition + offSet);
-                        }
-                    }
-                    else
-                    {
-                        if (direction > 0)
-                        {
-                            CreateStone(xStartStonePosition + offSet, yStartStonePosition + k);
-                        }
-                        else
-                        {
-                            CreateStone(xStartStonePosition + k, yStartStonePosition + offSet);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private bool CreateStone(int x, int y)
-    {
-
-       
-        bool isInsideBorders = x < _columnCount && x >= 0 && y >= 0 && y < _rowsCount;  // This condition prevent stone Be out Of battleField
-        bool secondCondition = false;  // This condition prevent stones blocked road from one side to other.
-
-        if (isInsideBorders)
-        {
-            int columnRockCounter = 0;
-            int rowsRockCounter = 0;
-
-            for (int i = 0; i < _columnCount -1; i++)
-            {
-                if(_squaresInBattleField[i, y].IsSquearBlocked)
-                {
-                    columnRockCounter++;
-                }
-            }
-
-            for (int i = 0; i < _rowsCount - 1; i++)
-            {
-                if (_squaresInBattleField[x, i].IsSquearBlocked)
-                {
-                    rowsRockCounter++;
-                }
-            }
-
-            secondCondition = rowsRockCounter <= _maxStoneInRow && columnRockCounter <= _maxStoneInColumn;
-        }
-
-        if (isInsideBorders && secondCondition)
-        {
-            Squar squar = _squaresInBattleField[x, y];
-
-            if (!squar.IsSquearBlocked)
-            {
-                // Create stone. In future it will be good if stone prefab will be difretent.
-
-                squar.IsSquearBlocked = true;
-                return true;
-            }
-        }
-        else
-        {
-            Debug.Log("I tryed create block out of condition border");
-            Debug.Log(" x: " + x + " y: " + y);
-        }
-
-        return false; 
-    }
-
     #region HelperClass
 
     public class AttackInfo
@@ -675,7 +475,9 @@ public class BattleGridController : MonoBehaviour
 
     #endregion
 
-    enum TerrainVariants
+    #region Enums
+
+    public enum TerrainVariants
     {
         Normal,
         StoneElShape,
@@ -689,4 +491,6 @@ public class BattleGridController : MonoBehaviour
         CrossLine,
         VStones
     }
+
+    #endregion
 }
