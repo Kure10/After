@@ -392,6 +392,9 @@ public class BattleGridController : MonoBehaviour
 
     public Squar GetUnBlockedSquareFromGrid(int x, int y)
     {
+        // Todo pro sledovaní erroru který neni ošetřen. Někdy se stava že je mimo hranice nevím proc.
+        bool isPositionOutOfBorders = IsSquareOutOfBorders(x, y);
+
         Squar sq = null;
         if(_squaresInBattleField[x, y].IsSquearBlocked || _squaresInBattleField[x, y].UnitInSquar != null)
         {
@@ -419,6 +422,21 @@ public class BattleGridController : MonoBehaviour
             return _squaresInBattleField[x, y];
         }
     }
+
+    private bool IsSquareOutOfBorders(int x, int y)
+    {
+        if(this._rowsCount <= x || this._columnCount <= y)
+        {
+            return false;
+        }
+        else
+        {
+            Debug.LogError("Square is out of borders pos -> " + x + "  " + y);
+            Debug.LogError("Grid size -> rows / column " + _rowsCount + "  " + _columnCount);
+            return true;
+        }
+    }
+
 
     // Map Terrain Varianty
     public void GenerateRandomTerrain()

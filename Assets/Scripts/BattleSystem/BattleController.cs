@@ -535,14 +535,19 @@ public class BattleController : MonoBehaviour
             for (int j = 0; j < radius; j++)
             {
                 position = (i, j);
-                posiblePositions.Add(position);
+
+                if(!BattleGridController.GetSquarsFromBattleField[i,j].IsSquearBlocked && BattleGridController.GetSquarsFromBattleField[i, j].UnitInSquar == null)
+                {
+                    posiblePositions.Add(position);
+                }
             }
         }
 
         // todo
         if (battleStartData.playerData.playerUnits.Count > posiblePositions.Count)
         {
-            // max position is 9
+            // Muže se stát pokud jsou square zablokované tak se ani nepridaji do (posiblePositions)  a nebo je moc jednotek
+            // max je 9 zatím
             Debug.LogError("Number of Players is bigger than posiblePositions to put unit on BattleField Critical Error");
         }
 
