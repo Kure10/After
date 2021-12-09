@@ -24,13 +24,13 @@ public class BattleGridController : MonoBehaviour
         this._columnCount = data.Collumn;
         this._rowsCount = data.Rows;
 
-        _squaresInBattleField = new Squar[this._columnCount, this._rowsCount];
+        _squaresInBattleField = new Squar[this._rowsCount , this._columnCount];
 
-        for (int y = 0; y < this._rowsCount; y++)
+        for (int x = 0; x < this._rowsCount; x++)
         {
-            GameObject row = _rows[y];
+            GameObject row = _rows[x];
 
-            for (int x = 0; x < this._columnCount; x++)
+            for (int y = 0; y < this._columnCount; y++)
             {
                 GameObject squarGameObject = Instantiate(squarTemplate, row.transform);
                 Squar square = squarGameObject.GetComponent<Squar>();
@@ -42,7 +42,7 @@ public class BattleGridController : MonoBehaviour
         }
 
         // modify slots // water // blocked // so on
-        GenerateRandomTerrain();
+        //GenerateRandomTerrain();
     }
 
     public void MoveToSquar(Unit unit, Squar squarToMove)
@@ -197,9 +197,9 @@ public class BattleGridController : MonoBehaviour
         Squar leftSquare = null;
         Squar upSquare = null;
         Squar downSquare = null;
-        
+
         // check up direction
-        if (centerSquar.xCoordinate + 1 >= _columnCount)
+        if (centerSquar.xCoordinate + 1 >= _rowsCount)
             upSquare = null;
         else
             upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
@@ -211,7 +211,7 @@ public class BattleGridController : MonoBehaviour
             downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
 
         // check right direction
-        if (centerSquar.yCoordinate + 1 >= _rowsCount)
+        if (centerSquar.yCoordinate + 1 >= _columnCount)
             rightSquare = null;
         else
         {
@@ -245,63 +245,63 @@ public class BattleGridController : MonoBehaviour
         return checkedSquars;
     }
 
-    public List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool searchForBorders = false)
+    public List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool showAttackBorders = false)
     {
         List<Squar> checkedSquars = new List<Squar>();
 
-        Squar rightSquare = null;
-        Squar leftSquare = null;
         Squar upSquare = null;
         Squar downSquare = null;
+        Squar rightSquare = null;
+        Squar leftSquare = null;
 
         // check right direction
-        if (centerSquar.xCoordinate + 1 >= _columnCount)
-            rightSquare = null;
+        if (centerSquar.xCoordinate + 1 >= _rowsCount)
+            upSquare = null;
         else
-            rightSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
+            upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
 
         // check left direction
         if (centerSquar.xCoordinate - 1 < 0)
-            leftSquare = null;
+            downSquare = null;
         else
-            leftSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
+            downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
 
         // check up direction
-        if (centerSquar.yCoordinate + 1 >= _rowsCount)
-            upSquare = null;
+        if (centerSquar.yCoordinate + 1 >= _columnCount)
+            rightSquare = null;
         else
-            upSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
+            rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
 
         // check down direction
         if (centerSquar.yCoordinate - 1 < 0)
-            downSquare = null;
+            leftSquare = null;
         else
-            downSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
+            leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
 
-        if (searchForBorders)
+        if (showAttackBorders)
         {
-            if (leftSquare == null || !leftSquare.isInAttackReach)
-                centerSquar.leftBorder.SetActive(true);
-
-            if (rightSquare == null || !rightSquare.isInAttackReach)
-                centerSquar.rightBorder.SetActive(true);
-
             if (downSquare == null || !downSquare.isInAttackReach)
                 centerSquar.downBorder.SetActive(true);
 
             if (upSquare == null || !upSquare.isInAttackReach)
                 centerSquar.upBorder.SetActive(true);
+
+            if (leftSquare == null || !leftSquare.isInAttackReach)
+                centerSquar.leftBorder.SetActive(true);
+
+            if (rightSquare == null || !rightSquare.isInAttackReach)
+                centerSquar.rightBorder.SetActive(true);
         }
         else
         {
-            if (rightSquare != null && !rightSquare.isInAttackReach)
-                checkedSquars.Add(rightSquare);
-            if (leftSquare != null && !leftSquare.isInAttackReach)
-                checkedSquars.Add(leftSquare);
             if (upSquare != null && !upSquare.isInAttackReach)
                 checkedSquars.Add(upSquare);
             if (downSquare != null && !downSquare.isInAttackReach)
                 checkedSquars.Add(downSquare);
+            if (rightSquare != null && !rightSquare.isInAttackReach)
+                checkedSquars.Add(rightSquare);
+            if (leftSquare != null && !leftSquare.isInAttackReach)
+                checkedSquars.Add(leftSquare);
 
             centerSquar.isInAttackReach = true;
 
@@ -386,6 +386,8 @@ public class BattleGridController : MonoBehaviour
 
     public Squar GetSquareFromGrid(int x, int y)
     {
+        bool isInside = IsSquareInsideBorders(x, y);
+
         Squar sq = _squaresInBattleField[x, y];
         return sq;
     }
@@ -393,7 +395,7 @@ public class BattleGridController : MonoBehaviour
     public Squar GetUnBlockedSquareFromGrid(int x, int y)
     {
         // Todo pro sledovaní erroru který neni ošetřen. Někdy se stava že je mimo hranice nevím proc.
-        bool isPositionOutOfBorders = IsSquareOutOfBorders(x, y);
+        bool isPositionOutOfBorders = IsSquareInsideBorders(x, y);
 
         Squar sq = null;
         if(_squaresInBattleField[x, y].IsSquearBlocked || _squaresInBattleField[x, y].UnitInSquar != null)
@@ -423,17 +425,17 @@ public class BattleGridController : MonoBehaviour
         }
     }
 
-    private bool IsSquareOutOfBorders(int x, int y)
+    private bool IsSquareInsideBorders(int x, int y)
     {
-        if(this._rowsCount <= x || this._columnCount <= y)
+        if(x <= this._rowsCount || y <= this._columnCount)
         {
-            return false;
+            return true;
         }
         else
         {
             Debug.LogError("Square is out of borders pos -> " + x + "  " + y);
             Debug.LogError("Grid size -> rows / column " + _rowsCount + "  " + _columnCount);
-            return true;
+            return false;
         }
     }
 
