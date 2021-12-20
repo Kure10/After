@@ -52,8 +52,11 @@ public class BattleController : MonoBehaviour
     private BattleStartData _battleStartData;
     private ResultTurnAction _playerInput = new ResultTurnAction();
 
+    private BattlePathFinding _battlePathFinder;
+
     private void Awake()
     {
+        _battlePathFinder = new BattlePathFinding();
         _battleResultPopup.InicializedControlles(() => CloseBattle());
     }
     private void Start()

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System;
 
+
 [System.Serializable]
 public class CursorColorEvent : UnityEvent<Squar>
 {
@@ -52,6 +53,8 @@ public class Squar : MonoBehaviour
 
     private bool _isSquarBlocked = false;
 
+    private BattlePathFinding.AAlgoritmStats _pathStats;
+
     public bool IsSquearBlocked 
     { 
         get { return _isSquarBlocked; }
@@ -64,9 +67,20 @@ public class Squar : MonoBehaviour
 
     public Unit UnitInSquar { get { return _unitInSquar; } set { _unitInSquar = value; } }
 
+    public BattlePathFinding.AAlgoritmStats PathStats { get { return _pathStats; } }
+
     public Vector2 GetCoordinates ()
     {
         return new Vector2(xCoordinate, yCoordinate);
+    }
+
+
+    public void neco ()
+    {
+
+        PathStats.FCost = 5;
+        PathStats.SetGCost();
+
     }
 
     public void SetCoordinates(int x, int y)
