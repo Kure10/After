@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Threading.Tasks;
 
 public class BattleGridController : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class BattleGridController : MonoBehaviour
         this._columnCount = data.Collumn;
         this._rowsCount = data.Rows;
 
-        _squaresInBattleField = new Squar[this._rowsCount , this._columnCount];
+        _squaresInBattleField = new Squar[this._rowsCount, this._columnCount];
 
         for (int x = 0; x < this._rowsCount; x++)
         {
@@ -42,7 +43,7 @@ public class BattleGridController : MonoBehaviour
         }
 
         // modify slots // water // blocked // so on
-        //GenerateRandomTerrain();
+        GenerateRandomTerrain();
     }
 
     public void MoveToSquar(Unit unit, Squar squarToMove)
@@ -53,6 +54,65 @@ public class BattleGridController : MonoBehaviour
         selectedUnitSquar.UnitInSquar.SetNewCurrentPosition(squarToMove.xCoordinate, squarToMove.yCoordinate);
         squarToMove.UnitInSquar = selectedUnitSquar.UnitInSquar;
         selectedUnitSquar.UnitInSquar = null;
+    }
+
+    public async Task MoveToPathAsync(Unit unit, List<Squar> path, int delayTimeWalk, List<Squar> squaresInMoveRange, List<Squar> squaresInAttackRange)
+    {
+        List<Squar> tmpSquaresInMoverange = new List<Squar>(squaresInMoveRange);
+        SetSquaresOutOfAttackReach(squaresInAttackRange);
+
+        foreach (Squar nextSq in path)
+        {
+            unit.DecreaseMovementPoints(1);
+            ShowSquaresWithinMoveRange(tmpSquaresInMoverange, false);
+            SetSquaresOutOfMoveRange(tmpSquaresInMoverange);
+            MoveToSquar(unit, nextSq);
+            tmpSquaresInMoverange = FindSquaresInUnitMoveRange(unit);
+            ShowSquaresWithinMoveRange(tmpSquaresInMoverange, true);
+            await Task.Delay(delayTimeWalk);
+        }
+        squaresInMoveRange.Clear();
+        squaresInMoveRange.AddRange(tmpSquaresInMoverange);
+        await Task.Yield();
+    }
+
+    public void ShowSquaresWithinMoveRange(List<Squar> squaresInMoveRange, bool makeVisible)
+    {
+        foreach (Squar sq in squaresInMoveRange)
+        {
+            if (sq.UnitInSquar == null)
+            {
+                sq.inRangeBackground.SetActive(makeVisible);
+            }
+        }
+    }
+
+    public void ShowSquaresWithingAttackRange(List<Squar> squaresInAttackRange)
+    {
+        foreach (Squar squ in squaresInAttackRange)
+        {
+            GetTheAdjacentAttackSquare(squ, true);
+        }
+    }
+
+    public void SetSquaresOutOfMoveRange(List<Squar> squaresInMoveRange)
+    {
+        foreach (Squar squar in squaresInMoveRange)
+        {
+            squar.inRangeBackground.SetActive(false);
+            squar.isInMoveRange = false;
+        }
+        squaresInMoveRange.Clear();
+    }
+
+    public void SetSquaresOutOfAttackReach(List<Squar> SquaresInAttackRange)
+    {
+        foreach (Squar item in SquaresInAttackRange)
+        {
+            item.DisableAttackBorders();
+            item.isInAttackReach = false;
+        }
+        SquaresInAttackRange.Clear();
     }
 
     public AttackInfo AttackToUnit(Unit attackingUnit, Unit defendingUnit)
@@ -86,38 +146,31 @@ public class BattleGridController : MonoBehaviour
 
     public List<Squar> FindSquaresInUnitMoveRange(Unit unit)
     {
-        List<Squar> squaresInUnitMoveRange = new List<Squar>();
-
         int moveRange = unit.GetMovementPoints;
         Squar centerSquar = _squaresInBattleField[unit.CurrentPos.XPosition, unit.CurrentPos.YPosition];
+        List<Squar> squaresInUnitMoveRange = new List<Squar>();
 
-        squaresInUnitMoveRange.AddRange(GetTheAdjacentSquare(centerSquar));
-
-        List<Squar> adjectedSq = new List<Squar>();
-        adjectedSq.AddRange(squaresInUnitMoveRange);
-
-        for (int i = 1; i < moveRange; i++)
+        if (moveRange > 0)
         {
-            List<Squar> adjectedSquarsInCurrentRange = new List<Squar>();
+            squaresInUnitMoveRange.AddRange(GetTheAdjacentMoveSquare(centerSquar));
 
-            foreach (Squar sq in adjectedSq)
+            List<Squar> adjectedSq = new List<Squar>();
+            adjectedSq.AddRange(squaresInUnitMoveRange);
+
+            for (int i = 1; i < moveRange; i++)
             {
-                adjectedSquarsInCurrentRange.AddRange(GetTheAdjacentSquare(sq));
+                List<Squar> adjSq = new List<Squar>();
+
+                foreach (Squar sq in adjectedSq)
+                {
+                    adjSq.AddRange(GetTheAdjacentMoveSquare(sq));
+                }
+
+                squaresInUnitMoveRange.AddRange(adjSq);
+                adjectedSq.Clear();
+                adjectedSq.AddRange(adjSq);
             }
-
-            foreach (Squar sq in adjectedSq)
-            {
-                sq.isInMoveRange = true;
-            }
-
-            adjectedSq.Clear();
-            adjectedSq.AddRange(adjectedSquarsInCurrentRange);
-
-            squaresInUnitMoveRange.AddRange(adjectedSq);
         }
-
-        squaresInUnitMoveRange.Add(centerSquar);
-
         return squaresInUnitMoveRange;
     }
 
@@ -189,7 +242,7 @@ public class BattleGridController : MonoBehaviour
         return squaresInUnitAttackRange;
     }
 
-    private List<Squar> GetTheAdjacentSquare(Squar centerSquar)
+    public List<Squar> GetTheAdjacentWalkAbleSquare(Squar centerSquar)
     {
         List<Squar> checkedSquars = new List<Squar>();
 
@@ -214,11 +267,7 @@ public class BattleGridController : MonoBehaviour
         if (centerSquar.yCoordinate + 1 >= _columnCount)
             rightSquare = null;
         else
-        {
-            var number = centerSquar.yCoordinate + 1;
-            Debug.Log("x :  " + centerSquar.xCoordinate + "  y :   " + number);
             rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
-        }
 
         // check left direction
         if (centerSquar.yCoordinate - 1 < 0)
@@ -226,23 +275,90 @@ public class BattleGridController : MonoBehaviour
         else
             leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
 
-        if (rightSquare != null && !rightSquare.isInMoveRange)
+        if (IsSquareWalkAble(rightSquare))
             checkedSquars.Add(rightSquare);
-        if (leftSquare != null && !leftSquare.isInMoveRange)
+
+        if (IsSquareWalkAble(leftSquare))
             checkedSquars.Add(leftSquare);
-        if (upSquare != null && !upSquare.isInMoveRange)
+
+        if (IsSquareWalkAble(upSquare))
             checkedSquars.Add(upSquare);
-        if (downSquare != null && !downSquare.isInMoveRange)
+
+        if (IsSquareWalkAble(downSquare))
             checkedSquars.Add(downSquare);
 
-        centerSquar.isInMoveRange = true;
+        return checkedSquars;
+    }
 
-        foreach (Squar sq in checkedSquars)
-        {
-            sq.isInMoveRange = true;
-        }
+    private bool IsSquareWalkAble(Squar sq)
+    {
+        if (sq != null && !sq.IsSquearBlocked && sq.UnitInSquar == null)
+            return true;
+
+        return false;
+    }
+
+    public List<Squar> GetTheAdjacentSquare(Squar centerSquar)
+    {
+        List<Squar> checkedSquars = new List<Squar>();
+
+        Squar rightSquare = null;
+        Squar leftSquare = null;
+        Squar upSquare = null;
+        Squar downSquare = null;
+
+        // check up direction
+        if (centerSquar.xCoordinate + 1 >= _rowsCount)
+            upSquare = null;
+        else
+            upSquare = GetSquareFromGrid(centerSquar.xCoordinate + 1, centerSquar.yCoordinate);
+
+        // check down direction
+        if (centerSquar.xCoordinate - 1 < 0)
+            downSquare = null;
+        else
+            downSquare = GetSquareFromGrid(centerSquar.xCoordinate - 1, centerSquar.yCoordinate);
+
+        // check right direction
+        if (centerSquar.yCoordinate + 1 >= _columnCount)
+            rightSquare = null;
+        else
+            rightSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate + 1);
+
+
+        // check left direction
+        if (centerSquar.yCoordinate - 1 < 0)
+            leftSquare = null;
+        else
+            leftSquare = GetSquareFromGrid(centerSquar.xCoordinate, centerSquar.yCoordinate - 1);
+
+        if (rightSquare != null)
+            checkedSquars.Add(rightSquare);
+        if (leftSquare != null)
+            checkedSquars.Add(leftSquare);
+        if (upSquare != null)
+            checkedSquars.Add(upSquare);
+        if (downSquare != null)
+            checkedSquars.Add(downSquare);
 
         return checkedSquars;
+    }
+
+    public List<Squar> GetTheAdjacentMoveSquare(Squar centerSquar)
+    {
+        List<Squar> allAdjecentSquares = GetTheAdjacentSquare(centerSquar);
+        List<Squar> moveSquars = new List<Squar>();
+
+        foreach (var sq in allAdjecentSquares)
+        {
+            if (IsSquareWalkAble(sq) && !sq.isInMoveRange)
+            {
+                moveSquars.Add(sq);
+                sq.isInMoveRange = true;
+            }
+        }
+
+        return moveSquars;
     }
 
     public List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool showAttackBorders = false)
@@ -314,11 +430,11 @@ public class BattleGridController : MonoBehaviour
         return checkedSquars;
     }
 
-    private List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
+    // For now we are not using that..
+    public List<Squar> GetTheAdjacentCrossSquare(Squar centerSquar)
     {
         List<Squar> checkedSquars = new List<Squar>();
-        centerSquar.isInAttackReach = true;
-
+  
         Squar rightCrossSquare = null;
         Squar leftCrossSquare = null;
         Squar upCrossSquare = null;
@@ -357,9 +473,11 @@ public class BattleGridController : MonoBehaviour
         if (downCrossSquare != null && !downCrossSquare.isInAttackReach)
             checkedSquars.Add(downCrossSquare);
 
-        foreach (Squar sq in checkedSquars)
+        centerSquar.isInAttackReach = true;
+
+        foreach (var item in checkedSquars)
         {
-            sq.isInAttackReach = true;
+            item.isInAttackReach = true;
         }
 
         return checkedSquars;
@@ -392,6 +510,14 @@ public class BattleGridController : MonoBehaviour
         return sq;
     }
 
+    public Squar GetSquareFromGrid(Vector2Int vec)
+    {
+        bool isInside = IsSquareInsideBorders(vec.x, vec.y);
+
+        Squar sq = _squaresInBattleField[vec.x, vec.y];
+        return sq;
+    }
+
     public Squar GetUnBlockedSquareFromGrid(int x, int y)
     {
         // Todo pro sledovaní erroru který neni ošetřen. Někdy se stava že je mimo hranice nevím proc.
@@ -404,7 +530,7 @@ public class BattleGridController : MonoBehaviour
             // choise other...
             while (sq == null)
             {
-                List<Squar> adjactedSquares = GetTheAdjacentSquare(centerSquare);
+                List<Squar> adjactedSquares = GetTheAdjacentMoveSquare(centerSquare);
                 foreach (Squar squar in adjactedSquares)
                 {
                     if (!squar.IsSquearBlocked && squar.UnitInSquar == null)
@@ -439,9 +565,77 @@ public class BattleGridController : MonoBehaviour
         }
     }
 
+    public List<Vector2> GetPointsBetweenActiveUnitAndTargetSquare(Vector2 start, Vector2 end)
+    {
+        int distance = 20;
+        bool direction = false;
+
+        List<Vector2> points = new List<Vector2>();
+
+        // no slope (vertical line)
+        if (start.x == end.x)
+        {
+            for (float y = start.y; y <= end.y; y = y + distance)
+            {
+                Vector2 vec = new Vector2(start.x, y);
+                points.Add(vec);
+            }
+        }
+        else
+        {
+            // set direction -> according i substrack or add distance
+            if ((start.x < end.x && start.y > end.y) || (start.x > end.x && start.y < end.y))
+            {
+                direction = true;
+            }
+
+            // swap p1 and p2 if p2.X < p1.X
+            if (end.x < start.x)
+            {
+                Vector2 temp = start;
+                start = end;
+                end = temp;
+            }
+
+            float deltaX = end.x - start.x;
+            float deltaY = end.y - start.y;
+            float error = -1.0f;
+            float deltaErr = System.Math.Abs(deltaY / deltaX);
+
+            float y = start.y;
+            for (float x = start.x; x <= end.x; x = x + distance)
+            {
+                Vector2 vec = new Vector2(x, y);
+                points.Add(vec);
+                error += deltaErr;
+
+                if (direction)
+                {
+                    while (error >= 0.0f)
+                    {
+                        y = y - distance;
+                        points.Add(new Vector2(x, y));
+                        error -= 1.0f;
+                    }
+                }
+                else
+                {
+                    while (error >= 0.0f)
+                    {
+                        y = y + distance;
+                        points.Add(new Vector2(x, y));
+                        error -= 1.0f;
+                    }
+                }
+            }
+        }
+
+        return points;
+    }
+
 
     // Map Terrain Varianty
-    public void GenerateRandomTerrain()
+    private void GenerateRandomTerrain()
     {
 
         // vyber spravny druh terenu muže byt random

@@ -57,19 +57,19 @@ namespace Assets.Scripts.BattleSystem
                 int columnRockCounter = 0;
                 int rowRockCounter = 0;
 
-                for (int i = 0; i < _columnCount - 1; i++)
+                for (int i = 0; i < _rowsCount - 1; i++)
                 {
                     if (BattleGridController.GetSquarsFromBattleField[i, y].IsSquearBlocked)
                     {
-                        columnRockCounter++;
+                        rowRockCounter++;
                     }
                 }
 
-                for (int i = 0; i < _rowsCount - 1; i++)
+                for (int i = 0; i < _columnCount - 1; i++)
                 {
                     if (BattleGridController.GetSquarsFromBattleField[x, i].IsSquearBlocked)
                     {
-                        rowRockCounter++;
+                        columnRockCounter++;
                     }
                 }
 
@@ -81,7 +81,7 @@ namespace Assets.Scripts.BattleSystem
 
         private bool IsInsideBorder (int x, int y)
         {
-            return x < _columnCount && x >= 0 && y >= 0 && y < _rowsCount;
+            return x < _rowsCount && x >= 0 && y >= 0 && y < _columnCount;
         }
     }
 }

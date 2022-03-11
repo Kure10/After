@@ -9,7 +9,7 @@ using System;
 [System.Serializable]
 public class CursorColorEvent : UnityEvent<Squar>
 {
-    public bool isInMoveRange = false;
+    public bool canMove = false;
     public bool canAttack = false;
 }
 
@@ -26,7 +26,7 @@ public class Squar : MonoBehaviour
 
     [Header("Range Marks")]
     [SerializeField] public GameObject inRangeBackground;
-    [SerializeField] public GameObject canAttackMark;
+    [SerializeField] private GameObject actionMark;
 
     [Header("Attack Range Borders")]
     [SerializeField] public GameObject leftBorder;
@@ -34,13 +34,22 @@ public class Squar : MonoBehaviour
     [SerializeField] public GameObject upBorder;
     [SerializeField] public GameObject downBorder;
 
+    [Header("Attack Move Costs")]
+    [SerializeField] private Text gCost;
+    [SerializeField] private Text hCost;
+    [SerializeField] private Text fCost;
+
+    [Header("testing")]
+    [SerializeField] private GameObject shootPath;
+    [SerializeField] private GameObject shootPathLesserThan33;
+    [SerializeField] private GameObject shootPathNoPoints;
+
     [Space]
 
     public Unit _unitInSquar;
 
     public bool isInMoveRange = false;
     public bool isInAttackReach = false;
-
 
     public CursorColorEvent CursorEvent;
 
@@ -55,32 +64,28 @@ public class Squar : MonoBehaviour
 
     private BattlePathFinding.AAlgoritmStats _pathStats;
 
-    public bool IsSquearBlocked 
-    { 
+    public bool IsSquearBlocked
+    {
         get { return _isSquarBlocked; }
         set
         {
             _isSquarBlocked = value;
             stoneObstacle.SetActive(value);
-        }  
+        }
     }
 
     public Unit UnitInSquar { get { return _unitInSquar; } set { _unitInSquar = value; } }
 
     public BattlePathFinding.AAlgoritmStats PathStats { get { return _pathStats; } }
 
-    public Vector2 GetCoordinates ()
+    private void Awake()
     {
-        return new Vector2(xCoordinate, yCoordinate);
+        _pathStats = new BattlePathFinding.AAlgoritmStats();
     }
 
-
-    public void neco ()
+    public Vector2Int GetCoordinates()
     {
-
-        PathStats.FCost = 5;
-        PathStats.SetGCost();
-
+        return new Vector2Int(xCoordinate, yCoordinate);
     }
 
     public void SetCoordinates(int x, int y)
@@ -112,7 +117,7 @@ public class Squar : MonoBehaviour
     public void OnPointerEnter()
     {
         CursorEvent.Invoke(this);
-        var cursorImg = canAttackMark.GetComponent<Image>();
+        var cursorImg = actionMark.GetComponent<Image>();
 
         if (cursorImg == null)
             return;
@@ -123,7 +128,7 @@ public class Squar : MonoBehaviour
         }
         else
         {
-            if (CursorEvent.isInMoveRange)
+            if (CursorEvent.canMove)
             {
                 cursorImg.color = isInMoveRangeColor;
             }
@@ -133,15 +138,38 @@ public class Squar : MonoBehaviour
             }
         }
 
-        canAttackMark.SetActive(true);
+        actionMark.SetActive(true);
     }
 
     // Event Trigger from Unity
-    public void OnPointerExit ()
+    public void OnPointerExit()
     {
-        canAttackMark.SetActive(false);
+        actionMark.SetActive(false);
     }
 
+    // Testing AA Algoritm
+    public void ShowCosts(BattlePathFinding.AAlgoritmStats stats)
+    {
+        gCost.text = stats.GCost.ToString();
+        hCost.text = stats.HCost.ToString();
+        fCost.text = stats.FCost.ToString();
+    }
+
+    public void TestingShowShootPath(bool show)
+    {
+        shootPath.SetActive(show);
+    }
+
+    public void TestingShowShootPathLesserThan(bool show)
+    {
+        shootPathLesserThan33.SetActive(show);
+    }
+
+    public void TestingShowShootPathNopoints(bool show)
+    {
+        shootPathNoPoints.SetActive(show);
+    }
 }
+
 
 

@@ -35,8 +35,8 @@ namespace Assets.Scripts.BattleSystem
 
                 while (true)
                 {
-                    xStartStonePosition = Random.Range(2, _columnCount - 3); // Nahodná pozice kde bude starting block.
-                    yStartStonePosition = Random.Range(1, _rowsCount - 1);
+                    xStartStonePosition = Random.Range(2, _rowsCount - 3); // Nahodná pozice kde bude starting block.
+                    yStartStonePosition = Random.Range(1, _columnCount - 1);
 
                     bool wasCreated = CreateStone(xStartStonePosition, yStartStonePosition);
 

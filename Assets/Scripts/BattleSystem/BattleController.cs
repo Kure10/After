@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
-
 using UnityEngine.Events;
+using System.Threading.Tasks;
 
 public class BattleController : MonoBehaviour
 {
@@ -30,6 +30,9 @@ public class BattleController : MonoBehaviour
 
     public List<Unit> _unitsOnBattleField = new List<Unit>();
 
+    [Tooltip("In MiliSec")]
+    [SerializeField] private int _delayWalk = 350;
+
     [Space]
     public GameObject _unit;
 
@@ -54,9 +57,12 @@ public class BattleController : MonoBehaviour
 
     private BattlePathFinding _battlePathFinder;
 
+    // testing 
+    List<Squar> shootPathSq = new List<Squar>();
+
     private void Awake()
     {
-        _battlePathFinder = new BattlePathFinding();
+        _battlePathFinder = new BattlePathFinding(_battleGridController);
         _battleResultPopup.InicializedControlles(() => CloseBattle());
     }
     private void Start()
@@ -69,12 +75,13 @@ public class BattleController : MonoBehaviour
 
             _battleGridController.CreateBattleField(_battleStartData);
 
+            SetUnitPosition(_battleStartData);
             InitBattle(_battleStartData);
             TestStartBattle();
         }
     }
 
-    private void Update()
+    private async void Update()
     {
        // bool actionPerformed = false;
         if (_isBattleOnline)
@@ -83,7 +90,7 @@ public class BattleController : MonoBehaviour
 
             if (_isPlayerTurn)
             {
-                _playerInput = DetectPlayerInputs();
+                _playerInput = await DetectPlayerInputs();
 
                 if (_playerInput.inputResult)
                 {
@@ -99,7 +106,7 @@ public class BattleController : MonoBehaviour
             }
             else
             {
-                _playerInput = DetectPlayerInputs();
+                _playerInput = await DetectPlayerInputs();
                 // OnSimpleAIMove();
 
                 if (_playerInput.inputResult)
@@ -148,9 +155,9 @@ public class BattleController : MonoBehaviour
 
     public void ConfigurateNewTurn()
     {
-        SetSquaresOutOfAttackReach();
-        SetSquaresOutOfMoveRange();
-        ShowSquaresWithinMoveRange(false);
+        _battleGridController.SetSquaresOutOfAttackReach(_squaresInUnitAttackRange);
+        _battleGridController.SetSquaresOutOfMoveRange(_squaresInUnitMoveRange);
+        _battleGridController.ShowSquaresWithinMoveRange(_squaresInUnitMoveRange, false); 
 
         _order++;
 
@@ -185,9 +192,9 @@ public class BattleController : MonoBehaviour
 
         UpdateActiveUnit();
         _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
-        ShowSquaresWithinMoveRange(true);
+        _battleGridController.ShowSquaresWithinMoveRange(_squaresInUnitMoveRange, true);
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
-        ShowSquaresWithingAttackRange();
+        _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
         _leftUnitInfo.UpdateStats(_activeUnit);
 
         _turnIsOver = false;
@@ -219,7 +226,7 @@ public class BattleController : MonoBehaviour
         _battleLog.AddBattleLog($"{_activeUnit._name} has turn");
     }
 
-    private ResultTurnAction DetectPlayerInputs()
+    private async Task<ResultTurnAction> DetectPlayerInputs()
     {
         ResultTurnAction resultPlayerInput = _playerInput;
 
@@ -227,6 +234,13 @@ public class BattleController : MonoBehaviour
         resultPlayerInput.battleAction = BattleAction.None;
         Squar actionOnSquare = null;
         Unit unitOnSquare = null;
+
+        // Testing Space middle mouse button
+        if (Input.GetMouseButtonDown(2))
+        {
+            actionOnSquare = TryGetAim();
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -265,12 +279,11 @@ public class BattleController : MonoBehaviour
 
                     if (!_playerInput.moveIsBlocked)
                     {
-                        int distance = CalculateMoveDistance(new Vector2(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition), actionOnSquare.GetCoordinates());
-                        _activeUnit.DecreaseMovementPoints(distance);
+                        Squar startingPosition = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
+                        Squar endPosition = _battleGridController.GetSquareFromGrid(actionOnSquare.GetCoordinates());
+                        List<Squar> finalPath = _battlePathFinder.FindPath(startingPosition, endPosition);
 
-                        _battleGridController.MoveToSquar(_activeUnit, actionOnSquare);
-
-                        //battleLog.AddLog($"{_activeUnit._name} moved to square {squarToMove.xCoordinate} / {squarToMove.yCoordinate}");
+                        await Task.WhenAll(_battleGridController.MoveToPathAsync(_activeUnit, finalPath, _delayWalk, _squaresInUnitMoveRange, _squaresInUnitAttackRange));
 
                         _battleLog.AddBattleLog($"{_activeUnit._name} moved");
                         resultPlayerInput.inputResult = true;
@@ -309,20 +322,136 @@ public class BattleController : MonoBehaviour
         return resultPlayerInput;
     }
 
+    private Squar TryGetAim()
+    {
+        Squar actionOnSquare;
+        bool isAimClean = true;
+        actionOnSquare = RaycastTargetSquar();
+
+        if (actionOnSquare == null)
+        {
+            foreach (var sq in shootPathSq)
+            {
+                sq.TestingShowShootPath(false);
+                sq.TestingShowShootPathLesserThan(false);
+                sq.TestingShowShootPathNopoints(false);
+                shootPathSq.Clear();
+            }
+        }
+        else
+        {
+            foreach (var sq in shootPathSq)
+            {
+                sq.TestingShowShootPath(false);
+                sq.TestingShowShootPathLesserThan(false);
+                sq.TestingShowShootPathNopoints(false);
+            }
+            shootPathSq.Clear();
+            Squar center = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
+            Vector3[] startRectCornrs = new Vector3[4];
+            Vector3[] endRectCornrs = new Vector3[4];
+
+            center.GetComponent<RectTransform>().GetWorldCorners(startRectCornrs);
+            actionOnSquare.GetComponent<RectTransform>().GetWorldCorners(endRectCornrs);
+
+            Vector2 startSqCenter = new Vector2((startRectCornrs[0].x + startRectCornrs[3].x) / 2, (startRectCornrs[0].y + startRectCornrs[1].y) / 2);
+            Vector2 endSqCenter = new Vector2((endRectCornrs[0].x + endRectCornrs[3].x) / 2, (endRectCornrs[0].y + endRectCornrs[1].y) / 2);
+
+            // (Vector2 a , Vector2 b) line = (startSqCenter, endSqCenter);
+
+            List<Vector2> points = _battleGridController.GetPointsBetweenActiveUnitAndTargetSquare(startSqCenter, endSqCenter);
+            shootPathSq.AddRange(RaycastPointsOnGrid(points));
+
+            shootPathSq.RemoveAt(shootPathSq.Count - 1);
+            shootPathSq.RemoveAt(0);
+
+
+            Vector3[] squareCorners = new Vector3[4];
+
+            foreach (Squar sq in shootPathSq)
+            {
+                List<Vector2?> intersectPoints = new List<Vector2?>();
+                sq.GetComponent<RectTransform>().GetWorldCorners(squareCorners);
+
+                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[0], squareCorners[1]));
+                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[1], squareCorners[2]));
+                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[2], squareCorners[3]));
+                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[3], squareCorners[0]));
+
+                bool? result = DoesIntersectionPointsOnAdjacentSides(intersectPoints);
+
+                if (result == true) // pokud jsou protilehlé nepravidelny čtyřuhelnik
+                {
+                    //Debug.Log("Je nepravidelny čtyřuhelnik -> " + sq.xCoordinate + "  " + sq.yCoordinate);
+                    if (sq.IsSquearBlocked)
+                    {
+                        isAimClean = false;
+                    }
+                }
+                else if (result == false) // pokud sousedí trjhelnik
+                {
+                    if (sq.IsSquearBlocked)
+                    {
+                        Vector2[] pointsOfTriangle = GetPointsOfTriangle(squareCorners, intersectPoints);
+                        float triangleArea = CalculateTriangeArea(pointsOfTriangle[0], pointsOfTriangle[1], pointsOfTriangle[2]);
+                        float squareArea = CalculateSquareArea(squareCorners[0], squareCorners[1]);
+
+                        if (triangleArea < (squareArea * 0.33))
+                        {
+                            List<Squar> adjectedSquares = _battleGridController.GetTheAdjacentSquare(sq);
+                            foreach (var item in adjectedSquares)
+                            {
+                                if (shootPathSq.Contains(item) && item.IsSquearBlocked)
+                                {
+                                    isAimClean = false;
+                                }
+                            }
+
+                            // var direction = GetAimDirection(startSqCenter, endSqCenter);
+                           // Debug.Log("Je mensi triangle než 33% -> " + sq.xCoordinate + "  " + sq.yCoordinate);
+                            sq.TestingShowShootPathLesserThan(true);
+                        }
+                        else
+                        {
+                           // Debug.Log("Je mensi triangle -> " + sq.xCoordinate + "  " + sq.yCoordinate);
+                        }
+                    }
+
+
+                }
+                else
+                {
+                   // Debug.LogError($"Error! Calculation of intersect Points failed on square: {sq.xCoordinate} {sq.yCoordinate}");
+
+                    //Todo tento druh čtverce zatím neřeším
+                    sq.TestingShowShootPathNopoints(true);
+                }
+            }
+
+            foreach (var sq in shootPathSq)
+            {
+                sq.TestingShowShootPath(true);
+            }
+        }
+
+        Debug.Log("Attack status range :  " + isAimClean);
+        return actionOnSquare;
+    }
+
     public void RecalculatePosibleActions(ResultTurnAction playerInput)
     {
-        SetSquaresOutOfMoveRange();
-        
-        SetSquaresOutOfAttackReach();
+        _battleGridController.SetSquaresOutOfMoveRange(_squaresInUnitMoveRange);
+
+        _battleGridController.SetSquaresOutOfAttackReach(_squaresInUnitAttackRange);
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
 
         if(_activeUnit.GetMovementPoints > 0)
         {
             _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
-            ShowSquaresWithinMoveRange(true);
+            _battleGridController.ShowSquaresWithinMoveRange(_squaresInUnitMoveRange, true);
         }
 
-        ShowSquaresWithingAttackRange();
+        _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
         _leftUnitInfo.UpdateStats(_activeUnit);
 
@@ -383,9 +512,9 @@ public class BattleController : MonoBehaviour
         }
 
 
-        SetSquaresOutOfAttackReach();
+        _battleGridController.SetSquaresOutOfAttackReach(_squaresInUnitAttackRange);
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
-        ShowSquaresWithingAttackRange();
+        _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
         _activeUnit.UpdateData(_activeUnit);
         _leftUnitInfo.UpdateStats(_activeUnit);
@@ -410,9 +539,9 @@ public class BattleController : MonoBehaviour
             _activeUnit.ActiveWeapon = _activeUnit.SecondWeapon;
         }
 
-        SetSquaresOutOfAttackReach();
+        _battleGridController.SetSquaresOutOfAttackReach(_squaresInUnitAttackRange);
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
-        ShowSquaresWithingAttackRange();
+        _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
         _activeUnit.UpdateData(_activeUnit);
         _leftUnitInfo.UpdateStats(_activeUnit);
@@ -496,6 +625,7 @@ public class BattleController : MonoBehaviour
             {
                 SetCursor(squ);
                 UpdateRightPanel(squ);
+                EvaluateGridWTF(squ);
             });
         }
     }
@@ -510,8 +640,8 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            // TODo
-            SetEnemyRandomPosition(battleStartData); // třeba když je ambush tak by se měli nastavit specialni pozice atd..
+            // TODo třeba když je ambush tak by se měli nastavit specialni pozice atd..
+            SetEnemyRandomPosition(battleStartData);
         }
     }
 
@@ -650,10 +780,10 @@ public class BattleController : MonoBehaviour
             _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
             _squaresInUnitMoveRange.AddRange(_battleGridController.FindSquaresInUnitMoveRange(_activeUnit));
-            ShowSquaresWithinMoveRange(true);
+            _battleGridController.ShowSquaresWithinMoveRange(_squaresInUnitMoveRange, true);
 
-            _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
-            ShowSquaresWithingAttackRange();
+             _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
+            _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
             _leftUnitInfo.UpdateStats(_activeUnit);
         }
@@ -673,7 +803,7 @@ public class BattleController : MonoBehaviour
 
         for (int i = 0; i < raycastResultsList.Count; i++)
         {
-            var sq = raycastResultsList[i].gameObject.GetComponent<Squar>();
+            Squar sq = raycastResultsList[i].gameObject.GetComponent<Squar>();
 
             if (sq != null)
             {
@@ -684,6 +814,34 @@ public class BattleController : MonoBehaviour
 
         return null;
     }
+
+    private List<Squar> RaycastPointsOnGrid(List<Vector2> points)
+    {
+        List<Squar> posibleSQ = new List<Squar>();
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+
+        foreach (Vector2 vec in points)
+        {
+            pointerEventData.position = vec;
+            List<RaycastResult> raycastResultsList = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerEventData, raycastResultsList);
+
+            for (int i = 0; i < raycastResultsList.Count; i++)
+            {
+                Squar sq = raycastResultsList[i].gameObject.GetComponent<Squar>();
+
+                if (sq != null)
+                {
+                    if(!posibleSQ.Contains(sq))
+                        posibleSQ.Add(sq);
+
+                    break;
+                }
+            }
+        }
+        return posibleSQ;
+    }
+
 
     // this is TMP method
 
@@ -815,26 +973,6 @@ public class BattleController : MonoBehaviour
         return statClass;
     }
 
-    private void ShowSquaresWithinMoveRange(bool makeVisible)
-    {
-        foreach (Squar sq in _squaresInUnitMoveRange)
-        {
-            if (sq.UnitInSquar == null)
-            {
-                sq.inRangeBackground.SetActive(makeVisible);
-            }
-        }
-    }
-
-    private void ShowSquaresWithingAttackRange()
-    {
-        // Todo Predelat metodu GetTheAdjacentAttackSquare  -> rozdelit
-        foreach (Squar squ in _squaresInUnitAttackRange)
-        {
-            _battleGridController.GetTheAdjacentAttackSquare(squ, true);
-        }
-    }
-
     public void HumanVictory()
     {
         _battleStartData.UpdateMainPlayerData(_unitsOnBattleField);
@@ -877,36 +1015,16 @@ public class BattleController : MonoBehaviour
         OnBattleLost.Invoke(statClass);
     }
 
-    private void SetSquaresOutOfMoveRange()
-    {
-        foreach (Squar squar in _squaresInUnitMoveRange)
-        {
-            squar.inRangeBackground.SetActive(false);
-            squar.isInMoveRange = false;
-        }
-        _squaresInUnitMoveRange.Clear();
-    }
-
-    private void SetSquaresOutOfAttackReach()
-    {
-        foreach (Squar item in _squaresInUnitAttackRange)
-        {
-            item.DisableAttackBorders();
-            item.isInAttackReach = false;
-        }
-        _squaresInUnitAttackRange.Clear();
-    }
-
     private void SetCursor(Squar sq)
     {
         sq.CursorEvent.canAttack = false;
-        sq.CursorEvent.isInMoveRange = false;
+        sq.CursorEvent.canMove = false;
 
         if (sq.UnitInSquar is null)
         {
             if (_squaresInUnitMoveRange.Contains(sq))
             {
-                sq.CursorEvent.isInMoveRange = true;
+                sq.CursorEvent.canMove = true;
             }
         }
         else
@@ -942,6 +1060,13 @@ public class BattleController : MonoBehaviour
         //}
     }
 
+    public void EvaluateGridWTF(Squar endSquare)
+    {
+        Squar activeUnitSquare = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
+
+        _battlePathFinder.EvaluateGridCost(activeUnitSquare, endSquare);
+    }
+
     private void SetupForNewBattle()
     {
         foreach (Unit unit in _unitsOnBattleField)
@@ -959,15 +1084,6 @@ public class BattleController : MonoBehaviour
         // a tím padem jaké battleSquary maji byt aktivni.
 
         _battleGridController.ClearnSquaresInBattleField();
-    }
-
-    private int CalculateMoveDistance (Vector2 startPos, Vector2 destinationPos)
-    {
-        int xDistance = (int)(destinationPos.x - startPos.x);
-        int yDistance = (int)(destinationPos.y - startPos.y);
-        int finalDistance = Math.Abs(xDistance) + Math.Abs(yDistance);
-
-        return finalDistance;
     }
 
     private void InputProcess()
@@ -1011,4 +1127,175 @@ public class BattleController : MonoBehaviour
             inputResult = false;
         }
     }
+
+    //// TESTTEST
+    ///
+
+
+
+    public Vector2? SegmentIntersect (Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
+    {
+        Vector2 intersectPoints = new Vector2(0,0);
+        float A1 = p1.y - p0.y;
+        float B1 = p0.x - p1.x;
+        float C1 = A1 * p0.x + B1 * p0.y;
+        float A2 = p3.y - p2.y;
+        float B2 = p2.x - p3.x;
+        float C2 = A2 * p2.x + B2 * p2.y;
+        float denominator = A1 * B2 - A2 * B1;
+
+        if(denominator == 0)
+        {
+            return null;
+        }
+
+        float intersectX = (B2 * C1 - B1 * C2) / denominator;
+        float intersectY = (A1 * C2 - A2 * C1) / denominator;
+        float rx0 = (intersectX - p0.x) / (p1.x - p0.x);
+        float ry0 = (intersectY - p0.y) / (p1.y - p0.y);
+
+        float rx1 = (intersectX - p2.x) / (p3.x - p2.x);
+        float ry1 = (intersectY - p2.y) / (p3.y - p2.y);
+
+        if (((rx0 >= 0 && rx0 <= 1) || (ry0 >= 0 && ry0 <= 1)) && 
+            ((rx1 >= 0 && rx1 <= 1) || (ry1 >= 0 && ry1 <= 1)))
+        {
+            intersectPoints.x = intersectX;
+            intersectPoints.y = intersectY;
+            return intersectPoints;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public bool? DoesIntersectionPointsOnAdjacentSides(List<Vector2?> sidesList)
+    {
+        for (int i = 0; i < sidesList.Count - 1; i++)
+        {
+            if(sidesList[i] != null)
+            {
+                for (int k = i + 1; k < sidesList.Count; k++)
+                {
+                    if(sidesList[k] != null)
+                        return Math.Abs(k - i) == 2 ? true : false;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Vector2[] GetPointsOfTriangle(Vector3[] squareCorners, List<Vector2?> intersectPoints)
+    {
+        Vector2[] points = new Vector2[3];
+
+        if (intersectPoints[0] != null && intersectPoints[1] != null)
+        {
+            points[0] = squareCorners[1];
+            points[1] = (Vector2)intersectPoints[0];
+            points[2] = (Vector2)intersectPoints[1];
+            return points;
+
+        }
+        else if (intersectPoints[1] != null && intersectPoints[2] != null)
+        {
+            points[0] = squareCorners[2];
+            points[1] = (Vector2)intersectPoints[1];
+            points[2] = (Vector2)intersectPoints[2];
+            return points;
+        }
+        else if (intersectPoints[2] != null && intersectPoints[3] != null)
+        {
+            points[0] = squareCorners[3];
+            points[1] = (Vector2)intersectPoints[2];
+            points[2] = (Vector2)intersectPoints[3];
+            return points;
+        }
+        else
+        {
+            points[0] = squareCorners[0];
+            points[1] = (Vector2)intersectPoints[3];
+            points[2] = (Vector2)intersectPoints[0];
+            return points;
+        }
+    }
+
+    private float CalculateTriangeArea(Vector2 pointA, Vector2 pointB, Vector2 pointC)
+    {
+        // first Calculate Sides
+        float BCx, BCy;
+        BCx = Mathf.Pow(pointB.x - pointC.x, 2);
+        BCy = Mathf.Pow(pointB.y - pointC.y, 2);
+        float sideA = Mathf.Sqrt(BCx + BCy);
+
+        float ACx, ACy;
+        ACx = Mathf.Pow(pointA.x - pointC.x, 2);
+        ACy = Mathf.Pow(pointA.y - pointC.y, 2);
+        float sideB = Mathf.Sqrt(ACx + ACy);
+
+        float ABx, ABy;
+        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
+        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
+        float sideC = Mathf.Sqrt(ABx + ABy);
+
+        // Now calculate Area but i dont have everything. I need triangle Perimeter and Semiperimeter 
+
+        float perimetr = sideA + sideB + sideC;
+        float semiperimeter = perimetr / 2;
+        float area = Mathf.Sqrt(semiperimeter * (semiperimeter - sideA) * (semiperimeter - sideB) * (semiperimeter - sideC));
+
+        return area;
+    }
+
+    // Parametrs must be adjected points othervise you will calculate hypotenuse like a side
+    private float CalculateSquareArea (Vector2 pointA, Vector2 pointB)
+    {
+        float ABx, ABy;
+        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
+        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
+        float side = Mathf.Sqrt(ABx + ABy);
+
+        return side * side;
+    }
+
+    //private AimDirection GetAimDirection(Vector2 startPoint , Vector2 endPoint)
+    //{
+    //    float x = startPoint.x - endPoint.x;
+    //    float y = startPoint.y - endPoint.y;
+
+    //    if( x > 0 && y < 0)
+    //    {
+    //        return AimDirection.leftUp;
+    //    }
+    //    else if (x < 0 && y > 0)
+    //    {
+    //        return AimDirection.rightDown;
+    //    }
+    //    else if (x > 0 && y > 0)
+    //    {
+    //        return AimDirection.leftDown;
+    //    }
+    //    else if (x < 0 && y < 0)
+    //    {
+    //        return AimDirection.rightUp;
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("Something wrong with AimDirection contact Developers");
+    //        return AimDirection.errorDirection;
+    //    }
+    //}
+
+    //public enum AimDirection
+    //{
+    //    rightUp,
+    //    rightDown,
+    //    leftUp,
+    //    leftDown,
+    //    errorDirection
+    //}
+
+
 }
