@@ -9,8 +9,10 @@ using System;
 [System.Serializable]
 public class CursorColorEvent : UnityEvent<Squar>
 {
-    public bool canMove = false;
-    public bool canAttack = false;
+    //public bool canMove = false;
+    //public bool canAttack = false;
+    //public bool canHeal = false;
+    public BattleController.BattleAction action = BattleController.BattleAction.Attack;
 }
 
 public class Squar : MonoBehaviour
@@ -57,10 +59,13 @@ public class Squar : MonoBehaviour
     public Color isInMoveRangeColor;
     public Color isOutOfMoveRangeColor;
     public Color canAttackColor;
+    public Color heal;
 
     public Action action;
 
     private bool _isSquarBlocked = false;
+
+    private Image actionSprite = null;
 
     private BattlePathFinding.AAlgoritmStats _pathStats;
 
@@ -80,6 +85,7 @@ public class Squar : MonoBehaviour
 
     private void Awake()
     {
+        actionSprite = actionMark.GetComponent<Image>();
         _pathStats = new BattlePathFinding.AAlgoritmStats();
     }
 
@@ -117,28 +123,39 @@ public class Squar : MonoBehaviour
     public void OnPointerEnter()
     {
         CursorEvent.Invoke(this);
-        var cursorImg = actionMark.GetComponent<Image>();
 
-        if (cursorImg == null)
+        if (actionSprite == null)
+            actionSprite = actionMark.GetComponent<Image>();
+
+        if (actionSprite == null)
             return;
 
-        if (CursorEvent.canAttack)
+        if (CursorEvent.action == BattleController.BattleAction.Attack)
         {
-            cursorImg.color = canAttackColor;
+            actionSprite.color = canAttackColor;
+        }
+        else if (CursorEvent.action == BattleController.BattleAction.Heal)
+        {
+            actionSprite.color = canAttackColor;
         }
         else
         {
-            if (CursorEvent.canMove)
+            if (CursorEvent.action == BattleController.BattleAction.Move)
             {
-                cursorImg.color = isInMoveRangeColor;
+                actionSprite.color = isInMoveRangeColor;
             }
             else
             {
-                cursorImg.color = isOutOfMoveRangeColor;
+                actionSprite.color = isOutOfMoveRangeColor;
             }
         }
 
         actionMark.SetActive(true);
+    }
+
+    public void SetActionMark(Sprite sprite)
+    {
+        actionSprite.sprite = sprite;
     }
 
     // Event Trigger from Unity

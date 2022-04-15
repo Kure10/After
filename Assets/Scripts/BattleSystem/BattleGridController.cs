@@ -633,6 +633,133 @@ public class BattleGridController : MonoBehaviour
         return points;
     }
 
+    public Vector2? SegmentIntersect(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
+    {
+        Vector2 intersectPoints = new Vector2(0, 0);
+        float A1 = p1.y - p0.y;
+        float B1 = p0.x - p1.x;
+        float C1 = A1 * p0.x + B1 * p0.y;
+        float A2 = p3.y - p2.y;
+        float B2 = p2.x - p3.x;
+        float C2 = A2 * p2.x + B2 * p2.y;
+        float denominator = A1 * B2 - A2 * B1;
+
+        if (denominator == 0)
+        {
+            return null;
+        }
+
+        float intersectX = (B2 * C1 - B1 * C2) / denominator;
+        float intersectY = (A1 * C2 - A2 * C1) / denominator;
+        float rx0 = (intersectX - p0.x) / (p1.x - p0.x);
+        float ry0 = (intersectY - p0.y) / (p1.y - p0.y);
+
+        float rx1 = (intersectX - p2.x) / (p3.x - p2.x);
+        float ry1 = (intersectY - p2.y) / (p3.y - p2.y);
+
+        if (((rx0 >= 0 && rx0 <= 1) || (ry0 >= 0 && ry0 <= 1)) &&
+            ((rx1 >= 0 && rx1 <= 1) || (ry1 >= 0 && ry1 <= 1)))
+        {
+            intersectPoints.x = intersectX;
+            intersectPoints.y = intersectY;
+            return intersectPoints;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public bool? DoesIntersectionPointsOnAdjacentSides(List<Vector2?> sidesList)
+    {
+        for (int i = 0; i < sidesList.Count - 1; i++)
+        {
+            if (sidesList[i] != null)
+            {
+                for (int k = i + 1; k < sidesList.Count; k++)
+                {
+                    if (sidesList[k] != null)
+                        return Mathf.Abs(k - i) == 2 ? true : false;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Vector2[] GetPointsOfTriangle(Vector3[] squareCorners, List<Vector2?> intersectPoints)
+    {
+        Vector2[] points = new Vector2[3];
+
+        if (intersectPoints[0] != null && intersectPoints[1] != null)
+        {
+            points[0] = squareCorners[1];
+            points[1] = (Vector2)intersectPoints[0];
+            points[2] = (Vector2)intersectPoints[1];
+            return points;
+
+        }
+        else if (intersectPoints[1] != null && intersectPoints[2] != null)
+        {
+            points[0] = squareCorners[2];
+            points[1] = (Vector2)intersectPoints[1];
+            points[2] = (Vector2)intersectPoints[2];
+            return points;
+        }
+        else if (intersectPoints[2] != null && intersectPoints[3] != null)
+        {
+            points[0] = squareCorners[3];
+            points[1] = (Vector2)intersectPoints[2];
+            points[2] = (Vector2)intersectPoints[3];
+            return points;
+        }
+        else
+        {
+            points[0] = squareCorners[0];
+            points[1] = (Vector2)intersectPoints[3];
+            points[2] = (Vector2)intersectPoints[0];
+            return points;
+        }
+    }
+
+    public float CalculateTriangeArea(Vector2 pointA, Vector2 pointB, Vector2 pointC)
+    {
+        // first Calculate Sides
+        float BCx, BCy;
+        BCx = Mathf.Pow(pointB.x - pointC.x, 2);
+        BCy = Mathf.Pow(pointB.y - pointC.y, 2);
+        float sideA = Mathf.Sqrt(BCx + BCy);
+
+        float ACx, ACy;
+        ACx = Mathf.Pow(pointA.x - pointC.x, 2);
+        ACy = Mathf.Pow(pointA.y - pointC.y, 2);
+        float sideB = Mathf.Sqrt(ACx + ACy);
+
+        float ABx, ABy;
+        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
+        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
+        float sideC = Mathf.Sqrt(ABx + ABy);
+
+        // Now calculate Area but i dont have everything. I need triangle Perimeter and Semiperimeter 
+
+        float perimetr = sideA + sideB + sideC;
+        float semiperimeter = perimetr / 2;
+        float area = Mathf.Sqrt(semiperimeter * (semiperimeter - sideA) * (semiperimeter - sideB) * (semiperimeter - sideC));
+
+        return area;
+    }
+
+    // Parametrs must be adjected points othervise you will calculate hypotenuse like a side
+    public float CalculateSquareArea(Vector2 pointA, Vector2 pointB)
+    {
+        float ABx, ABy;
+        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
+        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
+        float side = Mathf.Sqrt(ABx + ABy);
+
+        return side * side;
+    }
+
 
     // Map Terrain Varianty
     private void GenerateRandomTerrain()

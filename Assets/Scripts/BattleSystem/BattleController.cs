@@ -33,6 +33,13 @@ public class BattleController : MonoBehaviour
     [Tooltip("In MiliSec")]
     [SerializeField] private int _delayWalk = 350;
 
+    [Header("Cursor Images")]
+    [SerializeField] Sprite attackAction;
+    [SerializeField] Sprite outOfRange;
+    [SerializeField] Sprite healAction;
+    [SerializeField] Sprite moveAction;
+
+
     [Space]
     public GameObject _unit;
 
@@ -238,7 +245,11 @@ public class BattleController : MonoBehaviour
         // Testing Space middle mouse button
         if (Input.GetMouseButtonDown(2))
         {
-            actionOnSquare = TryGetAim();
+            actionOnSquare = RaycastTargetSquar();
+            if (actionOnSquare != null)
+            {
+                TryGetAim(actionOnSquare);
+            }
         }
 
 
@@ -322,13 +333,13 @@ public class BattleController : MonoBehaviour
         return resultPlayerInput;
     }
 
-    private Squar TryGetAim()
+    private bool TryGetAim(Squar targetSquare)
     {
-        Squar actionOnSquare;
-        bool isAimClean = true;
-        actionOnSquare = RaycastTargetSquar();
+       // Squar actionOnSquare;
+        bool tryAim = true;
+       // actionOnSquare = RaycastTargetSquar();
 
-        if (actionOnSquare == null)
+        if (targetSquare == null)
         {
             foreach (var sq in shootPathSq)
             {
@@ -352,7 +363,7 @@ public class BattleController : MonoBehaviour
             Vector3[] endRectCornrs = new Vector3[4];
 
             center.GetComponent<RectTransform>().GetWorldCorners(startRectCornrs);
-            actionOnSquare.GetComponent<RectTransform>().GetWorldCorners(endRectCornrs);
+            targetSquare.GetComponent<RectTransform>().GetWorldCorners(endRectCornrs);
 
             Vector2 startSqCenter = new Vector2((startRectCornrs[0].x + startRectCornrs[3].x) / 2, (startRectCornrs[0].y + startRectCornrs[1].y) / 2);
             Vector2 endSqCenter = new Vector2((endRectCornrs[0].x + endRectCornrs[3].x) / 2, (endRectCornrs[0].y + endRectCornrs[1].y) / 2);
@@ -373,28 +384,28 @@ public class BattleController : MonoBehaviour
                 List<Vector2?> intersectPoints = new List<Vector2?>();
                 sq.GetComponent<RectTransform>().GetWorldCorners(squareCorners);
 
-                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[0], squareCorners[1]));
-                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[1], squareCorners[2]));
-                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[2], squareCorners[3]));
-                intersectPoints.Add(SegmentIntersect(startSqCenter, endSqCenter, squareCorners[3], squareCorners[0]));
+                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[0], squareCorners[1]));
+                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[1], squareCorners[2]));
+                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[2], squareCorners[3]));
+                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[3], squareCorners[0]));
 
-                bool? result = DoesIntersectionPointsOnAdjacentSides(intersectPoints);
+                bool? result = _battleGridController.DoesIntersectionPointsOnAdjacentSides(intersectPoints);
 
                 if (result == true) // pokud jsou protilehlé nepravidelny čtyřuhelnik
                 {
                     //Debug.Log("Je nepravidelny čtyřuhelnik -> " + sq.xCoordinate + "  " + sq.yCoordinate);
                     if (sq.IsSquearBlocked)
                     {
-                        isAimClean = false;
+                        tryAim = false;
                     }
                 }
                 else if (result == false) // pokud sousedí trjhelnik
                 {
                     if (sq.IsSquearBlocked)
                     {
-                        Vector2[] pointsOfTriangle = GetPointsOfTriangle(squareCorners, intersectPoints);
-                        float triangleArea = CalculateTriangeArea(pointsOfTriangle[0], pointsOfTriangle[1], pointsOfTriangle[2]);
-                        float squareArea = CalculateSquareArea(squareCorners[0], squareCorners[1]);
+                        Vector2[] pointsOfTriangle = _battleGridController.GetPointsOfTriangle(squareCorners, intersectPoints);
+                        float triangleArea = _battleGridController.CalculateTriangeArea(pointsOfTriangle[0], pointsOfTriangle[1], pointsOfTriangle[2]);
+                        float squareArea = _battleGridController.CalculateSquareArea(squareCorners[0], squareCorners[1]);
 
                         if (triangleArea < (squareArea * 0.33))
                         {
@@ -403,11 +414,11 @@ public class BattleController : MonoBehaviour
                             {
                                 if (shootPathSq.Contains(item) && item.IsSquearBlocked)
                                 {
-                                    isAimClean = false;
+                                    tryAim = false;
                                 }
                             }
 
-                            // var direction = GetAimDirection(startSqCenter, endSqCenter);
+                             //var direction = GetAimDirection(startSqCenter, endSqCenter);
                            // Debug.Log("Je mensi triangle než 33% -> " + sq.xCoordinate + "  " + sq.yCoordinate);
                             sq.TestingShowShootPathLesserThan(true);
                         }
@@ -434,8 +445,8 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        Debug.Log("Attack status range :  " + isAimClean);
-        return actionOnSquare;
+       // Debug.Log("Attack status range :  " + isAimClean);
+        return tryAim;
     }
 
     public void RecalculatePosibleActions(ResultTurnAction playerInput)
@@ -1017,21 +1028,42 @@ public class BattleController : MonoBehaviour
 
     private void SetCursor(Squar sq)
     {
-        sq.CursorEvent.canAttack = false;
-        sq.CursorEvent.canMove = false;
+        sq.CursorEvent.action = BattleController.BattleAction.Move;
 
         if (sq.UnitInSquar is null)
         {
             if (_squaresInUnitMoveRange.Contains(sq))
             {
-                sq.CursorEvent.canMove = true;
+                sq.CursorEvent.action = BattleController.BattleAction.Move;
+                sq.SetActionMark(moveAction);
             }
         }
         else
         {
             if (_squaresInUnitAttackRange.Contains(sq) && sq.UnitInSquar._team != _activeUnit._team)
             {
-                sq.CursorEvent.canAttack = true;
+                if(_activeUnit.ActiveWeapon.IsMelleWeapon)
+                {
+                    sq.CursorEvent.action = BattleController.BattleAction.Attack;
+                    sq.SetActionMark(attackAction);
+                }
+                else
+                {
+                    if (TryGetAim(sq))
+                    {
+                        sq.CursorEvent.action = BattleController.BattleAction.Attack;
+                        sq.SetActionMark(attackAction);
+                    }
+                    else
+                    {
+                        sq.SetActionMark(outOfRange);
+                    }
+                }
+            }
+            else
+            {
+                sq.CursorEvent.action = BattleController.BattleAction.Heal;
+                sq.SetActionMark(healAction);
             }
         }
     }
@@ -1133,167 +1165,52 @@ public class BattleController : MonoBehaviour
 
 
 
-    public Vector2? SegmentIntersect (Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3)
-    {
-        Vector2 intersectPoints = new Vector2(0,0);
-        float A1 = p1.y - p0.y;
-        float B1 = p0.x - p1.x;
-        float C1 = A1 * p0.x + B1 * p0.y;
-        float A2 = p3.y - p2.y;
-        float B2 = p2.x - p3.x;
-        float C2 = A2 * p2.x + B2 * p2.y;
-        float denominator = A1 * B2 - A2 * B1;
 
-        if(denominator == 0)
-        {
-            return null;
-        }
 
-        float intersectX = (B2 * C1 - B1 * C2) / denominator;
-        float intersectY = (A1 * C2 - A2 * C1) / denominator;
-        float rx0 = (intersectX - p0.x) / (p1.x - p0.x);
-        float ry0 = (intersectY - p0.y) / (p1.y - p0.y);
-
-        float rx1 = (intersectX - p2.x) / (p3.x - p2.x);
-        float ry1 = (intersectY - p2.y) / (p3.y - p2.y);
-
-        if (((rx0 >= 0 && rx0 <= 1) || (ry0 >= 0 && ry0 <= 1)) && 
-            ((rx1 >= 0 && rx1 <= 1) || (ry1 >= 0 && ry1 <= 1)))
-        {
-            intersectPoints.x = intersectX;
-            intersectPoints.y = intersectY;
-            return intersectPoints;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public bool? DoesIntersectionPointsOnAdjacentSides(List<Vector2?> sidesList)
-    {
-        for (int i = 0; i < sidesList.Count - 1; i++)
-        {
-            if(sidesList[i] != null)
-            {
-                for (int k = i + 1; k < sidesList.Count; k++)
-                {
-                    if(sidesList[k] != null)
-                        return Math.Abs(k - i) == 2 ? true : false;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private Vector2[] GetPointsOfTriangle(Vector3[] squareCorners, List<Vector2?> intersectPoints)
-    {
-        Vector2[] points = new Vector2[3];
-
-        if (intersectPoints[0] != null && intersectPoints[1] != null)
-        {
-            points[0] = squareCorners[1];
-            points[1] = (Vector2)intersectPoints[0];
-            points[2] = (Vector2)intersectPoints[1];
-            return points;
-
-        }
-        else if (intersectPoints[1] != null && intersectPoints[2] != null)
-        {
-            points[0] = squareCorners[2];
-            points[1] = (Vector2)intersectPoints[1];
-            points[2] = (Vector2)intersectPoints[2];
-            return points;
-        }
-        else if (intersectPoints[2] != null && intersectPoints[3] != null)
-        {
-            points[0] = squareCorners[3];
-            points[1] = (Vector2)intersectPoints[2];
-            points[2] = (Vector2)intersectPoints[3];
-            return points;
-        }
-        else
-        {
-            points[0] = squareCorners[0];
-            points[1] = (Vector2)intersectPoints[3];
-            points[2] = (Vector2)intersectPoints[0];
-            return points;
-        }
-    }
-
-    private float CalculateTriangeArea(Vector2 pointA, Vector2 pointB, Vector2 pointC)
-    {
-        // first Calculate Sides
-        float BCx, BCy;
-        BCx = Mathf.Pow(pointB.x - pointC.x, 2);
-        BCy = Mathf.Pow(pointB.y - pointC.y, 2);
-        float sideA = Mathf.Sqrt(BCx + BCy);
-
-        float ACx, ACy;
-        ACx = Mathf.Pow(pointA.x - pointC.x, 2);
-        ACy = Mathf.Pow(pointA.y - pointC.y, 2);
-        float sideB = Mathf.Sqrt(ACx + ACy);
-
-        float ABx, ABy;
-        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
-        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
-        float sideC = Mathf.Sqrt(ABx + ABy);
-
-        // Now calculate Area but i dont have everything. I need triangle Perimeter and Semiperimeter 
-
-        float perimetr = sideA + sideB + sideC;
-        float semiperimeter = perimetr / 2;
-        float area = Mathf.Sqrt(semiperimeter * (semiperimeter - sideA) * (semiperimeter - sideB) * (semiperimeter - sideC));
-
-        return area;
-    }
-
-    // Parametrs must be adjected points othervise you will calculate hypotenuse like a side
-    private float CalculateSquareArea (Vector2 pointA, Vector2 pointB)
-    {
-        float ABx, ABy;
-        ABx = Mathf.Pow(pointA.x - pointB.x, 2);
-        ABy = Mathf.Pow(pointA.y - pointB.y, 2);
-        float side = Mathf.Sqrt(ABx + ABy);
-
-        return side * side;
-    }
-
-    //private AimDirection GetAimDirection(Vector2 startPoint , Vector2 endPoint)
+    //private AimDirection GetAimDirection(Vector2 startPoint, Vector2 endPoint)
     //{
     //    float x = startPoint.x - endPoint.x;
     //    float y = startPoint.y - endPoint.y;
 
-    //    if( x > 0 && y < 0)
+    //    if (x > 0 && y < 0)
     //    {
-    //        return AimDirection.leftUp;
+    //        //leftUp;
+    //        if (Math.Abs(x) > Math.Abs(y))
+    //        {
+    //            return AimDirection.left;
+    //        }
+    //        else
+    //        {
+    //            return AimDirection.up;
+    //        }
     //    }
     //    else if (x < 0 && y > 0)
     //    {
-    //        return AimDirection.rightDown;
+    //       // return AimDirection.rightDown;
     //    }
     //    else if (x > 0 && y > 0)
     //    {
-    //        return AimDirection.leftDown;
+    //      //  return AimDirection.leftDown;
     //    }
     //    else if (x < 0 && y < 0)
     //    {
-    //        return AimDirection.rightUp;
+    //       // return AimDirection.rightUp;
     //    }
     //    else
     //    {
     //        Debug.LogWarning("Something wrong with AimDirection contact Developers");
     //        return AimDirection.errorDirection;
     //    }
+
+    //    return AimDirection.up;
     //}
 
     //public enum AimDirection
     //{
-    //    rightUp,
-    //    rightDown,
-    //    leftUp,
-    //    leftDown,
+    //    right,
+    //    left,
+    //    up,
+    //    down,
     //    errorDirection
     //}
 

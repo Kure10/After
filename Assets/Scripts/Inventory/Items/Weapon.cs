@@ -25,6 +25,16 @@ public class Weapon : Item
 
     public bool IsIndestructible { get { return this.isIndestructible; } set { this.isIndestructible = value; } }
 
+    public bool IsMelleWeapon 
+    { get
+        {
+            if(rangeMin == 1 && rangeMin == rangeMax)
+                return true;
+           
+            return false;
+        }
+    }
+
     public void SetupItem(int _useCount, bool _isRepairable, string _name, ItemType _type, Sprite _sprite)
     {
         base.SetupItem(_name, _type, _sprite);
