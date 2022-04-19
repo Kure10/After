@@ -6,12 +6,26 @@ namespace Audio
     [System.Serializable]
     public class AudioOption
     {
-        public SFXEvent SFX_Event = SFXEvent.NoEvent;
-        public AudioClip clip;
+        public List<AudioBase> audiobases = new List<AudioBase>();
         private AudioSource source;
 
         public AudioSource Source { get { return source; } set { source = value; } }
     }
+
+    [System.Serializable]
+    public class AudioBase
+    {
+        public SFXEvent SFX_Event = SFXEvent.NoEvent;
+        public AudioClip clip;
+    }
+
+    // Todo Pokud bude v AudioManageru v metode PlayAudio || StopAudio || RestartAudio moc parametru.
+    // vytvorim novou clasu pro definovani techto parametru abych je tam mohl nacpat...
+    //public class AudioPreSettings
+    //{
+    //    public SFXEvent SFX_Event = SFXEvent.NoEvent;
+
+    //}
 
     public enum AudioType
     {

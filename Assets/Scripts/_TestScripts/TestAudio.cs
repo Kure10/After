@@ -25,15 +25,15 @@ namespace Audio
             }
             if (Input.GetKeyUp(KeyCode.Y))
             {
-                audioController.PlayAudio(AudioType.SFX_01, true);
+                AudioManager.instance.PlayAudio(Audio.AudioType.BTN_01, true , SFX_Event:SFXEvent.ButtonClick);
             }
             if (Input.GetKeyUp(KeyCode.H))
             {
-                audioController.StopAudio(AudioType.SFX_01, true);
+                audioController.StopAudio(Audio.AudioType.BTN_01, true);
             }
             if (Input.GetKeyUp(KeyCode.N))
             {
-                audioController.RestartAudio(AudioType.SFX_01, true);
+                audioController.RestartAudio(AudioType.BTN_01, true);
             }
         }
     }

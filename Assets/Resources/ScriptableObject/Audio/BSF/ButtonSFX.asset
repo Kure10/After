@@ -10,8 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd9b0c057a6b49f49af721e7f9e247de, type: 3}
-  m_Name: Background
+  m_Name: ButtonSFX
   m_EditorClassIdentifier: 
-  type: 3
-  clip: {fileID: 8300000, guid: 9a864a61d7fd14c13a927b4f824b04b1, type: 3}
-  audioEvent: 0
+  type: 2
+  audioOption:
+    audiobases:
+    - SFX_Event: 1
+      clip: {fileID: 8300000, guid: 558480364214cac4c8f753898c426113, type: 3}
+    - SFX_Event: 2
+      clip: {fileID: 8300000, guid: 9a44ab67110d0ae45820ac2777b3d23d, type: 3}

@@ -17,7 +17,8 @@ namespace Audio
         private Hashtable m_AudioTable; // relationship of audio types (key) and tracks (value)
         private Hashtable m_JobTable;   // relationship between audio types (key) and jobs (value)
 
-        private string path = "ScriptableObject/Audio/Background";
+        private string pathBackground = "ScriptableObject/Audio/Background";
+        private string pathBSF = "ScriptableObject/Audio/BSF";
 
         //[System.Serializable]
         //public class AudioObject
@@ -39,16 +40,17 @@ namespace Audio
             public AudioType type;
             public bool fade;
             public WaitForSeconds delay;
+            public SFXEvent SFX_Event = SFXEvent.NoEvent;
 
-            public AudioJob(AudioAction _action, AudioType _type, bool _fade, float _delay)
+            public AudioJob(AudioAction _action, AudioType _type, bool _fade, float _delay, SFXEvent _SFX_Event = SFXEvent.NoEvent)
             {
                 action = _action;
                 type = _type;
                 fade = _fade;
                 delay = _delay > 0f ? new WaitForSeconds(_delay) : null;
+                SFX_Event = _SFX_Event;
             }
         }
-
 
         private void Awake()
         {
@@ -63,9 +65,10 @@ namespace Audio
             Dispose();
         }
 
-        public void PlayAudio(AudioType _type, bool _fade = false, float _delay = 0.0F)
+        // Todo Mysteri Error když je fade defaultni tak nekdy corutina je null WTf ?? WTF ?? to same s _delay
+        public void PlayAudio(AudioType _type, bool _fade , float _delay = 0.0F , SFXEvent SFX_Event = SFXEvent.NoEvent)
         {
-            AddJob(new AudioJob(AudioAction.START, _type, _fade, _delay));
+            AddJob(new AudioJob(AudioAction.START, _type, _fade, _delay, SFX_Event));
         }
 
         public void StopAudio(AudioType _type, bool _fade = false, float _delay = 0.0F)
@@ -102,6 +105,12 @@ namespace Audio
             RemoveConflictingJobs(_job.type);
 
             Coroutine _jobRunner = StartCoroutine(RunAudioJob(_job));
+            if (_jobRunner == null)
+            {
+                Log("Audio JobRunner is null. Probably cant find audio or source OR mistery Error with button sound");
+                return;
+            }
+
             m_JobTable.Add(_job.type, _jobRunner);
             Log("Starting job on [" + _job.type + "] with operation: " + _job.action);
         }
@@ -150,7 +159,10 @@ namespace Audio
             if (_job.delay != null) yield return _job.delay;
 
             AudioOption audioOption = GetAudioOption(_job.type); // track existence should be verified by now
-            audioOption.Source.clip = audioOption.clip;
+            audioOption.Source.clip = GetAudioClip(audioOption, _job.SFX_Event);
+
+            if (audioOption.Source == null || audioOption.Source.clip == null)
+                Log("Source or clip is null. Check audioObject in unity.");
 
             float _initial = 0f;
             float _target = 1f;
@@ -201,7 +213,33 @@ namespace Audio
 
         private void GenerateAudioTable()
         {
-            AudioObject[] audioObjecs = (AudioObject[])UnityEngine.Resources.LoadAll<AudioObject>(path);
+            LoadAudioBackground();
+            LoadAudioBTNSound();
+        }
+
+        private void LoadAudioBTNSound()
+        {
+            AudioObject[] audioObjecs = (AudioObject[])UnityEngine.Resources.LoadAll<AudioObject>(pathBSF);
+
+            foreach (AudioObject _audioObj in audioObjecs)
+            {
+                // do not duplicate keys
+                if (m_AudioTable.ContainsKey(_audioObj.type))
+                {
+                    LogWarning("You are trying to register audio [" + _audioObj.type + "] that has already been registered.");
+                }
+                else
+                {
+                    _audioObj.audioOption.Source = ChoiseRightAudioSource(_audioObj.type);
+                    m_AudioTable.Add(_audioObj.type, _audioObj.audioOption);
+                    Log("Registering audio [" + _audioObj.type + "]");
+                }
+            }
+        }
+
+        private void LoadAudioBackground()
+        {
+            AudioObject[] audioObjecs = (AudioObject[])UnityEngine.Resources.LoadAll<AudioObject>(pathBackground);
 
             foreach (AudioObject _audioObj in audioObjecs)
             {
@@ -239,6 +277,9 @@ namespace Audio
                     break;
             }
 
+            if (source == null)
+                LogError($"Source is null. From audiotype {type}. Check references in script");
+
             return source;
         }
 
@@ -253,6 +294,28 @@ namespace Audio
             return (AudioOption)m_AudioTable[_type];
         }
 
+        private AudioClip GetAudioClip(AudioOption option , SFXEvent sfxEvent)
+        {
+            if (option.audiobases.Count <= 0)
+                LogError("GetAudioClip failed -> audio option is missing.");
+
+            // Todo Nahodny vyber ale pak v tom bude nejaky sofistikovanejsi system
+            if(sfxEvent == SFXEvent.NoEvent)
+            {
+                int count = option.audiobases.Count;
+                int rng = UnityEngine.Random.Range(0,count);
+                return option.audiobases[rng].clip;
+            }
+
+            foreach (AudioBase audioBase in option.audiobases)
+            {
+                if (audioBase.SFX_Event == sfxEvent)
+                    return audioBase.clip;
+            }
+
+            return null;
+        }
+
         private void Log(string _msg)
         {
             if (!debug) return;
@@ -263,6 +326,12 @@ namespace Audio
         {
             if (!debug) return;
             Debug.LogWarning("[Audio Controller]: " + _msg);
+        }
+
+        private void LogError(string _msg)
+        {
+            if (!debug) return;
+            Debug.LogError("[Audio Manager]: " + _msg);
         }
 
         private enum AudioAction

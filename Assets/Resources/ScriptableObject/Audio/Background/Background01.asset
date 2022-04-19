@@ -10,8 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd9b0c057a6b49f49af721e7f9e247de, type: 3}
-  m_Name: ButtonClick
+  m_Name: Background01
   m_EditorClassIdentifier: 
-  type: 2
-  clip: {fileID: 8300000, guid: 558480364214cac4c8f753898c426113, type: 3}
-  audioEvent: 1
+  type: 3
+  audioOption:
+    audiobases:
+    - SFX_Event: 0
+      clip: {fileID: 8300000, guid: 12733cf0cf4a0b6408bb66c4d430e3a1, type: 3}
+    - SFX_Event: 0
+      clip: {fileID: 8300000, guid: fa96a62fd7b334e40a60b6ec26b8e5ca, type: 3}
+    - SFX_Event: 0
+      clip: {fileID: 8300000, guid: 9a864a61d7fd14c13a927b4f824b04b1, type: 3}

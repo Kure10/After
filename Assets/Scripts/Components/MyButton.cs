@@ -36,9 +36,8 @@ public class MyButton : Button
                 //    break;
             }
 
-            if(AudioManager.instance != null)
-                AudioManager.instance.PlayAudio(audioType);
-            //  AudioManager.instance.PlayAudio(audioType, audioEvent, isButton: true);
+            if (AudioManager.instance != null && audioEvent != SFXEvent.NoEvent)
+                AudioManager.instance.PlayAudio(audioType, false, SFX_Event: audioEvent);
         }
 
         base.DoStateTransition(state, instant);
