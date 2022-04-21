@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Audio;
-using System;
+using UnityEngine.EventSystems;
 
-public class MyButton : Button
+public class MyButton : Button 
 {
 
     [SerializeField] Audio.AudioType audioType = Audio.AudioType.BTN_01;
@@ -19,11 +19,11 @@ public class MyButton : Button
         {
             audioEvent = SFXEvent.NoEvent;
 
-            Debug.Log("State-----:  " + state);
-
             switch (state)
             {
                 case SelectionState.Selected:
+                    audioEvent = Audio.SFXEvent.NoEvent;
+                    break;
                 case SelectionState.Highlighted:
                     audioEvent = Audio.SFXEvent.ButtonHover;
                     break;

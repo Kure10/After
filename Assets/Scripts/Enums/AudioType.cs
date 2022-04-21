@@ -38,6 +38,7 @@ namespace Audio
     public enum SFXEvent
     {
         NoEvent,
+        StartingSoundtrack,
         ButtonClick,
         ButtonHover,
         MapClose,

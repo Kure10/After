@@ -2,122 +2,128 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Audio;
+using System;
 
 public class SoundtrackPlayer : MonoBehaviour
 {
-    //[SerializeField] int randomLimit = 2;
-    //[SerializeField] AudioSource soundtrackSource;
-    //[SerializeField] private AudioObject _startingAudioObject = null;
+    [SerializeField] List<Audio.AudioType> backgroundTypes = new List<Audio.AudioType>();
 
-    //// private float _clipTimer = 0; možna pro komplexnejsi rešení..
+    [SerializeField] AudioSource soundtrackSource = null;
 
-    //private List<AudioObject> _backgroundAudioObjectList = new List<AudioObject>();
+    // relationship between Audio background Type and AudioOption
+    private Dictionary<Audio.AudioType, AudioOption> AudioBackgroundObject = new Dictionary<Audio.AudioType, AudioOption>(); 
+    private List<int> clipsAmount = new List<int>();
 
-    //private bool audioWasloaded = false;
+    private Audio.AudioType _type = Audio.AudioType.SoundBackground_01;
+    private SFXEvent _sfxEvent = SFXEvent.StartingSoundtrack;
 
-    //private void OnEnable()
-    //{
-    //  // AudioManager.AfterConfigurate += LoadBackgroundAudioObjects;
-    //}
+    private void OnEnable()
+    {
+         AudioManager.AfterConfiguration += LoadBackgroundAudioObjects;
+    }
 
-    //private void Start()
-    //{
-    //    LoadBackgroundAudioObjects();
-    //    PlayStartAudio();
-    //}
+    public void Start()
+    {
+        PrepareNewClipsByType(_type);
+        SoundtrackSettingsChange(_type, _sfxEvent);
+        _sfxEvent = SFXEvent.NoEvent;
+        MoveClipAtTheEndOfRow(0);
+    }
 
-    //private void Update()
-    //{
-    //    if(!soundtrackSource.isPlaying)
-    //    {
-    //        StartNewSoundtrackAudio();
-    //    }
-    //}
+    public void Update()
+    {
+        if (!soundtrackSource.isPlaying)
+        {
+            NewBackgroundAudio(_type);
+        }
+    }
 
-    //private void StartNewSoundtrackAudio ()
-    //{
-    //    int rng = Random.Range(0 ,_backgroundAudioObjectList.Count);
-    //    AudioClip clip = GetRandomClipFromAudioObject(_backgroundAudioObjectList[rng]);
-    //   // AudioManager.instance.PlayAudio(_backgroundAudioObjectList[rng].type, clip, soundtrackSource);
-    //}
+    public void SoundtrackSettingsChange(Audio.AudioType type, SFXEvent sfxEvent)
+    {
+        _sfxEvent = sfxEvent;
+        _type = type;
 
-    //private void PlayStartAudio()
-    //{
-    //    if (_startingAudioObject == null)
-    //        return;
+        NewBackgroundAudio(_type , _sfxEvent);
+    }
 
-    //    AudioClip startingAudioClip = GetRandomClipFromAudioObject(_startingAudioObject);
+    private void NewBackgroundAudio(Audio.AudioType type, SFXEvent sFXEvent = SFXEvent.NoEvent)
+    {
+        int numberOfClips = -1;
 
-    //    if (startingAudioClip == null)
-    //    {
-    //        Debug.LogWarning("There is no starting Audio. Maybe should be some");
-    //        startingAudioClip = GetRandomAudioClip();
-    //    }
+        if(sFXEvent == SFXEvent.NoEvent)
+        {
+            numberOfClips = NextPseudoRandomAudio(type);
+        }
+        else
+        {
+            AudioManager.instance.PlayAudio(type, true, SFX_Event: sFXEvent);
+            return;
+        }
 
-    // //   AudioManager.instance.PlayAudio(_startingAudioObject.type, startingAudioClip, soundtrackSource);
-    //}
+        AudioManager.instance.PlayAudio(type, true, numberOfNextClip: numberOfClips);
+    }
 
-    //private AudioClip GetRandomAudioClip()
-    //{
-    //    AudioClip startingAudioClip = null;
-    //    AudioObject audioObject = null;
-    //    if (_backgroundAudioObjectList.Count > 0)
-    //    {
-    //        int rngA = Random.Range(0, _backgroundAudioObjectList.Count);
-    //        audioObject = _backgroundAudioObjectList[rngA];
-    //    }
+    private int NextPseudoRandomAudio(Audio.AudioType type)
+    {
+        int numberOfClip = -1;
+        float startingRNg = 15;
+        float newgRNg = 0;
+        float step = (100 - startingRNg) / clipsAmount.Count + 0.1f;
+        newgRNg = startingRNg + newgRNg + step;
 
-    //    if (audioObject != null)
-    //    {
-    //        startingAudioClip = GetRandomClipFromAudioObject(audioObject);
-          
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("AudioObject is Null something is wrong");
-    //    }
+        for (int i = 0; i < clipsAmount.Count; i++)
+        {
+            float rng = UnityEngine.Random.Range(0f,100f);
+            if (rng <= newgRNg)
+            {
+                numberOfClip = clipsAmount[i];
+                MoveClipAtTheEndOfRow(numberOfClip);
+                break;
+            }
 
-    //    return startingAudioClip;
-    //}
+            newgRNg = newgRNg + step;
+        }
 
-    //private AudioClip GetRandomClipFromAudioObject(AudioObject audioObject)
-    //{
-    //    AudioClip startingAudioClip = null;
+        return numberOfClip;
+    }
 
-    //    if (audioObject.audioTrack.Length > 0)
-    //    {
-    //        int rng = Random.Range(0, audioObject.audioTrack.Length);
+    private void MoveClipAtTheEndOfRow(int numClip)
+    {
+        clipsAmount.Remove(numClip);
+        clipsAmount.Add(numClip);
+    }
 
-    //        if (audioObject.audioTrack[rng].clips.Count > 0)
-    //        {
-    //            int rngClips = Random.Range(0, audioObject.audioTrack[rng].clips.Count);
-    //            startingAudioClip = audioObject.audioTrack[rng].clips[rngClips];
-    //        }
-    //        else
-    //        {
-    //            Debug.LogWarning($"Starting Audio was not found. No clips in startingAudioTrack");
-    //        }
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning($"Starting Audio was not found. AudioTrack lenght is 0");
-    //    }
+    private void PrepareNewClipsByType (Audio.AudioType type)
+    {
+        clipsAmount.Clear();
+        foreach (KeyValuePair<Audio.AudioType, AudioOption> keyValue in AudioBackgroundObject)
+        {
+            if (keyValue.Key == type)
+            {
+                AudioOption tmp = keyValue.Value;
+                for (int i = 0; i < tmp.audiobases.Count; i++)
+                {
+                    clipsAmount.Add(i);
+                }
 
-    //    return startingAudioClip;
-    //}
+                break;
+            }
+        }
+    }
 
+    private void LoadBackgroundAudioObjects(Hashtable audioHash)
+    {
+        foreach (object type in backgroundTypes)
+        {
+            var audioType = (Audio.AudioType)type;
+            AudioOption audioOption = (AudioOption)audioHash[audioType];
 
-    //private void LoadBackgroundAudioObjects ()
-    //{
-    //    if (AudioManager.instance != null && !audioWasloaded)
-    //    {
-    //     //   _backgroundAudioObjectList.AddRange(AudioManager.instance.LoadBackgroundAudio());
-    //        audioWasloaded = true;
-    //    }
-    //}
+            AudioBackgroundObject.Add(audioType, audioOption);
+        }
+    }
 
-    //private void OnDisable()
-    //{
-    //    AudioManager.AfterConfigurate -= LoadBackgroundAudioObjects;
-    //}
+    private void OnDisable()
+    {
+        AudioManager.AfterConfiguration -= LoadBackgroundAudioObjects;
+    }
 }

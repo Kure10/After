@@ -9,6 +9,8 @@ namespace Audio
     {
         public static AudioManager instance;
 
+        public static Action<Hashtable> AfterConfiguration;
+
         public bool debug;
 
         [SerializeField] AudioSource backgroundAudioSource;
@@ -20,20 +22,6 @@ namespace Audio
         private string pathBackground = "ScriptableObject/Audio/Background";
         private string pathBSF = "ScriptableObject/Audio/BSF";
 
-        //[System.Serializable]
-        //public class AudioObject
-        //{
-        //    public AudioType type;
-        //    public AudioClip clip;
-        //}
-
-        //[System.Serializable]
-        //public class AudioTrack
-        //{
-        //    public AudioSource source;
-        //    public AudioObject[] audio;
-        //}
-
         private class AudioJob
         {
             public AudioAction action;
@@ -41,14 +29,16 @@ namespace Audio
             public bool fade;
             public WaitForSeconds delay;
             public SFXEvent SFX_Event = SFXEvent.NoEvent;
+            public int numberOfNextClip = -1;
 
-            public AudioJob(AudioAction _action, AudioType _type, bool _fade, float _delay, SFXEvent _SFX_Event = SFXEvent.NoEvent)
+            public AudioJob(AudioAction _action, AudioType _type, bool _fade, float _delay, SFXEvent _SFX_Event = SFXEvent.NoEvent, int _numberOfNextClip = -1)
             {
                 action = _action;
                 type = _type;
                 fade = _fade;
                 delay = _delay > 0f ? new WaitForSeconds(_delay) : null;
                 SFX_Event = _SFX_Event;
+                numberOfNextClip = _numberOfNextClip;
             }
         }
 
@@ -60,15 +50,20 @@ namespace Audio
             }
         }
 
+        private void Start()
+        {
+            AfterConfiguration.Invoke(m_AudioTable);
+        }
+
         private void OnDisable()
         {
             Dispose();
         }
 
         // Todo Mysteri Error když je fade defaultni tak nekdy corutina je null WTf ?? WTF ?? to same s _delay
-        public void PlayAudio(AudioType _type, bool _fade , float _delay = 0.0F , SFXEvent SFX_Event = SFXEvent.NoEvent)
+        public void PlayAudio(AudioType _type, bool _fade , float _delay = 0.0F , SFXEvent SFX_Event = SFXEvent.NoEvent, int numberOfNextClip = -1)
         {
-            AddJob(new AudioJob(AudioAction.START, _type, _fade, _delay, SFX_Event));
+            AddJob(new AudioJob(AudioAction.START, _type, _fade, _delay, SFX_Event, numberOfNextClip));
         }
 
         public void StopAudio(AudioType _type, bool _fade = false, float _delay = 0.0F)
@@ -159,13 +154,13 @@ namespace Audio
             if (_job.delay != null) yield return _job.delay;
 
             AudioOption audioOption = GetAudioOption(_job.type); // track existence should be verified by now
-            audioOption.Source.clip = GetAudioClip(audioOption, _job.SFX_Event);
+            audioOption.Source.clip = GetAudioClip(audioOption, _job.SFX_Event, _job.numberOfNextClip);
 
             if (audioOption.Source == null || audioOption.Source.clip == null)
                 Log("Source or clip is null. Check audioObject in unity.");
 
             float _initial = 0f;
-            float _target = 1f;
+            float _target = 0.3f;
             switch (_job.action)
             {
                 case AudioAction.START:
@@ -175,7 +170,7 @@ namespace Audio
                     audioOption.Source.Stop();
                     break;
                 case AudioAction.STOP:
-                    _initial = 1f;
+                    _initial = 0.3f;
                     _target = 0f;
                     break;
                 case AudioAction.RESTART:
@@ -294,17 +289,22 @@ namespace Audio
             return (AudioOption)m_AudioTable[_type];
         }
 
-        private AudioClip GetAudioClip(AudioOption option , SFXEvent sfxEvent)
+        private AudioClip GetAudioClip(AudioOption option , SFXEvent sfxEvent, int clipNumber)
         {
             if (option.audiobases.Count <= 0)
                 LogError("GetAudioClip failed -> audio option is missing.");
 
-            // Todo Nahodny vyber ale pak v tom bude nejaky sofistikovanejsi system
             if(sfxEvent == SFXEvent.NoEvent)
             {
                 int count = option.audiobases.Count;
-                int rng = UnityEngine.Random.Range(0,count);
-                return option.audiobases[rng].clip;
+
+                if (clipNumber!= -1 && clipNumber <= count)
+                    return option.audiobases[clipNumber].clip;
+                else
+                {
+                    int rng = UnityEngine.Random.Range(0, count);
+                    return option.audiobases[rng].clip;
+                }
             }
 
             foreach (AudioBase audioBase in option.audiobases)
