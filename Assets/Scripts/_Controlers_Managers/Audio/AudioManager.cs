@@ -15,6 +15,7 @@ namespace Audio
 
         [SerializeField] AudioSource backgroundAudioSource;
         [SerializeField] AudioSource buttonAudioSource;
+        [SerializeField] AudioSource enviromentAudioSource;
 
         private Hashtable m_AudioTable; // relationship of audio types (key) and tracks (value)
         private Hashtable m_JobTable;   // relationship between audio types (key) and jobs (value)
@@ -264,6 +265,9 @@ namespace Audio
                     break;
                 case AudioType.BTN_01:
                     source = buttonAudioSource;
+                    break;
+                case AudioType.SoundEnviroment_01:
+                    source = enviromentAudioSource;
                     break;
                 case AudioType.SoundBackground_01:
                     source = backgroundAudioSource;

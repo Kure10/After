@@ -32,7 +32,8 @@ namespace Audio
         None,
         SFX_01,
         BTN_01,
-        SoundBackground_01
+        SoundBackground_01,
+        SoundEnviroment_01
     }
 
     public enum SFXEvent
