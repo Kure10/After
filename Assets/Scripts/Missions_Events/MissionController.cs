@@ -283,7 +283,7 @@ public class MissionController : MonoBehaviour
     private float CalculateTime()
     {
         float accumulatedTime = 0;
-        accumulatedTime += Time.deltaTime * theTC.TimePointMultiplier();
+        accumulatedTime += Time.deltaTime * theTC.TimePointMultiplier;
 
         return accumulatedTime;
     }

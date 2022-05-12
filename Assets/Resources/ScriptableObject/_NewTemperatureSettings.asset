@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80cb72cbde7ef540890e34613390a51, type: 3}
+  m_Name: _NewTemperatureSettings
+  m_EditorClassIdentifier: 
+  Spring:
+    season: 4
+    FirstMonth:
+      normalMinDayTemp: -1
+      normalMaxDayTemp: 15
+      amountAnomalyColdDays: 1
+      anomalyColdDayTemperature: 7
+      amountAnomalyHotDays: 1
+      anomalyHotDayTemperature: 0
+    SecondMonth:
+      normalMinDayTemp: 3
+      normalMaxDayTemp: 14
+      amountAnomalyColdDays: 1
+      anomalyColdDayTemperature: 10
+      amountAnomalyHotDays: 1
+      anomalyHotDayTemperature: -4
+    ThirdMonth:
+      normalMinDayTemp: 7
+      normalMaxDayTemp: 24
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: 0
+  Summer:
+    season: 3
+    FirstMonth:
+      normalMinDayTemp: 3
+      normalMaxDayTemp: 26
+      amountAnomalyColdDays: 1
+      anomalyColdDayTemperature: 9
+      amountAnomalyHotDays: 1
+      anomalyHotDayTemperature: 7
+    SecondMonth:
+      normalMinDayTemp: 3
+      normalMaxDayTemp: 29
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: 0
+    ThirdMonth:
+      normalMinDayTemp: 6
+      normalMaxDayTemp: 33
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: 0
+  Autumn:
+    season: 2
+    FirstMonth:
+      normalMinDayTemp: -3
+      normalMaxDayTemp: 18
+      amountAnomalyColdDays: 1
+      anomalyColdDayTemperature: 10
+      amountAnomalyHotDays: 1
+      anomalyHotDayTemperature: 0
+    SecondMonth:
+      normalMinDayTemp: -8
+      normalMaxDayTemp: 12
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: 0
+    ThirdMonth:
+      normalMinDayTemp: -8
+      normalMaxDayTemp: 7
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: 0
+  Winter:
+    season: 1
+    FirstMonth:
+      normalMinDayTemp: -8
+      normalMaxDayTemp: 5
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 1
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: -20
+    SecondMonth:
+      normalMinDayTemp: -10
+      normalMaxDayTemp: 1
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: -20
+    ThirdMonth:
+      normalMinDayTemp: -5
+      normalMaxDayTemp: 5
+      amountAnomalyColdDays: 0
+      anomalyColdDayTemperature: 0
+      amountAnomalyHotDays: 0
+      anomalyHotDayTemperature: -20

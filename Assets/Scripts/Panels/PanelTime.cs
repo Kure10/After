@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = System.Object;
+using Enviroment;
 
 public class PanelTime : MonoBehaviour
 {
 
-    //[Header("Setup")]
     public Text textTime, textDays, textTimeSmall , TextDaysSmall;
     public Text speedStatus;
     public Button pauseButton;
@@ -17,6 +15,8 @@ public class PanelTime : MonoBehaviour
     private float blinkingTime = 0f;
 
     [SerializeField] EventController eventController;
+
+    [SerializeField] Text CelsiumText;
 
     private bool wasPauseBefore;
 
@@ -31,18 +31,17 @@ public class PanelTime : MonoBehaviour
             DisplayStatus(value);
         }
     }
-    private UInt32 gameTimer;
-    private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
 
+    private readonly List<string> listOfTimeStatus = new List<string>() { "Very slow", "Slow", "Normal", "Fast", "Very fast" };
 
     // Start is called before the first frame update
     void Start()
     {
-        TimeControl.OnTimeChanged += TimeChanged;
+        TimeControl.OnDateChanged += DisplayTime;
         timeStatus = 0;
         DisplayStatus(timeStatus);
-        gameTimer = 0;
         paused = false;
+        TimeControl.OnTimeChangedEvery10Mins += DisplayTemperature;
     }
 
     void Update()
@@ -67,10 +66,6 @@ public class PanelTime : MonoBehaviour
             if (pauseButton != null) // Tohle jsem pridal jenom aby me to nehazelo error... V mojí scene.
                 pauseButton.GetComponent<Image>().CrossFadeAlpha(1, 0.2f, true);
         }
-    }
-    void OnDestroy()
-    {
-        TimeControl.OnTimeChanged -= TimeChanged;
     }
 
     public void Pause(bool forcePause = false)
@@ -192,37 +187,26 @@ public class PanelTime : MonoBehaviour
         }
     }
 
-    private int timeRemain = 0;
-    private void TimeChanged(int timePoints)
+    public void DisplayTime(TimeControl.GameDateTime gameDate)
     {
-        //10 timePoints = 5s
-        var tpToAdd = timePoints + timeRemain;
-        gameTimer += (uint)(tpToAdd / 2);
-        timeRemain = tpToAdd % 2;
-        DisplayTime();
-    }
-
-
-
-    public void DisplayTime()
-    {
-        int seconds = (int)(gameTimer % 60);
-        int minutes = (int)(gameTimer / 60) % 60;
-        int hours = (int)(gameTimer / 3600) % 24;
-        int days = (int)(gameTimer / 86400); 
-                                             
-
-        string sec = seconds.ToString("D2");
-        string min = minutes.ToString("D2");
-        string hour = hours.ToString("D2");
-        string dayS = days.ToString();
+        string sec = gameDate.sec.ToString("D2");
+        string min = gameDate.Min.ToString("D2");
+        string hour = gameDate.Hours.ToString("D2");
+        string dayS = gameDate.Day.ToString();
 
 
         textTime.text = $"{hour}:{min}:{sec}";
         textTimeSmall.text = $"{hour}:{min}:{sec}";
         // days
-        textDays.text = dayS;
-        TextDaysSmall.text = dayS;
+
+        textDays.text = $"{gameDate.GetMonth}  {gameDate.GetDayInMonth}";
+        TextDaysSmall.text = $"{gameDate.GetMonth}  {gameDate.GetDayInMonth}";
+    }
+
+    private void DisplayTemperature(TimeControl.GameDateTime gameDate)
+    {
+        float celsium = TemperatureController.GetTemperatureInCelsia;
+        CelsiumText.text = celsium.ToString("0.0");
     }
 
     private void DisplayStatus(int speed)
@@ -247,6 +231,12 @@ public class PanelTime : MonoBehaviour
         {
             DecreaseTime();
         }
+    }
+
+    void OnDestroy()
+    {
+        TimeControl.OnDateChanged -= DisplayTime;
+        TimeControl.OnTimeChangedEvery10Mins -= DisplayTemperature;
     }
 
 }

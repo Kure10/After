@@ -60,7 +60,7 @@ public class Move : Command
             var animator = Target.GetComponent<Animator>();
             animator.SetBool(IsMoving, true);
         }
-        accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
+        accumulatedTime += Time.deltaTime * tc.TimePointMultiplier;
         //in case of more then one time point from last frame, skip rendering of previous actions
         while (accumulatedTime > speed)
         {
@@ -219,7 +219,7 @@ public class Build : Command
     }
     public override Result Execute()
     {
-        accumulatedTime += Time.deltaTime * tc.TimePointMultiplier();
+        accumulatedTime += Time.deltaTime * tc.TimePointMultiplier;
         
         return Result.Success;
     }
