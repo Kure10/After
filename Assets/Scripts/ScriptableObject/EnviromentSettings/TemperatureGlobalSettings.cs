@@ -3,47 +3,50 @@ using System;
 
 namespace Enviroment
 {
-    [CreateAssetMenu(menuName = "ScriptableObject/TemperatureSettings", fileName = "_NewTemperatureSettings")]
+    [CreateAssetMenu(menuName = "ScriptableObject/Enviroment/TemperatureSettings", fileName = "_NewTemperatureSettings")]
     public class TemperatureGlobalSettings : ScriptableObject
     {
-        [Header("Seasons")]
-        public TemperatureSeasonSettings Spring;
-
-        public TemperatureSeasonSettings Summer;
-
-        public TemperatureSeasonSettings Autumn;
-
-        public TemperatureSeasonSettings Winter;
+        [Header("Winter")]
+        public TemperatureMonthSettings December;
+        public TemperatureMonthSettings January;
+        public TemperatureMonthSettings February;
+        [Space]
+        [Header("Spring")]
+        public TemperatureMonthSettings March;
+        public TemperatureMonthSettings April;
+        public TemperatureMonthSettings May;
+        [Space]
+        [Header("Summer")]
+        public TemperatureMonthSettings June;
+        public TemperatureMonthSettings July;
+        public TemperatureMonthSettings August;
+        [Space]
+        [Header("Autumn")]
+        public TemperatureMonthSettings September;
+        public TemperatureMonthSettings October;
+        public TemperatureMonthSettings November;
 
         [Serializable]
-        public class TemperatureSeasonSettings
+        public class TemperatureMonthSettings
         {
-            [SerializeField] TimeControl.GameDateTime.Season season = TimeControl.GameDateTime.Season.Autumn;
-            public TemperatureMonthSettings FirstMonth;
-            public TemperatureMonthSettings SecondMonth;
-            public TemperatureMonthSettings ThirdMonth;
+            [SerializeField] TimeControl.GameDateTime.Months month = TimeControl.GameDateTime.Months.April;
+            [SerializeField] [Range(-10, 20)] float avarageTemperature;
 
-            public TimeControl.GameDateTime.Season GetSeason { get { return season; } }
+            [Space]
+            [Header("Weather Events")]
+            [SerializeField] [Range(0, 5)] int amountShower;
+            [Space]
+            [SerializeField] [Range(0, 3)] int amountContinuousRain;
+            [SerializeField] [Range(35, 80)] int minRainyTime;
+            [SerializeField] [Range(5, 20)] int maxRainyTime;
 
-            [Serializable]
-            public class TemperatureMonthSettings
-            {
-                [SerializeField] [Range(-20, 20)] int normalMinDayTemp;
-                [SerializeField] [Range(0, 45)] int normalMaxDayTemp;
-                [Space]
-                [SerializeField] [Range(0, 5)] int amountAnomalyColdDays;
-                [SerializeField] [Range(0, 45)] int anomalyColdDayTemperature;
-                [Space]
-                [SerializeField] [Range(0, 5)] int amountAnomalyHotDays;
-                [SerializeField] [Range(-20, 45)] int anomalyHotDayTemperature;
+            public TimeControl.GameDateTime.Months GetMonth { get { return month; } }
 
-                public int GetNormalMinDayTemp { get { return normalMinDayTemp; } }
-                public int GetNormalMaxDayTemp { get { return normalMaxDayTemp; } }
-                public int GetAmountAnomalyColdDays { get { return amountAnomalyColdDays; } }
-                public int GetAnomalyColdDayTemperature { get { return anomalyColdDayTemperature; } }
-                public int GetAmountAnomalyHotDays { get { return amountAnomalyHotDays; } }
-                public int GetAnomalyHotDayTemperature { get { return anomalyHotDayTemperature; } }
-            }
+            public float GetAvarageTemperature { get { return avarageTemperature; } }
+            public int GetAmountShower { get { return amountShower; } }
+            public int GetAmountContinuousRain { get { return amountContinuousRain; } }
+            public int GetMinRainyTime { get { return minRainyTime; } }
+            public int GetMaxRainyTime { get { return maxRainyTime; } }
         }
     }
 }

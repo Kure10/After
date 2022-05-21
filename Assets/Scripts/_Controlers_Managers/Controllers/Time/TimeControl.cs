@@ -71,6 +71,11 @@ public class TimeControl : MonoBehaviour
 
     #endregion
 
+    public static int GetAmountDaysInMonth(GameDateTime.Months month)
+    {
+        return _relevantDaysInMounths[month];
+    }
+
     private void Awake()
     {
         // Todo Bug .. Den 0 ale měl by byt spravně den 1 atd... Od 1 počítat dny stejně asi roky..
@@ -130,9 +135,10 @@ public class TimeControl : MonoBehaviour
         timePointsDelta = 2 * timePoints;
     }
 
+    // Todo Actions Are called more time when speed is high. I dont know what to do about it. Right now.
     private void ActionsInvoke()
     {
-        if (_gameTime.Min % 10 == 0)
+        if (_gameTime.IsNew10Minites)
             OnTimeChangedEvery10Mins.Invoke(_gameTime);
 
         if (_gameTime.Hours == 0 && _gameTime.Min == 0)
@@ -144,7 +150,7 @@ public class TimeControl : MonoBehaviour
         if (_gameTime.IsNewHour)
             OnTimeChangedEveryHour.Invoke(_gameTime);
 
-        if (_gameTime.IsFirstDayInNewMonth)
+        if (_gameTime.IsNewDayInMonth)
             OnTimeChangedNewMonth.Invoke(_gameTime);
 
         OnDateChanged.Invoke(_gameTime);
@@ -163,14 +169,18 @@ public class TimeControl : MonoBehaviour
         private int dayInMonth = 1;
         private Season season = Season.Winter;
 
-        private bool isFirstDayInNewMonth = false;
+        private bool isNewDayStarted = false;
+        private bool isNewDayInMonth = false;
         private bool isNewHour = false;
+        private bool isNew10Minites = false;
 
         public Months GetMonth { get { return (Months)month; } }
         public int GetDayInMonth { get { return dayInMonth; } }
         public Season  GetSeason  { get { return season; } }
-        public bool IsFirstDayInNewMonth { get { return isFirstDayInNewMonth; } }
+        public bool IsNewDayStarted { get { return isNewDayStarted; } }
+        public bool IsNewDayInMonth { get { return isNewDayInMonth; } }
         public bool IsNewHour { get { return isNewHour; } }
+        public bool IsNew10Minites { get { return isNew10Minites; } }
         public int Min
         {
             get
@@ -183,6 +193,18 @@ public class TimeControl : MonoBehaviour
                 if (value != min)
                 {
                     min = value;
+                    if (min % 10 == 0)
+                    {
+                        isNew10Minites = true;
+                    }
+                    else
+                    {
+                        isNew10Minites = false;
+                    }
+                }
+                else
+                {
+                    isNew10Minites = false;
                 }
             }
         }
@@ -219,7 +241,12 @@ public class TimeControl : MonoBehaviour
                 if (value != day)
                 {
                     day = value;
+                    isNewDayStarted = true;
                     RecalculateCurrentDaysInMonth(day);
+                }
+                else
+                {
+                    isNewDayStarted = false;
                 }
             } 
         }
@@ -246,7 +273,7 @@ public class TimeControl : MonoBehaviour
             {
                 dayInMonth = 1;
                 month++;
-                isFirstDayInNewMonth = true;
+                isNewDayInMonth = true;
 
                 if (month > Enum.GetValues(typeof(Months)).Length)
                 {
@@ -258,7 +285,7 @@ public class TimeControl : MonoBehaviour
             else
             {
                 dayInMonth = dayInMonth + 1;
-                isFirstDayInNewMonth = false;
+                isNewDayInMonth = false;
             }
         }
 

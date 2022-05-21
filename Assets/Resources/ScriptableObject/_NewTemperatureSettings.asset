@@ -12,95 +12,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80cb72cbde7ef540890e34613390a51, type: 3}
   m_Name: _NewTemperatureSettings
   m_EditorClassIdentifier: 
-  Spring:
-    season: 4
-    FirstMonth:
-      normalMinDayTemp: -1
-      normalMaxDayTemp: 15
-      amountAnomalyColdDays: 1
-      anomalyColdDayTemperature: 7
-      amountAnomalyHotDays: 1
-      anomalyHotDayTemperature: 0
-    SecondMonth:
-      normalMinDayTemp: 3
-      normalMaxDayTemp: 14
-      amountAnomalyColdDays: 1
-      anomalyColdDayTemperature: 10
-      amountAnomalyHotDays: 1
-      anomalyHotDayTemperature: -4
-    ThirdMonth:
-      normalMinDayTemp: 7
-      normalMaxDayTemp: 24
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: 0
-  Summer:
-    season: 3
-    FirstMonth:
-      normalMinDayTemp: 3
-      normalMaxDayTemp: 26
-      amountAnomalyColdDays: 1
-      anomalyColdDayTemperature: 9
-      amountAnomalyHotDays: 1
-      anomalyHotDayTemperature: 7
-    SecondMonth:
-      normalMinDayTemp: 3
-      normalMaxDayTemp: 29
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: 0
-    ThirdMonth:
-      normalMinDayTemp: 6
-      normalMaxDayTemp: 33
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: 0
-  Autumn:
-    season: 2
-    FirstMonth:
-      normalMinDayTemp: -3
-      normalMaxDayTemp: 18
-      amountAnomalyColdDays: 1
-      anomalyColdDayTemperature: 10
-      amountAnomalyHotDays: 1
-      anomalyHotDayTemperature: 0
-    SecondMonth:
-      normalMinDayTemp: -8
-      normalMaxDayTemp: 12
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: 0
-    ThirdMonth:
-      normalMinDayTemp: -8
-      normalMaxDayTemp: 7
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: 0
-  Winter:
-    season: 1
-    FirstMonth:
-      normalMinDayTemp: -8
-      normalMaxDayTemp: 5
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 1
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: -20
-    SecondMonth:
-      normalMinDayTemp: -10
-      normalMaxDayTemp: 1
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: -20
-    ThirdMonth:
-      normalMinDayTemp: -5
-      normalMaxDayTemp: 5
-      amountAnomalyColdDays: 0
-      anomalyColdDayTemperature: 0
-      amountAnomalyHotDays: 0
-      anomalyHotDayTemperature: -20
+  December:
+    month: 12
+    avarageTemperature: -3.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  January:
+    month: 1
+    avarageTemperature: -6
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  February:
+    month: 2
+    avarageTemperature: -5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  March:
+    month: 3
+    avarageTemperature: -2
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  April:
+    month: 4
+    avarageTemperature: 0
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  May:
+    month: 5
+    avarageTemperature: 4.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  June:
+    month: 6
+    avarageTemperature: 9.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  July:
+    month: 7
+    avarageTemperature: 12.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  August:
+    month: 8
+    avarageTemperature: 14.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  September:
+    month: 9
+    avarageTemperature: 8
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  October:
+    month: 10
+    avarageTemperature: 4
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0
+  November:
+    month: 11
+    avarageTemperature: 2.5
+    amountAnomalyColdDays: 0
+    anomalyColdDayTemperature: 0
+    amountAnomalyHotDays: 0
+    anomalyHotDayTemperature: 0

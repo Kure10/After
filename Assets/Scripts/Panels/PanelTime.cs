@@ -41,7 +41,7 @@ public class PanelTime : MonoBehaviour
         timeStatus = 0;
         DisplayStatus(timeStatus);
         paused = false;
-        TimeControl.OnTimeChangedEvery10Mins += DisplayTemperature;
+        MeteorologyController.OnTemperatureChanged += DisplayTemperature;
     }
 
     void Update()
@@ -203,9 +203,8 @@ public class PanelTime : MonoBehaviour
         TextDaysSmall.text = $"{gameDate.GetMonth}  {gameDate.GetDayInMonth}";
     }
 
-    private void DisplayTemperature(TimeControl.GameDateTime gameDate)
+    private void DisplayTemperature(float celsium)
     {
-        float celsium = TemperatureController.GetTemperatureInCelsia;
         CelsiumText.text = celsium.ToString("0.0");
     }
 
@@ -236,7 +235,7 @@ public class PanelTime : MonoBehaviour
     void OnDestroy()
     {
         TimeControl.OnDateChanged -= DisplayTime;
-        TimeControl.OnTimeChangedEvery10Mins -= DisplayTemperature;
+        MeteorologyController.OnTemperatureChanged -= DisplayTemperature;
     }
 
 }
