@@ -357,11 +357,12 @@ public class uWindowSpecialist : MonoBehaviour
             i++;
         }
 
-        var specController = this.gameObject.GetComponent<uWindowSpecController>();
-        if(specController != null)
-        {
-            specController.RefreshGrid();
-        }
+        //TODO commented i dont know why it should be there
+        //var specController = this.gameObject.GetComponent<uWindowSpecController>();
+        //if (specController != null)
+        //{
+        //    specController.RefreshGrid();
+        //}
     }
 
     public void CloseBackpackInventory()
@@ -373,11 +374,12 @@ public class uWindowSpecialist : MonoBehaviour
             collum.SetActive(false);
         }
 
-        var specController = this.gameObject.GetComponent<uWindowSpecController>();
-        if (specController != null)
-        {
-            specController.RefreshGrid();
-        }
+        //TODO commented i dont know why it should be there
+        //var specController = this.gameObject.GetComponent<uWindowSpecController>();
+        //if (specController != null)
+        //{
+        //    specController.RefreshGrid();
+        //}
     }
 
     #endregion

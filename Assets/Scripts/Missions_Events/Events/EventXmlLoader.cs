@@ -25,10 +25,10 @@ public class EventXmlLoader : MonoBehaviour
         string fileName = "Events";
         string fileNameCZ = "Events-CZ";
 
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName, false);
         manager.resolveMaster.AddDataNode(fileName, firstData);
 
-        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
+        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ, false);
         manager.resolveMaster.ModifyDataNode(fileName, secondData);
 
 

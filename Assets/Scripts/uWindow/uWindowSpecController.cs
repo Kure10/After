@@ -23,7 +23,7 @@ public class uWindowSpecController : MonoBehaviour
 
     private int lastSortCategory = -1;
 
-    private bool _simpleSort = false;
+   // private bool _simpleSort = false;
 
     public List<uWindowSpecialist> GetSpecInGameWindows { get { return this.specInGame; } }
 
@@ -161,34 +161,39 @@ public class uWindowSpecController : MonoBehaviour
                 specInGame = specInGame.OrderBy(x => x.GetPercentHelth).ToList();
                 break;
             default:
-                Debug.Log("uWindowSpecControllerr Chyba. in order..");
+                uWindowSpecialist firstPerson = specInGame.Find(x => x.GetName == "@PlayerName");
+                specInGame.Remove(firstPerson);
+                List<uWindowSpecialist> sortedList = specInGame.OrderByDescending(p => p.GetName).ToList();
+                sortedList.Add(firstPerson);
+                sortedList.Reverse();
+                specInGame = sortedList;
                 break;
         }
 
-        if (_simpleSort)
-        {
-            foreach (var item in specInGame)
-            {
-                item.transform.SetAsFirstSibling();
-                lastSortCategory = currentSortCategory;
-            }
-        }
+        //if (_simpleSort)
+        //{
+        //    foreach (var item in specInGame)
+        //    {
+        //        item.transform.SetAsFirstSibling();
+        //        lastSortCategory = currentSortCategory;
+        //    }
+        //}
 
         if (lastSortCategory != currentSortCategory)
         {
             foreach (var item in specInGame)
             {
                 item.transform.SetAsFirstSibling();
-                lastSortCategory = currentSortCategory;
             }
+            lastSortCategory = currentSortCategory;
         }
         else
         {
             foreach (var item in specInGame)
             {
                 item.transform.SetAsLastSibling();
-                lastSortCategory = -1;
             }
+            lastSortCategory = -1;
         }
     }
 
@@ -240,22 +245,22 @@ public class uWindowSpecController : MonoBehaviour
 
     public void SimpleSort()
     {
-        _simpleSort = true;
+       // _simpleSort = true;
         Sort(lastSortCategory);
-        _simpleSort = false;
+        //_simpleSort = false;
         LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
     }
 
-    public void RefreshGrid()
-    {
-        int sortBy = 1;
-        if (lastSortCategory > -1)
-            sortBy = lastSortCategory;
+    //public void RefreshGrid()
+    //{
+    //    int sortBy = 1;
+    //    if (lastSortCategory > -1)
+    //        sortBy = lastSortCategory;
 
-        Sort(sortBy);
+    //    Sort(sortBy);
        
-        LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
-    }
+    //    LayoutRebuilder.ForceRebuildLayoutImmediate(specHolder);
+    //}
 
    IEnumerator Refresh ()
     {

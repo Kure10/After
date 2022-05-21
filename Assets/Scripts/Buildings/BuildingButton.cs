@@ -44,11 +44,6 @@ public class BuildingButton : MonoBehaviour
     public void BuildingChangeStats(BuildingBlueprint buildingBlueprint, BuildingManager buildingManager)
     {
         this.name = "_" + buildingBlueprint.Name;
-       
-        if (buildingBlueprint.Sprite == null)
-        {
-            Debug.Log("Image errors on the building");
-        }
 
         NameText.text = buildingBlueprint.Name;
         CivilHolder.text = buildingBlueprint.Civil.ToString();

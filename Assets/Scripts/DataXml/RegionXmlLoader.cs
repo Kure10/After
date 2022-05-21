@@ -28,7 +28,7 @@ public class RegionXmlLoader : MonoBehaviour
 
      
 
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName,false);
         resolveMaster.AddDataNode(fileName, firstData);
 
         // Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
@@ -47,6 +47,8 @@ public class RegionXmlLoader : MonoBehaviour
             slave.StartResolve();
             Dictionary<string, List<StatsClass>> output = slave.Resolve();
             List<StatsClass> result = output["Result"];
+
+           // reg.neighborhoodRegionsPointer = new List<string>();
             for (int i = 0; i < result.Count; i++)
             {
                 reg.neighborhoodRegionsPointer.Add(result[i].GetStrStat("MapNeighbor"));

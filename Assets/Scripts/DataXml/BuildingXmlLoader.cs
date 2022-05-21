@@ -26,10 +26,10 @@ public class BuildingXmlLoader
         string fileNameCZ = "Rooms-CZ";
         ResolveMaster resolveMaster = new ResolveMaster();
 
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName,false);
         resolveMaster.AddDataNode(fileName, firstData);
 
-        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
+        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ, false);
         resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedData = resolveMaster.GetDataKeys(fileName);
@@ -101,6 +101,8 @@ public class BuildingXmlLoader
             {
                 string spriteName = item.GetStrStat("RoomPicture");
                 newBuilding.Sprite = spriteLoader.LoadBuildingSprite(spriteName);
+                if (newBuilding.Sprite == null)
+                    Debug.LogWarning("Missing sprite name in Resources");
             }
             else
             {

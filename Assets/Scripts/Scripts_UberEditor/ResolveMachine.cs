@@ -6,13 +6,14 @@ using UnityEngine;
 namespace ResolveMachine
 {   
     // Main resolver class
-    internal class ResolveMaster
+    public class ResolveMaster
     {
         #pragma warning disable 0649
-        public Func<string, StatsClass, bool> ResolveCondition;
-        public Func<string, StatsClass, bool> ResolveAction;
+        public Func<string, string, StatsClass, bool> ResolveCondition;
+        public Func<string, string, StatsClass, bool> ResolveAction;
         #pragma warning restore 0649
 
+        public bool DebugInfo = false;
         public bool DetailLogs = false;
         public Dictionary<string, decimal> Counters = new Dictionary<string, decimal>();
         public Dictionary<string, string> Texts = new Dictionary<string, string>();
@@ -25,7 +26,7 @@ namespace ResolveMachine
             return (_datas.ContainsKey(datname)) ? _datas[datname] : null;
         }
         // Add new editor data to resolve
-        internal void AddDataNode(string dataname, Dictionary<string, StatsClass> data)
+        public void AddDataNode(string dataname, Dictionary<string, StatsClass> data)
         {
             ResolveData rd = new ResolveData(this, dataname, data);
             _datas.Add(dataname, rd);
@@ -46,7 +47,7 @@ namespace ResolveMachine
         {
             if (_datas.ContainsKey(dataname)) _datas[dataname].AllowLoops = true;
         }
-        internal List<StatsClass> GetDataKeys(string dataname)
+        public List<StatsClass> GetDataKeys(string dataname)
         {
             return (_datas.ContainsKey(dataname)) ? new List<StatsClass>(_datas[dataname].GetDataKeys().Values) : new List<StatsClass>();
         }
@@ -58,21 +59,20 @@ namespace ResolveMachine
         // Add new data resolver to data node
         internal void KillSlave(string dataname, ResolveSlave slave)
         {
-            if (_datas.ContainsKey(dataname)) _datas[dataname].KillSlave(slave);
+            if (_datas.ContainsKey(dataname))
+            {
+                _datas[dataname].Fails.Remove(slave.GetHeader.Title);
+                _datas[dataname].KillSlave(slave);
+            }
         }
         // Add new data resolver to data node
         internal void KillAllSlaves(string dataname, string keyname)
         {
             if (_datas.ContainsKey(dataname)) _datas[dataname].KillSlaves(keyname);
         }
-        internal bool GetCondition(StatsClass data, string title)
-        {
-            bool? ret = ResolveCondition?.Invoke(title, data);
-            return ret.HasValue && ret.Value;
-        }
         internal string GetText(string key)
         {
-            return (Texts.ContainsKey(key)) ? Texts[key] : "";
+            return (Texts.ContainsKey(key)) ? Texts[key] : key;
         }
         internal decimal GetCounter(string key)
         {
@@ -82,17 +82,12 @@ namespace ResolveMachine
         internal StatsClass ExportState()
         {
             StatsClass data = new StatsClass("RM");
-            // Counters
-            StatsClass cnts = new StatsClass("C");
-            foreach (var s in Counters.Keys) cnts.AddStat(s, Counters[s]);
-            data.AddStat(cnts.Title, cnts);
-            // Texts
-            StatsClass txts = new StatsClass("T");
-            foreach (var s in Texts.Keys) cnts.AddStat(s, Texts[s]);
-            data.AddStat(txts.Title, txts);
             // Gates
-            StatsClass gts = new StatsClass("G");
-            data.AddStat(gts.Title, gts);
+            data.AddStat("Gates", _gates.Count.ToString());
+            // Texts
+            foreach (var s in Texts.Keys) data.AddStat(s, Texts[s]);
+            // Counter
+            foreach (var s in Counters.Keys) data.AddStat(s, Counters[s]);
             return data;
         }
         // Gate handling
@@ -119,6 +114,37 @@ namespace ResolveMachine
             foreach (var s in _datas.Values) s.Clear();
             _datas = new Dictionary<string, ResolveData>();
         }
+        // Texts
+        internal void AddText(string key, string val)
+        {
+            Texts.Remove(key);
+            Texts.Add(key, val);
+        }
+        internal void AddCounter(string key, decimal val)
+        {
+            Counters.Remove(key);
+            Counters.Add(key, val);
+        }
+        internal void PurgeCounters(string klic)
+        {
+            foreach (var kl in Counters.Where(x => x.Key.StartsWith(klic)).Select(x => x.Key).ToList()) Counters.Remove(kl);
+        }
+        internal void PurgeTexts(string klic)
+        {
+            foreach (var kl in Texts.Where(x => x.Key.StartsWith(klic)).Select(x => x.Key).ToList()) Texts.Remove(kl);
+        }
+        internal string LogTexts()
+        {
+            var ret = "";
+            foreach (var tx in Texts) ret = $"{ret} {tx.Key}={tx.Value}";
+            return ret;
+        }
+        internal string LogCounters()
+        {
+            var ret = "";
+            foreach (var cn in Counters) ret = $"{ret} {cn.Key}={cn.Value:0.###}";
+            return ret;
+        }
     }
     // Class for resolving one data file
     internal class ResolveData
@@ -133,6 +159,9 @@ namespace ResolveMachine
 
         internal int DataCount { get { return _fulldata.Count; } }
         internal int BehaviorCount { get { return _behav.Count; } }
+
+        internal Dictionary<string, int> Fails = new Dictionary<string, int>();
+        internal static int? MaxChoices;
 
         // Constructor
         internal ResolveData(ResolveMaster rm, string title, Dictionary<string, StatsClass> data)
@@ -194,21 +223,21 @@ namespace ResolveMachine
             return _behav.ContainsKey(node) && _behav[node][what];
         }
         // Resolve condition on element
-        internal bool GetCondition(StatsClass data)
+        internal bool GetCondition(StatsClass data, string id)
         {
-            bool? ret = _rm.ResolveCondition?.Invoke(_title, data);
+            bool? ret = _rm.ResolveCondition?.Invoke(_title, id, data);
             return ret.HasValue && ret.Value;
         }
         // Resolve action on element
-        internal bool GetAction(StatsClass data)
+        internal bool GetAction(StatsClass data, string id)
         {
-            bool? ret = _rm.ResolveAction?.Invoke(_title, data);
+            bool? ret = _rm.ResolveAction?.Invoke(_title, id, data);
             return ret.HasValue && ret.Value;
         }
         // Gate handling
-        internal void AddGate(int node)
+        internal void AddGate(string node)
         {
-            _rm.AddGate($"{_title}{node}");
+            _rm.AddGate(node);
         }
         // Does counter or text exists?
         internal bool HasKey(string key)
@@ -221,27 +250,16 @@ namespace ResolveMachine
         // Counters
         internal void AddCounter(string key, decimal val)
         {
-            _rm.Counters.Remove(key);
-            _rm.Counters.Add(key, val);
+            _rm.AddCounter(key, val);
         }
         internal decimal GetCounter(string key)
         {
             return _rm.GetCounter(key);
         }
-        // Texts
-        internal void AddText(string key, string val)
-        {
-            _rm.Texts.Remove(key);
-            _rm.Texts.Add(key, val);
-        }
-        internal string GetText(string key)
-        {
-            return _rm.GetText(key);
-        }
         // Gate handling
-        internal bool GetGate(int node)
+        internal bool GetGate(string node)
         {
-            return _rm.GetGate($"{_title}{node}");
+            return _rm.GetGate(node);
         }
         // Clear all data
         internal void Clear()
@@ -251,66 +269,134 @@ namespace ResolveMachine
             _fulldata = new Dictionary<string, StatsClass>();
             _behav = new Dictionary<int, bool[]>();
         }
-        internal bool ResolveGate(StatsClass data, Dictionary<int, int> _gates = null)
+        internal static string CodeToSign(string code)
         {
+            switch (code)
+            {
+                case "Oe": return "==";
+                case "On": return "<>";
+                case "Oeg": return ">=";
+                case "Oel": return "<=";
+                case "Og": return "==";
+                case "Ol": return "==";
+                case "Os": return "=";
+                case "O+": return "+";
+                case "O-": return "-";
+                case "O*": return "*";
+                case "O:": return "/";
+                default: return "";
+            }
+        }
+        internal bool ResolveGate(StatsClass data, string id, Dictionary<int, int> _gates = null)
+        {
+            MaxChoices = null;
             bool nxt = false;
+            string dbginfo = "";
             int node = Convert.ToInt32(data.Title);
             string ityp = data.GetStrStat("GT");
             // Key Existence
             if (ityp == "G0")
             {
-                nxt = HasKey(data.GetStrStat("Var")) == data.GetBoolStat("Ex");
+                var klic = data.GetStrStat("Var");
+                var exi = data.GetBoolStat("Ex");
+                nxt = HasKey(klic) == exi;
+
+                // Debug
+                dbginfo = $"[{(exi ? "má" : "nemá")} {klic}]";
             }
             // Counters
             else if (ityp == "G1")
             {
                 string op = data.GetStrStat("O");
                 // Value 1 - Counter
-                decimal val1 = GetCounter(data.GetStrStat("Cnt"));
+                var klic1 = data.GetStrStat("Cnt");
+                decimal val1 = GetCounter(klic1);
                 // Value 2 - Counter or constant value
-                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(data.GetStrStat("Cnt2"));
+                var klic2 = data.GetStrStat("Cnt2");
+                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(klic2);
                 // Equal
-                if (op == "Oe") nxt = val1 == val2;
-                // Not equal
-                else if (op == "On") nxt = val1 != val2;
-                // Not equal or greater than
-                else if (op == "Oeg") nxt = val1 >= val2;
-                // Not equal or less than
-                else if (op == "Oel") nxt = val1 <= val2;
-                // Greater than
-                else if (op == "Og") nxt = val1 > val2;
-                // Less than
-                else if (op == "Ol") nxt = val1 < val2;
+                switch (op)
+                {
+                    case "Oe": nxt = val1 == val2; break;
+                    // Not equal
+                    case "On": nxt = val1 != val2; break;
+                    // Not equal or greater than
+                    case "Oeg": nxt = val1 >= val2; break;
+                    // Not equal or less than
+                    case "Oel": nxt = val1 <= val2; break;
+                    // Greater than
+                    case "Og": nxt = val1 > val2; break;
+                    // Less than
+                    case "Ol": nxt = val1 < val2; break;
+                }
+                // Debug
+                dbginfo = $"[{klic1}({val1}) {CodeToSign(op)} {klic2}({val2})]";
             }
             // Only once
             else if (ityp == "G4")
             {
-                nxt = !GetGate(node);
-                if (nxt) AddGate(node);
+                var gt = $"{id}-{node}";
+                nxt = !GetGate(gt);
+                if (nxt) AddGate(gt);
+
+                // Debug
+                dbginfo = $"[pouze jednou]";
             }
             // Random
             else if (ityp == "G2")
             {
+                var rndval = data.GetNumStat("Rng");
                 float dice = UnityEngine.Random.value;
-                nxt = dice < data.GetNumStat("Rng") * 0.01f;
+                nxt = dice < rndval * 0.01f;
+                if (!nxt) ++Fails[id];
+
+                // Debug
+                dbginfo = $"[náhoda {rndval:0.00}% ({dice:0.00})]";
             }
             // Watcher
             else if (ityp == "G3" && _gates != null)
             {
-                if (_gates.ContainsKey(node)) _gates[node]++; else _gates.Add(node, 1);
+                bool fails = data.GetBoolStat("PF");
+                if (!fails)
+                {
+                    if (_gates.ContainsKey(node)) _gates[node]++; else _gates.Add(node, 1);
+                }
+                bool rest = data.GetBoolStat("FR");
                 int p = data.GetIntStat("Con");
-                int g = _gates[node];
+                int g = fails ? Fails[id] : _gates[node];
                 nxt = g >= p;
+                if (rest) Fails[id] = 0;
+
+                // Debug
+                dbginfo = $"[brána {g} >= {p} {(fails ? "(fails)" : "")}]";
             }
+            // Random connection filter
+            else if (ityp == "G5")
+            {
+                int p = data.GetIntStat("Con", 1);
+                MaxChoices = p;
+                nxt = true;
+
+                // Debug
+                dbginfo = $"[náhodný filtr {p}]";
+            }
+            // Debug
+            if (_rm.DebugInfo) data.AddStat("$Dbg", dbginfo);
             return nxt;
         }
         internal void ResolveFunction(StatsClass data)
         {
+            string dbginfo = "";
             string ityp = data.GetStrStat("GT");
             // Key Existence
             if (ityp == "G0")
             {
-                AddText(data.GetStrStat("Var"), data.GetStrStat("Txt"));
+                var klic = data.GetStrStat("Var");
+                var txt = data.GetStrStat("Txt");
+                _rm.AddText(klic, txt);
+
+                // Debug
+                dbginfo = $"[{klic} = {txt}]";
             }
             // Counters
             else if (ityp == "G1")
@@ -320,7 +406,8 @@ namespace ResolveMachine
                 string cntr = data.GetStrStat("Cnt");
                 decimal val1 = GetCounter(cntr);
                 // Value 2 - Counter or constant value
-                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(data.GetStrStat("Cnt2"));
+                var cntr2 = data.GetStrStat("Cnt2");
+                decimal val2 = data.GetBoolStat("T2") ? data.GetDecStat("Val") : GetCounter(cntr2);
                 // Set
                 if (op == "Os") AddCounter(cntr, val2);
                 // Add
@@ -331,7 +418,12 @@ namespace ResolveMachine
                 else if (op == "O*") AddCounter(cntr, val1 * val2);
                 // Divide
                 else if (op == "O:") AddCounter(cntr, val1 / val2);
+
+                // Debug
+                dbginfo = $"[{cntr}({val1}) {CodeToSign(op)} {cntr2}({val2})]";
             }
+            // Debug
+            if (_rm.DebugInfo) data.AddStat("$Dbg", dbginfo);
         }
     }
     // Class to resolve specific data diagrams inside 
@@ -349,6 +441,7 @@ namespace ResolveMachine
         private Dictionary<int, int> _gates = new Dictionary<int, int>();
         internal StatsClass GetHeader { get { return _header; } }
         internal bool NoInternalResolve { get; set; }
+        internal bool DoNotAddTrueConditions { get; set; }
 
         // Data key name
         internal string Keyname { get { return _header == null ? "" : _header.Title; } }
@@ -404,6 +497,11 @@ namespace ResolveMachine
         {
             // Init starting elements
             int smstr = -1;
+            if (start == -1)
+            {
+                _rd.Fails.Remove(_header.Title);
+                _rd.Fails.Add(_header.Title, 0);
+            }
             if (start != -1 && Is(_elems[start].GetIntStat("$T"), Behaviors.Master)) smstr = start;
             if (_conns.ContainsKey(start)) _todo = _conns[start].Select(x => GetElem(start, start, smstr, _elems[x])).ToList();
         }
@@ -455,14 +553,15 @@ namespace ResolveMachine
                 // Condition - Ask for permission to resolve child elements (add it to failed if fails)
                 if (Is(typ, Behaviors.Condition))
                 {
-                    nxt = _trueConds.Contains(node) || _rd.GetCondition(data);
+                    var truecond = _trueConds.Contains(node);
+                    nxt = truecond || _rd.GetCondition(data, _header.Title);
                     if (!nxt) failed.Add(data);
-                    add = nxt;
+                    add = nxt && (!DoNotAddTrueConditions || !truecond);
                 }
                 // Action - Raise action event and may act as a stoper
                 if (Is(typ, Behaviors.Action))
                 {
-                    nxt = !_rd.GetAction(data);
+                    nxt = _rd.GetAction(data, _header.Title);
                     add = true;
                 }
                 // Internal gate condition (add it to failed if fails)
@@ -470,7 +569,7 @@ namespace ResolveMachine
                 {
                     // Is true condition
                     if (NoInternalResolve || _trueConds.Contains(node)) nxt = true;
-                    else nxt = _rd.ResolveGate(data, _gates);
+                    else nxt = _rd.ResolveGate(data, _header.Title, _gates);
                     if (!nxt) failed.Add(data);
                     add = nxt;
                 }
@@ -497,6 +596,16 @@ namespace ResolveMachine
                 if (nxt && _conns.ContainsKey(node))
                 {
                     List<StatsClass> newtodo = _conns[node].Select(x => GetElem(node, newparent, mstr, _elems[x])).ToList();
+                    if (ResolveData.MaxChoices.HasValue)
+                    {
+                        while (newtodo.Count > ResolveData.MaxChoices.Value)
+                        {
+                            int inx = UnityEngine.Random.Range(0, newtodo.Count);
+                            exclud.Add(newtodo[inx]);
+                            newtodo.RemoveAt(inx);
+                        }
+                        ResolveData.MaxChoices = null;
+                    }
                     if (frc) _todo.InsertRange(0, newtodo); else _todo.AddRange(newtodo);
                 }
             }
@@ -569,7 +678,7 @@ namespace ResolveMachine
                 conns[grp].Add(cdata.GetStrStat("$E"));
             }
             // Return all accessible element ids
-            List<string> todo = conns[""];
+            List<string> todo = conns.ContainsKey("") ? conns[""] : new List<string>();
             while (todo.Count > 0)
             {
                 string node = todo[0];

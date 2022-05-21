@@ -32,7 +32,7 @@ public class ContainerXmlLoader
 
         ResolveMaster resolveMaster = new ResolveMaster();
 
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName,false);
         resolveMaster.AddDataNode(fileName, firstData);
 
        // Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);

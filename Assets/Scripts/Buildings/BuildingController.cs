@@ -38,34 +38,34 @@ public class BuildingController : MonoBehaviour
         switch (sector)
         {
             case Tag.Cela:
-                go.transform.parent = vezeni.transform;
+                go.transform.SetParent(vezeni.transform);
                 break;
             case Tag.Strojovna:
-                go.transform.parent = strojovna.transform;
+                go.transform.SetParent(strojovna.transform);
                 break;
             case Tag.Garaz:
-                go.transform.parent = garaz.transform;
+                go.transform.SetParent(garaz.transform);
                 break;
             case Tag.Kaple:
-                go.transform.parent = kaple.transform;
+                go.transform.SetParent(kaple.transform);
                 break;
             case Tag.Strilna:
-                go.transform.parent = strilna.transform;
+                go.transform.SetParent(strilna.transform);
                 break;
             case Tag.Sklad:
-                go.transform.parent = sklad.transform;
+                go.transform.SetParent(sklad.transform);
                 break;
             case Tag.Dilna:
-                go.transform.parent = dilna.transform;
+                go.transform.SetParent(dilna.transform);
                 break;
             case Tag.Ubikace:
-                go.transform.parent = ubikace.transform;
+                go.transform.SetParent(ubikace.transform);
                 break;
             case Tag.Laborator:
-                go.transform.parent = laborator.transform;
+                go.transform.SetParent(laborator.transform);
                 break;
             case Tag.VolnePole: // agreat pokecat s Nefem..
-                go.transform.parent = agregat.transform;
+                go.transform.SetParent(agregat.transform);
                 break;
             default:
                 Debug.Log("Building has not button Holder -> Error");

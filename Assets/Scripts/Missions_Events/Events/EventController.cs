@@ -709,7 +709,7 @@ public class EventController : MonoBehaviour
 
     }
 
-    public bool OncheckTest(string dataNameFile, StatsClass element)
+    public bool OncheckTest(string dataNameFile, string dialogID,StatsClass element)
     {
         var tmp = element.GetStrStat("Result");
 

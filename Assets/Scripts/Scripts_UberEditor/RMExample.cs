@@ -23,11 +23,11 @@ public static class RMExample
         foreach (var key in rm.GetDataKeys("Items")) Debug.LogWarning(key.ToLog());
 
         // Read data nodes from binary file
-        var data = StatsClass.LoadXmlFile("D:/CompileTest", "Dialogues");
+        var data = StatsClass.LoadXmlFile("D:/CompileTest", "Dialogues",false);
         rm.AddDataNode("Dialogues", data);
 
         // Apply localized data from binary file
-        var dataloc = StatsClass.LoadXmlFile("D:/CompileTest", "Dialogues-CZ");
+        var dataloc = StatsClass.LoadXmlFile("D:/CompileTest", "Dialogues-CZ", false);
         rm.ModifyDataNode("Dialogues", dataloc);
 
         // Create new diagram resolver
@@ -38,13 +38,13 @@ public static class RMExample
     }
 
     // Resolve actions
-    private static bool OnResolveAction(string id, StatsClass data)
+    private static bool OnResolveAction(string id,  string dialogID, StatsClass data)
     {
         return false;
     }
 
     // Resolve conditions
-    private static bool OnResolveCondition(string id, StatsClass data)
+    private static bool OnResolveCondition(string id, string dialogID, StatsClass data)
     {
         return false;
     }

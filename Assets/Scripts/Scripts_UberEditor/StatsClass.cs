@@ -211,14 +211,14 @@ public class StatsClass
         {
             string odd = ", ";
             object obj = GetStat(key);
-            string val = obj.ToString();
+            string val = obj?.ToString() ?? "";
             if (obj is EffectClass) val = ((EffectClass)obj).ToLog();
             else if (obj is StatsClass)
             {
                 val = ((StatsClass)obj).ToLog(false);
                 odd = Environment.NewLine;
             }
-            outdata = string.Format("{0}{3}{1}:{2}", outdata, key, val, odd);
+            outdata = string.Format("{0}{3}{1}:{2}", outdata, key, val, outdata.Length > 0 ? odd : "");
         }
         return outdata;
     }
@@ -361,6 +361,10 @@ public class StatsClass
     {
         return new List<string>(stats.Keys);
     }
+    public IEnumerable<KeyValuePair<string, object>> GetPairs()
+    {
+        return stats;
+    }
     // Gets all stat keys
     public List<StatsClass> UnpackKeys()
     {
@@ -456,7 +460,7 @@ public class StatsClass
             else if (obj is string)
             {
                 decimal val = deflt;
-                if (!decimal.TryParse((string)obj, out val)) val = deflt;
+                if (!decimal.TryParse((string)obj, NumberStyles.AllowDecimalPoint | NumberStyles.AllowTrailingSign, CultureInfo.InvariantCulture, out val)) val = deflt;
                 return val;
             }
         }
@@ -476,9 +480,9 @@ public class StatsClass
             if (obj is float || obj is int || obj is decimal) return Convert.ToSingle(obj, CultureInfo.InvariantCulture);
             else if (obj is string)
             {
-                float val = deflt;
-                if (!float.TryParse((string)obj, out val)) val = deflt;
-                return val;
+                double val = deflt;
+                if (!double.TryParse((string)obj, NumberStyles.AllowDecimalPoint | NumberStyles.AllowTrailingSign, CultureInfo.InvariantCulture, out val)) val = deflt;
+                return (float)val;
             }
         }
         return deflt;

@@ -27,10 +27,10 @@ public class SpecialistXmlLoader : MonoBehaviour
 
         ResolveMaster resolveMaster = new ResolveMaster();
 
-        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName);
+        Dictionary<string, StatsClass> firstData = StatsClass.LoadXmlFile(path, fileName, false);
         resolveMaster.AddDataNode(fileName, firstData);
 
-        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ);
+        Dictionary<string, StatsClass> secondData = StatsClass.LoadXmlFile(path, fileNameCZ, false);
         resolveMaster.ModifyDataNode(fileName, secondData);
 
         XMLLoadedSpecialists = resolveMaster.GetDataKeys(fileName);
