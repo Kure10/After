@@ -102,7 +102,7 @@ public class RegionXmlLoader : MonoBehaviour
                 newRegion.IsStartingRegion = true;
             }
 
-            newRegion.name = newRegion.MapArena + " - " + newRegion.RegionName;
+          //  newRegion. = newRegion.MapArena + " - " + newRegion.RegionName;
 
             allRegions.Add(newRegion);
         }

@@ -145,7 +145,7 @@ namespace Notification
 
             if (regionOperator.Region.IsInDarkness)
             {
-                mapNotification.SetMessage("Region " + regionOperator.Region.name + " neni odhalen.");
+                mapNotification.SetMessage("Region " + regionOperator.Region.RegionName + " neni odhalen.");
             }
             else if (regionOperator.Region.IsInShadow)
             {

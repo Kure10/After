@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Region", fileName = "_NewRegion")]
-public class Region : ScriptableObject
+public class Region 
 {
     private long id;
     [SerializeField] private Sprite sprite;
