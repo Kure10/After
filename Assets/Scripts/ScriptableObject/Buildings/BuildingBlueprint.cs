@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObject/Building", fileName = "_NewBuilding")]
-public class BuildingBlueprint : ScriptableObject
+public class BuildingBlueprint 
 {
     [Header("Main Settings")]
     private long id;
