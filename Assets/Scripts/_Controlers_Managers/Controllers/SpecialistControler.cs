@@ -64,7 +64,7 @@ public class SpecialistControler : MonoBehaviour
         startingSpec = specManager.GetStartingSpecialists();
 
         List<Vector2Int> alreadyPlaced = new List<Vector2Int>();
-        Character character = new Character();
+        Character character = null;
 
         foreach (var specialist in startingSpec)
         {
