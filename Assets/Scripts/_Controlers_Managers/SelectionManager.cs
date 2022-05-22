@@ -11,7 +11,6 @@ public class SelectionManager : MonoBehaviour, IWorkSource
     private TileFactory tileFactory;
     private List<GameObject> selectedObjects;
     private List<GameObject> highlightedObjects;
-    private ResourceManager resourceManager;
     private int layerMask;
     private float maxDist = 100f;
     private readonly int TILE = (1 << 8) | (1 << 12);
@@ -24,7 +23,6 @@ public class SelectionManager : MonoBehaviour, IWorkSource
         selectedObjects = new List<GameObject>();
         highlightedObjects = new List<GameObject>();
         layerMask = SELECTABLE; //hit only layer 9 (selectables)
-        resourceManager = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
         characters = new List<Character>();
         panelUI = GameObject.FindGameObjectWithTag("SpecialistUI");
         panelUI.SetActive(false);

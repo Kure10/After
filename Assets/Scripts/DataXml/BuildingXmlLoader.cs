@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ResolveMachine;
 using UnityEngine;
+using LogSystem;
+
 
 public class BuildingXmlLoader
 {
@@ -102,11 +104,11 @@ public class BuildingXmlLoader
                 string spriteName = item.GetStrStat("RoomPicture");
                 newBuilding.Sprite = spriteLoader.LoadBuildingSprite(spriteName);
                 if (newBuilding.Sprite == null)
-                    Debug.LogWarning("Missing sprite name in Resources");
+                    MyLogSystem.LogWarning("Missing sprite name in Resources");
             }
             else
             {
-                Debug.LogError("Sprite Loader is Null -> Sprite will not be loaded ->  XML loader building ");
+                MyLogSystem.LogWarning("In class BuildingXmlLoader Sprite Loader is Null -> Sprite will not be loaded ->  XML loader building ");
             }
 
             allMissions.Add(newBuilding);
