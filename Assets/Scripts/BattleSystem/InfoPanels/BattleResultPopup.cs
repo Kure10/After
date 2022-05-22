@@ -4,12 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Events;
+using ItemCreating;
 
 public class BattleResultPopup : MonoBehaviour
 {
-    [Header("Controllers")]
-    [SerializeField] private ItemCreater _itemCreator;
-
     [Header("Prefabs")]
     [SerializeField] private GameObject _panelSpecialist;
     [SerializeField] private GameObject _itemSlot;
@@ -133,7 +131,7 @@ public class BattleResultPopup : MonoBehaviour
         {
             ItemBlueprint itemBlueprint = blueprits[i];
 
-            GameObject game = _itemCreator.CreateItemByType(itemBlueprint, _itemPrefab);
+            GameObject game = ItemCreater.ItemCreator.CreateItemByType(itemBlueprint, _itemPrefab);
             var item = game.GetComponent<Item>();
 
             if (item == null) // Todo Res and None type.. 

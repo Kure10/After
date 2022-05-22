@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ItemCreating;
 
 
 public class Inventory : MonoBehaviour
 {
     [Space]
     [SerializeField] uWindowSpecController _uWindowSpecController;
-
-    [SerializeField] ItemCreater _itemCreator;
 
     [Header("Prefabs")]
     [SerializeField] public GameObject _itemPrefab;
@@ -21,7 +20,6 @@ public class Inventory : MonoBehaviour
     private int _baseInventorySize = 15;
     private int _additionalInventorySize = 70;
 
-    
     public GameObject GetItemPrefab { get { return _itemPrefab; }}
 
     public static event Action<Mission> OnInventoryChange = delegate { };
@@ -63,7 +61,7 @@ public class Inventory : MonoBehaviour
             {
                 ItemBlueprint blueprint = loot[i];
 
-                GameObject game = _itemCreator.CreateItemByType(loot[i], _itemPrefab);
+                GameObject game = ItemCreater.ItemCreator.CreateItemByType(loot[i], _itemPrefab);
                 var item = game.GetComponent<Item>();
 
                 if (item == null) // Todo Res and None type.. 

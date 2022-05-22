@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ItemCreating;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -19,7 +20,9 @@ public class InventoryManager : MonoBehaviour
         allItemsAndResource = xmlLoader.GetItemsFromXML();
         //  var startItems = FindStartingItem(startContainer);
 
-        if(inventory != null)
+        ItemCreater itemCreater = new ItemCreater();
+
+        if (inventory != null)
         {
             inventory.InicializedStartInventory(allItemsAndResource);
             inventory.InicializedStartInventory(allItemsAndResource);

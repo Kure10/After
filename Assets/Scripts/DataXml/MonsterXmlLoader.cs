@@ -4,7 +4,7 @@ using UnityEngine;
 using ResolveMachine;
 using System;
 
-public class MonsterXmlLoader : MonoBehaviour
+public class MonsterXmlLoader
 {
     public List<Monster> GetMonstersFromXML()
     {

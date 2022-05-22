@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using ItemCreating;
 
 
 // TOdo jsou asi tri prefaby na tento script.  No chce to vymyslet lepe..
@@ -202,14 +203,12 @@ public class uWindowSpecialist : MonoBehaviour
 
     public void PopulateItemSlots(Character character, bool disableDrag)
     {
-        ItemCreater itemCreator = new ItemCreater();
-
         foreach (Item item in character.GetInventory)
         {
             if (item == null)
                 continue;
 
-            GameObject newGameObject = itemCreator.CreateItemFromItem(item , itemPrefab);
+            GameObject newGameObject = ItemCreater.ItemCreator.CreateItemFromItem(item , itemPrefab);
             Item newItem = newGameObject.GetComponent<Item>();
            
             DragAndDropHandler dragHandler = newGameObject.GetComponent<DragAndDropHandler>();
@@ -247,8 +246,6 @@ public class uWindowSpecialist : MonoBehaviour
 
     public void PopulateBackpackItemSlots(Character character, bool disableDrag)
     {
-        ItemCreater itemCreator = new ItemCreater();
-
         int j = 0;
         foreach (Item backpackItem in character.GetBackpackInventory)
         {
@@ -258,7 +255,7 @@ public class uWindowSpecialist : MonoBehaviour
                 continue;
             }
 
-            GameObject newGameObject = itemCreator.CreateItemFromItem(backpackItem, itemPrefab);
+            GameObject newGameObject = ItemCreater.ItemCreator.CreateItemFromItem(backpackItem, itemPrefab);
             Item newItem = newGameObject.GetComponent<Item>();
 
             DragAndDropHandler dragHandler = newGameObject.GetComponent<DragAndDropHandler>();
