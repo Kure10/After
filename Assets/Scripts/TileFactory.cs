@@ -7,19 +7,28 @@ using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
+using LogSystem;
 
 public class TileFactory : MonoBehaviour
 {
     public GameObject emptyTile;
-    public GameObject wallTile;
     public GameObject outsideTile;
     public GameObject debrisTile;
     public GameObject character;
     public GameObject DebrisHealthbar;
     public TextAsset level;
-    private BaseTile[,] grid;
+    private BaseTile[,] _grid;
     private readonly int TILE = 1 << 8;
     public Text coordText;
+
+    [Header ("WallTiles")]
+    [SerializeField] GameObject wallTileDefault;
+    [SerializeField] GameObject wallTileSimple;
+    [SerializeField] GameObject wallTile2Paraller;
+    [SerializeField] GameObject wallTile2Corner;
+    [SerializeField] GameObject wallTile3Sides;
+    [Space]
+
     private ResourceManager rm;
     private Ray ray;
 
@@ -33,7 +42,8 @@ public class TileFactory : MonoBehaviour
     {
         occupiedTiles = new List<Vector2Int>();
         rm = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
-        grid = CreateGrid();
+        _grid = CreateGrid();
+
         UpdateFog();
         var specControler = GameObject.FindGameObjectWithTag("SpecialistController").GetComponent<SpecialistControler>();
         specControler.CreateStartingCharacters(specPosition);
@@ -55,7 +65,7 @@ public class TileFactory : MonoBehaviour
     //return false if already occupied
     public bool OccupyTile(Vector2Int coord)
     {
-        if (grid[coord.x, coord.y] is IWalkable tile)
+        if (_grid[coord.x, coord.y] is IWalkable tile)
         {
             if (IsOccupied(coord)) return false;
             occupiedTiles.Add(coord);
@@ -72,19 +82,19 @@ public class TileFactory : MonoBehaviour
     {
         if (columns == 0)
         {
-            columns = grid.GetUpperBound(0);
-            rows = grid.Length / columns - 1;
+            columns = _grid.GetUpperBound(0);
+            rows = _grid.Length / columns - 1;
         }
 
         for (int x = 0; x < columns; x++)
         {
             for (int y = 0; y < rows; y++)
             {
-                if (grid[x, y] is DebrisTile d)
+                if (_grid[x, y] is DebrisTile d)
                 {
                     checkFog(d.tile, x, y);
                 }
-                else if (grid[x, y] is WallTile w)
+                else if (_grid[x, y] is WallTile w)
                 {
                     checkFog(w.tile, x, y);
                 }
@@ -104,7 +114,7 @@ public class TileFactory : MonoBehaviour
                 if (y + y2 < 0) continue;
                 if (x + x2 > columns) continue;
                 if (y + y2 > rows) continue;
-                if (grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
+                if (_grid[x + x2, y + y2] is IWalkable t && t.walkthrough)
                 {
                     tile.transform.Find("Fog").transform.gameObject.SetActive(false);
                     found = true;
@@ -158,15 +168,14 @@ public class TileFactory : MonoBehaviour
 
     public BaseTile getTile(int col, int row)
     {
-        return grid[col, row];
+        return _grid[col, row];
     }
 
     BaseTile[,] CreateGrid()
     {
-        var lines = level.text.Split(new[] {Environment.NewLine},
-            StringSplitOptions.RemoveEmptyEntries);
+        var lines = level.text.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
         var checkedLines = new List<string>();
-        var tempGrid = new List<List<BaseTile>>();
+        List<List<BaseTile>> tempGrid = new List<List<BaseTile>>();
         int x = 0;
         int z = 0;
         int rows = 0;
@@ -179,11 +188,11 @@ public class TileFactory : MonoBehaviour
         }
 
         checkedLines.Reverse();
-        foreach (var line in checkedLines)
+        foreach (string line in checkedLines)
         {
-            var col = new List<BaseTile>();
+            List<BaseTile> col = new List<BaseTile>();
             tempGrid.Add(col);
-            foreach (var type in line)
+            foreach (char type in line)
             {
                 bool walkable = true;
                 Vector2Int gridPoint = Geometry.GridPoint(x, z);
@@ -191,7 +200,11 @@ public class TileFactory : MonoBehaviour
                 {
                     case ' ': continue;
                     case 'w':
-                        col.Add(new WallTile(generateTilePrefab(wallTile, gridPoint), x, z));
+
+                        WallDirection wallStyle = WallStyleSelection(gridPoint, checkedLines);
+                        GameObject wallTileObject = GetWallGameObject(wallStyle);
+                        col.Add(new WallTile(generateTilePrefab(wallTileObject, gridPoint, wallStyle), x, z, wallStyle.rotation));
+
                         break;
                     case 'e':
                         col.Add(new Tile(generateTilePrefab(emptyTile, gridPoint), x, z) {inside = true});
@@ -219,7 +232,7 @@ public class TileFactory : MonoBehaviour
                         col.Add(new Tile(generateTilePrefab(outsideTile, gridPoint), x, z) {inside = false});
                         break;
                     default:
-                        Debug.Log($"Unknown object: {type} at {gridPoint.x} : {gridPoint.y}");
+                        MyLogSystem.LogError($"Unknown object: {type} at {gridPoint.x} : {gridPoint.y}");
                         continue;
                 }
 
@@ -230,7 +243,7 @@ public class TileFactory : MonoBehaviour
             z++;
         }
 
-        var ret = new BaseTile[tempGrid[0].Count, tempGrid.Count];
+        BaseTile[,] ret = new BaseTile[tempGrid[0].Count, tempGrid.Count];
         foreach (var row in tempGrid)
         {
             foreach (var item in row)
@@ -243,15 +256,197 @@ public class TileFactory : MonoBehaviour
         return ret;
     }
 
-    private GameObject generateTilePrefab(GameObject prefab, Vector2Int gridPoint)
+    private GameObject generateTilePrefab(GameObject prefab, Vector2Int gridPoint, WallDirection wallStyle = null)
     {
-        return Instantiate(prefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform);
+        GameObject newTile = Instantiate(prefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform);
+        if (wallStyle != null)
+            newTile.transform.eulerAngles = new Vector3(0, wallStyle.rotation, 0);
+
+        return newTile;
+    }
+
+    private WallDirection WallStyleSelection(Vector2Int gridPoint, List<string> checkedLines)
+    {
+        WallDirection wallDirection = new WallDirection();
+        string line = checkedLines[gridPoint.y];
+        string trimmed = String.Concat(line.Where(c => !Char.IsWhiteSpace(c)));
+
+        char right = trimmed[gridPoint.x + 1];
+        char left = trimmed[gridPoint.x - 1];
+
+        line = checkedLines[gridPoint.y - 1];
+        trimmed = String.Concat(line.Where(c => !Char.IsWhiteSpace(c)));
+        char up = trimmed[gridPoint.x];
+
+        line = checkedLines[gridPoint.y + 1];
+        trimmed = String.Concat(line.Where(c => !Char.IsWhiteSpace(c)));
+        char down = trimmed[gridPoint.x];
+
+        int numberOfSideWalls = 0;
+        bool leftW = false;
+        bool rightW = false;
+        bool upW = false;
+        bool downW = false;
+
+        if (left == 'W')
+        {
+            numberOfSideWalls++;
+            leftW = true;
+        }
+
+        if (right == 'W')
+        {
+            numberOfSideWalls++;
+            rightW = true;
+        }
+
+        if (up == 'W')
+        {
+            numberOfSideWalls++;
+            upW = true;
+        }
+
+        if (down == 'W')
+        {
+            numberOfSideWalls++;
+            downW = true;
+        }
+
+        switch (numberOfSideWalls)
+        {
+            case 0:
+                wallDirection.type = WallDirection.WallType.undefined;
+                break;
+            case 1:
+                wallDirection.rotation = GetThreeWallRotation(leftW, rightW, downW, upW);
+                wallDirection.type = WallDirection.WallType.wall3Sides;
+
+                break;
+            case 2:
+                bool isParaller = false;
+                wallDirection.rotation = GetTwoWallRotation(leftW, rightW, downW, upW, out isParaller);
+
+                if (isParaller)
+                    wallDirection.type = WallDirection.WallType.wall2Paraller;
+                else
+                    wallDirection.type = WallDirection.WallType.wall2Corner;
+
+                break;
+            case 3:
+                wallDirection.rotation = GetOneWallRotation(leftW, rightW, downW, upW);
+                wallDirection.type = WallDirection.WallType.wallSimple;
+                break;
+            case 4:
+                wallDirection.type = WallDirection.WallType.undefined;
+                break;
+            default:
+                break;
+        }
+
+        return wallDirection;
+
+        int GetOneWallRotation(bool leftS, bool rightS, bool downS, bool upS)
+        {
+            int rotation = 0;
+            if (!leftS)
+                rotation = 270;
+            else if (!rightS)
+                rotation = 90;
+            else if (!downS)
+                rotation = 0;
+            else
+                rotation = 180;
+
+            return rotation;
+        }
+
+        int GetTwoWallRotation(bool leftS, bool rightS, bool downS, bool upS, out bool isParaller)
+        {
+            int rotation = 0;
+
+            if (downS && upS)
+            {
+                isParaller = true;
+                rotation = 0;
+            }
+            else if (leftS && rightS)
+            {
+                isParaller = true;
+                rotation = 90;
+            }
+            else if (upS && rightS)
+            {
+                isParaller = false;
+                rotation = 0;
+            }
+            else if (rightS && downS)
+            {
+                isParaller = false;
+                rotation = 270;
+            }
+            else if (downS && leftS)
+            {
+                isParaller = false;
+                rotation = 180;
+            }
+            else
+            {
+                isParaller = false;
+                rotation = 90;
+            }
+
+            return rotation;
+        }
+
+        int GetThreeWallRotation(bool leftS, bool rightS, bool downS, bool upS)
+        {
+            int rotation = 0;
+
+            if (leftS)
+                rotation = 90;
+            else if (rightS)
+                rotation = 270;
+            else if (upS)
+                rotation = 0;
+            else
+                rotation = 180;
+
+            return rotation;
+        }
+    }
+
+    private GameObject GetWallGameObject (WallDirection wallDirection)
+    {
+        GameObject wallTile = wallTileDefault;
+
+        switch (wallDirection.type)
+        {
+            case WallDirection.WallType.undefined:
+                wallTile = wallTileDefault;
+                break;
+            case WallDirection.WallType.wallSimple:
+                wallTile = wallTileSimple;
+                break;
+            case WallDirection.WallType.wall2Paraller:
+                wallTile = wallTile2Paraller;
+                break;
+            case WallDirection.WallType.wall2Corner:
+                wallTile = wallTile2Corner;
+                break;
+            case WallDirection.WallType.wall3Sides:
+                wallTile = wallTile3Sides;
+                break;
+            default:
+                break;
+        }
+
+        return wallTile;
     }
 
     public List<Vector2Int> FindPath(Vector2Int from, Vector2Int to)
     {
-        var start = grid[from.x, from.y] as IWalkable;
-        var target = grid[to.x, to.y] as IWalkable;
+        var start = _grid[from.x, from.y] as IWalkable;
+        var target = _grid[to.x, to.y] as IWalkable;
         if (start == null || target == null)
         {
             return null;
@@ -329,11 +524,11 @@ public class TileFactory : MonoBehaviour
 
                 int checkX = node.x + x;
                 int checkY = node.y + y;
-                int gridSizeX = grid.GetLength(0);
-                int gridSizeY = grid.GetLength(1);
+                int gridSizeX = _grid.GetLength(0);
+                int gridSizeY = _grid.GetLength(1);
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    if (grid[checkX, checkY] is IWalkable g) // && !(grid[checkX, checkY] is DebrisTile))
+                    if (_grid[checkX, checkY] is IWalkable g) // && !(grid[checkX, checkY] is DebrisTile))
                         neighbours.Add(g);
                 }
             }
@@ -357,7 +552,7 @@ public class TileFactory : MonoBehaviour
 
     public void ClearDebris(int col, int row)
     {
-        grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
+        _grid[col, row] = new Tile(generateTilePrefab(emptyTile, new Vector2Int(col, row)), col, row) {inside = true};
         UpdateFog();
     }
 
@@ -366,7 +561,7 @@ public class TileFactory : MonoBehaviour
     {
         if (coord.x > columns || coord.x < 0) return null;
         if (coord.y > rows || coord.y < 0) return null;
-        if (grid[coord.x, coord.y] is Tile t)
+        if (_grid[coord.x, coord.y] is Tile t)
         {
             return t.building;
         }
@@ -378,7 +573,7 @@ public class TileFactory : MonoBehaviour
     {
         bool ret = false;
         Tile highlight = null;
-        if (grid[coord.x, coord.y] is Tile tile && !(grid[coord.x, coord.y] is DebrisTile))
+        if (_grid[coord.x, coord.y] is Tile tile && !(_grid[coord.x, coord.y] is DebrisTile))
         {
             highlight = tile;
             if (!tile.inside)
@@ -403,7 +598,7 @@ public class TileFactory : MonoBehaviour
     {
         foreach (var coord in coords)
         {
-            if (grid[coord.x, coord.y] is Tile t)
+            if (_grid[coord.x, coord.y] is Tile t)
             {
                 t.building = building;
             }
@@ -448,11 +643,11 @@ public class TileFactory : MonoBehaviour
                     var locX = startPoint.x + x;
                     var locY = startPoint.y + y;
                     if (locX < 0 || locY < 0) continue;
-                    if (locX >= grid.GetLength(0) || locY >= grid.GetLength(1)) continue;
+                    if (locX >= _grid.GetLength(0) || locY >= _grid.GetLength(1)) continue;
 
                     if (Math.Abs(x) < distance && Math.Abs(y) < distance)
                         continue;
-                    if (grid[startPoint.x + x, startPoint.y + y] is Tile t)
+                    if (_grid[startPoint.x + x, startPoint.y + y] is Tile t)
                     {
                         if (t.building == null && t.inside)
                         {
@@ -496,4 +691,20 @@ public class TileFactory : MonoBehaviour
     {
         return occupiedTiles;
     }
+
+    public class WallDirection
+    {
+        public WallType type = WallType.wallSimple;
+        public int rotation = 0;
+
+        public enum WallType
+        {
+            undefined,
+            wallSimple,
+            wall2Paraller,
+            wall2Corner,
+            wall3Sides
+        }
+    }
+
 }

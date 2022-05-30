@@ -5017,8 +5017,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emptyTile: {fileID: 5004195722296465572, guid: 9e5a9011e4f333e45a71e834fdf43b4d,
     type: 3}
-  wallTile: {fileID: 2513357548397159881, guid: b2660695ae3d895418a7c568d07404fd,
-    type: 3}
   outsideTile: {fileID: 5341244171716241495, guid: 7abc08956179641e39748564f4594b53,
     type: 3}
   debrisTile: {fileID: 5307920308662695039, guid: b94af754e84244dc6a7b5600c4384a71,
@@ -5029,6 +5027,16 @@ MonoBehaviour:
     type: 3}
   level: {fileID: 4900000, guid: f73d13e82d7e46d4f925c95be7b2ab31, type: 3}
   coordText: {fileID: 1475002535}
+  wallTileDefault: {fileID: 6951631190369723748, guid: 99f3d90348f03e747810ff7edd5836c7,
+    type: 3}
+  wallTileSimple: {fileID: 2513357548397159881, guid: 7c883f47ff0f5fa4c8259cdee7b60cae,
+    type: 3}
+  wallTile2Paraller: {fileID: 2513357548397159881, guid: c0ee0741e8f9c89459eb8832c0eecd67,
+    type: 3}
+  wallTile2Corner: {fileID: 2513357548397159881, guid: 723a5b9fab2e76743a97d5eb84d61184,
+    type: 3}
+  wallTile3Sides: {fileID: 2513357548397159881, guid: 92e291d200abd2e459ee7e209f519221,
+    type: 3}
 --- !u!4 &436036000
 Transform:
   m_ObjectHideFlags: 0
@@ -10447,6 +10455,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4159085284923827311, guid: 53029ec437231784ba6c0ca270a19c32,
+        type: 3}
+      propertyPath: TestingBattle
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4159085284923827311, guid: 53029ec437231784ba6c0ca270a19c32,
         type: 3}
@@ -21404,7 +21417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3346682, y: 0.19759968}
   m_AnchorMax: {x: 0.54800004, y: 0.46079907}
-  m_AnchoredPosition: {x: 1.2000122, y: -1.2000732}
+  m_AnchoredPosition: {x: 1.2000122, y: -1.200077}
   m_SizeDelta: {x: 0, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1941471246
@@ -27120,7 +27133,7 @@ PrefabInstance:
     - target: {fileID: 3940447415222695494, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -27.899872
+      value: -27.899902
       objectReference: {fileID: 0}
     - target: {fileID: 4200777404336165799, guid: 3f87578e4ea9d7b4bb32a57c95e87b4c,
         type: 3}
@@ -29161,7 +29174,7 @@ PrefabInstance:
     - target: {fileID: 8549471472056089122, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.5000076
+      value: -0.50001526
       objectReference: {fileID: 0}
     - target: {fileID: 8549471472056089122, guid: 65b84b81998b6d14db614d69973df165,
         type: 3}

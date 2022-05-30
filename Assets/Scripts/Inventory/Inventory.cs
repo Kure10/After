@@ -24,9 +24,10 @@ public class Inventory : MonoBehaviour
 
     public static event Action<Mission> OnInventoryChange = delegate { };
 
+    // ToDo What if cant find emnty slot ???? solution.. what next
     public ItemSlot FindEmptySlot ()
     {
-        ItemSlot emptySlot = new ItemSlot();
+        ItemSlot emptySlot = null;
 
         foreach (ItemSlot item in inventory)
         {

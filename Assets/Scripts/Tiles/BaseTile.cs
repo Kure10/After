@@ -7,13 +7,18 @@ public abstract class BaseTile
     public GameObject tile;  
     public int x;
     public int y;
+    private int rotation;
    
-    public BaseTile(GameObject tile, int x, int y)
+    public BaseTile(GameObject tile, int x, int y, int _rotation = 0)
     {
         this.tile = tile;
         this.x = x;
         this.y = y;
+        this.rotation = _rotation;
+        tile.name = $" {tile.name} {x} {y} ";
     }
+
+    public int GetRotation { get { return this.rotation; } }
 }
 interface IWalkable
 {
