@@ -258,7 +258,12 @@ public class TileFactory : MonoBehaviour
 
     private GameObject generateTilePrefab(GameObject prefab, Vector2Int gridPoint, WallDirection wallStyle = null)
     {
-        GameObject newTile = Instantiate(prefab, Geometry.PointFromGrid(gridPoint), Quaternion.identity, gameObject.transform);
+        bool isWall = false;
+        if(wallStyle != null)
+            isWall = true;
+     
+        GameObject newTile = Instantiate(prefab, Geometry.PointFromGrid(gridPoint, isWall), Quaternion.identity, gameObject.transform);
+
         if (wallStyle != null)
             newTile.transform.eulerAngles = new Vector3(0, wallStyle.rotation, 0);
 

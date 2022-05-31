@@ -297,7 +297,7 @@ public class WindowMissionController : MonoBehaviour
             charactersPreSelectedToMission.Add(character);
 
 
-        this.uWindowSpecSelection.setInfoText(charactersReadyToMission.Count, currentMission.SpecMax);
+        this.uWindowSpecSelection.setInfoText(charactersPreSelectedToMission.Count, currentMission.SpecMax);
     }
 
     public List<Character> StartMission()
