@@ -45,10 +45,13 @@ public class BattleController : MonoBehaviour
 
     public static event Action<StatsClass> OnBattleLost = delegate { };
     public static event Action OnBattleEnd = delegate { };
+    public static event Action OnBattleStart = delegate { };
+
+    public static bool IsBattleAlive = false;
 
     bool _turnIsOver = false;
-    private bool _isBattleOnline = false;
     private bool _isPlayerTurn = false;
+    private bool isPerformingAction = false;
 
     private Unit _activeUnit = null;
 
@@ -63,6 +66,8 @@ public class BattleController : MonoBehaviour
     private ResultTurnAction _playerInput = new ResultTurnAction();
 
     private BattlePathFinding _battlePathFinder;
+
+    public bool IsPerformingAction { get { return isPerformingAction; } set { value = isPerformingAction; } }
 
     // testing 
     List<Squar> shootPathSq = new List<Squar>();
@@ -91,7 +96,7 @@ public class BattleController : MonoBehaviour
     private async void Update()
     {
        // bool actionPerformed = false;
-        if (_isBattleOnline)
+        if (IsBattleAlive)
         {
             InputProcess();
 
@@ -149,6 +154,7 @@ public class BattleController : MonoBehaviour
     public void CloseBattle()
     {
         OnBattleEnd.Invoke();
+        IsBattleAlive = false;
         this.gameObject.SetActive(false);
         _battleResultPopup.OnPressExit();
     }
@@ -248,7 +254,7 @@ public class BattleController : MonoBehaviour
             actionOnSquare = RaycastTargetSquar();
             if (actionOnSquare != null)
             {
-                TryGetAim(actionOnSquare);
+               // TryGetAim(actionOnSquare);
             }
         }
 
@@ -278,7 +284,7 @@ public class BattleController : MonoBehaviour
             }
         }
 
-        if (resultPlayerInput.inputResult)
+        if (resultPlayerInput.inputResult && !IsPerformingAction)
         {
             switch (resultPlayerInput.battleAction)
             {
@@ -290,11 +296,12 @@ public class BattleController : MonoBehaviour
 
                     if (!_playerInput.moveIsBlocked)
                     {
+                        IsPerformingAction = true;
                         Squar startingPosition = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
                         Squar endPosition = _battleGridController.GetSquareFromGrid(actionOnSquare.GetCoordinates());
                         List<Squar> finalPath = _battlePathFinder.FindPath(startingPosition, endPosition);
 
-                        await Task.WhenAll(_battleGridController.MoveToPathAsync(_activeUnit, finalPath, _delayWalk, _squaresInUnitMoveRange, _squaresInUnitAttackRange));
+                        await Task.WhenAll(_battleGridController.MoveToPathAsync(_activeUnit, finalPath, _delayWalk, _squaresInUnitMoveRange, _squaresInUnitAttackRange, this));
 
                         _battleLog.AddBattleLog($"{_activeUnit._name} moved");
                         resultPlayerInput.inputResult = true;
@@ -321,6 +328,10 @@ public class BattleController : MonoBehaviour
                     }
 
                     break;
+                case BattleAction.RangeAttack:
+                    Debug.Log("Range Attack");
+                    resultPlayerInput.inputResult = false;
+                    break;
                 case BattleAction.Heal:
                     Debug.Log("Heal action");
                     resultPlayerInput.inputResult = false;
@@ -329,34 +340,39 @@ public class BattleController : MonoBehaviour
                     break;
             }
         }
+        else
+        {
+            resultPlayerInput.inputResult = false;
+        }
 
         return resultPlayerInput;
     }
 
     private bool TryGetAim(Squar targetSquare)
     {
-       // Squar actionOnSquare;
         bool tryAim = true;
-       // actionOnSquare = RaycastTargetSquar();
+
+        if (!_battleGridController.IsUnitInAttackRange(targetSquare, _squaresInUnitAttackRange))
+            return false;
 
         if (targetSquare == null)
         {
-            foreach (var sq in shootPathSq)
-            {
-                sq.TestingShowShootPath(false);
-                sq.TestingShowShootPathLesserThan(false);
-                sq.TestingShowShootPathNopoints(false);
-                shootPathSq.Clear();
-            }
+            //foreach (var sq in shootPathSq)
+            //{
+            //    sq.TestingShowShootPath(false);
+            //    sq.TestingShowShootPathLesserThan(false);
+            //    sq.TestingShowShootPathNopoints(false);
+            //    shootPathSq.Clear();
+            //}
         }
         else
         {
-            foreach (var sq in shootPathSq)
-            {
-                sq.TestingShowShootPath(false);
-                sq.TestingShowShootPathLesserThan(false);
-                sq.TestingShowShootPathNopoints(false);
-            }
+            //foreach (var sq in shootPathSq)
+            //{
+            //    sq.TestingShowShootPath(false);
+            //    sq.TestingShowShootPathLesserThan(false);
+            //    sq.TestingShowShootPathNopoints(false);
+            //}
             shootPathSq.Clear();
             Squar center = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
             Vector3[] startRectCornrs = new Vector3[4];
@@ -368,15 +384,15 @@ public class BattleController : MonoBehaviour
             Vector2 startSqCenter = new Vector2((startRectCornrs[0].x + startRectCornrs[3].x) / 2, (startRectCornrs[0].y + startRectCornrs[1].y) / 2);
             Vector2 endSqCenter = new Vector2((endRectCornrs[0].x + endRectCornrs[3].x) / 2, (endRectCornrs[0].y + endRectCornrs[1].y) / 2);
 
-            // (Vector2 a , Vector2 b) line = (startSqCenter, endSqCenter);
-
             List<Vector2> points = _battleGridController.GetPointsBetweenActiveUnitAndTargetSquare(startSqCenter, endSqCenter);
             shootPathSq.AddRange(RaycastPointsOnGrid(points));
 
-            shootPathSq.RemoveAt(shootPathSq.Count - 1);
-            shootPathSq.RemoveAt(0);
-
-
+            if(shootPathSq.Count > 1)
+            {
+                shootPathSq.RemoveAt(shootPathSq.Count - 1);
+                shootPathSq.RemoveAt(0);
+            }
+ 
             Vector3[] squareCorners = new Vector3[4];
 
             foreach (Squar sq in shootPathSq)
@@ -391,7 +407,8 @@ public class BattleController : MonoBehaviour
 
                 bool? result = _battleGridController.DoesIntersectionPointsOnAdjacentSides(intersectPoints);
 
-                if (result == true) // pokud jsou protilehlé nepravidelny čtyřuhelnik
+                //Body tvoří nepravidelný čtyřuhelník
+                if (result == true)
                 {
                     //Debug.Log("Je nepravidelny čtyřuhelnik -> " + sq.xCoordinate + "  " + sq.yCoordinate);
                     if (sq.IsSquearBlocked)
@@ -420,7 +437,7 @@ public class BattleController : MonoBehaviour
 
                              //var direction = GetAimDirection(startSqCenter, endSqCenter);
                            // Debug.Log("Je mensi triangle než 33% -> " + sq.xCoordinate + "  " + sq.yCoordinate);
-                            sq.TestingShowShootPathLesserThan(true);
+                           // sq.TestingShowShootPathLesserThan(true);
                         }
                         else
                         {
@@ -430,19 +447,19 @@ public class BattleController : MonoBehaviour
 
 
                 }
-                else
-                {
-                   // Debug.LogError($"Error! Calculation of intersect Points failed on square: {sq.xCoordinate} {sq.yCoordinate}");
+                //else
+                //{
+                //   // Debug.LogError($"Error! Calculation of intersect Points failed on square: {sq.xCoordinate} {sq.yCoordinate}");
 
-                    //Todo tento druh čtverce zatím neřeším
-                    sq.TestingShowShootPathNopoints(true);
-                }
+                //    //Todo tento druh čtverce zatím neřeším
+                //    sq.TestingShowShootPathNopoints(true);
+                //}
             }
 
-            foreach (var sq in shootPathSq)
-            {
-                sq.TestingShowShootPath(true);
-            }
+            //foreach (var sq in shootPathSq)
+            //{
+            //    sq.TestingShowShootPath(true);
+            //}
         }
 
        // Debug.Log("Attack status range :  " + isAimClean);
@@ -561,6 +578,7 @@ public class BattleController : MonoBehaviour
 
     public void StartBattle(BattleStartData battleStartData)
     {
+        IsBattleAlive = true;
         _battleStartData = battleStartData;
 
         spriteLoader = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceSpriteLoader>();
@@ -579,6 +597,9 @@ public class BattleController : MonoBehaviour
         SetUnitPosition(_battleStartData);
         InitBattle(_battleStartData);
         TestStartBattle();
+
+        
+        OnBattleStart.Invoke();
     }
 
     private void InitBattle(BattleStartData battleData)
@@ -774,8 +795,6 @@ public class BattleController : MonoBehaviour
 
     private void TestStartBattle()
     {
-        _isBattleOnline = true;
-
         if (_unitsOnBattleField.Count > 0)
         {
 
@@ -820,7 +839,6 @@ public class BattleController : MonoBehaviour
             {
                 return sq;
             }
-
         }
 
         return null;
@@ -878,20 +896,28 @@ public class BattleController : MonoBehaviour
     //    }
     //}
 
-    private BattleAction OnClickIntoGrid(Squar squarToMove)
+    private BattleAction OnClickIntoGrid(Squar actionSquare)
     {
         BattleAction action = BattleAction.None;
 
-        if (squarToMove.UnitInSquar != null)
+        if (actionSquare.UnitInSquar != null)
         {
-            bool isFriendlyUnit = squarToMove.UnitInSquar._team == _activeUnit._team;
+            bool isRange = false;
+            bool isFriendlyUnit = actionSquare.UnitInSquar._team == _activeUnit._team;
 
-            if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
+            if (_activeUnit.ActiveWeapon != null)
+                isRange = !_activeUnit.ActiveWeapon.IsMelleWeapon;
+
+            if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
             {
+                if(isRange && TryGetAim(actionSquare))
+                    return action = BattleAction.RangeAttack;
+
+
                 action = BattleAction.Attack;
             }
 
-            if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(squarToMove))
+            if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
             {
                 action = BattleAction.Heal;
             }
@@ -900,7 +926,7 @@ public class BattleController : MonoBehaviour
         }
         else
         {
-            if (!squarToMove.IsSquearBlocked && _squaresInUnitMoveRange.Contains(squarToMove))
+            if (!actionSquare.IsSquearBlocked && _squaresInUnitMoveRange.Contains(actionSquare))
             {
                 action = BattleAction.Move;
             }
@@ -957,7 +983,6 @@ public class BattleController : MonoBehaviour
         if (battleIsOver)
         {
             _battleResultPopup.ShowBattleResult(_unitsOnBattleField, _unit, _battleStartData.GetCharacterFromBattle);
-            _isBattleOnline = false;
             // Todo Clean BattleField . And prepair for next Battle
         }
 
@@ -1051,6 +1076,7 @@ public class BattleController : MonoBehaviour
                 {
                     if (TryGetAim(sq))
                     {
+                        Debug.Log("JSem tady ale nemel bych byt");
                         sq.CursorEvent.action = BattleController.BattleAction.Attack;
                         sq.SetActionMark(attackAction);
                     }
@@ -1120,6 +1146,9 @@ public class BattleController : MonoBehaviour
 
     private void InputProcess()
     {
+        if (IsPerformingAction)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ChangeWeapon();
@@ -1136,6 +1165,7 @@ public class BattleController : MonoBehaviour
         None,
         Move,
         Attack,
+        RangeAttack,
         Heal
     }
 
@@ -1159,60 +1189,4 @@ public class BattleController : MonoBehaviour
             inputResult = false;
         }
     }
-
-    //// TESTTEST
-    ///
-
-
-
-
-
-    //private AimDirection GetAimDirection(Vector2 startPoint, Vector2 endPoint)
-    //{
-    //    float x = startPoint.x - endPoint.x;
-    //    float y = startPoint.y - endPoint.y;
-
-    //    if (x > 0 && y < 0)
-    //    {
-    //        //leftUp;
-    //        if (Math.Abs(x) > Math.Abs(y))
-    //        {
-    //            return AimDirection.left;
-    //        }
-    //        else
-    //        {
-    //            return AimDirection.up;
-    //        }
-    //    }
-    //    else if (x < 0 && y > 0)
-    //    {
-    //       // return AimDirection.rightDown;
-    //    }
-    //    else if (x > 0 && y > 0)
-    //    {
-    //      //  return AimDirection.leftDown;
-    //    }
-    //    else if (x < 0 && y < 0)
-    //    {
-    //       // return AimDirection.rightUp;
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("Something wrong with AimDirection contact Developers");
-    //        return AimDirection.errorDirection;
-    //    }
-
-    //    return AimDirection.up;
-    //}
-
-    //public enum AimDirection
-    //{
-    //    right,
-    //    left,
-    //    up,
-    //    down,
-    //    errorDirection
-    //}
-
-
 }

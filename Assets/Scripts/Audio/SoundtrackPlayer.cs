@@ -9,6 +9,7 @@ public class SoundtrackPlayer : MonoBehaviour
     [SerializeField] List<Audio.AudioType> backgroundTypes = new List<Audio.AudioType>();
 
     [SerializeField] AudioSource soundtrackSource = null;
+    [SerializeField] AudioSource soundtrackBattleSource = null;
 
     // relationship between Audio background Type and AudioOption
     private Dictionary<Audio.AudioType, AudioOption> AudioBackgroundObject = new Dictionary<Audio.AudioType, AudioOption>(); 
@@ -19,7 +20,9 @@ public class SoundtrackPlayer : MonoBehaviour
 
     private void OnEnable()
     {
-         AudioManager.AfterConfiguration += LoadBackgroundAudioObjects;
+        AudioManager.AfterConfiguration += LoadBackgroundAudioObjects;
+        BattleController.OnBattleStart += ChangeToBattlePlayList;
+        BattleController.OnBattleEnd += ChangeToBackgroundPlayList;
     }
 
     public void Start()
@@ -32,9 +35,19 @@ public class SoundtrackPlayer : MonoBehaviour
 
     public void Update()
     {
-        if (!soundtrackSource.isPlaying)
+        if(BattleController.IsBattleAlive)
         {
-            NewBackgroundAudio(_type);
+            if (!soundtrackBattleSource.isPlaying)
+            {
+                NewBackgroundAudio(_type);
+            }
+        }
+        else
+        {
+            if (!soundtrackSource.isPlaying)
+            {
+                NewBackgroundAudio(_type);
+            }
         }
     }
 
@@ -60,7 +73,7 @@ public class SoundtrackPlayer : MonoBehaviour
             return;
         }
 
-        AudioManager.instance.PlayAudio(type, true, numberOfNextClip: numberOfClips);
+        AudioManager.instance.PlayAudio(type, true, _delay: 5f, numberOfNextClip: numberOfClips);
     }
 
     private int NextPseudoRandomAudio(Audio.AudioType type)
@@ -122,8 +135,32 @@ public class SoundtrackPlayer : MonoBehaviour
         }
     }
 
+    private void ChangeToBattlePlayList()
+    {
+        AudioManager.instance.StopAudio(_type, _fade: true, _delay: 0.0f);
+        _type = Audio.AudioType.SoundBattle_01;
+        StartCoroutine(PlayAudioWithDeley(1f));
+    }
+
+    private void ChangeToBackgroundPlayList()
+    {
+        AudioManager.instance.StopAudio(_type, _fade: true, _delay: 0.0f);
+        _type = Audio.AudioType.SoundBackground_01;
+        StartCoroutine(PlayAudioWithDeley(1f));
+    }
+
+    private IEnumerator PlayAudioWithDeley(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        AudioManager.instance.PlayAudio(_type, _fade: true, _delay: 0.0f);
+        yield return null;
+    }
+
     private void OnDisable()
     {
         AudioManager.AfterConfiguration -= LoadBackgroundAudioObjects;
+        BattleController.OnBattleStart -= ChangeToBattlePlayList;
+        BattleController.OnBattleEnd -= ChangeToBackgroundPlayList;
     }
 }

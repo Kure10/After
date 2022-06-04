@@ -56,7 +56,7 @@ public class BattleGridController : MonoBehaviour
         selectedUnitSquar.UnitInSquar = null;
     }
 
-    public async Task MoveToPathAsync(Unit unit, List<Squar> path, int delayTimeWalk, List<Squar> squaresInMoveRange, List<Squar> squaresInAttackRange)
+    public async Task MoveToPathAsync(Unit unit, List<Squar> path, int delayTimeWalk, List<Squar> squaresInMoveRange, List<Squar> squaresInAttackRange, BattleController battleController)
     {
         List<Squar> tmpSquaresInMoverange = new List<Squar>(squaresInMoveRange);
         SetSquaresOutOfAttackReach(squaresInAttackRange);
@@ -74,6 +74,7 @@ public class BattleGridController : MonoBehaviour
         squaresInMoveRange.Clear();
         squaresInMoveRange.AddRange(tmpSquaresInMoverange);
         await Task.Yield();
+        battleController.IsPerformingAction = false;
     }
 
     public void ShowSquaresWithinMoveRange(List<Squar> squaresInMoveRange, bool makeVisible)
@@ -359,6 +360,16 @@ public class BattleGridController : MonoBehaviour
         }
 
         return moveSquars;
+    }
+
+    public bool IsUnitInAttackRange(Squar targetSquare, List<Squar> unitRangeSquares)
+    {
+        foreach (Squar sq in unitRangeSquares)
+        {
+            if (targetSquare == sq)
+                return true;
+        }
+        return false;
     }
 
     public List<Squar> GetTheAdjacentAttackSquare(Squar centerSquar, bool showAttackBorders = false)

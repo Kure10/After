@@ -33,7 +33,8 @@ namespace Audio
         SFX_01,
         BTN_01,
         SoundBackground_01,
-        SoundEnviroment_01
+        SoundEnviroment_01,
+        SoundBattle_01
     }
 
     public enum SFXEvent
@@ -44,7 +45,8 @@ namespace Audio
         ButtonHover,
         MapClose,
         MapOpen,
-        BackInMainMenu
+        BackInMainMenu,
+        BattleStart,
     }
 }
 

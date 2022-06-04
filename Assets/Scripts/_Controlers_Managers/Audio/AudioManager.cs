@@ -14,6 +14,7 @@ namespace Audio
         public bool debug;
 
         [SerializeField] AudioSource backgroundAudioSource;
+        [SerializeField] AudioSource backgroundBattleAudioSource;
         [SerializeField] AudioSource buttonAudioSource;
         [SerializeField] AudioSource enviromentAudioSource;
 
@@ -269,6 +270,9 @@ namespace Audio
                 case AudioType.SoundEnviroment_01:
                     source = enviromentAudioSource;
                     break;
+                case AudioType.SoundBattle_01:
+                    source = backgroundBattleAudioSource;
+                    break;
                 case AudioType.SoundBackground_01:
                     source = backgroundAudioSource;
                     break;
@@ -302,7 +306,7 @@ namespace Audio
             {
                 int count = option.audiobases.Count;
 
-                if (clipNumber!= -1 && clipNumber <= count)
+                if (clipNumber!= -1 && clipNumber < count)
                     return option.audiobases[clipNumber].clip;
                 else
                 {
