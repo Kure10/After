@@ -43,7 +43,7 @@ public class UnitWindow : MonoBehaviour
         healthImageValue.transform.localScale = new Vector3(amount,1,1);
     }
 
-    public void UpdateRange(Unit unit)
+    private void UpdateRange(Unit unit)
     {
         int rangeMax = 0;
         int rangeMin = 0;
@@ -69,7 +69,7 @@ public class UnitWindow : MonoBehaviour
         range.text = rangeText;
     }
 
-    public void UpdateAliveStatus(bool isDead)
+    private void UpdateAliveStatus(bool isDead)
     {
         deadCross.SetActive(isDead);
     }

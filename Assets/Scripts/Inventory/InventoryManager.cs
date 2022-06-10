@@ -25,7 +25,6 @@ public class InventoryManager : MonoBehaviour
         if (inventory != null)
         {
             inventory.InicializedStartInventory(allItemsAndResource);
-            inventory.InicializedStartInventory(allItemsAndResource);
         }
     }
 

@@ -167,7 +167,7 @@ public class BattleResultPopup : MonoBehaviour
         {
             int row = 0;
             unit.gameObject.SetActive(true);
-            unit.UpdateData(unit);
+            unit.UpdateData();
 
             if (unit._team == Unit.Team.Human)
             {

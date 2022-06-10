@@ -6,7 +6,7 @@ public class ItemBlueprint
 {
     // Todo make private
     public long itemID;
-    public new string name;
+    public string theName;
     private Sprite sprite;
     private ItemType type;
     private ItemResourceType resourceType = ItemResourceType.None;
@@ -37,7 +37,7 @@ public class ItemBlueprint
     public ItemBlueprint(long _id, string _name, ItemType _type)
     {
         itemID = _id;
-        name = _name;
+        theName = _name;
         type = _type;
     }
 

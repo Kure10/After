@@ -65,7 +65,7 @@ public class Item : MonoBehaviour
 
     public void SetupItem(ItemBlueprint bluePrint)
     {
-        name = bluePrint.name;
+        name = bluePrint.theName;
         image.sprite = bluePrint.Sprite;
         type = bluePrint.Type;
         resourceType = bluePrint.ResourceType;

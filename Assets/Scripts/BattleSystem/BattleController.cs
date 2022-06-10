@@ -6,7 +6,7 @@ using System;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 
-public class BattleController : MonoBehaviour
+public partial class BattleController : MonoBehaviour
 {
     [Header("Testing")]
     public bool TestingBattle = false;
@@ -51,7 +51,7 @@ public class BattleController : MonoBehaviour
 
     bool _turnIsOver = false;
     private bool _isPlayerTurn = false;
-    private bool isPerformingAction = false;
+    private bool _isPerformingAction = false;
 
     private Unit _activeUnit = null;
 
@@ -67,7 +67,15 @@ public class BattleController : MonoBehaviour
 
     private BattlePathFinding _battlePathFinder;
 
-    public bool IsPerformingAction { get { return isPerformingAction; } set { value = isPerformingAction; } }
+    public List<Squar> GetSquaresInAttackRange { get { return _squaresInUnitAttackRange; } }
+    public List<Squar> GetSquaresInMoveRange { get { return _squaresInUnitMoveRange; } }
+    public int GetDelayWalk { get { return _delayWalk; } }
+    public Unit GetActiveUnit { get { return _activeUnit; } }
+    public bool IsPerformingAction { get { return _isPerformingAction; } set {  _isPerformingAction = value; } }
+
+    public BattleGridController GetBattleGridController { get { return _battleGridController; } }
+
+    public BattlePathFinding GetBattkePathFinder { get { return _battlePathFinder; } }
 
     // testing 
     List<Squar> shootPathSq = new List<Squar>();
@@ -245,39 +253,39 @@ public class BattleController : MonoBehaviour
 
         resultPlayerInput.inputResult = false;
         resultPlayerInput.battleAction = BattleAction.None;
-        Squar actionOnSquare = null;
-        Unit unitOnSquare = null;
+        Squar targetActionOnSquare = null;
+        Unit targetUnit = null;
 
         // Testing Space middle mouse button
         if (Input.GetMouseButtonDown(2))
         {
-            actionOnSquare = RaycastTargetSquar();
-            if (actionOnSquare != null)
+            targetActionOnSquare = RaycastTargetSquar();
+            if (targetActionOnSquare != null)
             {
-               // TryGetAim(actionOnSquare);
+                TryGetAim(targetActionOnSquare, true);
             }
         }
 
 
         if (Input.GetMouseButtonDown(0))
         {
-            actionOnSquare = RaycastTargetSquar();
-            if (actionOnSquare != null)
+            targetActionOnSquare = RaycastTargetSquar();
+            if (targetActionOnSquare != null)
             {
-                resultPlayerInput.battleAction = OnClickIntoGrid(actionOnSquare);
-                unitOnSquare = actionOnSquare.UnitInSquar;
+                resultPlayerInput.battleAction = OnClickIntoGrid(targetActionOnSquare);
+                targetUnit = targetActionOnSquare.UnitInSquar;
                 resultPlayerInput.inputResult = true;
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            actionOnSquare = RaycastTargetSquar();
-            if (actionOnSquare != null)
+            targetActionOnSquare = RaycastTargetSquar();
+            if (targetActionOnSquare != null)
             {
-                if (actionOnSquare.UnitInSquar != null)
+                if (targetActionOnSquare.UnitInSquar != null)
                 {
-                    detailPopup.ShowPopup(actionOnSquare.UnitInSquar);
+                    detailPopup.ShowPopup(targetActionOnSquare.UnitInSquar);
                 }
 
                 Debug.Log("Info unit panel popup");
@@ -296,13 +304,7 @@ public class BattleController : MonoBehaviour
 
                     if (!_playerInput.moveIsBlocked)
                     {
-                        IsPerformingAction = true;
-                        Squar startingPosition = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
-                        Squar endPosition = _battleGridController.GetSquareFromGrid(actionOnSquare.GetCoordinates());
-                        List<Squar> finalPath = _battlePathFinder.FindPath(startingPosition, endPosition);
-
-                        await Task.WhenAll(_battleGridController.MoveToPathAsync(_activeUnit, finalPath, _delayWalk, _squaresInUnitMoveRange, _squaresInUnitAttackRange, this));
-
+                        await Move(targetActionOnSquare);
                         _battleLog.AddBattleLog($"{_activeUnit._name} moved");
                         resultPlayerInput.inputResult = true;
                     }
@@ -312,25 +314,16 @@ public class BattleController : MonoBehaviour
 
                     if (!_playerInput.attackIsBlocked)
                     {
-                        BattleGridController.AttackInfo attackInfo = null;
-                        attackInfo = _battleGridController.AttackToUnit(_activeUnit, unitOnSquare);
-
-                        if (attackInfo.unitDied)
-                        {
-                            _battleGridController.DestroyUnitFromBattleField(unitOnSquare);
-                            _battleInfoPanel.DeleteUnitFromOrder(unitOnSquare);
-                            _battleLog.AddBattleLog($"{unitOnSquare._name} is dead");
-                        }
-
-                        _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, unitOnSquare);
-                        _battleInfoPanel.UpdateUnitData(unitOnSquare);
+                        MelleAttack(targetUnit);
                         resultPlayerInput.inputResult = true;
                     }
-
                     break;
                 case BattleAction.RangeAttack:
-                    Debug.Log("Range Attack");
-                    resultPlayerInput.inputResult = false;
+                    if (!_playerInput.attackIsBlocked)
+                    {
+                        MelleAttack(targetUnit);
+                        resultPlayerInput.inputResult = true;
+                    }
                     break;
                 case BattleAction.Heal:
                     Debug.Log("Heal action");
@@ -346,124 +339,6 @@ public class BattleController : MonoBehaviour
         }
 
         return resultPlayerInput;
-    }
-
-    private bool TryGetAim(Squar targetSquare)
-    {
-        bool tryAim = true;
-
-        if (!_battleGridController.IsUnitInAttackRange(targetSquare, _squaresInUnitAttackRange))
-            return false;
-
-        if (targetSquare == null)
-        {
-            //foreach (var sq in shootPathSq)
-            //{
-            //    sq.TestingShowShootPath(false);
-            //    sq.TestingShowShootPathLesserThan(false);
-            //    sq.TestingShowShootPathNopoints(false);
-            //    shootPathSq.Clear();
-            //}
-        }
-        else
-        {
-            //foreach (var sq in shootPathSq)
-            //{
-            //    sq.TestingShowShootPath(false);
-            //    sq.TestingShowShootPathLesserThan(false);
-            //    sq.TestingShowShootPathNopoints(false);
-            //}
-            shootPathSq.Clear();
-            Squar center = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
-            Vector3[] startRectCornrs = new Vector3[4];
-            Vector3[] endRectCornrs = new Vector3[4];
-
-            center.GetComponent<RectTransform>().GetWorldCorners(startRectCornrs);
-            targetSquare.GetComponent<RectTransform>().GetWorldCorners(endRectCornrs);
-
-            Vector2 startSqCenter = new Vector2((startRectCornrs[0].x + startRectCornrs[3].x) / 2, (startRectCornrs[0].y + startRectCornrs[1].y) / 2);
-            Vector2 endSqCenter = new Vector2((endRectCornrs[0].x + endRectCornrs[3].x) / 2, (endRectCornrs[0].y + endRectCornrs[1].y) / 2);
-
-            List<Vector2> points = _battleGridController.GetPointsBetweenActiveUnitAndTargetSquare(startSqCenter, endSqCenter);
-            shootPathSq.AddRange(RaycastPointsOnGrid(points));
-
-            if(shootPathSq.Count > 1)
-            {
-                shootPathSq.RemoveAt(shootPathSq.Count - 1);
-                shootPathSq.RemoveAt(0);
-            }
- 
-            Vector3[] squareCorners = new Vector3[4];
-
-            foreach (Squar sq in shootPathSq)
-            {
-                List<Vector2?> intersectPoints = new List<Vector2?>();
-                sq.GetComponent<RectTransform>().GetWorldCorners(squareCorners);
-
-                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[0], squareCorners[1]));
-                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[1], squareCorners[2]));
-                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[2], squareCorners[3]));
-                intersectPoints.Add(_battleGridController.SegmentIntersect(startSqCenter, endSqCenter, squareCorners[3], squareCorners[0]));
-
-                bool? result = _battleGridController.DoesIntersectionPointsOnAdjacentSides(intersectPoints);
-
-                //Body tvoří nepravidelný čtyřuhelník
-                if (result == true)
-                {
-                    //Debug.Log("Je nepravidelny čtyřuhelnik -> " + sq.xCoordinate + "  " + sq.yCoordinate);
-                    if (sq.IsSquearBlocked)
-                    {
-                        tryAim = false;
-                    }
-                }
-                else if (result == false) // pokud sousedí trjhelnik
-                {
-                    if (sq.IsSquearBlocked)
-                    {
-                        Vector2[] pointsOfTriangle = _battleGridController.GetPointsOfTriangle(squareCorners, intersectPoints);
-                        float triangleArea = _battleGridController.CalculateTriangeArea(pointsOfTriangle[0], pointsOfTriangle[1], pointsOfTriangle[2]);
-                        float squareArea = _battleGridController.CalculateSquareArea(squareCorners[0], squareCorners[1]);
-
-                        if (triangleArea < (squareArea * 0.33))
-                        {
-                            List<Squar> adjectedSquares = _battleGridController.GetTheAdjacentSquare(sq);
-                            foreach (var item in adjectedSquares)
-                            {
-                                if (shootPathSq.Contains(item) && item.IsSquearBlocked)
-                                {
-                                    tryAim = false;
-                                }
-                            }
-
-                             //var direction = GetAimDirection(startSqCenter, endSqCenter);
-                           // Debug.Log("Je mensi triangle než 33% -> " + sq.xCoordinate + "  " + sq.yCoordinate);
-                           // sq.TestingShowShootPathLesserThan(true);
-                        }
-                        else
-                        {
-                           // Debug.Log("Je mensi triangle -> " + sq.xCoordinate + "  " + sq.yCoordinate);
-                        }
-                    }
-
-
-                }
-                //else
-                //{
-                //   // Debug.LogError($"Error! Calculation of intersect Points failed on square: {sq.xCoordinate} {sq.yCoordinate}");
-
-                //    //Todo tento druh čtverce zatím neřeším
-                //    sq.TestingShowShootPathNopoints(true);
-                //}
-            }
-
-            //foreach (var sq in shootPathSq)
-            //{
-            //    sq.TestingShowShootPath(true);
-            //}
-        }
-
-       // Debug.Log("Attack status range :  " + isAimClean);
-        return tryAim;
     }
 
     public void RecalculatePosibleActions(ResultTurnAction playerInput)
@@ -544,7 +419,7 @@ public class BattleController : MonoBehaviour
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
         _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
-        _activeUnit.UpdateData(_activeUnit);
+        _activeUnit.UpdateData();
         _leftUnitInfo.UpdateStats(_activeUnit);
         _battleInfoPanel.UpdateUnitData(_activeUnit);
     }
@@ -571,7 +446,7 @@ public class BattleController : MonoBehaviour
         _squaresInUnitAttackRange.AddRange(_battleGridController.FindSquaresInUnitAttackRange(_activeUnit));
         _battleGridController.ShowSquaresWithingAttackRange(_squaresInUnitAttackRange);
 
-        _activeUnit.UpdateData(_activeUnit);
+        _activeUnit.UpdateData();
         _leftUnitInfo.UpdateStats(_activeUnit);
         _battleInfoPanel.UpdateUnitData(_activeUnit);
     }
@@ -619,7 +494,7 @@ public class BattleController : MonoBehaviour
             DataUnit dataUnit = battleData.enemyData.enemieUnits[i];
             Squar squar = _battleGridController.GetUnBlockedSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
 
-            GameObject unt = Instantiate(_unit, squar.container.transform);
+            GameObject unt = Instantiate(_unit, squar.GetContainer.transform);
             Unit newUnit = unt.GetComponent<Unit>();
 
             var sprite = spriteLoader.LoadUnitSprite(dataUnit.ImageName);
@@ -635,7 +510,7 @@ public class BattleController : MonoBehaviour
             DataUnit dataUnit = battleData.playerData.playerUnits[i];
             Squar squar = _battleGridController.GetUnBlockedSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition);  // tady musí byt chech jestli nejsem mimo pole
 
-            GameObject unit1 = Instantiate(_unit, squar.container.transform);
+            GameObject unit1 = Instantiate(_unit, squar.GetContainer.transform);
             Unit newUnit = unit1.GetComponent<Unit>();
 
             var sprite = spriteLoader.LoadSpecialistSprite(dataUnit.ImageName);
@@ -871,71 +746,6 @@ public class BattleController : MonoBehaviour
         return posibleSQ;
     }
 
-
-    // this is TMP method
-
-    //private void OnSimpleAIMove()
-    //{
-    //    Squar squarToMove = FindSquarForAI();
-    //    MoveToSquar(squarToMove);
-    //}
-
-    //private Squar FindSquarForAI()
-    //{
-    //    int rowsCount = _rowsCount - 1;
-
-    //    while (true)
-    //    {
-    //        int xCor = UnityEngine.Random.Range(0, rowsCount);
-    //        int yCor = UnityEngine.Random.Range(0, _collumCount);
-
-    //        if (_squaresInBattleField[xCor, yCor].unitInSquar == null)
-    //        {
-    //            return _squaresInBattleField[xCor, yCor];
-    //        }
-    //    }
-    //}
-
-    private BattleAction OnClickIntoGrid(Squar actionSquare)
-    {
-        BattleAction action = BattleAction.None;
-
-        if (actionSquare.UnitInSquar != null)
-        {
-            bool isRange = false;
-            bool isFriendlyUnit = actionSquare.UnitInSquar._team == _activeUnit._team;
-
-            if (_activeUnit.ActiveWeapon != null)
-                isRange = !_activeUnit.ActiveWeapon.IsMelleWeapon;
-
-            if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
-            {
-                if(isRange && TryGetAim(actionSquare))
-                    return action = BattleAction.RangeAttack;
-
-
-                action = BattleAction.Attack;
-            }
-
-            if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
-            {
-                action = BattleAction.Heal;
-            }
-
-            return action;
-        }
-        else
-        {
-            if (!actionSquare.IsSquearBlocked && _squaresInUnitMoveRange.Contains(actionSquare))
-            {
-                action = BattleAction.Move;
-            }
-
-            return action;
-        }
-    }
-
-
     private bool VictoryConditionCheck()
     {
         bool battleIsOver = false;
@@ -1118,6 +928,7 @@ public class BattleController : MonoBehaviour
         //}
     }
 
+    // Testing Only
     public void EvaluateGridWTF(Squar endSquare)
     {
         Squar activeUnitSquare = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);

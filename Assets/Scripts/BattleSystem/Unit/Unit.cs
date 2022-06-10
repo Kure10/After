@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour , IDamageable
 {
     public Animator animator;
 
@@ -61,7 +61,6 @@ public class Unit : MonoBehaviour
     public int GetMaxMovement { get { return _movement; } }
     public int GetMovementPoints { get { return _movementPoints; } }
 
-
     public long Id { get { return this._id; } }
     public bool IsDead { get { return this._isDead; } }
     public int MaxHealth { get { return this._maxHealth; } }
@@ -78,31 +77,16 @@ public class Unit : MonoBehaviour
     public int CurrentHealth
     {
         get { return this._currentHealth; }
-        set
-        {
-            _currentHealth = value;
-
-            if (_currentHealth < 0)
-            {
-                _currentHealth = 0;
-            }
-            else if (_currentHealth > _maxHealth)
-            {
-                _currentHealth = _maxHealth;
-            }
-
-            _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
-        }
     }
 
-    public void UpdateData(Unit unit)
+    public void UpdateData()
     {
         if (_unitWindow == null)
         {
             _unitWindow = GetComponent<UnitWindow>();
         }
 
-        this._unitWindow.UpdateStats(unit);
+        this._unitWindow.UpdateStats(this);
     }
 
     public void DecreaseMovementPoints(int points)
@@ -211,6 +195,22 @@ public class Unit : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void ReceivedDamage(int amountDamage)
+    {
+        _currentHealth = _currentHealth - amountDamage;
+
+        if (_currentHealth < 0)
+        {
+            _currentHealth = 0;
+        }
+        else if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+
+        _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
     public bool CheckIfUnitIsNotDead()

@@ -25,12 +25,12 @@ namespace ItemCreating
         public GameObject CreateItemByType(ItemBlueprint blueprint, GameObject prefab)
         {
             GameObject gameObject = Object.Instantiate(prefab);
-            gameObject.name = "Item_ " + blueprint.name;
+            gameObject.name = "Item_ " + blueprint.theName;
 
             switch (blueprint.Type)
             {
                 case ItemBlueprint.ItemType.None:
-                    Debug.LogWarning("Item has none type Error in: ItemCreater  -> item name: " + blueprint.name);
+                    Debug.LogWarning("Item has none type Error in: ItemCreater  -> item name: " + blueprint.theName);
                     break;
                 case ItemBlueprint.ItemType.ArmorSpec:
                     CreateArmor(blueprint, gameObject);
@@ -51,7 +51,7 @@ namespace ItemCreating
                     CreateResourceSpecial(blueprint, gameObject);
                     break;
                 default:
-                    Debug.LogWarning("Item type is not defined Error in: " + this.ToString() + " -> item name: " + blueprint.name);
+                    Debug.LogWarning("Item type is not defined Error in: " + this.ToString() + " -> item name: " + blueprint.theName);
                     break;
             }
 
@@ -112,7 +112,7 @@ namespace ItemCreating
         private void CreateBackpack(ItemBlueprint blueprint, GameObject gameObject)
         {
             Backpack backpack = gameObject.AddComponent<Backpack>();
-            backpack.SetupItem(blueprint.capacity, blueprint.name, blueprint.Type, blueprint.Sprite);
+            backpack.SetupItem(blueprint.capacity, blueprint.theName, blueprint.Type, blueprint.Sprite);
 
             AddModifications(blueprint, backpack);
         }
@@ -128,7 +128,7 @@ namespace ItemCreating
         private void CreateActiveItem(ItemBlueprint blueprint, GameObject gameObject)
         {
             ActiveItem activeItem = gameObject.AddComponent<ActiveItem>();
-            activeItem.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+            activeItem.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.theName, blueprint.Type, blueprint.Sprite);
 
             AddModifications(blueprint, activeItem);
         }
@@ -144,7 +144,7 @@ namespace ItemCreating
         private void CreateArmor(ItemBlueprint blueprint, GameObject gameObject)
         {
             Armor armor = gameObject.AddComponent<Armor>();
-            armor.SetupItem(blueprint.absorbation, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+            armor.SetupItem(blueprint.absorbation, blueprint.isRepairable, blueprint.theName, blueprint.Type, blueprint.Sprite);
 
             AddModifications(blueprint, armor);
         }
@@ -160,7 +160,7 @@ namespace ItemCreating
         private void CreateWeapon(ItemBlueprint blueprint, GameObject gameObject)
         {
             Weapon weapon = gameObject.AddComponent<Weapon>();
-            weapon.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.name, blueprint.Type, blueprint.Sprite);
+            weapon.SetupItem(blueprint.useCount, blueprint.isRepairable, blueprint.theName, blueprint.Type, blueprint.Sprite);
 
             weapon.IsIndestructible = blueprint.isIndestructible;
 

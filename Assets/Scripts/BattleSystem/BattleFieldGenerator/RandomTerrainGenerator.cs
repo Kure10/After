@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static BattleGridController;
 
@@ -12,13 +13,21 @@ namespace Assets.Scripts.BattleSystem
         protected int _maxStoneInRow = 0;
         protected int _maxStoneInColumn = 0;
 
-        public void InitGenerator(int column, int rows)
+        protected List<GameObject> _obstaclesList = new List<GameObject>();
+
+        public void InitGenerator(int column, int rows , List<GameObject> obstaclesList)
         {
             _columnCount = column;
             _rowsCount = rows;
 
             _maxStoneInColumn = column - 2;
             _maxStoneInRow = rows - 2;
+
+            _obstaclesList.Clear();
+            foreach (GameObject obs in obstaclesList)
+            {
+                _obstaclesList.Add(obs);
+            }
         }
 
 
@@ -34,8 +43,8 @@ namespace Assets.Scripts.BattleSystem
                 if (!squar.IsSquearBlocked)
                 {
                     // Create stone. In future it will be good if stone prefab will be difretent.
-
-                    squar.IsSquearBlocked = true;
+                    GameObject prefab = ChoiseObstacle();
+                    squar.SetObstacle(prefab);
                     return true;
                 }
             }
@@ -82,6 +91,14 @@ namespace Assets.Scripts.BattleSystem
         private bool IsInsideBorder (int x, int y)
         {
             return x < _rowsCount && x >= 0 && y >= 0 && y < _columnCount;
+        }
+
+        // in Progresss
+        private GameObject ChoiseObstacle()
+        {
+            int rng = Random.Range(0, _obstaclesList.Count);
+            GameObject ob = _obstaclesList[rng];
+            return ob;
         }
     }
 }

@@ -21,10 +21,10 @@ public class Squar : MonoBehaviour
     public int yCoordinate = 0;
 
     [Header("Holder For Occupied Objects")]
-    [SerializeField] public GameObject container;
+    [SerializeField] private GameObject container;
 
     [Header("Obstacle")]
-    [SerializeField] public GameObject stoneObstacle;
+    [SerializeField] private GameObject stoneObstacle;
 
     [Header("Range Marks")]
     [SerializeField] public GameObject inRangeBackground;
@@ -48,7 +48,9 @@ public class Squar : MonoBehaviour
 
     [Space]
 
-    public Unit _unitInSquar;
+    private Unit _unitInSquar;
+
+    private Obstacle _obstacle;
 
     public bool isInMoveRange = false;
     public bool isInAttackReach = false;
@@ -69,19 +71,49 @@ public class Squar : MonoBehaviour
 
     private BattlePathFinding.AAlgoritmStats _pathStats;
 
+    public GameObject GetContainer { get { return container; } }
     public bool IsSquearBlocked
     {
         get { return _isSquarBlocked; }
-        set
-        {
-            _isSquarBlocked = value;
-            stoneObstacle.SetActive(value);
-        }
     }
 
     public Unit UnitInSquar { get { return _unitInSquar; } set { _unitInSquar = value; } }
 
+    public Obstacle GetObstacle { get { return _obstacle; } }
+
+
+    public bool CanShootThrough 
+    { 
+        get 
+        {
+            if (_obstacle != null)
+            {
+                return _obstacle.CanShootThrough;
+            }
+
+            return true;
+        }
+    }
+
     public BattlePathFinding.AAlgoritmStats PathStats { get { return _pathStats; } }
+
+    public void SetObstacle(GameObject gameObject)
+    {
+        Obstacle obstacle = Instantiate(gameObject).GetComponent<Obstacle>();
+        if(obstacle != null)
+        {
+            _obstacle = obstacle;
+            obstacle.gameObject.transform.SetParent(container.transform);
+            _isSquarBlocked = true;
+            obstacle.Init();
+
+        }
+        else
+        {
+            Debug.Log("Error in Pobsticle PRefab");
+        }
+    }
+
 
     private void Awake()
     {
@@ -187,6 +219,8 @@ public class Squar : MonoBehaviour
         shootPathNoPoints.SetActive(show);
     }
 }
+
+
 
 
 

@@ -10,6 +10,9 @@ public class BattleGridController : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] GameObject squarTemplate;
 
+    [Header("Prefabs Obstacles")]
+    [SerializeField] List<GameObject> _obstaclesList = new List<GameObject>();
+
     [Header("Dimensions")]
     [SerializeField] List<GameObject> _rows = new List<GameObject>();
 
@@ -50,7 +53,7 @@ public class BattleGridController : MonoBehaviour
     {
         Squar selectedUnitSquar = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
 
-        selectedUnitSquar.UnitInSquar.transform.SetParent(squarToMove.container.transform);
+        selectedUnitSquar.UnitInSquar.transform.SetParent(squarToMove.GetContainer.transform);
         selectedUnitSquar.UnitInSquar.SetNewCurrentPosition(squarToMove.xCoordinate, squarToMove.yCoordinate);
         squarToMove.UnitInSquar = selectedUnitSquar.UnitInSquar;
         selectedUnitSquar.UnitInSquar = null;
@@ -114,24 +117,6 @@ public class BattleGridController : MonoBehaviour
             item.isInAttackReach = false;
         }
         SquaresInAttackRange.Clear();
-    }
-
-    public AttackInfo AttackToUnit(Unit attackingUnit, Unit defendingUnit)
-    {
-        AttackInfo attackInfo = new AttackInfo();
-
-        int dices = BattleSystem.CalculateAmountDices(attackingUnit);
-        int success = BattleSystem.CalculateAmountSuccess(dices, attackingUnit, defendingUnit, out attackInfo.dicesValueRoll);
-
-        defendingUnit.CurrentHealth = defendingUnit.CurrentHealth - success;
-
-        attackInfo.unitDied = defendingUnit.CheckIfUnitIsNotDead();
-
-        // for info
-        attackInfo.dices = dices;
-        attackInfo.success = success;
-
-        return attackInfo;
     }
 
     public void DestroyUnitFromBattleField(Unit unit)
@@ -786,7 +771,7 @@ public class BattleGridController : MonoBehaviour
             case TerrainVariants.StoneElShape:
 
                 StoneElShapeGenerator generator = new StoneElShapeGenerator();
-                generator.InitGenerator(_columnCount, _rowsCount);
+                generator.InitGenerator(_columnCount, _rowsCount, _obstaclesList);
                 generator.GenerateStoneElShape();
 
                 break;
@@ -813,19 +798,9 @@ public class BattleGridController : MonoBehaviour
         }
     }
 
-    #region HelperClass
 
-    public class AttackInfo
-    {
-        public int dices = 0;
-        public int success = 0;
 
-        public bool unitDied = false;
-
-        public List<int> dicesValueRoll = new List<int>();
-    }
-
-    #endregion
+ 
 
     #region Enums
 
