@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class BattleSystem
 {
-    static public int minimumThreat = 2;
+    static private int _minimumThreat = 2;
 
     public static int CalculateAmountDices(Character character)
     {
@@ -92,50 +92,21 @@ public static class BattleSystem
         return amountDices;
     }
 
-    public static int CalculateAmountSuccess(int dices, Unit attackingUnit, Unit defendingUnit, out List<int> dicesRoll)
+    public static int CalculateAmountSuccess(int dices, Unit attackingUnit, IDamageable defendingObject, out List<int> dicesRoll)
     {
         dicesRoll = new List<int>();
         int amountSuccess = 0;
 
-        int finalThreat = defendingUnit._threat;
+        int finalThreat = defendingObject.GetThreat;
 
         if(attackingUnit.ActiveWeapon != null)
         {
-            foreach (ItemBlueprint.BonusModificators modificator in attackingUnit.ActiveWeapon.Modificators)
-            {
-                if (modificator.TestModificator == ItemBlueprint.TestModificator.Battle)
-                {
-                    if (modificator.TypeModificator == ItemBlueprint.TypeModificator.DiffChange)
-                    {
-                        ItemBlueprint.MathKind type = modificator.MathKind;
-                        int value = modificator.TestChangeVal;
-
-                        switch (type)
-                        {
-                            case ItemBlueprint.MathKind.None:
-                                break;
-                            case ItemBlueprint.MathKind.plus:
-                                finalThreat += value;
-                                break;
-                            case ItemBlueprint.MathKind.minus:
-                                finalThreat -= value;
-                                break;
-                            case ItemBlueprint.MathKind.times:
-
-                                float floatThreat = finalThreat * value;
-                                finalThreat = Mathf.RoundToInt(floatThreat);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
+            finalThreat = ModifyThreatByWeapon(attackingUnit.ActiveWeapon, finalThreat);
         }
 
-        if(finalThreat < 2)
+        if (finalThreat < 2)
         {
-            finalThreat = minimumThreat;
+            finalThreat = _minimumThreat;
         }
 
         for (int i = 0; i < dices; i++)
@@ -160,11 +131,49 @@ public static class BattleSystem
         return amountSuccess;
     }
 
+    private static int ModifyThreatByWeapon(Weapon weapon, int finalThreat)
+    {
+        foreach (ItemBlueprint.BonusModificators modificator in weapon.Modificators)
+        {
+            if (modificator.TestModificator == ItemBlueprint.TestModificator.Battle)
+            {
+                if (modificator.TypeModificator == ItemBlueprint.TypeModificator.DiffChange)
+                {
+                    ItemBlueprint.MathKind type = modificator.MathKind;
+                    int value = modificator.TestChangeVal;
+
+                    switch (type)
+                    {
+                        case ItemBlueprint.MathKind.None:
+                            break;
+                        case ItemBlueprint.MathKind.plus:
+                            finalThreat += value;
+                            break;
+                        case ItemBlueprint.MathKind.minus:
+                            finalThreat -= value;
+                            break;
+                        case ItemBlueprint.MathKind.times:
+
+                            float floatThreat = finalThreat * value;
+                            finalThreat = Mathf.RoundToInt(floatThreat);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        return finalThreat;
+    }
+
     private static bool CalculateThrow (int diceNumber , int peakNumber)
     {
         var result = false;
         result = diceNumber >= peakNumber;
         return result;
     }
+
+    
 
 }

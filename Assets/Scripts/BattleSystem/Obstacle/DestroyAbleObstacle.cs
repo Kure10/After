@@ -3,12 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class DestroyAbleObstacle : Obstacle , IDamageable 
+public class DestroyAbleObstacle : Obstacle, IDamageable
 {
     [SerializeField] int _maxHealth;
-    private int _currentHealth = 0;
+    [SerializeField] int _currentHealth = 0;
 
+    [Header("Explosive stats")]
+    [SerializeField] bool _isExplosive = false;
+    [SerializeField] [Range(1, 10)] int _explosiveRange = 1;
+    [SerializeField] [Range(1, 10)] int _explosiveDamage = 1;
+
+    //Todo Obsticle Has some base threat -> Later according type of obstacle change threat
+    private int _threat = 2;
+
+    public bool IsExplosive { get { return _isExplosive; } }
+    public int GetExplosiveRange { get { return _explosiveRange; } }
+    public int GetExplosiveDamage { get { return _explosiveDamage; } }
+    public int GetMaxHealth { get { return _maxHealth; } }
     public int GetCurrentHealth { get { return _currentHealth; } }
+    public int GetThreat { get { return _threat; } }
 
     public void ReceivedDamage(int amountDamage)
     {
@@ -19,7 +32,6 @@ public class DestroyAbleObstacle : Obstacle , IDamageable
         if (_currentHealth > _maxHealth)
             _currentHealth = _maxHealth;
 
-
         _windowObstacle.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
@@ -28,9 +40,22 @@ public class DestroyAbleObstacle : Obstacle , IDamageable
         base.Awake();
     }
 
-    public override void Init()
+    public override void Init(int posX, int posY)
     {
         _maxHealth = _currentHealth;
-        base.Init();
+        base.Init(posX, posY);
+    }
+
+    public bool IsBattleObjectDead()
+    {
+        if (_currentHealth <= 0)
+        {
+            // animation
+            // what ever call back///
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -49,8 +49,8 @@ public class Squar : MonoBehaviour
     [Space]
 
     private Unit _unitInSquar;
-
     private Obstacle _obstacle;
+
 
     public bool isInMoveRange = false;
     public bool isInAttackReach = false;
@@ -81,6 +81,10 @@ public class Squar : MonoBehaviour
 
     public Obstacle GetObstacle { get { return _obstacle; } }
 
+    public T GetObjectFromSquareGeneric<T>() where T : class
+    {
+        return container.GetComponentInChildren<T>();
+    }
 
     public bool CanShootThrough 
     { 
@@ -97,7 +101,7 @@ public class Squar : MonoBehaviour
 
     public BattlePathFinding.AAlgoritmStats PathStats { get { return _pathStats; } }
 
-    public void SetObstacle(GameObject gameObject)
+    public void SetObstacle(GameObject gameObject, int posX , int posY)
     {
         Obstacle obstacle = Instantiate(gameObject).GetComponent<Obstacle>();
         if(obstacle != null)
@@ -105,7 +109,7 @@ public class Squar : MonoBehaviour
             _obstacle = obstacle;
             obstacle.gameObject.transform.SetParent(container.transform);
             _isSquarBlocked = true;
-            obstacle.Init();
+            obstacle.Init(posX, posY);
 
         }
         else
@@ -149,6 +153,16 @@ public class Squar : MonoBehaviour
         rightBorder.SetActive(false);
         upBorder.SetActive(false);
         downBorder.SetActive(false);
+    }
+
+    public void DestrpyObstacleInSquare()
+    {
+        if(_obstacle != null)
+        {
+            Destroy(_obstacle.gameObject, 0.5f);
+            _obstacle = null;
+            _isSquarBlocked = false;
+        }
     }
 
     // Event Trigger from Unity

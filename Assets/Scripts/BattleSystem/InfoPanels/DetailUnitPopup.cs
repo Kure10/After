@@ -7,7 +7,7 @@ public class DetailUnitPopup : MonoBehaviour
 
     public void ShowPopup(Unit unit)
     {
-        Debug.Log(unit._name);
+        Debug.Log(unit.GetName);
         this.gameObject.SetActive(true);
     }
 

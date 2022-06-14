@@ -44,7 +44,7 @@ namespace Assets.Scripts.BattleSystem
                 {
                     // Create stone. In future it will be good if stone prefab will be difretent.
                     GameObject prefab = ChoiseObstacle();
-                    squar.SetObstacle(prefab);
+                    squar.SetObstacle(prefab, x, y);
                     return true;
                 }
             }

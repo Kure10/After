@@ -10,10 +10,6 @@ public class WindowObstacle : MonoBehaviour
     [Header("Image")]
     [SerializeField] Image image;
 
-    [Header("TMP")]
-    [SerializeField] Text text;
-
-
     public void UpdateHealthBar(int current, int max)
     {
         health.text = $"{current} / {max}";
@@ -25,19 +21,9 @@ public class WindowObstacle : MonoBehaviour
 
     public void UpdateStats(Obstacle obstacle)
     {
-        if (obstacle is DestroyAbleObstacle destroyAbleObs)
-        {
-            image.sprite = destroyAbleObs.GetSprite;
-            text.text = "2";
-        }
-        else
-        {
-            image.sprite = obstacle.GetSprite;
-            text.text = "1";
+        image.sprite = obstacle.GetSprite;
 
-
-            if (obstacle.CanShootThrough)
-                text.text = "0";
-        }
+        if (obstacle is IDamageable damagable)
+            UpdateHealthBar(damagable.GetCurrentHealth, damagable.GetMaxHealth);
     }
 }

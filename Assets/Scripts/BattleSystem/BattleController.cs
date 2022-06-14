@@ -171,7 +171,7 @@ public partial class BattleController : MonoBehaviour
     public void SkipUnitTurn()
     {
         _turnIsOver = true;
-        _battleLog.AddBattleLog($"{_activeUnit._name} skip round");
+        _battleLog.AddBattleLog($"{_activeUnit.GetName} skip round");
     }
 
     public void ConfigurateNewTurn()
@@ -244,7 +244,7 @@ public partial class BattleController : MonoBehaviour
         _activeUnit.RefreshMovementPoints();
         _battleInfoPanel.UpdateUnitOrder(_activeUnit, true);
 
-        _battleLog.AddBattleLog($"{_activeUnit._name} has turn");
+        _battleLog.AddBattleLog($"{_activeUnit.GetName} has turn");
     }
 
     private async Task<ResultTurnAction> DetectPlayerInputs()
@@ -253,39 +253,39 @@ public partial class BattleController : MonoBehaviour
 
         resultPlayerInput.inputResult = false;
         resultPlayerInput.battleAction = BattleAction.None;
-        Squar targetActionOnSquare = null;
-        Unit targetUnit = null;
+        Squar targetSquare = null;
+        IClickAble targetObject = null;
 
         // Testing Space middle mouse button
         if (Input.GetMouseButtonDown(2))
         {
-            targetActionOnSquare = RaycastTargetSquar();
-            if (targetActionOnSquare != null)
+            targetSquare = RaycastTargetSquar();
+            if (targetSquare != null)
             {
-                TryGetAim(targetActionOnSquare, true);
+                TryGetAim(targetSquare, true);
             }
         }
 
 
         if (Input.GetMouseButtonDown(0))
         {
-            targetActionOnSquare = RaycastTargetSquar();
-            if (targetActionOnSquare != null)
+            targetSquare = RaycastTargetSquar();
+            if (targetSquare != null)
             {
-                resultPlayerInput.battleAction = OnClickIntoGrid(targetActionOnSquare);
-                targetUnit = targetActionOnSquare.UnitInSquar;
+                resultPlayerInput.battleAction = OnClickIntoGrid(targetSquare);
+                targetObject = targetSquare.GetObjectFromSquareGeneric<IClickAble>();
                 resultPlayerInput.inputResult = true;
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            targetActionOnSquare = RaycastTargetSquar();
-            if (targetActionOnSquare != null)
+            targetSquare = RaycastTargetSquar();
+            if (targetSquare != null)
             {
-                if (targetActionOnSquare.UnitInSquar != null)
+                if (targetSquare.UnitInSquar != null)
                 {
-                    detailPopup.ShowPopup(targetActionOnSquare.UnitInSquar);
+                    detailPopup.ShowPopup(targetSquare.UnitInSquar);
                 }
 
                 Debug.Log("Info unit panel popup");
@@ -304,8 +304,8 @@ public partial class BattleController : MonoBehaviour
 
                     if (!_playerInput.moveIsBlocked)
                     {
-                        await Move(targetActionOnSquare);
-                        _battleLog.AddBattleLog($"{_activeUnit._name} moved");
+                        await Move(targetSquare);
+                        _battleLog.AddBattleLog($"{_activeUnit.GetName} moved");
                         resultPlayerInput.inputResult = true;
                     }
 
@@ -314,14 +314,14 @@ public partial class BattleController : MonoBehaviour
 
                     if (!_playerInput.attackIsBlocked)
                     {
-                        MelleAttack(targetUnit);
+                        MelleAttack(targetObject);
                         resultPlayerInput.inputResult = true;
                     }
                     break;
                 case BattleAction.RangeAttack:
                     if (!_playerInput.attackIsBlocked)
                     {
-                        MelleAttack(targetUnit);
+                        MelleAttack(targetObject);
                         resultPlayerInput.inputResult = true;
                     }
                     break;
@@ -877,7 +877,7 @@ public partial class BattleController : MonoBehaviour
         {
             if (_squaresInUnitAttackRange.Contains(sq) && sq.UnitInSquar._team != _activeUnit._team)
             {
-                if(_activeUnit.ActiveWeapon.IsMelleWeapon)
+                if(_activeUnit.ActiveWeapon == null || _activeUnit.ActiveWeapon.IsMelleWeapon)
                 {
                     sq.CursorEvent.action = BattleController.BattleAction.Attack;
                     sq.SetActionMark(attackAction);
@@ -911,17 +911,22 @@ public partial class BattleController : MonoBehaviour
 
     private void UpdateRightPanel(Squar sq)
     {
-        Unit unit = sq.UnitInSquar;
+        IClickAble clickAble = sq.GetObjectFromSquareGeneric<IClickAble>();
 
-        if (unit == _activeUnit)
-            return;
-
-        if (unit != null)
+        if(clickAble is Unit unit)
         {
+            if (unit == _activeUnit)
+                return;
+
             _rightUnitInfo.UpdateStats(unit);
             _rightUnitInfo.gameObject.SetActive(true);
-
         }
+        else if (clickAble is Obstacle obstacle)
+        {
+            _rightUnitInfo.UpdateStats(obstacle);
+            _rightUnitInfo.gameObject.SetActive(true);
+        }
+
         //else
         //{
         //   // rightUnitInfo.DisablePanel();
@@ -931,7 +936,7 @@ public partial class BattleController : MonoBehaviour
     // Testing Only
     public void EvaluateGridWTF(Squar endSquare)
     {
-        Squar activeUnitSquare = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
+        Squar activeUnitSquare = _battleGridController.GetSquareFromGrid(_activeUnit.GetXPosition, _activeUnit.GetYPosition);
 
         _battlePathFinder.EvaluateGridCost(activeUnitSquare, endSquare);
     }

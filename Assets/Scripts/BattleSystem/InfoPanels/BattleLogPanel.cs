@@ -25,7 +25,7 @@ public class BattleLogPanel : MonoBehaviour
         scrollBar.value = 1;
     }
 
-    public void AddAttackBattleLog(BattleController.AttackInfo attackInfo, Unit activeUnit , Unit otherUnit)
+    public void AddAttackBattleLog(BattleController.AttackInfo attackInfo, IClickAble activeUnit, IClickAble targetObject)
     {
         string logMessage = string.Empty;
         string roll = string.Empty;
@@ -33,16 +33,21 @@ public class BattleLogPanel : MonoBehaviour
         int i = 0;
         foreach (int rollNumber in attackInfo.dicesValueRoll)
         {
-            if(i >= attackInfo.dicesValueRoll.Count -1)
+            if (i >= attackInfo.dicesValueRoll.Count - 1)
                 roll += rollNumber.ToString();
             else
-                roll += rollNumber.ToString() +",";
-            
+                roll += rollNumber.ToString() + ",";
+
             i++;
         }
 
-        logMessage = $"{activeUnit._name} attacked to unit {otherUnit._name} with {attackInfo.dices} dices against threath {otherUnit._threat}. Roll {roll} --> {attackInfo.success} damage";
-
+        if (targetObject is Unit targetUnit)
+            logMessage = $"{activeUnit.GetName} attacked to unit {targetUnit.GetName} with {attackInfo.dices} dices against threath {targetUnit._threat}. Roll {roll} --> {attackInfo.success} damage";
+        if(targetObject is Obstacle targetObstacle && targetObject is IDamageable damagable)
+        {
+            logMessage = $"{activeUnit.GetName} attacked to unit {targetObstacle.GetName} with {attackInfo.dices} dices against threath {damagable.GetThreat}. Roll {roll} --> {attackInfo.success} damage";
+        }
+          
         historyLog.text = $" Record: {index}   {logMessage} \n{historyLog.text}";
         index++;
         LayoutRebuilder.ForceRebuildLayoutImmediate(textRectTransform);

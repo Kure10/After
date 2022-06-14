@@ -75,7 +75,7 @@ public class BattleInfoPanel : MonoBehaviour
         {
             if (unitToUpdate._id == unit._id)
             {
-                unitToUpdate.UpdateData();
+                unit.UpdateData();
             }
         }
 

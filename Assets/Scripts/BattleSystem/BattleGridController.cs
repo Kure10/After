@@ -51,7 +51,7 @@ public class BattleGridController : MonoBehaviour
 
     public void MoveToSquar(Unit unit, Squar squarToMove)
     {
-        Squar selectedUnitSquar = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
+        Squar selectedUnitSquar = GetSquareFromGrid(unit.GetXPosition, unit.GetYPosition);
 
         selectedUnitSquar.UnitInSquar.transform.SetParent(squarToMove.GetContainer.transform);
         selectedUnitSquar.UnitInSquar.SetNewCurrentPosition(squarToMove.xCoordinate, squarToMove.yCoordinate);
@@ -121,7 +121,7 @@ public class BattleGridController : MonoBehaviour
 
     public void DestroyUnitFromBattleField(Unit unit)
     {
-        Squar sq = GetSquareFromGrid(unit.CurrentPos.XPosition, unit.CurrentPos.YPosition);
+        Squar sq = GetSquareFromGrid(unit.GetXPosition, unit.GetYPosition);
         sq.UnitInSquar.gameObject.SetActive(false);
 
         // deadUnitsOnBattleField.Add(sq.unitInSquar);
@@ -130,10 +130,17 @@ public class BattleGridController : MonoBehaviour
         sq.UnitInSquar = null;
     }
 
+    public void DestroyObstacleFromBattleField(Obstacle obstacle)
+    {
+        Squar sq = GetSquareFromGrid(obstacle.GetXPosition, obstacle.GetYPosition);
+        sq.DestrpyObstacleInSquare();
+        sq.UnitInSquar = null;
+    }
+
     public List<Squar> FindSquaresInUnitMoveRange(Unit unit)
     {
         int moveRange = unit.GetMovementPoints;
-        Squar centerSquar = _squaresInBattleField[unit.CurrentPos.XPosition, unit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[unit.GetXPosition, unit.GetYPosition];
         List<Squar> squaresInUnitMoveRange = new List<Squar>();
 
         if (moveRange > 0)
@@ -179,7 +186,7 @@ public class BattleGridController : MonoBehaviour
 
         List<Squar> squaresInUnitAttackRange = new List<Squar>();
 
-        Squar centerSquar = _squaresInBattleField[unit.CurrentPos.XPosition, unit.CurrentPos.YPosition];
+        Squar centerSquar = _squaresInBattleField[unit.GetXPosition, unit.GetYPosition];
 
         squaresInUnitAttackRange.AddRange(GetTheAdjacentAttackSquare(centerSquar));
 
@@ -802,7 +809,7 @@ public class BattleGridController : MonoBehaviour
 
  
 
-    #region Enums
+    #region Enums , Struct
 
     public enum TerrainVariants
     {
@@ -817,6 +824,12 @@ public class BattleGridController : MonoBehaviour
         DeepWaterPlusStones,
         CrossLine,
         VStones
+    }
+
+    public struct PositionSquar
+    {
+        public int XPosition;
+        public int YPosition;
     }
 
     #endregion

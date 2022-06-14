@@ -4,25 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Unit : MonoBehaviour , IDamageable
+public class Unit : MonoBehaviour , IDamageable , IClickAble
 {
     public Animator animator;
 
-    public struct PositionSquar
-    {
-        public int XPosition;
-        public int YPosition;
-    }
+
 
     public long _id = 0;
     public int _level = 0;
     public string _imageName = "Defaul";
     public Sprite _sprite = null;
 
-    public PositionSquar CurrentPos;
-    //
+    private BattleGridController.PositionSquar _currentPos;
 
-    public string _name = "Zombie";
+    private string _name = "Zombie";
     private int _maxHealth = 5;
     public int _military = 0;
     public int _threat = 0;
@@ -50,6 +45,11 @@ public class Unit : MonoBehaviour , IDamageable
 
     private bool _isDead = false;
 
+    public string GetName { get { return _name; } }
+    public int GetXPosition { get { return _currentPos.XPosition; } }
+    public int GetYPosition { get { return _currentPos.YPosition; } }
+    public int GetMaxHealth { get { return _maxHealth; } }
+    public int GetCurrentHealth { get { return _currentHealth; } }
     public Weapon FirstWeapon { get { return this._firstWeapon; } }
 
     public Weapon SecondWeapon { get { return this._secondWeapon; } }
@@ -60,6 +60,8 @@ public class Unit : MonoBehaviour , IDamageable
 
     public int GetMaxMovement { get { return _movement; } }
     public int GetMovementPoints { get { return _movementPoints; } }
+
+    public int GetThreat { get { return _threat; } }
 
     public long Id { get { return this._id; } }
     public bool IsDead { get { return this._isDead; } }
@@ -115,8 +117,8 @@ public class Unit : MonoBehaviour , IDamageable
         _movement = 5; //dataUnit.Movement;
         _movementPoints = _movement;
 
-        CurrentPos.XPosition = dataUnit.StartXPosition;
-        CurrentPos.YPosition = dataUnit.StartYPosition;
+        _currentPos.XPosition = dataUnit.StartXPosition;
+        _currentPos.YPosition = dataUnit.StartYPosition;
 
         _sprite = sprite;
         _id = dataUnit.Id;
@@ -154,8 +156,8 @@ public class Unit : MonoBehaviour , IDamageable
         _rangeMin = unit._rangeMin;
 
 
-        CurrentPos.XPosition = unit.CurrentPos.XPosition;
-        CurrentPos.YPosition = unit.CurrentPos.YPosition;
+        _currentPos.XPosition = unit._currentPos.XPosition;
+        _currentPos.YPosition = unit._currentPos.YPosition;
 
         _imageName = unit._imageName;
         _sprite = unit._sprite;
@@ -213,7 +215,7 @@ public class Unit : MonoBehaviour , IDamageable
         _unitWindow.UpdateHealthBar(_currentHealth, _maxHealth);
     }
 
-    public bool CheckIfUnitIsNotDead()
+    public bool IsBattleObjectDead()
     {
         bool isDead = false;
         if (_currentHealth <= 0)
@@ -231,8 +233,8 @@ public class Unit : MonoBehaviour , IDamageable
 
     public void SetNewCurrentPosition(int posX , int posY)
     {
-        CurrentPos.XPosition = posX;
-        CurrentPos.YPosition = posY;
+        _currentPos.XPosition = posX;
+        _currentPos.YPosition = posY;
     }
 
     // tmp pak poresit lepe
@@ -258,7 +260,7 @@ public class DataUnit
     private string _imageName = "Defaul";  // todo musím se zamyslet jestli je potrebuji a nebo kde budu nahravat obrazek..
     private string _name = "Zombie";
 
-    private Unit.PositionSquar StartPos;
+    private BattleGridController.PositionSquar StartPos;
 
     private int health = 5;
     private int damage = 0;

@@ -8,41 +8,84 @@ public partial class BattleController
     // Selecting Battle Actions
     private BattleAction OnClickIntoGrid(Squar actionSquare)
     {
+        IClickAble clickAbleObject = actionSquare.GetObjectFromSquareGeneric<IClickAble>();
+        if (clickAbleObject == null)
+        {
+           return ChoiseUtilityAction(actionSquare);
+        }
+           
+        if(clickAbleObject is Unit targetUnit)
+        {
+            return ChoiseUnitAction(actionSquare, targetUnit);
+        }
+        else if (clickAbleObject is Obstacle obstacle)
+        {
+            return ChoiseObstacleAction(actionSquare, obstacle);
+        }
+
+        return BattleAction.None;
+    }
+
+    private BattleAction ChoiseUtilityAction(Squar actionSquare)
+    {
         BattleAction action = BattleAction.None;
 
-        if (actionSquare.UnitInSquar != null)
+        if (!actionSquare.IsSquearBlocked && _squaresInUnitMoveRange.Contains(actionSquare))
+        {
+            action = BattleAction.Move;
+        }
+
+        return action;
+    }
+
+    private BattleAction ChoiseObstacleAction(Squar targetSquare, Obstacle obstacle)
+    {
+        BattleAction action = BattleAction.None;
+        if (obstacle is IDamageable damageAble)
         {
             bool isRange = false;
-            bool isFriendlyUnit = actionSquare.UnitInSquar._team == _activeUnit._team;
-
             if (_activeUnit.ActiveWeapon != null)
                 isRange = !_activeUnit.ActiveWeapon.IsMelleWeapon;
 
-            if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
+            if (_squaresInUnitAttackRange.Contains(targetSquare))
             {
-                if (isRange && TryGetAim(actionSquare))
+                if (isRange && TryGetAim(targetSquare))
                     return action = BattleAction.RangeAttack;
 
-
-                action = BattleAction.Attack;
+                return action = BattleAction.Attack;
             }
-
-            if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
-            {
-                action = BattleAction.Heal;
-            }
-
-            return action;
         }
         else
         {
-            if (!actionSquare.IsSquearBlocked && _squaresInUnitMoveRange.Contains(actionSquare))
-            {
-                action = BattleAction.Move;
-            }
-
-            return action;
+            action = BattleAction.None;
         }
+
+        return action;
+    }
+
+    private BattleAction ChoiseUnitAction(Squar actionSquare, Unit targetUnit)
+    {
+        BattleAction action = BattleAction.None;
+        bool isRange = false;
+        bool isFriendlyUnit = targetUnit._team == _activeUnit._team;
+
+        if (_activeUnit.ActiveWeapon != null)
+            isRange = !_activeUnit.ActiveWeapon.IsMelleWeapon;
+
+        if (!isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
+        {
+            if (isRange && TryGetAim(actionSquare))
+                return action = BattleAction.RangeAttack;
+
+            return action = BattleAction.Attack;
+        }
+
+        if (isFriendlyUnit && _squaresInUnitAttackRange.Contains(actionSquare))
+        {
+           return action = BattleAction.Heal;
+        }
+
+        return action;
     }
 
     private bool TryGetAim(Squar targetSquare, bool debug = false)
@@ -75,7 +118,7 @@ public partial class BattleController
             }
 
             shootPathSq.Clear();
-            Squar center = _battleGridController.GetSquareFromGrid(_activeUnit.CurrentPos.XPosition, _activeUnit.CurrentPos.YPosition);
+            Squar center = _battleGridController.GetSquareFromGrid(_activeUnit.GetXPosition, _activeUnit.GetYPosition);
             Vector3[] startRectCornrs = new Vector3[4];
             Vector3[] endRectCornrs = new Vector3[4];
 
@@ -181,7 +224,7 @@ public partial class BattleController
     {
         IsPerformingAction = true;
 
-        Squar startingPosition = GetBattleGridController.GetSquareFromGrid(GetActiveUnit.CurrentPos.XPosition, GetActiveUnit.CurrentPos.YPosition);
+        Squar startingPosition = GetBattleGridController.GetSquareFromGrid(GetActiveUnit.GetXPosition, GetActiveUnit.GetYPosition);
         Squar endPosition = GetBattleGridController.GetSquareFromGrid(targetSquare.GetCoordinates());
         List<Squar> finalPath = GetBattkePathFinder.FindPath(startingPosition, endPosition);
 
@@ -189,21 +232,45 @@ public partial class BattleController
     }
 
     // Melee and Range is same for now .. Maybe will be who knows
-    private void MelleAttack(Unit targetUnit)
+    private void MelleAttack(IClickAble targetObject)
     {
         AttackInfo attackInfo = null;
-        attackInfo = AttackToUnit(_activeUnit, targetUnit);
 
-        if (attackInfo.unitDied)
+        if(targetObject is Unit targetUnit)
         {
-            _battleGridController.DestroyUnitFromBattleField(targetUnit);
-            _battleInfoPanel.DeleteUnitFromOrder(targetUnit);
-            _battleLog.AddBattleLog($"{targetUnit._name} is dead");
+            attackInfo = AttackToUnit(_activeUnit, targetUnit);
+
+            if (attackInfo.wasTargetDestroyed)
+            {
+                _battleGridController.DestroyUnitFromBattleField(targetUnit);
+                _battleInfoPanel.DeleteUnitFromOrder(targetUnit);
+                _battleLog.AddBattleLog($"{targetUnit.GetName} is dead");
+            }
+
+            _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, targetUnit);
+            _battleInfoPanel.UpdateUnitData(targetUnit);
         }
 
-        _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, targetUnit);
-        _battleInfoPanel.UpdateUnitData(targetUnit);
-        
+        if(targetObject is Obstacle obstacle)
+        {
+            if(obstacle is IDamageable damagable)
+            {
+                attackInfo = AttackToObstacle(_activeUnit, damagable);
+            }
+
+            if (attackInfo.wasTargetDestroyed)
+            {
+                if(obstacle is DestroyAbleObstacle destroAble && destroAble.IsExplosive)
+                {
+                    ExplosionAction(destroAble);
+                }
+
+                _battleGridController.DestroyObstacleFromBattleField(obstacle);
+                _battleLog.AddBattleLog($"{obstacle.GetName} was destroyed");
+            }
+
+            _battleLog.AddAttackBattleLog(attackInfo, _activeUnit, obstacle);
+        }
     }
 
     public AttackInfo AttackToUnit(Unit attackingUnit, Unit defendingUnit)
@@ -214,13 +281,68 @@ public partial class BattleController
         int success = BattleSystem.CalculateAmountSuccess(dices, attackingUnit, defendingUnit, out attackInfo.dicesValueRoll);
 
         defendingUnit.ReceivedDamage(success);
-        attackInfo.unitDied = defendingUnit.CheckIfUnitIsNotDead();
+        attackInfo.wasTargetDestroyed = defendingUnit.IsBattleObjectDead();
 
         // for info
         attackInfo.dices = dices;
         attackInfo.success = success;
 
         return attackInfo;
+    }
+
+    public AttackInfo AttackToObstacle(Unit attackingUnit, IDamageable obstacle)
+    {
+        AttackInfo attackInfo = new AttackInfo();
+        int dices = BattleSystem.CalculateAmountDices(attackingUnit);
+        int success = BattleSystem.CalculateAmountSuccess(dices, attackingUnit, obstacle, out attackInfo.dicesValueRoll);
+
+        obstacle.ReceivedDamage(success);
+        attackInfo.wasTargetDestroyed = obstacle.IsBattleObjectDead();
+
+        // for info
+        attackInfo.dices = dices;
+        attackInfo.success = success;
+
+        return attackInfo;
+    }
+
+    private void ExplosionAction(DestroyAbleObstacle obstacle)
+    {
+        Squar centerSquare = _battleGridController.GetSquareFromGrid(obstacle.GetXPosition,obstacle.GetYPosition);
+        List<Squar> adjectiveSq = _battleGridController.GetTheAdjacentSquare(centerSquare);
+
+        List<Squar> squaresInExplodeRange = new List<Squar>();
+        squaresInExplodeRange.AddRange(adjectiveSq);
+
+        for (int i = 1; i < obstacle.GetExplosiveRange; i++)
+        {
+            List<Squar> adjectiveQquaresInOneCycle = new List<Squar>();
+
+            foreach (Squar sq in adjectiveSq)
+            {
+                List<Squar> adjectiveForOneSq = _battleGridController.GetTheAdjacentSquare(sq);
+
+                foreach (Squar square in adjectiveForOneSq)
+                {
+                    if (!squaresInExplodeRange.Contains(square) && square != centerSquare)
+                    {
+                        squaresInExplodeRange.Add(square);
+                        adjectiveQquaresInOneCycle.Add(square);
+                    }
+                }
+            }
+
+            adjectiveSq.Clear();
+            adjectiveSq.AddRange(adjectiveQquaresInOneCycle);
+        }
+
+        // PerforExplosion on choisen squares
+        foreach (Squar sqInExplosiveRange in squaresInExplodeRange)
+        {
+            IDamageable damagable = sqInExplosiveRange.GetObjectFromSquareGeneric<IDamageable>();
+            if(damagable != null)
+                damagable.ReceivedDamage(obstacle.GetExplosiveDamage);
+        }
     }
 
    
@@ -232,7 +354,7 @@ public partial class BattleController
         public int dices = 0;
         public int success = 0;
 
-        public bool unitDied = false;
+        public bool wasTargetDestroyed = false;
 
         public List<int> dicesValueRoll = new List<int>();
     }

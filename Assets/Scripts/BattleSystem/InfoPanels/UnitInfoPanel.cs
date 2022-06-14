@@ -15,8 +15,8 @@ public class UnitInfoPanel : MonoBehaviour
     [SerializeField] Text _health;
     [SerializeField] Text _movement;
 
-    [SerializeField] GameObject healthImageValue;
-    [SerializeField] GameObject movementImageValue;
+    [SerializeField] GameObject _healthImageValue;
+    [SerializeField] GameObject _movementImageValue;
 
     [Header("Image")]
     [SerializeField] Image _image;
@@ -28,6 +28,7 @@ public class UnitInfoPanel : MonoBehaviour
 
     public void UpdateStats(Unit unit)
     {
+        DisableUnWantedAtributes(unit);
         _threat.text = unit._threat.ToString();
 
         UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
@@ -42,13 +43,26 @@ public class UnitInfoPanel : MonoBehaviour
         _level.text = unit._level.ToString();
     }
 
+    public void UpdateStats(Obstacle obstacle)
+    {
+        DisableUnWantedAtributes(obstacle: obstacle);
+
+        if(obstacle is IDamageable damagable)
+        {
+            _threat.text = damagable.GetThreat.ToString();
+            UpdateHealthBar(damagable.GetCurrentHealth, damagable.GetMaxHealth);
+        }
+
+        _image.sprite = obstacle.GetSprite;
+    }
+
     private void UpdateHealthBar(int current, int max)
     {
         _health.text = $"{current} / {max}";
 
         float amount = (float)current / (float)max;
 
-        healthImageValue.transform.localScale = new Vector3(amount, 1, 1);
+        _healthImageValue.transform.localScale = new Vector3(amount, 1, 1);
     }
 
     private void UpdateMovementBar(int current, int max)
@@ -58,7 +72,7 @@ public class UnitInfoPanel : MonoBehaviour
         
         _movement.text = $"{current} / {max}";
         float amount = (float)current / (float)max;
-        movementImageValue.transform.localScale = new Vector3(amount, 1, 1);
+        _movementImageValue.transform.localScale = new Vector3(amount, 1, 1);
     }
 
     private void UpdateRange(Unit unit)
@@ -98,6 +112,40 @@ public class UnitInfoPanel : MonoBehaviour
         else
         {
             _damage.text = unit._military.ToString();
+        }
+    }
+
+    private void DisableUnWantedAtributes(Unit unit = null , Obstacle obstacle = null)
+    {
+        if(unit != null)
+        {
+            _threat.transform.parent.gameObject.SetActive(true);
+            _health.transform.parent.gameObject.SetActive(true);
+            _healthImageValue.transform.parent.gameObject.SetActive(true);
+           // _movement.gameObject.SetActive(true);
+            //_movementImageValue.gameObject.SetActive(true);
+            _level.transform.parent.gameObject.SetActive(true);
+            _damage.transform.parent.gameObject.SetActive(true);
+            _range.transform.parent.gameObject.SetActive(true);
+        }
+
+        if(obstacle != null)
+        {
+            _threat.transform.parent.gameObject.SetActive(false);
+            _health.transform.parent.gameObject.SetActive(false);
+            _healthImageValue.transform.parent.gameObject.SetActive(false);
+           // _movement.gameObject.SetActive(false);
+           // _movementImageValue.gameObject.SetActive(false);
+            _level.transform.parent.gameObject.SetActive(false);
+            _damage.transform.parent.gameObject.SetActive(false);
+            _range.transform.parent.gameObject.SetActive(false);
+
+            if(obstacle is IDamageable)
+            {
+                _health.transform.parent.gameObject.SetActive(true);
+                _healthImageValue.transform.parent.gameObject.SetActive(true);
+                _threat.transform.parent.gameObject.SetActive(true);
+            }
         }
     }
 }
