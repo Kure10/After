@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(WindowObstacle))]
-public class Obstacle : MonoBehaviour , IClickAble
+public class Obstacle : MonoBehaviour , IClickAble , IBattleObject
 {
     [SerializeField] Sprite _sprite;
     [SerializeField] private bool _canShootThrough = false;

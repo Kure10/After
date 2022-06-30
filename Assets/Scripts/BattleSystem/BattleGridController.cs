@@ -13,6 +13,9 @@ public class BattleGridController : MonoBehaviour
     [Header("Prefabs Obstacles")]
     [SerializeField] List<GameObject> _obstaclesList = new List<GameObject>();
 
+    [Header("Prefabs WalkAbleObject")]
+    [SerializeField] List<GameObject> _walkAbleObjectList = new List<GameObject>();
+
     [Header("Dimensions")]
     [SerializeField] List<GameObject> _rows = new List<GameObject>();
 
@@ -72,6 +75,15 @@ public class BattleGridController : MonoBehaviour
             MoveToSquar(unit, nextSq);
             tmpSquaresInMoverange = FindSquaresInUnitMoveRange(unit);
             ShowSquaresWithinMoveRange(tmpSquaresInMoverange, true);
+
+            bool isStoper = false;
+            WalkableObject walkAble  = nextSq.CheckTrigerObjectInSquare();
+            if (walkAble != null)
+                PerformeWalkAbleAction(walkAble, unit , out isStoper);
+
+            if (isStoper)
+                break;
+
             await Task.Delay(delayTimeWalk);
         }
         squaresInMoveRange.Clear();
@@ -133,7 +145,7 @@ public class BattleGridController : MonoBehaviour
     public void DestroyObstacleFromBattleField(Obstacle obstacle)
     {
         Squar sq = GetSquareFromGrid(obstacle.GetXPosition, obstacle.GetYPosition);
-        sq.DestrpyObstacleInSquare();
+        sq.DestroyObstacleInSquare();
         sq.UnitInSquar = null;
     }
 
@@ -285,10 +297,24 @@ public class BattleGridController : MonoBehaviour
 
     private bool IsSquareWalkAble(Squar sq)
     {
-        if (sq != null && !sq.IsSquearBlocked && sq.UnitInSquar == null)
+        if (sq != null && sq.IsSquareWalkAble)
             return true;
 
         return false;
+    }
+
+    private void PerformeWalkAbleAction (WalkableObject wallAbleObject, Unit unit, out bool isStopper)
+    {
+        isStopper = false;
+        if(wallAbleObject is Mine mine)
+        {
+            mine.PerformeAction(unit, out isStopper);
+        }
+
+        if(wallAbleObject is Trap trap)
+        {
+            trap.PerformeAction(unit, out isStopper);
+        }
     }
 
     public List<Squar> GetTheAdjacentSquare(Squar centerSquar)
@@ -778,7 +804,7 @@ public class BattleGridController : MonoBehaviour
             case TerrainVariants.StoneElShape:
 
                 StoneElShapeGenerator generator = new StoneElShapeGenerator();
-                generator.InitGenerator(_columnCount, _rowsCount, _obstaclesList);
+                generator.InitGenerator(_columnCount, _rowsCount, _obstaclesList, _walkAbleObjectList);
                 generator.GenerateStoneElShape();
 
                 break;

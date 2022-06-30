@@ -56,6 +56,23 @@ public class UnitInfoPanel : MonoBehaviour
         _image.sprite = obstacle.GetSprite;
     }
 
+    public void UpdateStats(WalkableObject walkAble)
+    {
+        //DisableUnWantedAtributes(unit);
+        //_threat.text = unit._threat.ToString();
+
+        //UpdateHealthBar(unit.CurrentHealth, unit.MaxHealth);
+        //UpdateMovementBar(unit.GetMovementPoints, unit.GetMaxMovement);
+
+        //UpdateRange(unit);
+
+        //UpdateMilitary(unit);
+
+        //_image.sprite = unit._sprite;
+
+        //_level.text = unit._level.ToString();
+    }
+
     private void UpdateHealthBar(int current, int max)
     {
         _health.text = $"{current} / {max}";
@@ -115,7 +132,7 @@ public class UnitInfoPanel : MonoBehaviour
         }
     }
 
-    private void DisableUnWantedAtributes(Unit unit = null , Obstacle obstacle = null)
+    private void DisableUnWantedAtributes(Unit unit = null , Obstacle obstacle = null , WalkableObject walkAble = null)
     {
         if(unit != null)
         {
@@ -141,6 +158,25 @@ public class UnitInfoPanel : MonoBehaviour
             _range.transform.parent.gameObject.SetActive(false);
 
             if(obstacle is IDamageable)
+            {
+                _health.transform.parent.gameObject.SetActive(true);
+                _healthImageValue.transform.parent.gameObject.SetActive(true);
+                _threat.transform.parent.gameObject.SetActive(true);
+            }
+        }
+
+        if (walkAble != null)
+        {
+            _threat.transform.parent.gameObject.SetActive(false);
+            _health.transform.parent.gameObject.SetActive(false);
+            _healthImageValue.transform.parent.gameObject.SetActive(false);
+            // _movement.gameObject.SetActive(false);
+            // _movementImageValue.gameObject.SetActive(false);
+            _level.transform.parent.gameObject.SetActive(false);
+            _damage.transform.parent.gameObject.SetActive(false);
+            _range.transform.parent.gameObject.SetActive(false);
+
+            if (walkAble is IDamageable)
             {
                 _health.transform.parent.gameObject.SetActive(true);
                 _healthImageValue.transform.parent.gameObject.SetActive(true);

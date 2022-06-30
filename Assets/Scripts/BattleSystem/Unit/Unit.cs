@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Unit : MonoBehaviour , IDamageable , IClickAble
+public class Unit : MonoBehaviour , IDamageable , IClickAble , IBattleObject
 {
     public Animator animator;
 

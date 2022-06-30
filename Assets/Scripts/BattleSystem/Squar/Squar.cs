@@ -22,9 +22,8 @@ public class Squar : MonoBehaviour
 
     [Header("Holder For Occupied Objects")]
     [SerializeField] private GameObject container;
-
-    [Header("Obstacle")]
-    [SerializeField] private GameObject stoneObstacle;
+    [SerializeField] private GameObject waContainer;
+    [SerializeField] private GameObject terrainContainer;
 
     [Header("Range Marks")]
     [SerializeField] public GameObject inRangeBackground;
@@ -50,6 +49,8 @@ public class Squar : MonoBehaviour
 
     private Unit _unitInSquar;
     private Obstacle _obstacle;
+    private WalkableObject _walkAbleObject;
+    private WalkableObject _walkAbleTerrain;
 
 
     public bool isInMoveRange = false;
@@ -65,16 +66,27 @@ public class Squar : MonoBehaviour
 
     public Action action;
 
-    private bool _isSquarBlocked = false;
-
     private Image actionSprite = null;
 
     private BattlePathFinding.AAlgoritmStats _pathStats;
 
     public GameObject GetContainer { get { return container; } }
+    public GameObject GetWalkAbleContainer { get { return waContainer; } }
+    public GameObject GetTerrainContainer { get { return terrainContainer; } }
     public bool IsSquearBlocked
     {
-        get { return _isSquarBlocked; }
+        get
+        {
+            return _unitInSquar != null || _obstacle != null || _walkAbleObject != null;
+        }
+    }
+
+    public bool IsSquareWalkAble
+    {
+        get
+        {
+            return _unitInSquar == null && _obstacle == null;
+        }
     }
 
     public Unit UnitInSquar { get { return _unitInSquar; } set { _unitInSquar = value; } }
@@ -83,7 +95,17 @@ public class Squar : MonoBehaviour
 
     public T GetObjectFromSquareGeneric<T>() where T : class
     {
-        return container.GetComponentInChildren<T>();
+        var obj = container.GetComponentInChildren<T>();
+
+        if (obj != null)
+            return obj;
+
+        obj = waContainer.GetComponentInChildren<T>();
+
+        if (obj != null)
+            return obj;
+
+        return terrainContainer.GetComponentInChildren<T>();
     }
 
     public bool CanShootThrough 
@@ -101,28 +123,61 @@ public class Squar : MonoBehaviour
 
     public BattlePathFinding.AAlgoritmStats PathStats { get { return _pathStats; } }
 
-    public void SetObstacle(GameObject gameObject, int posX , int posY)
-    {
-        Obstacle obstacle = Instantiate(gameObject).GetComponent<Obstacle>();
-        if(obstacle != null)
-        {
-            _obstacle = obstacle;
-            obstacle.gameObject.transform.SetParent(container.transform);
-            _isSquarBlocked = true;
-            obstacle.Init(posX, posY);
-
-        }
-        else
-        {
-            Debug.Log("Error in Pobsticle PRefab");
-        }
-    }
-
-
     private void Awake()
     {
         actionSprite = actionMark.GetComponent<Image>();
         _pathStats = new BattlePathFinding.AAlgoritmStats();
+    }
+
+    public void SetObject(GameObject gameObject, int posX, int posY, Sprite sprite = null)
+    {
+        IBattleObject battleObject = null;
+        bool obs = Instantiate(gameObject).TryGetComponent(out battleObject);
+
+        if(!obs)
+        {
+            Debug.LogError("You are trying instantiate non battle GameObject");
+            return;
+        }
+
+        if (battleObject is Obstacle obstacle)
+        {
+            _obstacle = obstacle;
+            obstacle.gameObject.transform.SetParent(container.transform);
+            obstacle.Init(posX, posY);
+        }
+
+        if (battleObject is WalkableObject walkAble)
+        {
+            if(walkAble.IsTerrain)
+            {
+                _walkAbleTerrain = walkAble;
+                walkAble.gameObject.transform.SetParent(terrainContainer.transform);
+                walkAble.Init(posX, posY);
+            }
+            else
+            {
+                _walkAbleObject = walkAble;
+                walkAble.gameObject.transform.SetParent(waContainer.transform);
+                walkAble.Init(posX, posY);
+            }
+
+        }
+    }
+
+    public WalkableObject CheckTrigerObjectInSquare()
+    {
+        if (_walkAbleObject != null && _walkAbleObject.IsWalkAbleTriger)
+        {
+            return _walkAbleObject;
+        }
+     
+        if (_walkAbleTerrain != null && _walkAbleTerrain.IsWalkAbleTriger)
+        {
+            return _walkAbleTerrain;
+        }
+
+        return null;
     }
 
     public Vector2Int GetCoordinates()
@@ -155,13 +210,12 @@ public class Squar : MonoBehaviour
         downBorder.SetActive(false);
     }
 
-    public void DestrpyObstacleInSquare()
+    public void DestroyObstacleInSquare()
     {
         if(_obstacle != null)
         {
             Destroy(_obstacle.gameObject, 0.5f);
             _obstacle = null;
-            _isSquarBlocked = false;
         }
     }
 
@@ -233,8 +287,3 @@ public class Squar : MonoBehaviour
         shootPathNoPoints.SetActive(show);
     }
 }
-
-
-
-
-

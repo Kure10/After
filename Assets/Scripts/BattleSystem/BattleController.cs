@@ -495,6 +495,7 @@ public partial class BattleController : MonoBehaviour
             Squar squar = _battleGridController.GetUnBlockedSquareFromGrid(dataUnit.StartXPosition, dataUnit.StartYPosition); // tady musí byt chech jestli nejsem mimo pole
 
             GameObject unt = Instantiate(_unit, squar.GetContainer.transform);
+
             Unit newUnit = unt.GetComponent<Unit>();
 
             var sprite = spriteLoader.LoadUnitSprite(dataUnit.ImageName);
@@ -530,7 +531,7 @@ public partial class BattleController : MonoBehaviour
         {
             square.InitEvent(delegate (Squar squ)
             {
-                SetCursor(squ);
+                SetSquareEchoSign(squ);
                 UpdateRightPanel(squ);
                 EvaluateGridWTF(squ);
             });
@@ -861,11 +862,11 @@ public partial class BattleController : MonoBehaviour
         OnBattleLost.Invoke(statClass);
     }
 
-    private void SetCursor(Squar sq)
+    private void SetSquareEchoSign(Squar sq)
     {
         sq.CursorEvent.action = BattleController.BattleAction.Move;
 
-        if (sq.UnitInSquar is null)
+        if (sq.IsSquareWalkAble)
         {
             if (_squaresInUnitMoveRange.Contains(sq))
             {
@@ -875,6 +876,22 @@ public partial class BattleController : MonoBehaviour
         }
         else
         {
+            if (sq.GetObstacle != null)
+            {
+                if(sq.GetObstacle is IDamageable)
+                {
+                    sq.CursorEvent.action = BattleController.BattleAction.Attack;
+                    sq.SetActionMark(attackAction);
+                }
+                else
+                {
+                    sq.CursorEvent.action = BattleController.BattleAction.None;
+                    sq.SetActionMark(attackAction);
+                }
+
+                return;
+            }
+
             if (_squaresInUnitAttackRange.Contains(sq) && sq.UnitInSquar._team != _activeUnit._team)
             {
                 if(_activeUnit.ActiveWeapon == null || _activeUnit.ActiveWeapon.IsMelleWeapon)
@@ -886,7 +903,6 @@ public partial class BattleController : MonoBehaviour
                 {
                     if (TryGetAim(sq))
                     {
-                        Debug.Log("JSem tady ale nemel bych byt");
                         sq.CursorEvent.action = BattleController.BattleAction.Attack;
                         sq.SetActionMark(attackAction);
                     }
@@ -924,6 +940,11 @@ public partial class BattleController : MonoBehaviour
         else if (clickAble is Obstacle obstacle)
         {
             _rightUnitInfo.UpdateStats(obstacle);
+            _rightUnitInfo.gameObject.SetActive(true);
+        }
+        else if (clickAble is WalkableObject walkAble)
+        {
+            _rightUnitInfo.UpdateStats(walkAble);
             _rightUnitInfo.gameObject.SetActive(true);
         }
 

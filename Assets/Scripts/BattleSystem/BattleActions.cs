@@ -22,6 +22,10 @@ public partial class BattleController
         {
             return ChoiseObstacleAction(actionSquare, obstacle);
         }
+        else if (clickAbleObject is WalkableObject walkAbleObject)
+        {
+            return ChoiseWalkAbleAction(actionSquare, walkAbleObject);
+        }
 
         return BattleAction.None;
     }
@@ -61,6 +65,21 @@ public partial class BattleController
         }
 
         return action;
+    }
+
+    private BattleAction ChoiseWalkAbleAction(Squar targetSquare, WalkableObject walkAbleObjec)
+    {
+        // Todo pozdeji se bude dat znicit mina nebo zneškodnit. ATD
+        BattleAction action = BattleAction.None;
+
+        if (targetSquare.IsSquareWalkAble && _squaresInUnitMoveRange.Contains(targetSquare))
+        {
+            action = BattleAction.Move;
+        }
+
+        return action;
+
+
     }
 
     private BattleAction ChoiseUnitAction(Squar actionSquare, Unit targetUnit)

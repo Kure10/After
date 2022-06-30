@@ -14,8 +14,9 @@ namespace Assets.Scripts.BattleSystem
         protected int _maxStoneInColumn = 0;
 
         protected List<GameObject> _obstaclesList = new List<GameObject>();
+        protected List<GameObject> _walkAbleObjectList = new List<GameObject>();
 
-        public void InitGenerator(int column, int rows , List<GameObject> obstaclesList)
+        public void InitGenerator(int column, int rows , List<GameObject> obstaclesList, List<GameObject> walkAbleObjectList)
         {
             _columnCount = column;
             _rowsCount = rows;
@@ -27,6 +28,12 @@ namespace Assets.Scripts.BattleSystem
             foreach (GameObject obs in obstaclesList)
             {
                 _obstaclesList.Add(obs);
+            }
+
+            _walkAbleObjectList.Clear();
+            foreach (GameObject wab in walkAbleObjectList)
+            {
+                _walkAbleObjectList.Add(wab);
             }
         }
 
@@ -44,7 +51,7 @@ namespace Assets.Scripts.BattleSystem
                 {
                     // Create stone. In future it will be good if stone prefab will be difretent.
                     GameObject prefab = ChoiseObstacle();
-                    squar.SetObstacle(prefab, x, y);
+                    squar.SetObject(prefab, x, y);
                     return true;
                 }
             }
@@ -100,5 +107,13 @@ namespace Assets.Scripts.BattleSystem
             GameObject ob = _obstaclesList[rng];
             return ob;
         }
+
+        private GameObject ChoiseWalkAbleObject()
+        {
+            int rng = Random.Range(0, _walkAbleObjectList.Count);
+            GameObject ob = _obstaclesList[rng];
+            return ob;
+        }
+
     }
 }

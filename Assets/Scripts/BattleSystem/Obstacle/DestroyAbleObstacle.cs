@@ -14,7 +14,7 @@ public class DestroyAbleObstacle : Obstacle, IDamageable
     [SerializeField] [Range(1, 10)] int _explosiveDamage = 1;
 
     //Todo Obsticle Has some base threat -> Later according type of obstacle change threat
-    private int _threat = 2;
+    [SerializeField] int _threat = 2;
 
     public bool IsExplosive { get { return _isExplosive; } }
     public int GetExplosiveRange { get { return _explosiveRange; } }
